@@ -1,0 +1,14 @@
+@prefix sbol
+
+iupacDNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
+iupacRNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
+iupacProtein = <http://www.chem.qmul.ac.uk/iupac/AminoAcid/>
+opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
+
+DnaSequence(x)       (Sequence(x, iupacDNA))
+
+RnaSequence(x)       (Sequence(x, iupacDNA))
+
+ProteinSequence(x)   (Sequence(x, iupacProtein))
+
+ChemicalStructure(x) (Sequence(x, opensmilesSMILES))

@@ -1,0 +1,70 @@
+@prefix sbol
+
+ComponentInstance(def)
+(
+  Identified(ComponentInstance)
+  definition = def
+  access = sbol.public
+)
+
+PrivateComponentInstance(def)
+(
+  Identified(PrivateComponentInstance)
+  definition = def
+  access = sbol.private
+)
+
+Component(def) (TopLevel(Component) ComponentInstance(def))
+
+MapsTo(local, remote, ref)
+(
+  Identified(MapsTo)
+  sbol.local = local
+  sbol.remote = remote
+  refinement = ref
+)
+
+MapsUseRemote(local, remote) (MapsTo(local, remote, sbol.useRemote))
+MapsUseLocal(local, remote)  (MapsTo(local, remote, sbol.useLocal))
+MapsIdentical(local, remote) (MapsTo(local, remote, sbol.verifyIdentical))
+MapsMerge(local, remote)     (MapsTo(local, remote, sbol.merge))
+
+SequenceAnnotation(location)
+(
+  TopLevel(SequenceAnnotation)
+  sbol.location = location
+)
+
+Location(type) (TopLevel(type))
+
+Range(start, end)
+(
+  Location(Range)
+  sbol.start = start
+  sbol.end = end
+  sbol.orientation = sbol.inline
+)
+
+Cut(at)
+(
+  Location(Cut)
+  sbol.at = at
+)
+
+GenericLocation() (Location(GenericLocation))
+
+SequenceConstraint(subject, object, restriction)
+(
+  TopLevel(SequenceConstraint)
+  sbol.subject = subject
+  sbol.object = object
+  sbol.restriction = restriction
+)
+
+Precedes(subject, object)              (SequenceConstraint(subject, object, sbol.precedes))
+
+SameOrientationAs(subject, object)     (SequenceConstraint(subject, object, sbol.sameOrientationAs))
+
+OppositeOrientationAs(subject, object) (SequenceConstraint(subject, object, sbol.oppositeOrientationAs))
+
+differentFrom(subject, object)         (SequenceConstraint(subject, object, sbol.differentFrom))

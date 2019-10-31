@@ -1,0 +1,82 @@
+use <sbol>
+
+@prefix test = <http://sbols.org/CRISPR_Example/>
+@prefix test
+
+
+target_gene is a sbol.Promoter()
+target is a sbol.Protein()
+
+target_gene_fc is a sbol.InOutComponent(target_gene)
+target_fc is a sbol.InOutComponent(target)
+
+target_gene_participation is a sbol.Participation(target_gene_fc, sbol.promoter)
+target_participation is a sbol.Participation(target_fc, sbol.product)
+target_production is a sbol.Interaction(sbol.genetic_production)
+(
+    sbol.participation = target_gene_participation
+    sbol.participation = target_participation
+    
+)
+
+CRISPR_Template is a sbol.ModuleDefinition()
+(
+    sbol.functionalcomponent = target_gene_fc
+    sbol.functionalcomponent = target_fc
+
+    sbol.interaction = target_production
+)
+
+
+
+gRNA_gene is a sbol.Rna()
+(
+    sbol.role = sbol.cdRole.SgRNA 
+)
+
+gRNA_b is a sbol.Rna()
+(
+    sbol.role = sbol.cdRole.SgRNA 
+)
+
+
+gRNA_b_fc is a sbol.NoneComponent(gRNA_b)
+(
+    sbol.version = 500
+)
+
+gRNA_generic_fc is a sbol.InOutComponent(gRNA_generic)
+
+gRNA_b_gene_participant is a sbol.Participation(gRNA_generic_fc, sbol.reactant)
+gRNA_b_participant is a sbol.Participation(gRNA_b_fc, sbol.reactant)
+gRNA_b_production is a sbol.Interaction(sbol.genetic_production)
+(
+    sbol.participation = gRNA_b_gene_participant
+    sbol.participation = gRNA_b_participant
+)
+
+gRNA_b_BFP_participant is a sbol.Participation(gRNA_b_fc, sbol.reactant)
+gRNA_b_BFP_deg is a sbol.Interaction(sbol.degradation)
+(
+    sbol.participation = gRNA_b_BFP_participant
+)
+
+CRPb_characterization_Circuit is a sbol.ModuleDefinition()
+(
+    sbol.version = 1
+    sbol.functionalcomponent = gRNA_b_fc
+
+    sbol.interaction = gRNA_b_production
+    sbol.interaction = gRNA_b_BFP_deg
+)
+
+
+
+gRNA_b_map is a sbol.MapsUseLocal(gRNA_b_fc,gRNA_generic_fc)
+
+CRISPR_Template is a sbol.Module(CRPb_characterization_Circuit)
+(
+    sbol.mapsTo = gRNA_b_map
+)
+
+@extension SbolIdentity()

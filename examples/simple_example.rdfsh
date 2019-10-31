@@ -1,0 +1,16 @@
+use <sbol>
+
+@prefix test = <http://github.com/lgrozinger/ShortBOL2/example/#>
+@prefix test
+
+seq is a sbol.DnaSequence("atcg")
+
+cmp is a sbol.DnaComponent()(sbol.sequence = seq)
+
+prom is a sbol.Promoter()
+(
+  dc.title = "Promoter 1"
+  dc.description = "The first promoter"
+)
+
+@extension SbolIdentity()

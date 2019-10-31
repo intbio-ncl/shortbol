@@ -1,0 +1,21 @@
+# the import statement finds a script and interprets it in the current context
+
+# all the names, templates and prefixes in the imported script will now be available
+
+# it is *almost* like you had copy and pasted the text instead of using @import
+
+# you can import any file with the .rdfsh extension
+# like the names.rdfsh example
+
+use <names>
+
+# now you can use 'name's  and prefixes defined in names.rdfsh
+strings
+myScript.integers
+otherPrefix.nothing
+
+# note that importing <names> changed the defaultPrefix
+
+use <templates>
+
+expand is a templates.SimpleTemplate()

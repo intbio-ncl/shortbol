@@ -1,0 +1,27 @@
+use <xsd>
+use <rdf>
+use <owl>
+use <dc>
+use <prov>
+use <chebi>
+use <so>
+use <biopax>
+use <edam>
+use <sbo>
+use <sbh>
+use <dc>
+
+@prefix sbol = <http://sbols.org/v2#>
+@prefix sbol
+
+addProperty(property, value)
+(
+  property = value
+)
+
+use <sbol/identified>
+use <sbol/toplevel>
+use <sbol/sequence>
+use <sbol/componentdefinition>
+use <sbol/componentinstance>
+use <sbol/moduledefinition>

@@ -1,0 +1,100 @@
+@prefix sbol
+
+Module(definition)
+(
+  Identified(Module)
+  sbol.definition = definition
+)
+
+FunctionalComponent(def, direction)
+(
+  TopLevel(FunctionalComponent)
+  ComponentInstance(def)
+  sbol.direction = direction
+)
+
+PrivateFunctionalComponent(def, direction)
+(
+  TopLevel(FunctionalComponent)
+  PrivateComponentInstance(def)
+  sbol.direction = direction
+)
+
+InputComponent(def)  (FunctionalComponent(def, sbol.in))
+OutputComponent(def) (FunctionalComponent(def, sbol.out))
+InOutComponent(def)  (FunctionalComponent(def, sbol.inout))
+NoneComponent(def)   (FunctionalComponent(def, sbol.none))
+
+inhibition = <http://identifiers.org/biomodels.sbo/SBO:0000169>
+stimulation = <http://identifiers.org/biomodels.sbo/SBO:0000170>
+biochemical_reaction = <http://identifiers.org/biomodels.sbo/SBO:0000176>
+noncovalent_bonding = <http://identifiers.org/biomodels.sbo/SBO:0000177>
+degradation = <http://identifiers.org/biomodels.sbo/SBO:0000179>
+genetic_production = <http://identifiers.org/biomodels.sbo/SBO:0000589>
+control = <http://identifiers.org/biomodels.sbo/SBO:0000168>
+
+inhibitor = <http://identifiers.org/biomodels.sbo/SBO:0000020>
+inhibited = <http://identifiers.org/biomodels.sbo/SBO:0000642>
+reactant = <http://identifiers.org/biomodels.sbo/SBO:0000010>
+
+Interaction(type)
+(
+  Identified(Interaction)
+  sbol.type = type
+)
+
+Participation(of, withrole)
+(
+  Identified(Participation)
+  role = withrole
+  participant = of
+)
+
+Inhibition(name, of, by)
+(
+  name.of is a OutputComponent(of)
+  name.by is a InputComponent(by)
+  
+  name is a Interaction(inhibition)
+  (
+    self.participation.of is a Participation(name.of, inhibited)
+    self.participation.by is a Participation(name.by, inhibitor)
+    participation = self.participation.of
+    participation = self.participation.by
+  )
+)
+
+NonCovBonding(name, reactantA, reactantB)
+(
+  name.reactantA is a InOutComponent(reactantA)
+  name.reactantB is a InOutComponent(reactantB)  
+  
+  name is a Interaction(noncovalent_bonding)
+  (
+    self.participation.reactantA is a Participation(name.reactantA, reactant)
+    self.participation.reactantB is a Participation(name.reactantB, reactant)
+    participation = self.participation.reactantA
+    participation = self.participation.reactantB
+  )
+)
+
+NonCovBonding3(name, reactantA, reactantB, reactantC)
+(
+  name.reactantA is a InOutComponent(reactantA)
+  name.reactantB is a InOutComponent(reactantB)
+  name.reactantC is a InOutComponent(reactantC)    
+  
+  name is a Interaction(noncovalent_bonding)
+  (
+    self.participation.reactantA is a Participation(name.reactantA, reactant)
+    self.participation.reactantB is a Participation(name.reactantB, reactant)
+    self.participation.reactantC is a Participation(name.reactantC, reactant)
+    
+    participation = self.participation.reactantA
+    participation = self.participation.reactantB
+    participation = self.participation.reactantC    
+  )
+
+  interaction = name
+)
+

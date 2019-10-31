@@ -1,0 +1,8 @@
+*
+!.gitignore
+!*/
+!**/**/*.py
+!**/**/*.rdfsh
+!README.md
+!Pipfile
+parsetab.py

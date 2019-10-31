@@ -1,0 +1,29 @@
+@prefix sbol
+
+TopLevel(type)
+(
+  Identified(type)
+)
+
+Sequence(x, y)
+(
+  TopLevel(Sequence)
+  elements = x
+  encoding = y
+)
+
+ComponentDefinition(t)
+(
+  TopLevel(ComponentDefinition)
+  type = t
+)
+
+Model(s, l, f)
+(
+  TopLevel(Model)
+  source = s
+  language = l
+  framework = f
+)
+
+ModuleDefinition() (TopLevel(ModuleDefinition))

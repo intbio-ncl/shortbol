@@ -1,0 +1,112 @@
+@prefix sbol
+
+;; ComponentDefinition type
+cdType.DNA = biopax.DnaRegion
+cdType.RNA = biopax.RnaRegion
+cdType.Protein = biopax.Protein
+cdType.SmallMolecule = biopax.SmallMolecule
+cdType.Complex = biopax.Complex
+
+;; ComponentDefinition role
+cdRole.Promoter       = <http://identifiers.org/so/SO:0000167>
+cdRole.RBS            = <http://identifiers.org/so/SO:0000139>
+cdRole.CDS            = <http://identifiers.org/so/SO:0000316>
+cdRole.Terminator     = <http://identifiers.org/so/SO:0000141>
+cdRole.Gene           = <http://identifiers.org/so/SO:0000704>
+cdRole.Operator       = <http://identifiers.org/so/SO:0000057>
+cdRole.EngineeredGene = <http://identifiers.org/so/SO:0000280>
+cdRole.mRNA           = <http://identifiers.org/so/SO:0000234>
+cdRole.EngineeredRegion = <http://identifiers.org/so/SO:0000804>
+cdRole.NonCovBindingSite = <http://identifiers.org/so/SO:0001091>
+cdRole.Effector       = <http://identifiers.org/chebi/CHEBI:35224>
+cdRole.StartCodon     = <http://identifiers.org/so/SO:0000318>
+cdRole.Tag            = <http://identifiers.org/so/SO:0000324>
+cdRole.EngineeredTag  = <http://identifiers.org/so/SO:0000807>
+cdRole.sgRNA          = <http://identifiers.org/so/SO:0001998>
+
+DnaComponent() (ComponentDefinition(cdType.DNA))
+
+Dna()
+(
+  ComponentDefinition(cdType.DNA)
+)
+
+RnaComponent()
+(
+  ComponentDefinition(cdType.RNA)
+)
+
+Rna()
+(
+  ComponentDefinition(cdType.RNA)
+)
+
+ProteinComponent()
+(
+  ComponentDefinition(cdType.Protein)
+)
+
+Protein()
+(
+  ComponentDefinition(cdType.Protein)
+)
+
+SmallMoleculeComponent()
+(
+  ComponentDefinition(cdType.SmallMolecule)
+)
+
+SmallMolecule()
+(
+  ComponentDefinition(cdType.SmallMolecule)
+)
+
+ComplexComponent()
+(
+  ComponentDefinition(cdType.Complex)
+)
+
+Complex()
+(
+  ComponentDefinition(cdType.Complex)
+)
+
+;; Common DNA components
+
+Promoter()
+(
+  DnaComponent()
+  role = cdRole.Promoter
+)
+
+RBS()
+(
+  DnaComponent()
+  role = cdRole.RBS
+)
+
+CDS()
+(
+  DnaComponent()
+  role = cdRole.CDS
+)
+
+Terminator()
+(
+  DnaComponent()
+  role = cdRole.Terminator
+)
+
+Operator()
+(
+  DnaComponent()
+  role = cdRole.Operator
+)
+
+;; Common RNA components
+
+CDS_RNA()
+(
+  RnaComponent()
+  role = cdRole.CDS
+)
