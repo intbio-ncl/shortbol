@@ -7,6 +7,80 @@ from rdfscript.env import Env
 from repl import REPL
 
 
+
+def hacky_conversion(filepath):
+    '''
+    This is a hack method that modifies the input if it is not currrently shortbol namespace valid
+    '''
+    temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.rdfsh")
+    if os.path.isfile(temp_file):
+        os.remove(temp_file)
+
+
+    
+    #SBOL Namespace
+    sbol_namespace = "use <sbol>"
+    f_prefix = "@prefix sbol"
+    f_equals = " = "
+    default_prefix = "<http://sbols.org/>"
+    s_prefix = "@prefix "
+    sbol_compliant_extension = "@extension SbolIdentity()"
+    is_a_template = "is a"
+
+    with open(filepath, 'r') as original: data = original.read()
+    split_text = data.split("\n")
+    for index,line in enumerate(split_text):
+        print(index,line)
+
+    # Check if sbol namespace present.
+    if not sbol_namespace in split_text:
+        split_text.insert(0,sbol_namespace + "\n")
+
+    # Check if prefix are present.
+    if len([s for s in split_text if s_prefix in s]) == 0:
+        split_text.insert(1,f_prefix + f_equals +  default_prefix)
+        split_text.insert(2,f_prefix)
+    # check if named prefix only is present
+    if len([s for s in split_text if s_prefix in s]) == 1:
+        for index,line in enumerate(split_text):
+            if s_prefix in line:
+                split_text.insert(index + 1,s_prefix + line.split(" ")[1])
+                break
+    # Check if sbol compliant extension is present
+    if not sbol_compliant_extension in split_text:
+        split_text.append(sbol_compliant_extension)
+
+
+
+
+    shortbol_templates_dir = os.path.join("templates","sbol")
+    for filename in os.listdir(shortbol_templates_dir):
+        if filename.endswith(".rdfsh"): 
+            print(os.path.join(shortbol_templates_dir, filename))
+            continue
+        else:
+            continue
+    templates = [s for s in split_text if is_a_template in s]
+    
+    for template in templates:
+        parts = template.split(" ")
+        print(parts)
+        # Get all possible templates
+
+    
+
+        
+    # Create a list of types from Shortbol2 libs
+
+    with open(temp_file, 'w') as modified:
+        for line in split_text:
+            modified.write(line)
+            modified.write("\n")
+
+
+
+    return temp_file
+
 def parse_from_file(filepath,
                     serializer='nt',
                     optpaths=[],
@@ -15,6 +89,11 @@ def parse_from_file(filepath,
                     debug_lvl=1):
     
     optpaths.append("templates")
+
+    to_run_fn = hacky_conversion(filepath)
+    print(extensions)
+    return
+
     parser = RDFScriptParser(filename=filepath, debug_lvl=debug_lvl)
 
     with open(filepath, 'r') as in_file:
