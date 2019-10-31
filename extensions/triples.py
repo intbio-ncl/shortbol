@@ -1,5 +1,5 @@
 import rdflib
-
+from rdfscript.core import Uri, Value
 class TriplePack(object):
     """
     The object passed to an extensions' run() method.
@@ -121,9 +121,25 @@ class TriplePack(object):
         return (owner, what, value)
 
 
-    def set_owner(self,what):
-        if what == 1:
-            print("df")
+    def set_owner(self,owner,new_owner):
+        if len(self.search((owner, None,None))) > 0:
+            triples = self.search((owner, None, None))
+            for triple in triples:
+                self.triples.remove(triple)
+                self.add((new_owner,triple[1],triple[2]))
+        return
+
+    def replace(self, old, new):
+        if not isinstance(new, (Uri, Value)):
+            raise TypeError
+
+        for s, p, o in self.triples:
+            if old in (s, p, o):
+                print("Replacing:" + str((s,p,o)))
+                print("With: " + str(tuple(map(lambda x: new if x == old else x, (s, p, o)))))
+                print("\n\n")
+                self.triples.remove((s,p,o))
+                self.add(tuple(map(lambda x: new if x == old else x, (s, p, o))))
 
     def sub_pack(self, owner):
         return TriplePack(self.search((owner, None, None)),
