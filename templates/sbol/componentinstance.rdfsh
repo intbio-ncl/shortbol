@@ -14,7 +14,10 @@ PrivateComponentInstance(def)
   access = sbol.private
 )
 
-Component(def) (TopLevel(Component) ComponentInstance(def))
+Component(def) 
+(
+  TopLevel(Component) ComponentInstance(def)
+)
 
 MapsTo(local, remote, ref)
 (
@@ -24,10 +27,25 @@ MapsTo(local, remote, ref)
   refinement = ref
 )
 
-MapsUseRemote(local, remote) (MapsTo(local, remote, sbol.useRemote))
-MapsUseLocal(local, remote)  (MapsTo(local, remote, sbol.useLocal))
-MapsIdentical(local, remote) (MapsTo(local, remote, sbol.verifyIdentical))
-MapsMerge(local, remote)     (MapsTo(local, remote, sbol.merge))
+MapsUseRemote(local, remote) 
+(
+  MapsTo(local, remote, sbol.useRemote)
+)
+
+MapsUseLocal(local, remote)  
+(
+  MapsTo(local, remote, sbol.useLocal)
+)
+
+MapsIdentical(local, remote) 
+(
+  MapsTo(local, remote, sbol.verifyIdentical)
+)
+
+MapsMerge(local, remote)     
+(
+  MapsTo(local, remote, sbol.merge)
+)
 
 SequenceAnnotation(location)
 (
@@ -35,7 +53,10 @@ SequenceAnnotation(location)
   sbol.location = location
 )
 
-Location(type) (TopLevel(type))
+Location(type) 
+(
+  TopLevel(type)
+)
 
 Range(start, end)
 (
@@ -51,7 +72,10 @@ Cut(at)
   sbol.at = at
 )
 
-GenericLocation() (Location(GenericLocation))
+GenericLocation() 
+(
+  Location(GenericLocation)
+)
 
 SequenceConstraint(subject, object, restriction)
 (
@@ -61,10 +85,22 @@ SequenceConstraint(subject, object, restriction)
   sbol.restriction = restriction
 )
 
-Precedes(subject, object)              (SequenceConstraint(subject, object, sbol.precedes))
+Precedes(subject, object)              
+(
+  SequenceConstraint(subject, object, sbol.precedes)
+)
 
-SameOrientationAs(subject, object)     (SequenceConstraint(subject, object, sbol.sameOrientationAs))
+SameOrientationAs(subject, object)     
+(
+  SequenceConstraint(subject, object, sbol.sameOrientationAs)
+)
 
-OppositeOrientationAs(subject, object) (SequenceConstraint(subject, object, sbol.oppositeOrientationAs))
+OppositeOrientationAs(subject, object) 
+(
+  SequenceConstraint(subject, object, sbol.oppositeOrientationAs)
+)
 
-differentFrom(subject, object)         (SequenceConstraint(subject, object, sbol.differentFrom))
+differentFrom(subject, object)         
+(
+  SequenceConstraint(subject, object, sbol.differentFrom)
+)

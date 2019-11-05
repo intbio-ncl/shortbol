@@ -1,112 +1,112 @@
 @prefix sbol
 
-;; ComponentDefinition type
-cdType.DNA = biopax.DnaRegion
-cdType.RNA = biopax.RnaRegion
-cdType.Protein = biopax.Protein
-cdType.SmallMolecule = biopax.SmallMolecule
-cdType.Complex = biopax.Complex
+# ComponentDefinition type
+dNA = biopax.DnaRegion
+rNA = biopax.RnaRegion
+protein = biopax.Protein
+smallMolecule = biopax.SmallMolecule
+complex = biopax.Complex
 
-;; ComponentDefinition role
-cdRole.Promoter       = <http://identifiers.org/so/SO:0000167>
-cdRole.RBS            = <http://identifiers.org/so/SO:0000139>
-cdRole.CDS            = <http://identifiers.org/so/SO:0000316>
-cdRole.Terminator     = <http://identifiers.org/so/SO:0000141>
-cdRole.Gene           = <http://identifiers.org/so/SO:0000704>
-cdRole.Operator       = <http://identifiers.org/so/SO:0000057>
-cdRole.EngineeredGene = <http://identifiers.org/so/SO:0000280>
-cdRole.mRNA           = <http://identifiers.org/so/SO:0000234>
-cdRole.EngineeredRegion = <http://identifiers.org/so/SO:0000804>
-cdRole.NonCovBindingSite = <http://identifiers.org/so/SO:0001091>
-cdRole.Effector       = <http://identifiers.org/chebi/CHEBI:35224>
-cdRole.StartCodon     = <http://identifiers.org/so/SO:0000318>
-cdRole.Tag            = <http://identifiers.org/so/SO:0000324>
-cdRole.EngineeredTag  = <http://identifiers.org/so/SO:0000807>
-cdRole.sgRNA          = <http://identifiers.org/so/SO:0001998>
+# ComponentDefinition role
+promoter       = <http://identifiers.org/so/SO:0000167>
+rbs            = <http://identifiers.org/so/SO:0000139>
+cds            = <http://identifiers.org/so/SO:0000316>
+terminator     = <http://identifiers.org/so/SO:0000141>
+gene           = <http://identifiers.org/so/SO:0000704>
+operator       = <http://identifiers.org/so/SO:0000057>
+engineeredGene = <http://identifiers.org/so/SO:0000280>
+mRNA           = <http://identifiers.org/so/SO:0000234>
+engineeredRegion = <http://identifiers.org/so/SO:0000804>
+nonCovBindingSite = <http://identifiers.org/so/SO:0001091>
+effector       = <http://identifiers.org/chebi/CHEBI:35224>
+startCodon     = <http://identifiers.org/so/SO:0000318>
+tag            = <http://identifiers.org/so/SO:0000324>
+engineeredTag  = <http://identifiers.org/so/SO:0000807>
+sgRNA          = <http://identifiers.org/so/SO:0001998>
 
-DnaComponent() (ComponentDefinition(cdType.DNA))
+DnaComponent() (ComponentDefinition(rNA))
 
 Dna()
 (
-  ComponentDefinition(cdType.DNA)
+  ComponentDefinition(dNA)
 )
 
 RnaComponent()
 (
-  ComponentDefinition(cdType.RNA)
+  ComponentDefinition(rNA)
 )
 
 Rna()
 (
-  ComponentDefinition(cdType.RNA)
+  ComponentDefinition(rNA)
 )
 
 ProteinComponent()
 (
-  ComponentDefinition(cdType.Protein)
+  ComponentDefinition(protein)
 )
 
 Protein()
 (
-  ComponentDefinition(cdType.Protein)
+  ComponentDefinition(protein)
 )
 
 SmallMoleculeComponent()
 (
-  ComponentDefinition(cdType.SmallMolecule)
+  ComponentDefinition(smallMolecule)
 )
 
 SmallMolecule()
 (
-  ComponentDefinition(cdType.SmallMolecule)
+  ComponentDefinition(smallMolecule)
 )
 
 ComplexComponent()
 (
-  ComponentDefinition(cdType.Complex)
+  ComponentDefinition(complex)
 )
 
 Complex()
 (
-  ComponentDefinition(cdType.Complex)
+  ComponentDefinition(complex)
 )
 
-;; Common DNA components
+# Common DNA components
 
 Promoter()
 (
   DnaComponent()
-  role = cdRole.Promoter
+  sbol.role = promoter
 )
 
 RBS()
 (
   DnaComponent()
-  role = cdRole.RBS
+  sbol.role = rbs
 )
 
 CDS()
 (
   DnaComponent()
-  role = cdRole.CDS
+  sbol.role = cds
 )
 
 Terminator()
 (
   DnaComponent()
-  role = cdRole.Terminator
+  sbol.role = terminator
 )
 
 Operator()
 (
   DnaComponent()
-  role = cdRole.Operator
+  sbol.role = operator
 )
 
-;; Common RNA components
+# Common RNA components
 
 CDS_RNA()
 (
   RnaComponent()
-  role = cdRole.CDS
+  sbol.role = cds
 )

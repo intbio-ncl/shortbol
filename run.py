@@ -2,6 +2,7 @@ import sys
 import argparse
 import logging
 import os
+import re
 from rdfscript.rdfscriptparser import RDFScriptParser
 from rdfscript.env import Env
 from repl import REPL
@@ -16,21 +17,20 @@ def hacky_conversion(filepath):
     if os.path.isfile(temp_file):
         os.remove(temp_file)
 
-
-    
     #SBOL Namespace
     sbol_namespace = "use <sbol>"
-    f_prefix = "@prefix sbol"
+    f_prefix = "@prefix sbol_prefix"
     f_equals = " = "
     default_prefix = "<http://sbols.org/>"
     s_prefix = "@prefix "
     sbol_compliant_extension = "@extension SbolIdentity()"
     is_a_template = "is a"
+    sbol_dot = "sbol."
+    
 
+    
     with open(filepath, 'r') as original: data = original.read()
     split_text = data.split("\n")
-    for index,line in enumerate(split_text):
-        print(index,line)
 
     # Check if sbol namespace present.
     if not sbol_namespace in split_text:
@@ -50,28 +50,92 @@ def hacky_conversion(filepath):
     if not sbol_compliant_extension in split_text:
         split_text.append(sbol_compliant_extension)
 
+    
 
-
-
+    shortbol_template_table = set()
+    shortbol_identifier_table = set()
     shortbol_templates_dir = os.path.join("templates","sbol")
     for filename in os.listdir(shortbol_templates_dir):
         if filename.endswith(".rdfsh"): 
-            print(os.path.join(shortbol_templates_dir, filename))
-            continue
-        else:
-            continue
-    templates = [s for s in split_text if is_a_template in s]
+            for line in open(os.path.join(shortbol_templates_dir, filename), "r"):
+                x = re.search(".+[(].*[)]", line)
+                if x is not None:
+                    shortbol_template_table.add(x.group(0).replace(" ","").split("(")[0])
+                else:
+                    x = re.search(".+[<].*[>]",line)
+                    if x is not None:
+                        shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
     
-    for template in templates:
-        parts = template.split(" ")
-        print(parts)
-        # Get all possible templates
+    for idenitifer in shortbol_identifier_table:
+        print(idenitifer)
+    print(len(shortbol_identifier_table))
 
     
+    
+    for index,line in enumerate(split_text):
+        print(index,line)
+        if is_a_template in line:
+            print("A template has been found")
+            name = line.split(is_a_template)[0]
+            params = "(" + line.split("(")[1]
+            parts = line.split(is_a_template)[-1].split("(")[0]
+            parts = parts.replace(" ", "")
+            parts = parts.split(".")
+            # When sbol. is not present
+            if len(parts) == 1 :
+                if parts[0] in shortbol_template_table:
+                    #SBOL. is not present and template is in libary
+                    split_text[index] = name + is_a_template + " " + sbol_dot + parts[0] + params
+                    
+                else:
+                    raise NameError("Template: " + parts[0] + " on line: " + str(index - 1) + " is not defined in the Shortbol Libaries.") 
+                    #SBOL. is not present but template NOT in libary
+            elif len(parts) == 2:
+                if parts[1] in shortbol_template_table:
+                    #SBOL. is  present and template is in libary
+                    continue
+                else:
+                    raise NameError("Template: " + parts[0] + " on line: " + str(index - 1) + " is not defined in the Shortbol Libaries.") 
+                    #SBOL. is  present but template NOT in libary
+            else:
+                exit(0)
 
+                
+            
+            if split_text[index + 1] == "(" :
+                print("An extension has been found @@")
+                curr_line_num = index + 2
+                
+                while split_text[curr_line_num] != ")":
+                    print("---------------------------------")
+                    print(curr_line_num)
+                    if "=" not in split_text[curr_line_num]:
+                        curr_line_num = curr_line_num + 1
+                        continue
+                    print("sections")
+                    
+                    sections = split_text[curr_line_num].split("=")
+                    print(sections)
+                    lhs = sections[0]
+                    rhs = sections[-1].replace(" ", "")
+                    if sbol_dot not in lhs:
+                        lhs = lhs.replace(" ", "")
+                        lhs = "    " + sbol_dot + lhs
+                    if sbol_dot not in rhs:
+                        print(str(rhs) + "in table: " + str(rhs in shortbol_identifier_table))
+                        if rhs in shortbol_identifier_table:
+                            rhs = sbol_dot + rhs
+                                        
+                    #Re assemble line
+                    print(lhs + " = " + rhs)
+                    split_text[curr_line_num] = lhs + " = " + rhs 
+                    curr_line_num = curr_line_num + 1
+            
+  
         
-    # Create a list of types from Shortbol2 libs
 
+
+ 
     with open(temp_file, 'w') as modified:
         for line in split_text:
             modified.write(line)
@@ -91,15 +155,14 @@ def parse_from_file(filepath,
     optpaths.append("templates")
 
     to_run_fn = hacky_conversion(filepath)
-    print(extensions)
-    return
+   #return
 
-    parser = RDFScriptParser(filename=filepath, debug_lvl=debug_lvl)
+    parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
 
-    with open(filepath, 'r') as in_file:
+    with open(to_run_fn, 'r') as in_file:
         data = in_file.read()
 
-    env = Env(filename=filepath,
+    env = Env(filename=to_run_fn,
               serializer=serializer,
               paths=optpaths,
               extensions=extensions)

@@ -1,18 +1,16 @@
 use <sbol>
 
-@prefix sbol = <http://sbols.org/>
-@prefix sbol
-
+@prefix sbol_prefix = <http://sbols.org/>
+@prefix sbol_prefix
 target_gene is a sbol.Promoter()
 target is a sbol.Protein()
-
 
 target_gene_fc is a sbol.InOutComponent(target_gene)
 target_fc is a sbol.InOutComponent(target)
 
 
-target_gene_participation is a sbol.Participation(target_gene_fc, sbol.promoter)
-target_participation is a sbol.Participation(target_fc, sbol.product)
+target_gene_participation is a sbol.Promoter_t(target_gene_fc)
+target_participation is a sbol.Product(target_fc)
 target_gene_inhibition_interaction is a sbol.Interaction(sbol.genetic_production)
 (
     sbol.participation = target_gene_participation
@@ -33,7 +31,7 @@ gRNA_gene is a sbol.Promoter()
 
 gRNA_b is a sbol.Rna()
 (
-    sbol.role = sbol.cdRole.SgRNA 
+    sbol.role = SgRNA
 )
 
 
@@ -48,8 +46,8 @@ gRNA_gene_fc is a sbol.NoneComponent(gRNA_gene)
 
 
 
-gRNA_b_gene_participant is a sbol.Participation(gRNA_gene_fc, sbol.promoter)
-gRNA_b_participant is a sbol.Participation(gRNA_b_fc, sbol.product)
+gRNA_b_gene_participant is a sbol.Promoter_t(gRNA_gene_fc)
+gRNA_b_participant is a sbol.Product(gRNA_b_fc, sbol.product)
 gRNA_b_production is a sbol.Interaction(sbol.genetic_production)
 (
     sbol.participation = gRNA_b_gene_participant
@@ -57,7 +55,7 @@ gRNA_b_production is a sbol.Interaction(sbol.genetic_production)
 )
     
 
-gRNA_b_BFP_participant is a sbol.Participation(gRNA_b_fc, sbol.reactant)
+gRNA_b_BFP_participant is a sbol.Reactant(gRNA_b_fc)
 gRNA_b_BFP_deg is a sbol.Interaction(sbol.degradation)
 (
     sbol.participation = gRNA_b_BFP_participant

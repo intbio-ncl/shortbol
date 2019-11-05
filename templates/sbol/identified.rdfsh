@@ -1,4 +1,4 @@
-;; Identified SBOL2 objects with compliant URIs
+# Identified SBOL2 objects with compliant URIs
 
 @prefix sbol
 
