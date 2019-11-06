@@ -29,7 +29,6 @@ class RDFData(object):
         elif isinstance(language_object, Value):
             return rdflib.Literal(language_object.value)
         else:
-            #pdb.set_trace()
             raise InternalError(language_object,
                                 language_object.location)
 

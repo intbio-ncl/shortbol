@@ -45,8 +45,13 @@ The example files in `examples/` are commented with some explaination of the lan
 ### SBOL example
 
 1. Shortbol libaries are now linked by default.
-2. In the rdfscript directory `python run.py -s sbolxml templates/simple_example.rdfsh -o <output-file>` 
+2. In the rdfscript directory `python run.py -s sbolxml examples/simple_example.rdfsh -o <output-file>` 
 (Multiple examples are in the directory explaining different functionality.)
+2.1. Note: Recently the functionality has been added so that the user does not have to add much of the boilerplate typing that you will see in "simple_example.rdfsh"
+    Namely, removal of requirements to type: use<sbol>, @prefix .. = .., @extension and prefixing Shortbol templates and identifers with sbol. 
+    An example of this new way of creating Shortbol scripts can be seen in "simplified_shortbol_script.rdfsh".
+    Note: This new change is currently a relativley "hacky" implementation so be careful when using this functionality. 
+    In the near future these changes are going to be baked properly into the tool.
 3. `output-file` is an SBOL file.
 
 ### Extensions

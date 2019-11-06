@@ -7,7 +7,7 @@ target_fc is a InOutComponent(target)
 
 target_gene_participation is a Promoter_t(target_gene_fc)
 target_participation is a Product(target_fc)
-target_gene_inhibition_interaction is a Interaction(sbol.genetic_production)
+target_gene_inhibition_interaction is a Interaction(genetic_production)
 (
     participation = target_gene_participation
     participation = target_participation
@@ -43,8 +43,8 @@ gRNA_gene_fc is a NoneComponent(gRNA_gene)
 
 
 gRNA_b_gene_participant is a Promoter_t(gRNA_gene_fc)
-gRNA_b_participant is a Product(gRNA_b_fc, sbol.product)
-gRNA_b_production is a Interaction(sbol.genetic_production)
+gRNA_b_participant is a Product(gRNA_b_fc)
+gRNA_b_production is a Interaction(genetic_production)
 (
     participation = gRNA_b_gene_participant
     participation = gRNA_b_participant
@@ -52,7 +52,7 @@ gRNA_b_production is a Interaction(sbol.genetic_production)
     
 
 gRNA_b_BFP_participant is a Reactant(gRNA_b_fc)
-gRNA_b_BFP_deg is a Interaction(sbol.degradation)
+gRNA_b_BFP_deg is a Interaction(degradation)
 (
     participation = gRNA_b_BFP_participant
 )
@@ -73,5 +73,5 @@ CRPb_circuit is a ModuleDefinition()
     interaction = gRNA_b_production
     interaction = gRNA_b_BFP_deg
 
-    sbol.module = Template_Module
+    module = Template_Module
 )

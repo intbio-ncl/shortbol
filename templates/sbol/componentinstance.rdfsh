@@ -1,22 +1,22 @@
 @prefix sbol
 
-ComponentInstance(def)
+ComponentInstance(type, def)
 (
-  Identified(ComponentInstance)
+  Identified(type)
   definition = def
   access = sbol.public
 )
 
-PrivateComponentInstance(def)
+PrivateComponentInstance(type, def)
 (
-  Identified(PrivateComponentInstance)
+  Identified(type)
   definition = def
   access = sbol.private
 )
 
 Component(def) 
 (
-  TopLevel(Component) ComponentInstance(def)
+  ComponentInstance(Component, def)
 )
 
 MapsTo(local, remote, ref)

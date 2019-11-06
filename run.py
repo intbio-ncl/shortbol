@@ -65,17 +65,9 @@ def hacky_conversion(filepath):
                     x = re.search(".+[<].*[>]",line)
                     if x is not None:
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
-    
-    for idenitifer in shortbol_identifier_table:
-        print(idenitifer)
-    print(len(shortbol_identifier_table))
 
-    
-    
     for index,line in enumerate(split_text):
-        print(index,line)
         if is_a_template in line:
-            print("A template has been found")
             name = line.split(is_a_template)[0]
             params = "(" + line.split("(")[1]
             parts = line.split(is_a_template)[-1].split("(")[0]
@@ -85,7 +77,7 @@ def hacky_conversion(filepath):
             if len(parts) == 1 :
                 if parts[0] in shortbol_template_table:
                     #SBOL. is not present and template is in libary
-                    split_text[index] = name + is_a_template + " " + sbol_dot + parts[0] + params
+                    split_text[index] = name + is_a_template + " " + sbol_dot + parts[0]
                     
                 else:
                     raise NameError("Template: " + parts[0] + " on line: " + str(index - 1) + " is not defined in the Shortbol Libaries.") 
@@ -100,42 +92,53 @@ def hacky_conversion(filepath):
             else:
                 exit(0)
 
-                
-            
+            split_params = params.replace("(","").replace(")","").split(",")
+            param_string = ""
+            if len(split_params) == 0:
+                param_string = "()"
+            elif len(split_params) == 1 :
+                if sbol_dot not in split_params[0] and split_params[0] in shortbol_identifier_table:
+                    param_string = sbol_dot + split_params[0]
+                else:
+                    param_string = split_params[0]
+            else:
+                for param_index, param in enumerate(split_params):
+                    if sbol_dot not in split_params[param_index] and split_params[param_index] in shortbol_identifier_table:
+                        param_string = param_string + sbol_dot + split_params[param_index]
+                        if param_index != len(split_params) - 1 :
+                            param_string = param_string + ","
+                    else:
+                        param_string = param_string + split_params[param_index]
+                        if param_index != len(split_params) - 1 :
+                            param_string = param_string + ","
+
+            split_text[index] = split_text[index] + "(" + param_string + ")"
+
+            # When extension is present, cueco each statement inside and add sbol where needed.
             if split_text[index + 1] == "(" :
-                print("An extension has been found @@")
                 curr_line_num = index + 2
                 
                 while split_text[curr_line_num] != ")":
-                    print("---------------------------------")
-                    print(curr_line_num)
                     if "=" not in split_text[curr_line_num]:
                         curr_line_num = curr_line_num + 1
                         continue
-                    print("sections")
                     
                     sections = split_text[curr_line_num].split("=")
-                    print(sections)
                     lhs = sections[0]
                     rhs = sections[-1].replace(" ", "")
                     if sbol_dot not in lhs:
                         lhs = lhs.replace(" ", "")
                         lhs = "    " + sbol_dot + lhs
                     if sbol_dot not in rhs:
-                        print(str(rhs) + "in table: " + str(rhs in shortbol_identifier_table))
                         if rhs in shortbol_identifier_table:
                             rhs = sbol_dot + rhs
                                         
                     #Re assemble line
-                    print(lhs + " = " + rhs)
                     split_text[curr_line_num] = lhs + " = " + rhs 
                     curr_line_num = curr_line_num + 1
             
   
-        
 
-
- 
     with open(temp_file, 'w') as modified:
         for line in split_text:
             modified.write(line)
@@ -155,7 +158,6 @@ def parse_from_file(filepath,
     optpaths.append("templates")
 
     to_run_fn = hacky_conversion(filepath)
-   #return
 
     parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
 

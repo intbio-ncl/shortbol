@@ -31,7 +31,7 @@ gRNA_gene is a sbol.Promoter()
 
 gRNA_b is a sbol.Rna()
 (
-    sbol.role = SgRNA
+    sbol.role = sbol.sgRNA
 )
 
 
@@ -47,7 +47,7 @@ gRNA_gene_fc is a sbol.NoneComponent(gRNA_gene)
 
 
 gRNA_b_gene_participant is a sbol.Promoter_t(gRNA_gene_fc)
-gRNA_b_participant is a sbol.Product(gRNA_b_fc, sbol.product)
+gRNA_b_participant is a sbol.Product(gRNA_b_fc)
 gRNA_b_production is a sbol.Interaction(sbol.genetic_production)
 (
     sbol.participation = gRNA_b_gene_participant

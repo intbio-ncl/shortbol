@@ -8,15 +8,13 @@ Module(definition)
 
 FunctionalComponent(def, direction)
 (
-  TopLevel(FunctionalComponent)
-  ComponentInstance(def)
+  ComponentInstance(FunctionalComponent, def)
   sbol.direction = direction
 )
 
 PrivateFunctionalComponent(def, direction)
 (
-  TopLevel(FunctionalComponent)
-  PrivateComponentInstance(def)
+  PrivateComponentInstance(FunctionalComponent, def)
   sbol.direction = direction
 )
 

@@ -24,7 +24,7 @@ tag            = <http://identifiers.org/so/SO:0000324>
 engineeredTag  = <http://identifiers.org/so/SO:0000807>
 sgRNA          = <http://identifiers.org/so/SO:0001998>
 
-DnaComponent() (ComponentDefinition(rNA))
+DnaComponent() (ComponentDefinition(dNA))
 
 Dna()
 (

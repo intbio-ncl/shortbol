@@ -33,7 +33,7 @@ gRNA_gene is a sbol.Promoter()
 
 gRNA_b is a sbol.Rna()
 (
-    sbol.role = sbol.cdRole.SgRNA 
+    sbol.role = sbol.sgRNA 
 )
 
 
