@@ -1,58 +1,33 @@
-# RDFScript
+# ShortBOL
 
-A scripting language for creating RDF graphs.
+A scripting language for creating Synthetic Biology Open Language (SBOL).
 
-* Define, extend, and expand parameterisable templates for common patterns of RDF triples.
-* Share your RDFScript templates with collaborators, or import their templates for use in your own script.
-* Serialise as [turtle](https://www.w3.org/TR/turtle/), [n3](https://www.w3.org/TeamSubmission/n3/), [rdf/xml](https://www.w3.org/TR/rdf-syntax-grammar/), or easily extend RDFScript with a custom serialiser.
-* Perform complex manipulations of the graph by hooking into Python code defined as extensions.
+* Craft SBOL without coding or using a CAD tool
+* Develop synthetic biology designs that you can share with tools and people
+
 
 ## Get Started
 
 ### Dependencies
 
-RDFScript requires Python 3.x.
-
-Python package dependencies are listed in `setup.py`.
+ShortBOL requires Python 3.x. and Python package dependencies are listed in `setup.py`.
 
 ### Install
 
 1. Download or clone repository. `git clone https://github.com/intbio-ncl/shortbol.git`
-2. Navigate to RDFScript directory. `cd rdfscript`
 
-(This method requires setuptools, which can be installed from your package manager on most \*nix systems, and is probably called python3-setuptools or similar)
-3a. As a non-root user. `python setup.py install --user`
+2. Navigate to your install directory
 
-(This method requires pip)
-3b.`python -m pip install rdflib lxml requests ply pathlib pysbolgraph`
+3. Install dependancies with `python setup.py install --user`
 
-## Example usage
 
-Running the example in `examples/templates.rdfsh`
+## Example usage - `simple_example.rdfsh` is a design for a single promoter with its associated sequence
 
-`python run.py -s rdfxml examples/templates.rdfsh -o <output-file>`
+1. Compile the `simple_example.rdfsh` file with _ `python run.py -s sbolxml examples/simple_example.rdfsh -o <output-file>` 
 
-Run the REPL
+2. `output-file` is the name of the desired SBOL XML-RDF file.
 
-`python run.py -s rdfxml -o <output-file>`
-
-Display command line options, including available serialisations.
-
-`python run.py -h`
-
-The example files in `examples/` are commented with some explaination of the language.
-
-### SBOL example
-
-1. Shortbol libaries are now linked by default.
-2. In the rdfscript directory `python run.py -s sbolxml examples/simple_example.rdfsh -o <output-file>` 
-(Multiple examples are in the directory explaining different functionality.)
-2.1. Note: Recently the functionality has been added so that the user does not have to add much of the boilerplate typing that you will see in "simple_example.rdfsh"
-    Namely, removal of requirements to type: use<sbol>, @prefix .. = .., @extension and prefixing Shortbol templates and identifers with sbol. 
-    An example of this new way of creating Shortbol scripts can be seen in "simplified_shortbol_script.rdfsh".
-    Note: This new change is currently a relativley "hacky" implementation so be careful when using this functionality. 
-    In the near future these changes are going to be baked properly into the tool.
-3. `output-file` is an SBOL file.
+3.  A more extensive tutorial can be found in `tutorial.pdf` in the installation directory
 
 ### Extensions
 
@@ -61,8 +36,3 @@ Extensions provide a way to execute Python code to do additional, more complex p
 Extensions intended as built-ins should be added to the `extensions` package. 'Third party' extensions can also be added at the command line, as long as they are in the Python PATH.
 
 
-### Testing
-
-A test suite using the Python3 `unittest` package is under the `test/` directory.
-
-Run the tests from the project root using `python -m unittest`

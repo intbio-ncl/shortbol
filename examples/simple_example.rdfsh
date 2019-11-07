@@ -1,16 +1,9 @@
-use <sbol>
+# This is a comment
 
-@prefix test = <http://github.com/lgrozinger/ShortBOL2/example/#>
-@prefix test
-
-seq is a sbol.DnaSequence("atcg")
-
-cmp is a sbol.DnaComponent()(sbol.sequence = seq)
+promSeq is a DnaSequence("ttgacaatgtgatcgtagctgactgtataat")
 
 prom is a sbol.Promoter()
 (
-  dc.title = "Promoter 1"
-  dc.description = "The first promoter"
+  title = "Promoter 1"
+  description = "A consensus promoter"
 )
-
-@extension SbolIdentity()

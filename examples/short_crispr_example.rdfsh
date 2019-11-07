@@ -1,7 +1,4 @@
-use <sbol>
 
-@prefix test = <http://sbols.org/example_Example/>
-@prefix test
 
 target_gene is a sbol.Promoter()
 target is a sbol.Protein()

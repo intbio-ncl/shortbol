@@ -1,15 +1,11 @@
 from distutils.core import setup
 import setuptools
 
-setup(name='rdfscript',
+setup(name='shortbol',
       version='0.0',
-      description='A domain specific language for easily describing RDF data.',
+      description='A domain specific language for SBOL',
 
-      author='Lewis Grozinger',
-
-      author_email='lgrozinger2@ncl.ac.uk',
-
-      url='https://github.com/lgrozinger/rdfscript',
+      author='Various',
 
       packages=['rdfscript', 'extensions'],
 
