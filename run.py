@@ -6,7 +6,7 @@ import re
 from rdfscript.rdfscriptparser import RDFScriptParser
 from rdfscript.env import Env
 from repl import REPL
-
+from validate_sbol import validate_sbol
 
 
 def hacky_conversion(filepath):
@@ -175,8 +175,14 @@ def parse_from_file(filepath,
         print(env)
     else:
         with open(out, 'w') as o:
-            o.write(str(env))
-            print("Valid.")
+            sbol = str(env)
+            response = validate_sbol(sbol)
+            if response['valid']:
+                print('Valid.')
+            else:
+                for e in response['errors']:
+                    print(e)
+            o.write(sbol)
 
 def rdf_repl(serializer='nt',
              out=None,
