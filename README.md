@@ -21,13 +21,15 @@ ShortBOL requires Python 3.x. and Python package dependencies are listed in `set
 3. Install dependancies with `python setup.py install --user`
 
 
-### Example usage `simple_example.rdfsh` is a design for a single promoter with its associated sequence
+### Example usage
 
-1. Compile the `simple_example.rdfsh` file with _ `python run.py -s sbolxml examples/simple_example.rdfsh -o <output-file>` 
+1. `simple_example.rdfsh` is a design for a single promoter with its associated sequence
 
-2. `output-file` is the name of the desired SBOL XML-RDF file.
+2. Compile the `simple_example.rdfsh` file with _ `python run.py -s sbolxml examples/simple_example.rdfsh -o <output-file>` 
 
-3.  A more extensive tutorial can be found in `tutorial.pdf` in the installation directory
+3. `output-file` is the name of the desired SBOL XML-RDF file.
+
+4.  A more extensive tutorial can be found in `tutorial.pdf` in the installation directory
 
 ### Extensions
 
