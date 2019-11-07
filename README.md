@@ -29,7 +29,7 @@ ShortBOL requires Python 3.x. and Python package dependencies are listed in `set
 
 3. `output-file` is the name of the desired SBOL XML-RDF file.
 
-4.  A more extensive tutorial can be found in `tutorial.pdf` in the installation directory
+4.  A more extensive tutorial can be found in `tutorial.pdf` in the installation directory (currently under development)
 
 ### Extensions
 
