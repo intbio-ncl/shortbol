@@ -32,21 +32,21 @@ def hacky_conversion(filepath):
     with open(filepath, 'r') as original: data = original.read()
     split_text = data.split("\n")
 
-    # Check if sbol namespace present.
+    # Check if sbol namespace present. (use <sbol>)
     if not sbol_namespace in split_text:
         split_text.insert(0,sbol_namespace + "\n")
 
-    # Check if prefix are present.
+    # Check if prefix are present. (@prefix name = <> )
     if len([s for s in split_text if s_prefix in s]) == 0:
         split_text.insert(1,f_prefix + f_equals +  default_prefix)
         split_text.insert(2,f_prefix)
-    # check if named prefix only is present
+    # check if named prefix only is present (@prefix name)
     if len([s for s in split_text if s_prefix in s]) == 1:
         for index,line in enumerate(split_text):
             if s_prefix in line:
                 split_text.insert(index + 1,s_prefix + line.split(" ")[1])
                 break
-    # Check if sbol compliant extension is present
+    # Check if sbol compliant extension is present @extension SbolIdentity()
     if not sbol_compliant_extension in split_text:
         split_text.append(sbol_compliant_extension)
 
@@ -67,7 +67,7 @@ def hacky_conversion(filepath):
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
 
     for index,line in enumerate(split_text):
-        if is_a_template in line:
+        if is_a_template in line and line[0] != "#" :
             name = line.split(is_a_template)[0]
             params = "(" + line.split("(")[1]
             parts = line.split(is_a_template)[-1].split("(")[0]
