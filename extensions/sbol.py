@@ -133,7 +133,7 @@ class SBOLCompliantChild:
                 default_version = Value("1")
                 triplepack.set(self._subject, _sbol_version, default_version)
 
-            pdb.set_trace()
+            #pdb.set_trace()
             #Persistent ID = Base URI + TopLevelURI + Child URI. without version Number and any intermediate Parent Objects (That arent TOP level)
             parentpid = triplepack.value(parent, _sbol_pId)
             pId = Uri(parentpid.uri + '/' + self._subject.split()[-1])

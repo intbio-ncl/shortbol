@@ -67,8 +67,9 @@ def hacky_conversion(filepath):
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
 
     for index,line in enumerate(split_text):
-        if is_a_template in line:
+        if is_a_template in line and line[0] != "#" :
             name = line.split(is_a_template)[0]
+            print(line)
             params = "(" + line.split("(")[1]
             parts = line.split(is_a_template)[-1].split("(")[0]
             parts = parts.replace(" ", "")

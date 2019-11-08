@@ -2,81 +2,14 @@ use <sbol>
 
 @prefix sbol_prefix = <http://sbols.org/>
 @prefix sbol_prefix
-target_gene is a sbol.Promoter()
-target is a sbol.Protein()
+# This is a comment
 
-target_gene_fc is a sbol.InOutComponent(target_gene)
-target_fc is a sbol.InOutComponent(target)
+promSeq is a sbol.DnaSequence("ttgacaatgtgatcgtagctgactgtataat")
 
-
-target_gene_participation is a sbol.Promoter_t(target_gene_fc)
-target_participation is a sbol.Product(target_fc)
-target_gene_inhibition_interaction is a sbol.Interaction(sbol.genetic_production)
+prom is a sbol.Promoter()
 (
-    sbol.participation = target_gene_participation
-    sbol.participation = target_participation
+  title = "Promoter 1"
+  description = "A consensus promoter"
 )
 
-
-CRISPR_Template is a sbol.ModuleDefinition()
-(
-    sbol.functionalComponent = target_gene_fc
-    sbol.functionalComponent = target_fc
-
-    sbol.interaction = target_gene_inhibition_interaction
-)
-
-
-gRNA_gene is a sbol.Promoter()
-
-gRNA_b is a sbol.Rna()
-(
-    sbol.role = sbol.sgRNA
-)
-
-
-gRNA_b_fc is a sbol.NoneComponent(gRNA_b)
-(
-    sbol.version = 5
-)
-gRNA_gene_fc is a sbol.NoneComponent(gRNA_gene)
-(
-    sbol.version = 10
-)
-
-
-
-gRNA_b_gene_participant is a sbol.Promoter_t(gRNA_gene_fc)
-gRNA_b_participant is a sbol.Product(gRNA_b_fc)
-gRNA_b_production is a sbol.Interaction(sbol.genetic_production)
-(
-    sbol.participation = gRNA_b_gene_participant
-    sbol.participation = gRNA_b_participant
-)
-    
-
-gRNA_b_BFP_participant is a sbol.Reactant(gRNA_b_fc)
-gRNA_b_BFP_deg is a sbol.Interaction(sbol.degradation)
-(
-    sbol.participation = gRNA_b_BFP_participant
-)
-
-
-gRNA_b_map is a sbol.MapsUseLocal(gRNA_b_fc,gRNA_gene_fc)
-Template_Module is a sbol.Module(CRISPR_Template)
-(
-    sbol.mapsTo = gRNA_b_map
-)
-
-
-CRPb_circuit is a sbol.ModuleDefinition()
-(
-    sbol.functionalComponent = gRNA_b_fc
-    sbol.functionalComponent = gRNA_gene_fc
-
-    sbol.interaction = gRNA_b_production
-    sbol.interaction = gRNA_b_BFP_deg
-
-    sbol.module = Template_Module
-)
 @extension SbolIdentity()
