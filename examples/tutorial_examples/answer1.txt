@@ -1,3 +1,4 @@
+use <dc>
 # Declare a promoter named pTetR
 pTetR is a Promoter()
 (
@@ -9,7 +10,6 @@ pTetR is a Promoter()
 lacI_CDS is a CDS()
 (
 	# Properties of lacI CDS
-	name = “lacI”
-	description = “LacI protein coding region"
-	displayId = “P03023”
+	name = "lacI"
+	description = "LacI protein coding region"
 )

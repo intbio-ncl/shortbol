@@ -21,7 +21,7 @@ def hacky_conversion(filepath):
     sbol_namespace = "use <sbol>"
     f_prefix = "@prefix sbol_prefix"
     f_equals = " = "
-    default_prefix = "<http://sbols.org/>"
+    default_prefix = "<http://sbol_prefix.org/>"
     s_prefix = "@prefix "
     sbol_compliant_extension = "@extension SbolIdentity()"
     is_a_template = "is a"
@@ -67,7 +67,9 @@ def hacky_conversion(filepath):
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
 
     for index,line in enumerate(split_text):
-        if is_a_template in line and line[0] != "#" :
+        if line and line[0].lstrip() == "#" :
+            continue 
+        if is_a_template in line :
             name = line.split(is_a_template)[0]
             params = "(" + line.split("(")[1]
             parts = line.split(is_a_template)[-1].split("(")[0]
@@ -119,14 +121,17 @@ def hacky_conversion(filepath):
                 curr_line_num = index + 2
                 
                 while split_text[curr_line_num] != ")":
-                    if "=" not in split_text[curr_line_num]:
+                    if "=" not in split_text[curr_line_num] or split_text[curr_line_num].lstrip()[0] == "#":
                         curr_line_num = curr_line_num + 1
                         continue
                     
                     sections = split_text[curr_line_num].split("=")
                     lhs = sections[0]
-                    rhs = sections[-1].replace(" ", "")
+                    rhs = sections[-1]
+                    if '"' not in rhs:
+                        rhs = rhs.replace(" ", "")
                     if sbol_dot not in lhs:
+                        lhs = lhs.lstrip()
                         lhs = lhs.replace(" ", "")
                         lhs = "    " + sbol_dot + lhs
                     if sbol_dot not in rhs:
