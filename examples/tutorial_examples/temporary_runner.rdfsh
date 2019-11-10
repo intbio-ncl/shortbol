@@ -9,15 +9,14 @@ lacI_RBS 	is a sbol.RBS()
 lacI_CDS	is a sbol.CDS()
 lacI_term  	is a sbol.Terminator()
 
-pTetR_loc is a sbol.Range(1, 55)
-lacI_RBS_loc is a sbol.Range(56, 68)
-lacI_CDS_loc is a sbol.Range(l69, 1197)
-lacI_term_loc is a sbol.Range(69, 1197)
+pTetR_loc is a sbol.Range(1, 55, inline)
+lacI_RBS_loc is a sbol.Range(56, 68, inline)
+lacI_CDS_loc is a sbol.Range(l69, 1197, inline)
+lacI_term_loc is a sbol.Range(69, 1197, inline)
 
 
 tetRInverter is a sbol.DnaComponent()
 (
-
   # include the child components
     sbol.component = pTetR
     sbol.component = lacI_RBS
