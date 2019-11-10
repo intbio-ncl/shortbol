@@ -2,28 +2,32 @@ use <sbol>
 
 @prefix sbol_prefix = <http://sbol_prefix.org/>
 @prefix sbol_prefix
+
 # The genetic parts of the TetR inverter
 pTetR   	is a sbol.Promoter()
 lacI_RBS 	is a sbol.RBS()
 lacI_CDS	is a sbol.CDS()
 lacI_term  	is a sbol.Terminator()
 
-pair1 is a sbol.Precedes(pTetR, lacI_RBS)
-pair2 is a sbol.Precedes(lacI_RBS, lacI_CDS)
-pair3 is a sbol.Precedes(lacI_CDS, lacI_term)
+pTetR_loc is a sbol.Range(1, 55)
+lacI_RBS_loc is a sbol.Range(56, 68)
+lacI_CDS_loc is a sbol.Range(l69, 1197)
+lacI_term_loc is a sbol.Range(69, 1197)
 
-# The composite device for the TetR inverter
+
 tetRInverter is a sbol.DnaComponent()
 (
+
   # include the child components
     sbol.component = pTetR
     sbol.component = lacI_RBS
     sbol.component = lacI_CDS
     sbol.component = lacI_term
-  # relative positions of child components
-    sbol.sequenceConstraint = pair1
-    sbol.sequenceConstraint = pair2
-    sbol.sequenceConstraint = pair3
-)
 
+  # absolute positions of child components
+    sbol.sequenceAnnotation = pTetR_loc
+    sbol.sequenceAnnotation = lacI_RBS_loc
+    sbol.sequenceAnnotation = lacI_CDS_loc
+    sbol.sequenceAnnotation = lacI_term_loc
+)
 @extension SbolIdentity()
