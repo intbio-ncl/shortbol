@@ -2,31 +2,28 @@ use <sbol>
 
 @prefix sbol_prefix = <http://sbol_prefix.org/>
 @prefix sbol_prefix
-# Declare a promoter named pTetR
-pTetR is a sbol.Promoter()
-(
-# give pTetR a description
-    sbol.description =  "pTet promoter"
-)
+# The genetic parts of the TetR inverter
+pTetR   	is a sbol.Promoter()
+lacI_RBS 	is a sbol.RBS()
+lacI_CDS	is a sbol.CDS()
+lacI_term  	is a sbol.Terminator()
 
-# Declare a CDS named pTetR
-lacI_CDS is a sbol.CDS()
+pair1 is a sbol.Precedes(pTetR, lacI_RBS)
+pair2 is a sbol.Precedes(lacI_RBS, lacI_CDS)
+pair3 is a sbol.Precedes(lacI_CDS, lacI_term)
+
+# The composite device for the TetR inverter
+tetRInverter is a sbol.DnaComponent()
 (
-	# Properties of lacI CDS
-    sbol.name = “lacI”
-    sbol.description = “LacIproteincodingregion”
-)
-# Declare a RBS named lacI_RBS
-lacI_RBS is a sbol.RBS()
-(
-    sbol.name = “lacI_RBS”
-    sbol.description = “RBSforthelacICDS”
-)
-# Declare a terminator named lacI_term
-lacI_term is a sbol.Terminator()
-(
-    sbol.name = “lacI_term”
-    sbol.description = “TerminatorforthelacICDS”
+  # include the child components
+    sbol.component = pTetR
+    sbol.component = lacI_RBS
+    sbol.component = lacI_CDS
+    sbol.component = lacI_term
+  # relative positions of child components
+    sbol.sequenceConstraint = pair1
+    sbol.sequenceConstraint = pair2
+    sbol.sequenceConstraint = pair3
 )
 
 @extension SbolIdentity()
