@@ -1,0 +1,27 @@
+# The genetic parts of the TetR inverter
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  	is a Terminator()
+
+pTetR_loc is a location (pTetR, 1, 55, inline)
+lacI_RBS_loc is a location (laci_RBS, 56, 68, inline)
+lacI_CDS_loc is a location (lacI_CDS, 69, 1197, inline)
+lacI_term_loc is a location (lacI_term, 69, 1197, inline)
+
+
+tetRInverter is a DnaComponent()
+(
+
+  # include the child components
+  component = pTetR
+  component = lacI_RBS
+  component = lacI_CDS
+  component = lacI_term
+
+  # absolute positions of child components
+  sequenceAnnotation = pTetR_location
+  sequenceAnnotation = lacI_RBS_loc
+  sequenceAnnotation = lacI_CDS_loc
+  sequenceAnnotation = lacI_term
+)
