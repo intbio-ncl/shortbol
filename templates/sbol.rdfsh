@@ -9,7 +9,6 @@ use <biopax>
 use <edam>
 use <sbo>
 use <sbh>
-use <dc>
 
 @prefix sbol = <http://sbols.org/v2#>
 @prefix sbol
@@ -18,6 +17,10 @@ addProperty(property, value)
 (
   property = value
 )
+
+name = dc.title
+description = dc.description
+wasDerivedFrom = prov.wasDerivedFrom
 
 use <sbol/identified>
 use <sbol/toplevel>
