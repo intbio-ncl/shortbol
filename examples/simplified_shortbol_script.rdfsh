@@ -40,6 +40,7 @@ gRNA_gene_fc is a NoneComponent(gRNA_gene)
     version = 10
 )
 
+precedes is a Precedes(conponent1,component2)
 
 
 gRNA_b_gene_participant is a Promoter_t(gRNA_gene_fc)

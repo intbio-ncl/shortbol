@@ -124,6 +124,16 @@ def hacky_conversion(filepath):
                     if "=" not in split_text[curr_line_num] or split_text[curr_line_num].lstrip()[0] == "#":
                         curr_line_num = curr_line_num + 1
                         continue
+                    if "displayId" in split_text[curr_line_num]:
+                        print("Warn for Template: " + name + ", displayId property should not be overwritten, " + name +  "will be used.") 
+                        split_text[curr_line_num] = ""
+                        curr_line_num = curr_line_num + 1
+                        continue
+                    if "persistentIdentity" in split_text[curr_line_num]:
+                        print("Warn for Template: " + name + ", persistentIdentity property should NEVER be overwritten.") 
+                        split_text[curr_line_num] = ""
+                        curr_line_num = curr_line_num + 1
+                        continue
                     
                     sections = split_text[curr_line_num].split("=")
                     lhs = sections[0]
@@ -187,6 +197,8 @@ def parse_from_file(filepath,
             else:
                 for e in response['errors']:
                     print(e)
+            xml_preamble = '<?xml version="1.0" ?>'
+            o.write(xml_preamble)
             o.write(sbol)
 
 def rdf_repl(serializer='nt',
