@@ -58,12 +58,12 @@ Location(type)
   TopLevel(type)
 )
 
-Range(start, end)
+Range(start, end, orientation)
 (
   Location(Range)
   sbol.start = start
   sbol.end = end
-  sbol.orientation = sbol.inline
+  sbol.orientation = orientation
 )
 
 Cut(at)
