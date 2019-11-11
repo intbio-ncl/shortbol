@@ -27,7 +27,9 @@ ownership_predicates = set([Uri(_sbolns.uri + tl, None) for tl
         'interaction',
         'participation',
         'functionalComponent',
-        'sequenceConstraint']])
+        'sequenceConstraint',
+        'location',
+        'sequenceAnnotation']])
 
 _sbol_pId = Uri(_sbolns.uri + 'persistentIdentity', None)
 _sbol_dId = Uri(_sbolns.uri + 'displayId', None)
@@ -179,6 +181,9 @@ def SBOLParent(triplepack, child):
     '''
     with_child_as_object = triplepack.search((None, None, child))
     possible_parents = set([s for (s, p, o) in with_child_as_object if p in ownership_predicates])
+    print("--------------------------")
+    print([(s,p,o) for (s, p, o) in with_child_as_object])
+    print(possible_parents)
     if len(possible_parents) > 1:
         message = format("The SBOL object %s should only have one parent object."
                          % child)
