@@ -1,21 +1,68 @@
+#The sequences of the TetR inverter parts
+pTetR_seq is a DnaSequence ("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+lacI_CDS_seq is a DnaSequence ("gtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcag")
+lacI_RBS is a DnaSequence ("aaggaggtg")
+lacI_term_seq is a DnaSequence ("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+lacI2_term_seq is a DnaSequence ("ccggcttatcggtcagtttcacctgatttacgtaaaaacccgcttcggcgggtttttgcttttggaggggcagaaagatgaatgactgtccacgacgctatacccaaaagaaa")
+
+
 # The genetic parts of the TetR inverter
-pTetR   	is a Promoter()
-lacI_RBS 	is a RBS()
-lacI_CDS	is a CDS()
-lacI_term  	is a Terminator()
+pTetR  is a Promoter()
+(
+	sequence = lacI_term_seq 
+)
+lacI_RBS is a RBS()
+(
+	sequence = pTetR_seq 
+)
+lacI_CDS is a CDS()
+(
+	sequence = lacI_CDS_seq
+)
+lacI_term is a Terminator()
+(
+	sequence = lacI_term_seq
+)
+lacI2_term is a Terminator()
+(
+	sequence = lacI2_term_seq
+)
 
-
+#Build components for each of the DNAComponents
 pTetR_c is a Component(pTetR)
 lacI_RBS_c is a Component(lacI_RBS)
 lacI_CDS_c is a Component(lacI_CDS)
 lacI_term_c is a Component(lacI_term)
+lacI2_term_c is a Component(lacI2_term)
 
+#Specify the range for each part
+pTetR_loc is a InlineRange(1,55)
+lacI_RBS_loc is a InlineRange(56,68)
+lacI_CDS_loc is a InlineRange(169,1197)
+lacI_term_loc is a InlineRange(1197,1240)
+lacI2_term_loc is a InlineRange(1241,1280)
 
-pair1 is a Precedes(pTetR_c, lacI_RBS_c)
-pair2 is a Precedes(lacI_RBS_c, lacI_CDS_c)
-pair3 is a Precedes(lacI_CDS_c, lacI_term_c)
+pTetR_sa is a SequenceAnnotation (pTetR_loc)
+(
+	component = pTetR_c
+)
+lacI_RBS_sa is a SequenceAnnotation (lacI_RBS_loc)
+(
+	component = lacI_RBS_c
+)
+lacI_CDS_sa is a SequenceAnnotation (lacI_CDS_loc)
+(
+	component = lacI_CDS_c
+)
+lacI_term_sa is a SequenceAnnotation (lacI_term_loc)
+(
+	component = lacI_term_c
+)
+lacI2_term_sa is a SequenceAnnotation (lacI2_term_loc)
+(
+	component = lacI2_term_c
+)
 
-# The composite device for the TetR inverter
 tetRInverter is a DnaComponent()
 (
   # include the child components
@@ -23,8 +70,12 @@ tetRInverter is a DnaComponent()
   component = lacI_RBS_c
   component = lacI_CDS_c
   component = lacI_term_c
-  # relative positions of child components
-  sequenceConstraint = pair1
-  sequenceConstraint = pair2
-  sequenceConstraint = pair3
+  component = lacI2_term_c
+
+  # absolute positions of child components
+  sequenceAnnotation = pTetR_sa
+  sequenceAnnotation = lacI_RBS_sa
+  sequenceAnnotation = lacI_CDS_sa
+  sequenceAnnotation = lacI_term_sa
+  sequenceAnnotation = lacI2_term_sa
 )
