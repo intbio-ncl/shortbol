@@ -127,7 +127,7 @@ Interaction(type)
 )
 
 
-Inhibition(name, functional_component, by)
+Inhibition(name, of, by)
 (
   name.of is a OutputComponent(of)
   name.by is a InputComponent(by)

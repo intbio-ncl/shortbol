@@ -53,28 +53,38 @@ SequenceAnnotation(location)
   sbol.location = location
 )
 
-Location(type) 
+
+inline = <http://sbols.org/v2#inline>
+reverseComplement = <http://sbols.org/v2#reverseComplement>
+
+Location(type,orientation) 
 (
   TopLevel(type)
-)
-
-Range(start, end, orientation)
-(
-  Location(Range)
-  sbol.start = start
-  sbol.end = end
   sbol.orientation = orientation
 )
 
-Cut(at)
+
+Range(start, end, orientation)
 (
-  Location(Cut)
+  Location(Range,orientation)
+  sbol.start = start
+  sbol.end = end
+)
+
+InlineRange(start,end)
+(
+  Range(start,end,inline)
+)
+
+Cut(at,orientation)
+(
+  Location(Cut,orientation)
   sbol.at = at
 )
 
-GenericLocation() 
+GenericLocation(orientation) 
 (
-  Location(GenericLocation)
+  Location(GenericLocation,orientation)
 )
 
 SequenceConstraint(subject, object, restriction)

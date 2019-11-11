@@ -3,6 +3,8 @@ import pdb
 
 from .core import Uri, Value
 from .error import InternalError, PrefixError
+import os
+import sys
 from pysbolgraph.SBOL2Serialize import serialize_sboll2
 from pysbolgraph.SBOL2Graph import SBOL2Graph
 

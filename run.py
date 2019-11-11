@@ -197,7 +197,7 @@ def parse_from_file(filepath,
             else:
                 for e in response['errors']:
                     print(e)
-            xml_preamble = '<?xml version="1.0" ?>'
+            xml_preamble = '<?xml version="1.0" ?>\n'
             o.write(xml_preamble)
             o.write(sbol)
 
