@@ -78,12 +78,11 @@ class SBOLCompliantTopLevel:
         self._subject = for_subject
 
     def run(self, triplepack):
-        #Validate TopLevel Object, Does it have persistentID, DisplayID and Version?
-        if not triplepack.has(self._subject, _sbol_pId): 
-            #Persistent ID = Object URI without version Number
-            pId = Uri(self._subject.uri, None)
-            triplepack.set(self._subject, _sbol_pId, pId)
 
+        print("\nRunning with: " + str(self._subject))
+        print(triplepack.value(self._subject,_sbol_pId))
+        print("\n")
+        #Validate TopLevel Object, Does it have persistentID, DisplayID and Version?
         if not triplepack.has(self._subject, _sbol_dId):
             #Set display ID as object name
             dId = Value(self._subject.split()[-1])
@@ -94,14 +93,15 @@ class SBOLCompliantTopLevel:
             default_version = Value(1)
             triplepack.set(self._subject, _sbol_version, default_version)
 
-        
-        # Top level Object URI's : BaseName/ObjectType/ObjectName/Version
-        # http://sbols.org/CRISPR_Example/ComponentDefinition/gRNA_gene/1
-        # http://sbols.org/CRISPR_Example/                   /gRNA_gene
-        print(triplepack.value(_rdf_type))
+
+        # Top level Object URI's : Namespace/DisplayId/Version
         sbol_compliant_identity = Uri(self._subject.uri + "/" + str(triplepack.value(self._subject,_sbol_version)))
         triplepack.replace(self._subject,sbol_compliant_identity)
 
+        if not triplepack.has(self._subject, _sbol_pId): 
+            #Persistent ID = Object URI without version Number
+            pId = Uri(self._subject.uri.split()[-1], None)
+            triplepack.set(self._subject, _sbol_pId, pId)
 
 
 class SBOLCompliantChild:
@@ -117,12 +117,14 @@ class SBOLCompliantChild:
 
 
         for parent in parents:
-            # Child Object URI's : BaseName/ObjectType/ObjectName/Version
-            # Need to add Object Type to Base URI then Version @@@@
+            #Parent must have been validated.
             if not triplepack.has(parent, _sbol_pId):
                 SBOLCompliant(parent).run(triplepack)
+        parents = SBOLParent(triplepack, self._subject)
 
-            #Validate Child Object, Does it have persistentID, DisplayID and Version?
+        for parent in parents:
+
+            #Check for have persistentID, DisplayID and Version
             if not triplepack.has(self._subject, _sbol_dId):
                 #Set display ID as object name (Dirty, splicing URI)
                 dId = Value(self._subject.split()[-1])
@@ -137,20 +139,11 @@ class SBOLCompliantChild:
                     #Set Default Version Number (1)
                     default_version = Value("1")
                     triplepack.set(self._subject, _sbol_version, default_version)
-
-        if not triplepack.has(self._subject, _sbol_version):
-            #Check if parent has a version and use that.
-            if triplepack.has(parent, _sbol_version):
-                triplepack.set(self._subject,_sbol_version,triplepack.value(parent, _sbol_version))
-            else:
-                #Set Default Version Number (1)
-                default_version = Value("1")
-                triplepack.set(self._subject, _sbol_version, default_version)
-
-            #pdb.set_trace()
+            print("Parent")
+            print(parent)
             #Persistent ID = Base URI + TopLevelURI + Child URI. without version Number and any intermediate Parent Objects (That arent TOP level)
             parentpid = triplepack.value(parent, _sbol_pId)
-            pId = Uri(parentpid.uri + '/' + self._subject.split()[-1])
+            pId = Uri(parentpid.uri + '/' +  self._subject.uri)
             triplepack.set(self._subject, _sbol_pId, pId)
 
 class SBOLComplianceError(ExtensionError):
