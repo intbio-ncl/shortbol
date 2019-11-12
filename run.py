@@ -9,7 +9,7 @@ from repl import REPL
 from validate_sbol import validate_sbol
 
 
-def hacky_conversion(filepath):
+def hacky_conversion(filepath,template_path):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
     '''
@@ -21,7 +21,7 @@ def hacky_conversion(filepath):
     sbol_namespace = "use <sbol>"
     f_prefix = "@prefix sbol_prefix"
     f_equals = " = "
-    default_prefix = "<http://sbols.org/>"
+    default_prefix = "<http://sbol_prefix.org/>"
     s_prefix = "@prefix "
     sbol_compliant_extension = "@extension SbolIdentity()"
     is_a_template = "is a"
@@ -32,21 +32,21 @@ def hacky_conversion(filepath):
     with open(filepath, 'r') as original: data = original.read()
     split_text = data.split("\n")
 
-    # Check if sbol namespace present.
+    # Check if sbol namespace present. (use <sbol>)
     if not sbol_namespace in split_text:
         split_text.insert(0,sbol_namespace + "\n")
 
-    # Check if prefix are present.
+    # Check if prefix are present. (@prefix name = <> )
     if len([s for s in split_text if s_prefix in s]) == 0:
         split_text.insert(1,f_prefix + f_equals +  default_prefix)
         split_text.insert(2,f_prefix)
-    # check if named prefix only is present
+    # check if named prefix only is present (@prefix name)
     if len([s for s in split_text if s_prefix in s]) == 1:
         for index,line in enumerate(split_text):
             if s_prefix in line:
                 split_text.insert(index + 1,s_prefix + line.split(" ")[1])
                 break
-    # Check if sbol compliant extension is present
+    # Check if sbol compliant extension is present @extension SbolIdentity()
     if not sbol_compliant_extension in split_text:
         split_text.append(sbol_compliant_extension)
 
@@ -54,10 +54,11 @@ def hacky_conversion(filepath):
 
     shortbol_template_table = set()
     shortbol_identifier_table = set()
-    shortbol_templates_dir = os.path.join("templates","sbol")
+    shortbol_templates_dir = os.path.join(template_path[0],"sbol")
     for filename in os.listdir(shortbol_templates_dir):
         if filename.endswith(".rdfsh"): 
-            for line in open(os.path.join(shortbol_templates_dir, filename), "r"):
+            template = open(os.path.join(shortbol_templates_dir, filename), "r")
+            for line in template:
                 x = re.search(".+[(].*[)]", line)
                 if x is not None:
                     shortbol_template_table.add(x.group(0).replace(" ","").split("(")[0])
@@ -65,9 +66,12 @@ def hacky_conversion(filepath):
                     x = re.search(".+[<].*[>]",line)
                     if x is not None:
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
+            template.close()
 
     for index,line in enumerate(split_text):
-        if is_a_template in line and line[0] != "#" :
+        if line and line[0].lstrip() == "#" :
+            continue 
+        if is_a_template in line :
             name = line.split(is_a_template)[0]
             print(line)
             params = "(" + line.split("(")[1]
@@ -120,14 +124,27 @@ def hacky_conversion(filepath):
                 curr_line_num = index + 2
                 
                 while split_text[curr_line_num] != ")":
-                    if "=" not in split_text[curr_line_num]:
+                    if "=" not in split_text[curr_line_num] or split_text[curr_line_num].lstrip()[0] == "#":
+                        curr_line_num = curr_line_num + 1
+                        continue
+                    if "displayId" in split_text[curr_line_num]:
+                        print("Warn for Template: " + name + ", displayId property should not be overwritten, " + name +  "will be used.") 
+                        split_text[curr_line_num] = ""
+                        curr_line_num = curr_line_num + 1
+                        continue
+                    if "persistentIdentity" in split_text[curr_line_num]:
+                        print("Warn for Template: " + name + ", persistentIdentity property should NEVER be overwritten.") 
+                        split_text[curr_line_num] = ""
                         curr_line_num = curr_line_num + 1
                         continue
                     
                     sections = split_text[curr_line_num].split("=")
                     lhs = sections[0]
-                    rhs = sections[-1].replace(" ", "")
+                    rhs = sections[-1]
+                    if '"' not in rhs:
+                        rhs = rhs.replace(" ", "")
                     if sbol_dot not in lhs:
+                        lhs = lhs.lstrip()
                         lhs = lhs.replace(" ", "")
                         lhs = "    " + sbol_dot + lhs
                     if sbol_dot not in rhs:
@@ -158,7 +175,7 @@ def parse_from_file(filepath,
     
     optpaths.append("templates")
 
-    to_run_fn = hacky_conversion(filepath)
+    to_run_fn = hacky_conversion(filepath,optpaths)
 
     parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
 
@@ -177,13 +194,19 @@ def parse_from_file(filepath,
     else:
         with open(out, 'w') as o:
             sbol = str(env)
+            ret_code = ""
             response = validate_sbol(sbol)
             if response['valid']:
                 print('Valid.')
+                ret_code = "Valid."
             else:
                 for e in response['errors']:
                     print(e)
+                ret_code =  "Invalid."
+            xml_preamble = '<?xml version="1.0" ?>\n'
+            o.write(xml_preamble)
             o.write(sbol)
+            return ret_code
 
 def rdf_repl(serializer='nt',
              out=None,
