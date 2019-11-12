@@ -6,6 +6,11 @@ Module(definition)
   sbol.definition = definition
 )
 
+in = <http://sbols.org/v2#in>
+out = <http://sbols.org/v2#out>
+inout = <http://sbols.org/v2#inout> 
+none = <http://sbols.org/v2#none>
+
 FunctionalComponent(def, direction)
 (
   ComponentInstance(FunctionalComponent, def)

@@ -1,4 +1,5 @@
-z# The genetic parts of the TetR inverter
+# Example 3
+# The genetic parts of the TetR inverter
 pTetR   	is a Promoter()
 lacI_RBS 	is a RBS()
 lacI_CDS	is a CDS()

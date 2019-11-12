@@ -193,17 +193,19 @@ def parse_from_file(filepath,
     else:
         with open(out, 'w') as o:
             sbol = str(env)
+            ret_code = ""
             response = validate_sbol(sbol)
             if response['valid']:
                 print('Valid.')
-                return "Valid."
+                ret_code = "Valid."
             else:
                 for e in response['errors']:
                     print(e)
-                return "Invalid."
+                ret_code =  "Invalid."
             xml_preamble = '<?xml version="1.0" ?>\n'
             o.write(xml_preamble)
             o.write(sbol)
+            return ret_code
 
 def rdf_repl(serializer='nt',
              out=None,

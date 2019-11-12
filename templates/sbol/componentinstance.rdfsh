@@ -76,15 +76,36 @@ InlineRange(start,end)
   Range(start,end,inline)
 )
 
-Cut(at,orientation)
+ReverseComplementRange(start,end)
 (
-  Location(Cut,orientation)
+  Range(start,end,reverseComplement)
+)
+
+InlineCut(at,orientation)
+(
+  Location(Cut,inline)
+  sbol.at = at
+)
+
+ReverseComplementCut(at,orientation)
+(
+  Location(Cut,reverseComplement)
   sbol.at = at
 )
 
 GenericLocation(orientation) 
 (
   Location(GenericLocation,orientation)
+)
+
+InlineGenericLocation(at,orientation)
+(
+  GenericLocation(inline)
+)
+
+ReverseComplementGenericLocation(at,orientation)
+(
+  GenericLocation(reverseComplement)
 )
 
 SequenceConstraint(subject, object, restriction)
