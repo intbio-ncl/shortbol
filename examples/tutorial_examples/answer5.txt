@@ -1,4 +1,4 @@
-# Example 4
+# Answer 5
 # The TetR and LacI proteins
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
@@ -11,17 +11,17 @@ TetR_part is a Participation(TetR_fc, inhibitor)
 LacI_part is a Participation(LacI_fc, inhibited)
 
 #Make an Interaction for the participants
-TetRLacI_int is a Interaction(inhibition)
+LacITetR_int is a Interaction(inhibition)
 (
 	participation = TetR_part
 	participation = LacI_part	
 )
 
 # The TetR inverter module
-TetR_inverter is a ModuleDefinition()
+LacI_inverter is a ModuleDefinition()
 (
-  description = "TetR inverter"
+  description = "LacI inverter"
   functionalComponent = TetR_fc
   functionalComponent = LacI_fc
-  interaction = TetRLacI_int
+  interaction = LacITetR_int
 )
