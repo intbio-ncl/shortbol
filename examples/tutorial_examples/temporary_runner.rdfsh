@@ -2,86 +2,25 @@ use <sbol>
 
 @prefix sbol_prefix = <http://sbol_prefix.org/>
 @prefix sbol_prefix
-#The sequences of the TetR inverter parts
-pTetR_seq is a sbol.DnaSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
-lacI_CDS_seq is a sbol.DnaSequence("gtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcag")
-lacI_RBS_seq is a sbol.DnaSequence("aaggaggtg")
-lacI_term_seq is a sbol.DnaSequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
-lacI2_term_seq is a sbol.DnaSequence("ccggcttatcggtcagtttcacctgatttacgtaaaaacccgcttcggcgggtttttgcttttggaggggcagaaagatgaatgactgtccacgacgctatacccaaaagaaa")
+# The TetR and LacI proteins
+TetR is a sbol.ProteinComponent()
+LacI is a sbol.ProteinComponent()
 
+#Make a participation for the two proteins
+TetRLacI_part is a sbol.Participation(TetR, LacI)
 
-# The genetic parts of the TetR inverter
-pTetR is a sbol.Promoter()
+#Make an Interaction for the participants
+TetRLacI_int is a sbol.Interaction(sbol.genetic_production)
 (
-    sbol.sequence = lacI_term_seq
-)
-lacI_RBS is a sbol.RBS()
-(
-    sbol.sequence = pTetR_seq
-)
-lacI_CDS is a sbol.CDS()
-(
-    sbol.sequence = lacI_CDS_seq
-)
-lacI_term is a sbol.Terminator()
-(
-    sbol.sequence = lacI_term_seq
-)
-lacI2_term is a sbol.Terminator()
-(
-    sbol.sequence = lacI2_term_seq
+    sbol.participation = TetRLacI_part
 )
 
-#Build components for each of the DNAComponents
-pTetR_c is a sbol.Component(pTetR)
-lacI_RBS_c is a sbol.Component(lacI_RBS)
-lacI_CDS_c is a sbol.Component(lacI_CDS)
-lacI_term_c is a sbol.Component(lacI_term)
-lacI2_term_c is a sbol.Component(lacI2_term)
-
-#Specify the range for each part
-pTetR_loc is a sbol.InlineRange(1,55)
-lacI_RBS_loc is a sbol.InlineRange(56,68)
-lacI_CDS_loc is a sbol.InlineRange(169,1197)
-lacI_term_loc is a sbol.InlineRange(1197,1240)
-lacI2_term_loc is a sbol.InlineRange(1241,1280)
-
-pTetR_sa is a sbol.SequenceAnnotation(pTetR_loc)
+# The TetR inverter module
+TetR_inverter is ModuleDefinition()
 (
-    sbol.component = pTetR_c
+  description = "TetR inverter"
+  functionalComponent = TetR
+  functionalComponent = LacI
+  interaction = TetRLacI_int
 )
-lacI_RBS_sa is a sbol.SequenceAnnotation(lacI_RBS_loc)
-(
-    sbol.component = lacI_RBS_c
-)
-lacI_CDS_sa is a sbol.SequenceAnnotation(lacI_CDS_loc)
-(
-    sbol.component = lacI_CDS_c
-)
-lacI_term_sa is a sbol.SequenceAnnotation(lacI_term_loc)
-(
-    sbol.component = lacI_term_c
-)
-lacI2_term_sa is a sbol.SequenceAnnotation(lacI2_term_loc)
-(
-    sbol.component = lacI2_term_c
-)
-
-tetRInverter is a sbol.DnaComponent()
-(
-  # include the child components
-    sbol.component = pTetR_c
-    sbol.component = lacI_RBS_c
-    sbol.component = lacI_CDS_c
-    sbol.component = lacI_term_c
-    sbol.component = lacI2_term_c
-
-  # absolute positions of child components
-    sbol.sequenceAnnotation = pTetR_sa
-    sbol.sequenceAnnotation = lacI_RBS_sa
-    sbol.sequenceAnnotation = lacI_CDS_sa
-    sbol.sequenceAnnotation = lacI_term_sa
-    sbol.sequenceAnnotation = lacI2_term_sa
-)
-
 @extension SbolIdentity()
