@@ -1,0 +1,20 @@
+# The genetic parts of the TetR inverter
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  is a Terminator()
+
+pTetR_c is a Component(pTetR)
+lacI_RBS_c is a Component(lacI_RBS)
+lacI_CDS_c is a Component(lacI_CDS)
+lacI_term_c is a Component(lacI_term)
+
+# The composite device for the TetR inverter
+tetRInverter is a DnaComponent()
+(
+  # include the child components
+  component = pTetR_c
+  component = lacI_RBS_c
+  component = lacI_CDS_c
+  component = lacI_term_c
+)

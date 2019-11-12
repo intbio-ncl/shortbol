@@ -9,7 +9,7 @@ from repl import REPL
 from validate_sbol import validate_sbol
 
 
-def hacky_conversion(filepath):
+def hacky_conversion(filepath,template_path):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
     '''
@@ -54,10 +54,11 @@ def hacky_conversion(filepath):
 
     shortbol_template_table = set()
     shortbol_identifier_table = set()
-    shortbol_templates_dir = os.path.join("templates","sbol")
+    shortbol_templates_dir = os.path.join(template_path[0],"sbol")
     for filename in os.listdir(shortbol_templates_dir):
         if filename.endswith(".rdfsh"): 
-            for line in open(os.path.join(shortbol_templates_dir, filename), "r"):
+            template = open(os.path.join(shortbol_templates_dir, filename), "r")
+            for line in template:
                 x = re.search(".+[(].*[)]", line)
                 if x is not None:
                     shortbol_template_table.add(x.group(0).replace(" ","").split("(")[0])
@@ -65,6 +66,7 @@ def hacky_conversion(filepath):
                     x = re.search(".+[<].*[>]",line)
                     if x is not None:
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
+            template.close()
 
     for index,line in enumerate(split_text):
         if line and line[0].lstrip() == "#" :
@@ -172,7 +174,7 @@ def parse_from_file(filepath,
     
     optpaths.append("templates")
 
-    to_run_fn = hacky_conversion(filepath)
+    to_run_fn = hacky_conversion(filepath,optpaths)
 
     parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
 
@@ -194,9 +196,11 @@ def parse_from_file(filepath,
             response = validate_sbol(sbol)
             if response['valid']:
                 print('Valid.')
+                return "Valid."
             else:
                 for e in response['errors']:
                     print(e)
+                return "Invalid."
             xml_preamble = '<?xml version="1.0" ?>\n'
             o.write(xml_preamble)
             o.write(sbol)

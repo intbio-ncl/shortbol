@@ -26,7 +26,6 @@ class RDFData(object):
         return self.from_rdf(self._g.identifier)
 
     def to_rdf(self, language_object):
-        print(language_object)
         if isinstance(language_object, Uri):
             return rdflib.URIRef(language_object.uri)
         elif isinstance(language_object, Value):
