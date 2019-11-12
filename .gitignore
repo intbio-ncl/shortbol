@@ -5,6 +5,10 @@
 !**/**/*.py
 !**/**/*.rdfsh
 !**/**/*.txt
+!**/**/*.doc
+!**/**/*.rtf
+!**/**/*.pdf
+
 !README.md
 !Pipfile
 parsetab.py
