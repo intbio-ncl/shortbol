@@ -4,6 +4,7 @@ import pdb
 from .logic import And
 from .error import ExtensionError
 from rdfscript.core import Uri, Value
+from rdflib.namespace import RDF
 
 _sbolns = Uri('http://sbols.org/v2#', None)
 _toplevels = set([Uri(_sbolns.uri + tl, None) for tl
@@ -114,36 +115,36 @@ class SBOLCompliantChild:
             
         '''
         subpack = triplepack.sub_pack(self._subject)
-        parent = SBOLParent(triplepack, self._subject)
+        parents = SBOLParent(triplepack, self._subject)
 
 
+        for parent in parents:
+            # Child Object URI's : BaseName/ObjectType/ObjectName/Version
+            # Need to add Object Type to Base URI then Version @@@@
+            if not triplepack.has(parent, _sbol_pId):
+                SBOLCompliant(parent).run(triplepack)
 
-        # Child Object URI's : BaseName/ObjectType/ObjectName/Version
-        # Need to add Object Type to Base URI then Version @@@@
-        if not triplepack.has(parent, _sbol_pId):
-            SBOLCompliant(parent).run(triplepack)
+            #Validate Child Object, Does it have persistentID, DisplayID and Version?
+            if not triplepack.has(self._subject, _sbol_dId):
+                #Set display ID as object name (Dirty, splicing URI)
+                dId = Value(self._subject.split()[-1])
+                triplepack.set(self._subject, _sbol_dId, dId)
+                subpack.set(self._subject, _sbol_dId, Value(dId))
 
-        #Validate Child Object, Does it have persistentID, DisplayID and Version?
-        if not triplepack.has(self._subject, _sbol_dId):
-            #Set display ID as object name (Dirty, splicing URI)
-            dId = Value(self._subject.split()[-1])
-            triplepack.set(self._subject, _sbol_dId, dId)
-            subpack.set(self._subject, _sbol_dId, Value(dId))
-
-        if not triplepack.has(self._subject, _sbol_version):
-            #Check if parent has a version and use that.
-            if triplepack.has(parent, _sbol_version):
-                triplepack.set(self._subject,_sbol_version,triplepack.value(parent, _sbol_version))
-            else:
-                #Set Default Version Number (1)
-                default_version = Value("1")
-                triplepack.set(self._subject, _sbol_version, default_version)
+            if not triplepack.has(self._subject, _sbol_version):
+                #Check if parent has a version and use that.
+                if triplepack.has(parent, _sbol_version):
+                    triplepack.set(self._subject,_sbol_version,triplepack.value(parent, _sbol_version))
+                else:
+                    #Set Default Version Number (1)
+                    default_version = Value("1")
+                    triplepack.set(self._subject, _sbol_version, default_version)
 
 
-            #Persistent ID = Base URI + TopLevelURI + Child URI. without version Number and any intermediate Parent Objects (That arent TOP level)
-            parentpid = triplepack.value(parent, _sbol_pId)
-            pId = Uri(parentpid.uri + '/' + self._subject.split()[-1])
-            triplepack.set(self._subject, _sbol_pId, pId)
+                #Persistent ID = Base URI + TopLevelURI + Child URI. without version Number and any intermediate Parent Objects (That arent TOP level)
+                parentpid = triplepack.value(parent, _sbol_pId)
+                pId = Uri(parentpid.uri + '/' + self._subject.split()[-1])
+                triplepack.set(self._subject, _sbol_pId, pId)
 
 class SBOLComplianceError(ExtensionError):
 
@@ -180,16 +181,30 @@ def SBOLParent(triplepack, child):
     Find any parents by searching triples with child object and checking for matches.
     '''
     with_child_as_object = triplepack.search((None, None, child))
-    possible_parents = set([s for (s, p, o) in with_child_as_object if p in ownership_predicates])
-    print("--------------------------")
-    print([(s,p,o) for (s, p, o) in with_child_as_object])
-    print(possible_parents)
+    possible_parents = set([(s,p,o) for (s, p, o) in with_child_as_object if p in ownership_predicates])
+ 
     if len(possible_parents) > 1:
-        message = format("The SBOL object %s should only have one parent object."
-                         % child)
-        raise SBOLComplianceError(message)
+
+        # SBOL2 reuses the "component" predicate as both an ownership predicate (in
+        # the case of ComponentDefinition) and a referencing one (in the case of
+        # SequenceAnnotation).
+        #
+        for triple in possible_parents:
+            predicate = triple[1]
+            if predicate.uri == _sbolns.uri + 'component':
+                # The exact SequenceAnnotation is not already present in the graph.
+                if not triplepack.has(triple[0],RDF.type,Uri(_sbolns.uri + 'sequenceAnnotation')) :
+                    continue
+                    
+    
+            message = format("The SBOL object %s should only have one parent object."
+                            % child)
+            raise SBOLComplianceError(message)
+
+        return [s for (s,p,o) in possible_parents]
+
     elif len(possible_parents) == 1:
-        return possible_parents.pop()
+        return [s for (s,p,o) in possible_parents]
     else:
         message = format("The SBOL object %s does not have a parent object."
                          % child)
