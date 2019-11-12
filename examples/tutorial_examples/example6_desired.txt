@@ -1,0 +1,20 @@
+ToggleSwitch is a ModuleDefinition ()
+(
+  description = "LacI/TetR toggle switch"
+  functionalComponent = OurLacI
+  functionalComponent = OurTetR
+)
+  
+tetInverter is a Module()
+(
+    definition = TetR_Inverter
+    mapsTo = OurLacI mergedWith LacI
+    mapsTo = OurTetR mergedWith TetR
+)
+
+lacInverter is a Module()
+(
+    definition = LacI_Inverter
+    mapsTo = OurLacI mergedWith LacI
+    mapsTo = OurTetR mergedWith TetR
+)
