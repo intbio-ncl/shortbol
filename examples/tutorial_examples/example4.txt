@@ -1,0 +1,22 @@
+# Example 4
+# The TetR and LacI proteins
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+#Make a participation for the two proteins
+TetRLacI_part is a Participation(TetR, LacI)
+
+#Make an Interaction for the participants
+TetRLacI_int is a Interaction(genetic_production)
+(
+	participation = TetRLacI_part
+)
+
+# The TetR inverter module
+TetR_inverter is ModuleDefinition()
+(
+  description = "TetR inverter"
+  functionalComponent = TetR
+  functionalComponent = LacI
+  interaction = TetRLacI_int
+)
