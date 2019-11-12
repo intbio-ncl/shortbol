@@ -26,17 +26,15 @@ TetR_inverter is a ModuleDefinition()
   interaction = TetRLacI_int
 )
 
-
 #The toggle switch module
 
 TetR_map is a sbol.MapsUseLocal(TetR_lacinv_fc,TetR_fc)
-Laci_map is a sbol.MapsUseLocal(LacI_lacinv_fc,LacI_fc)
+LacI_map is a sbol.MapsUseLocal(LacI_lacinv_fc,LacI_fc)
 toggleSwitch is a Module(TetR_inverter)
 (
 	description = "toggle switch"
 	mapsTo = TetR_map
-	mapsTo = Laci_map
-	
+	mapsTo = LacI_map
 )
 
 #Make new FunctionalComponents
@@ -64,5 +62,3 @@ LacI_inverter is a ModuleDefinition()
   interaction = LacITetR_int
   module = toggleSwitch
 )
-
-
