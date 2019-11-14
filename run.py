@@ -9,7 +9,7 @@ from repl import REPL
 
 
 
-def hacky_conversion(filepath):
+def hacky_conversion(filepath,template_dir):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
     '''
@@ -54,10 +54,9 @@ def hacky_conversion(filepath):
 
     shortbol_template_table = set()
     shortbol_identifier_table = set()
-    shortbol_templates_dir = os.path.join("templates","sbol")
-    for filename in os.listdir(shortbol_templates_dir):
+    for filename in os.listdir(template_dir):
         if filename.endswith(".rdfsh"): 
-            for line in open(os.path.join(shortbol_templates_dir, filename), "r"):
+            for line in open(os.path.join(template_dir, filename), "r"):
                 x = re.search(".+[(].*[)]", line)
                 if x is not None:
                     shortbol_template_table.add(x.group(0).replace(" ","").split("(")[0])
@@ -68,8 +67,13 @@ def hacky_conversion(filepath):
 
     for index,line in enumerate(split_text):
         if is_a_template in line:
+
             name = line.split(is_a_template)[0]
-            params = "(" + line.split("(")[1]
+            try:
+                params = "(" + line.split("(")[1]
+            except IndexError:
+                raise NameError("Template: " + name + " on line: " + str(index - 1) + " is missing brackets.") 
+            
             parts = line.split(is_a_template)[-1].split("(")[0]
             parts = parts.replace(" ", "")
             parts = parts.split(".")
@@ -155,9 +159,10 @@ def parse_from_file(filepath,
                     extensions=[],
                     debug_lvl=1):
     
+    template_dir = optpaths[0]
     optpaths.append("templates")
 
-    to_run_fn = hacky_conversion(filepath)
+    to_run_fn = hacky_conversion(filepath,template_dir)
 
     parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
 
