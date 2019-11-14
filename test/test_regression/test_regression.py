@@ -25,7 +25,6 @@ class TestRegression(unittest.TestCase):
     def test_regression_by_examples(self):
         failure_exceptions = []
         for path, subdirs, files in os.walk(test_files):
-            print("js")
             for name in files:
                 if name.endswith(".rdfsh") or name.endswith(".txt"):
                     file_to_run = os.path.join(path, name)
