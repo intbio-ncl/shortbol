@@ -1,8 +1,14 @@
+
 *
 !.gitignore
 !*/
 !**/**/*.py
 !**/**/*.rdfsh
+!**/**/*.txt
+!**/**/*.docx
+!**/**/*.rtf
+!**/**/*.pdf
+
 !README.md
 !Pipfile
 parsetab.py
