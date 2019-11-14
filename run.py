@@ -59,7 +59,8 @@ def hacky_conversion(filepath,template_dir):
 
     for filename in os.listdir(template_dir):
         if filename.endswith(".rdfsh"): 
-            for line in open(os.path.join(template_dir, filename), "r"):
+            template = open(os.path.join(template_dir, filename), "r")
+            for line in template:
                 x = re.search(".+[(].*[)]", line)
                 if x is not None:
                     shortbol_template_table.add(x.group(0).replace(" ","").split("(")[0])
