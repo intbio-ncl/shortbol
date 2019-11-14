@@ -56,10 +56,10 @@ def hacky_conversion(filepath,template_dir):
     shortbol_template_table = set()
     shortbol_identifier_table = set()
 
-
-    for filename in os.listdir(template_dir):
+    sbol_dir = os.path.join(template_dir,"sbol")
+    for filename in os.listdir(sbol_dir):
         if filename.endswith(".rdfsh"): 
-            template = open(os.path.join(template_dir, filename), "r")
+            template = open(os.path.join(sbol_dir, filename), "r")
             for line in template:
                 x = re.search(".+[(].*[)]", line)
                 if x is not None:
@@ -69,6 +69,7 @@ def hacky_conversion(filepath,template_dir):
                     if x is not None:
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
             template.close()
+
 
     for index,line in enumerate(split_text):
         if line and line[0].lstrip() == "#" :
@@ -178,8 +179,10 @@ def parse_from_file(filepath,
                     extensions=[],
                     debug_lvl=1):
     
+    if len(optpaths) == 0:
+        optpaths.append("templates")
     template_dir = optpaths[0]
-    optpaths.append("templates")
+    
 
     to_run_fn = hacky_conversion(filepath,template_dir)
 
