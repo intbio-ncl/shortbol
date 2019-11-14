@@ -130,6 +130,7 @@ class TriplePack(object):
         return
 
     def replace(self, old, new):
+        print("Replacing: " + str(old) + " with: " + str(new))
         if not isinstance(new, (Uri, Value)):
             raise TypeError
 
@@ -137,7 +138,6 @@ class TriplePack(object):
             if old in (s, p, o):
                 print("Replacing:" + str((s,p,o)))
                 print("With: " + str(tuple(map(lambda x: new if x == old else x, (s, p, o)))))
-                print("\n\n")
                 self.triples.remove((s,p,o))
                 self.add(tuple(map(lambda x: new if x == old else x, (s, p, o))))
 
