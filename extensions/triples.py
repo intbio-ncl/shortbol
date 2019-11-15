@@ -1,5 +1,6 @@
-import rdflib
 from rdfscript.core import Uri, Value
+
+
 class TriplePack(object):
     """
     The object passed to an extensions' run() method.
