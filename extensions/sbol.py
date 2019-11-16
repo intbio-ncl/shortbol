@@ -100,11 +100,32 @@ class SBOLCompliant:
         else:
             # its TopLevel
             dId = get_SBOL_displayId(triplepack, self.subject)
-            pId = Uri(self.subject.uri + '/' + dId.value)
-            triplepack.set(self.subject, persistentIdentity, pId)
-            set_identity(triplepack, self.subject)
+            if get_SBOL_persistentIdentity(triplepack, self.subject) is None:
+                pId = Uri(self.subject.uri + '/' + dId.value)
+                triplepack.set(self.subject, persistentIdentity, pId)
+
+            if not is_SBOL_Compliant(triplepack, self.subject):
+                set_identity(triplepack, self.subject)
 
         return triplepack
+
+
+def is_SBOL_Compliant(triplepack, uri):
+    version = get_SBOL_version(triplepack, uri)
+    dId = get_SBOL_displayId(triplepack, uri)
+    pId = get_SBOL_persistentIdentity(triplepack, uri)
+
+    compliant = dId is not None and pId is not None
+
+    if version is not None:
+        compliant = compliant and uri.uri == pId.uri + version.value
+    else:
+        compliant = compliant and uri == pId
+
+    if is_SBOL_TopLevel(triplepack, uri):
+        compliant = compliant and pId.split()[-1] == dId
+
+    return compliant
 
 
 def set_identity(triplepack, uri):
@@ -114,14 +135,12 @@ def set_identity(triplepack, uri):
         triplepack.replace(uri, new_id)
     else:
         new_id = get_SBOL_persistentIdentity(triplepack, uri)
+        pdb.set_trace()
         triplepack.replace(uri, new_id)
 
 
 def set_childs_persistentIdentity(triplepack, parent, child):
     parents_pId = get_SBOL_persistentIdentity(triplepack, parent)
-    if parents_pId is None:
-        pdb.set_trace()
-       
     childs_dId = get_SBOL_displayId(triplepack, child)
     childs_pId = Uri(parents_pId.uri + '/' + childs_dId.value)
     triplepack.set(child, persistentIdentity, childs_pId)
@@ -196,16 +215,6 @@ def get_SBOL_parent(triplepack, child):
     return parent
 
 
-class SBOLComplianceError(ExtensionError):
-
-    def __init__(self, helpful_message):
-        self._type = 'SBOL2 Compliant URI error'
-        self._helpful_message = helpful_message
-
-    def __str__(self):
-        return ExtensionError.__str__(self) + format(" %s\n" % self._helpful_message)
-
-
 def get_SBOL_version(triplepack, uri):
     matches = {o for (s, p, o)
                in triplepack.search((uri, version, None))}
@@ -236,3 +245,13 @@ def get_SBOL_displayId(triplepack, uri):
         return None
     else:
         return matches.pop()
+
+
+class SBOLComplianceError(ExtensionError):
+
+    def __init__(self, helpful_message):
+        self._type = 'SBOL2 Compliant URI error'
+        self._helpful_message = helpful_message
+
+    def __str__(self):
+        return ExtensionError.__str__(self) + format(" %s\n" % self._helpful_message)
