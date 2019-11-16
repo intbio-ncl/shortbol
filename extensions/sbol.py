@@ -1,5 +1,4 @@
 import rdflib
-import pdb
 
 from .logic import And
 from .error import ExtensionError
@@ -64,8 +63,12 @@ class SbolIdentity:
         pass
 
     def run(self, triplepack):
-        compliant_checks = [SBOLCompliant(s) for s in triplepack.subjects]
-        return And(*compliant_checks).run(triplepack)
+        subjects = list(triplepack.subjects)
+
+        for i in range(len(subjects)):
+            SBOLCompliant(subjects[i]).run(triplepack, subjects)
+
+        return triplepack
 
 
 class SBOLCompliant:
@@ -77,7 +80,7 @@ class SBOLCompliant:
     def __init__(self, for_subject):
         self.subject = for_subject
 
-    def run(self, triplepack):
+    def run(self, triplepack, subjects):
         # everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
             new_displayId = self.subject.split()[-1]
@@ -87,7 +90,7 @@ class SBOLCompliant:
 
         if parent is not None:
             # its a child
-            SBOLCompliant(parent).run(triplepack)
+            SBOLCompliant(parent).run(triplepack, subjects)
 
             # parent uri might have changed!!!
             parent = get_SBOL_parent(triplepack, self.subject)
@@ -95,17 +98,15 @@ class SBOLCompliant:
             # then use the parents details
             set_childs_persistentIdentity(triplepack, parent, self.subject)
             set_childs_version(triplepack, parent, self.subject)
-            set_identity(triplepack, self.subject)
 
-        else:
-            # its TopLevel
+        elif not is_SBOL_Compliant(triplepack, self.subject):
             dId = get_SBOL_displayId(triplepack, self.subject)
             if get_SBOL_persistentIdentity(triplepack, self.subject) is None:
                 pId = Uri(self.subject.uri + '/' + dId.value)
-                triplepack.set(self.subject, persistentIdentity, pId)
+                triplepack.add((self.subject, persistentIdentity, pId))
 
-            if not is_SBOL_Compliant(triplepack, self.subject):
-                set_identity(triplepack, self.subject)
+        new_id = set_identity(triplepack, self.subject)
+        subjects[subjects.index(self.subject)] = new_id
 
         return triplepack
 
@@ -135,8 +136,9 @@ def set_identity(triplepack, uri):
         triplepack.replace(uri, new_id)
     else:
         new_id = get_SBOL_persistentIdentity(triplepack, uri)
-        pdb.set_trace()
         triplepack.replace(uri, new_id)
+
+    return new_id
 
 
 def set_childs_persistentIdentity(triplepack, parent, child):

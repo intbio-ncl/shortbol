@@ -121,24 +121,19 @@ class TriplePack(object):
         self.add((owner, what, value))
         return (owner, what, value)
 
-
-    def set_owner(self,owner,new_owner):
-        if len(self.search((owner, None,None))) > 0:
+    def set_owner(self, owner, new_owner):
+        if len(self.search((owner, None, None))) > 0:
             triples = self.search((owner, None, None))
             for triple in triples:
                 self.triples.remove(triple)
-                self.add((new_owner,triple[1],triple[2]))
+                self.add((new_owner, triple[1], triple[2]))
         return
 
     def replace(self, old, new):
-        print("Replacing: " + str(old) + " with: " + str(new))
+        def sub(triple):
+            return tuple(map(lambda x: new if x == old else x, triple))
 
-        for s, p, o in self.triples:
-            if old in (s, p, o):
-                print("Replacing:" + str((s,p,o)))
-                print("With: " + str(tuple(map(lambda x: new if x == old else x, (s, p, o)))))
-                self.triples.remove((s,p,o))
-                self.add(tuple(map(lambda x: new if x == old else x, (s, p, o))))
+        self._triples = list(map(sub, self.triples))
 
     def sub_pack(self, owner):
         return TriplePack(self.search((owner, None, None)),
