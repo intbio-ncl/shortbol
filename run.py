@@ -182,7 +182,6 @@ def parse_from_file(filepath,
     if len(optpaths) == 0:
         optpaths.append("templates")
     template_dir = optpaths[0]
-    
 
     to_run_fn = hacky_conversion(filepath,template_dir)
 
@@ -204,6 +203,7 @@ def parse_from_file(filepath,
         with open(out, 'w') as o:
             sbol = str(env)
             ret_code = ""
+            errors = []
             response = validate_sbol(sbol)
             if response['valid']:
                 print('Valid.')
@@ -211,11 +211,12 @@ def parse_from_file(filepath,
             else:
                 for e in response['errors']:
                     print(e)
+                errors = response['errors']
                 ret_code =  "Invalid."
             xml_preamble = '<?xml version="1.0" ?>\n'
             o.write(xml_preamble)
             o.write(sbol)
-            return ret_code
+            return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
              out=None,
