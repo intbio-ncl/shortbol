@@ -7,8 +7,8 @@ use <sbol>
 TetR is a sbol.ProteinComponent()
 LacI is a sbol.ProteinComponent()
 
-TetR_fc is a sbol.FunctionalComponent(TetR,sbol.inout)
-LacI_fc is a sbol.FunctionalComponent(LacI,sbol.inout)
+TetR_fc is a sbol.FunctionalComponent(TetR,sbol.none)
+LacI_fc is a sbol.FunctionalComponent(LacI,sbol.none)
 
 #Make a participation for the two proteins
 TetR_part is a sbol.Participation(TetR_fc, inhibitor)
@@ -28,47 +28,6 @@ TetR_inverter is a sbol.ModuleDefinition()
     sbol.functionalComponent = TetR_fc
     sbol.functionalComponent = LacI_fc
     sbol.interaction = TetRLacI_int
+    sbol.version = 500
 )
-
-
-#The toggle switch module
-
-TetR_map is a sbol.MapsUseLocal(TetR_lacinv_fc,TetR_fc)
-Laci_map is a sbol.MapsUseLocal(LacI_lacinv_fc,LacI_fc)
-toggleSwitch is a sbol.Module(TetR_inverter)
-(
-    sbol.description =  "toggle switch"
-    sbol.mapsTo = TetR_map
-    sbol.mapsTo = Laci_map
-	
-)
-
-#Make new FunctionalComponents
-TetR_lacinv_fc is a sbol.FunctionalComponent(TetR,sbol.inout)
-LacI_lacinv_fc is a sbol.FunctionalComponent(LacI,sbol.inout)
-
-
-#Make a participation for the two proteins in the Lacinverter module
-LacI_lacinv_part is a sbol.Participation(LacI_lacinv_fc, inhibitor)
-TetR_lacinv_part is a sbol.Participation(TetR_lacinv_fc, inhibited)
-
-#Make an Interaction for the participants in the Lacinverter module
-LacITetR_int is a sbol.Interaction(sbol.inhibition)
-(
-    sbol.participation = TetR_lacinv_part
-    sbol.participation = LacI_lacinv_part	
-)
-
-# The LacI inverter module
-LacI_inverter is a sbol.ModuleDefinition()
-(
-    sbol.description =  "LacI inverter"
-    sbol.functionalComponent = TetR_lacinv_fc
-    sbol.functionalComponent = LacI_lacinv_fc
-    sbol.interaction = LacITetR_int
-    sbol.module = toggleSwitch
-)
-
-
-
 @extension SbolIdentity()

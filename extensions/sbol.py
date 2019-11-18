@@ -123,7 +123,7 @@ def is_SBOL_Compliant(triplepack, uri):
     pId = get_SBOL_persistentIdentity(triplepack, uri)
 
     compliant = dId is not None and pId is not None
-    compliant = compliant and uri.uri == pId.uri + "/" + version.value
+    compliant = compliant and uri.uri == pId.uri + "/" + str(version.value)
     if is_SBOL_TopLevel(triplepack, uri):
         compliant = compliant and pId.split()[-1] == dId.value
     return compliant
@@ -133,7 +133,7 @@ def set_identity(triplepack, uri):
     version = get_SBOL_version(triplepack, uri)
     if version is not None:
         pid = get_SBOL_persistentIdentity(triplepack, uri)
-        new_id = Uri(pid.uri + '/' + version.value)
+        new_id = Uri(pid.uri + '/' + str(version.value))
         triplepack.replace_with_type(uri, new_id, persistentIdentity)
     else:
         new_id = get_SBOL_persistentIdentity(triplepack, uri)
