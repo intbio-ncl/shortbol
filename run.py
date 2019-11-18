@@ -73,7 +73,6 @@ def hacky_conversion(filepath,template_path):
             continue 
         if is_a_template in line :
             name = line.split(is_a_template)[0]
-            print(line)
             params = "(" + line.split("(")[1]
             parts = line.split(is_a_template)[-1].split("(")[0]
             parts = parts.replace(" ", "")
@@ -171,7 +170,8 @@ def parse_from_file(filepath,
                     optpaths=[],
                     out=None,
                     extensions=[],
-                    debug_lvl=1):
+                    debug_lvl=1,
+                    no_validation = None):
     
     optpaths.append("templates")
 
@@ -195,14 +195,16 @@ def parse_from_file(filepath,
         with open(out, 'w') as o:
             sbol = str(env)
             ret_code = ""
-            response = validate_sbol(sbol)
-            if response['valid']:
-                print('Valid.')
-                ret_code = "Valid."
-            else:
-                for e in response['errors']:
-                    print(e)
-                ret_code =  "Invalid."
+            
+            if not no_validation:
+                response = validate_sbol(sbol)
+                if response['valid']:
+                    print('Valid.')
+                    ret_code = "Valid."
+                else:
+                    for e in response['errors']:
+                        print(e)
+                    ret_code =  "Invalid."
             xml_preamble = '<?xml version="1.0" ?>\n'
             o.write(xml_preamble)
             o.write(sbol)
@@ -242,6 +244,7 @@ def rdfscript_args():
                         help="File to parse as RDFScript")
 
     parser.add_argument('-o', '--output', help="The name of the output file", default=None)
+    parser.add_argument('-nv', '--no_validation', help="Stops the output from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 0.0alpha')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
 
@@ -263,7 +266,8 @@ if __name__ == "__main__":
                         out=args.output,
                         optpaths=args.path,
                         extensions=extensions,
-                        debug_lvl=args.debug_lvl)
+                        debug_lvl=args.debug_lvl,
+                        no_validation = args.no_validation)
     else:
         rdf_repl(serializer=args.serializer,
                  out=args.output,

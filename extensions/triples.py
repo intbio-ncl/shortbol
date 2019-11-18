@@ -135,6 +135,29 @@ class TriplePack(object):
 
         self._triples = list(map(sub, self.triples))
 
+
+    def replace_with_type(self, old, new, type):
+        '''
+        Replaces all instances of URI in list apart from when predicate is of a certain type.
+        '''
+        new_triples = []
+        for (s,p,o) in self.triples:
+            new_s = s
+            new_p = p
+            new_o = o
+
+            if s == old:
+                new_s  = new
+
+            if o == old:
+                if p != type:
+                    new_o = new
+                
+            new_triples.append((new_s,new_p,new_o))
+        
+        self._triples = new_triples
+
+
     def sub_pack(self, owner):
         return TriplePack(self.search((owner, None, None)),
                           self.bindings,

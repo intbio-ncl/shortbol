@@ -81,16 +81,22 @@ class SBOLCompliant:
         self.subject = for_subject
 
     def run(self, triplepack, subjects):
-        # everything has a display id
+        # Everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
             new_displayId = self.subject.split()[-1]
             triplepack.add((self.subject, displayId, Value(new_displayId)))
+
+        # Everything has a Version
+        if get_SBOL_version(triplepack, self.subject) is None:
+            #Set default version of 1.
+            triplepack.add((self.subject, version, Value("1")))
 
         parent = get_SBOL_parent(triplepack, self.subject)
 
         if parent is not None:
             # its a child
-            SBOLCompliant(parent).run(triplepack, subjects)
+            if not triplepack.has(parent, persistentIdentity):
+                SBOLCompliant(parent).run(triplepack, subjects)
 
             # parent uri might have changed!!!
             parent = get_SBOL_parent(triplepack, self.subject)
@@ -100,10 +106,10 @@ class SBOLCompliant:
             set_childs_version(triplepack, parent, self.subject)
 
         elif not is_SBOL_Compliant(triplepack, self.subject):
-            dId = get_SBOL_displayId(triplepack, self.subject)
             if get_SBOL_persistentIdentity(triplepack, self.subject) is None:
-                pId = Uri(self.subject.uri + '/' + dId.value)
+                pId = Uri(self.subject.uri)
                 triplepack.add((self.subject, persistentIdentity, pId))
+
 
         new_id = set_identity(triplepack, self.subject)
         subjects[subjects.index(self.subject)] = new_id
@@ -117,27 +123,21 @@ def is_SBOL_Compliant(triplepack, uri):
     pId = get_SBOL_persistentIdentity(triplepack, uri)
 
     compliant = dId is not None and pId is not None
-
-    if version is not None:
-        compliant = compliant and uri.uri == pId.uri + version.value
-    else:
-        compliant = compliant and uri == pId
-
+    compliant = compliant and uri.uri == pId.uri + "/" + version.value
     if is_SBOL_TopLevel(triplepack, uri):
-        compliant = compliant and pId.split()[-1] == dId
-
+        compliant = compliant and pId.split()[-1] == dId.value
     return compliant
 
 
 def set_identity(triplepack, uri):
     version = get_SBOL_version(triplepack, uri)
     if version is not None:
-        new_id = Uri(uri.uri + '/' + version.value)
-        triplepack.replace(uri, new_id)
+        pid = get_SBOL_persistentIdentity(triplepack, uri)
+        new_id = Uri(pid.uri + '/' + version.value)
+        triplepack.replace_with_type(uri, new_id, persistentIdentity)
     else:
         new_id = get_SBOL_persistentIdentity(triplepack, uri)
-        triplepack.replace(uri, new_id)
-
+        triplepack.replace_with_type(uri, new_id, persistentIdentity)
     return new_id
 
 
