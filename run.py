@@ -9,7 +9,8 @@ from repl import REPL
 from validate_sbol import validate_sbol
 
 
-def hacky_conversion(filepath,template_path):
+
+def hacky_conversion(filepath,template_dir):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
     '''
@@ -54,10 +55,11 @@ def hacky_conversion(filepath,template_path):
 
     shortbol_template_table = set()
     shortbol_identifier_table = set()
-    shortbol_templates_dir = os.path.join(template_path[0],"sbol")
-    for filename in os.listdir(shortbol_templates_dir):
+
+    sbol_dir = os.path.join(template_dir,"sbol")
+    for filename in os.listdir(sbol_dir):
         if filename.endswith(".rdfsh"): 
-            template = open(os.path.join(shortbol_templates_dir, filename), "r")
+            template = open(os.path.join(sbol_dir, filename), "r")
             for line in template:
                 x = re.search(".+[(].*[)]", line)
                 if x is not None:
@@ -68,12 +70,17 @@ def hacky_conversion(filepath,template_path):
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
             template.close()
 
+
     for index,line in enumerate(split_text):
         if line and line[0].lstrip() == "#" :
             continue 
         if is_a_template in line :
             name = line.split(is_a_template)[0]
-            params = "(" + line.split("(")[1]
+            try:
+                params = "(" + line.split("(")[1]
+            except IndexError:
+                raise NameError("Template: " + name + " on line: " + str(index - 1) + " is missing brackets.") 
+            
             parts = line.split(is_a_template)[-1].split("(")[0]
             parts = parts.replace(" ", "")
             parts = parts.split(".")
@@ -173,9 +180,11 @@ def parse_from_file(filepath,
                     debug_lvl=1,
                     no_validation = None):
     
-    optpaths.append("templates")
+    if len(optpaths) == 0:
+        optpaths.append("templates")
+    template_dir = optpaths[0]
 
-    to_run_fn = hacky_conversion(filepath,optpaths)
+    to_run_fn = hacky_conversion(filepath,template_dir)
 
     parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
 
@@ -194,9 +203,10 @@ def parse_from_file(filepath,
     else:
         with open(out, 'w') as o:
             sbol = str(env)
+        
             ret_code = ""
-            
             if not no_validation:
+                errors = []
                 response = validate_sbol(sbol)
                 if response['valid']:
                     print('Valid.')
@@ -204,11 +214,16 @@ def parse_from_file(filepath,
                 else:
                     for e in response['errors']:
                         print(e)
+                    errors = response['errors']
                     ret_code =  "Invalid."
+            else:
+                ret_code = "No Validation."
+                errors = ["No Validation."]
+
             xml_preamble = '<?xml version="1.0" ?>\n'
             o.write(xml_preamble)
             o.write(sbol)
-            return ret_code
+            return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
              out=None,
