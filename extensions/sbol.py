@@ -1,150 +1,253 @@
 import rdflib
-import pdb
 
 from .logic import And
 from .error import ExtensionError
 from rdfscript.core import Uri, Value
-from rdflib.namespace import RDF
 
-_sbolns = Uri('http://sbols.org/v2#', None)
-_toplevels = set([Uri(_sbolns.uri + tl, None) for tl
-                  in ['Sequence',
-                      'ComponentDefinition',
-                      'ModuleDefinition',
-                      'Model',
-                      'Collection',
-                      'GenericTopLevel',
-                      'Attachment',
-                      'Activity',
-                      'Agent',
-                      'Plan',
-                      'Implementation',
-                      'CombinatorialDerivation']])
+sbolns = Uri('http://sbols.org/v2#')
 
-ownership_predicates = set([Uri(_sbolns.uri + tl, None) for tl
-    in ['component',
-        'module',
-        'mapsTo',
-        'interaction',
-        'participation',
-        'functionalComponent',
-        'sequenceConstraint',
-        'location',
-        'sequenceAnnotation']])
+# the names of 'Top Level' objects, those whose serialisations are not
+# nested inside the serialisations of other objects
+toplevels = {Uri(sbolns.uri + name) for name in
+             ['Sequence',
+              'ComponentDefinition',
+              'ModuleDefinition',
+              'Model',
+              'Collection',
+              'GenericTopLevel',
+              'Attachment',
+              'Activity',
+              'Agent',
+              'Plan',
+              'Implementation',
+              'CombinatorialDerivation']}
 
-_sbol_pId = Uri(_sbolns.uri + 'persistentIdentity', None)
-_sbol_dId = Uri(_sbolns.uri + 'displayId', None)
-_sbol_version = Uri(_sbolns.uri + 'version', None)
-_rdf_type = Uri(rdflib.RDF.type, None)
+
+# the predicates that indicate that a subject is a parent of an object
+# this does not include 'component' which does not necessarily
+# indicate such a relationship
+ownership_predicates = {Uri(sbolns.uri + predicate) for predicate in
+                        ['module',
+                         'mapsTo',
+                         'interaction',
+                         'participation',
+                         'functionalComponent',
+                         'sequenceConstraint',
+                         'location',
+                         'sequenceAnnotation']}
+
+# other special URIs in the context of SBOL compliant URIs
+persistentIdentity = Uri(sbolns.uri + 'persistentIdentity')
+displayId = Uri(sbolns.uri + 'displayId')
+version = Uri(sbolns.uri + 'version')
+rdf_type = Uri(rdflib.RDF.type)
 
 
 class SbolIdentity:
     '''
-    Class to check all objects are SBOL compliant.
+    Extension which checks all SBOL objects contained in a triplepack
+    have SBOL compliant URIs, and if not, attempts to modify the
+    triples such that they are.
+
+    Creates a single SBOLCompliant extension for each named SBOL
+    object (subject) in the triplepack and 'ANDs' them together. The
+    extension returns successful if all the SBOL objects in the
+    triplepack have SBOL compliant URIs, or can be modified to have
+    them. Otherwise fails and raises Exception.
+
+    Note: the And extension is short-circuiting TODO: decide if this
+    is the desired behaviour for SBOLIdentity
     '''
 
     def __init__(self):
         pass
 
     def run(self, triplepack):
-        #Creates logic.And() instance which takes Language Objects and then calls And.run() which in turn calls run on all SBOLCompliant Objects
-        #Simply makes a SBOLCompliant Object for each form in graph and calls run.
-        return And(*[SBOLCompliant(s) for s in triplepack.subjects]).run(triplepack)
+        subjects = list(triplepack.subjects)
 
-
-class SBOLCompliant:
-    '''
-    Class to check a single object is SBOL compliant.
-    '''
-    def __init__(self, for_subject):
-        self._subject = for_subject
-
-    def run(self, triplepack):
-        # Creates a new TriplePack Object 
-        subpack = triplepack.sub_pack(self._subject)
-        if SBOLcheckTopLevel(subpack):
-            SBOLCompliantTopLevel(self._subject).run(triplepack)
-        else:
-            SBOLCompliantChild(self._subject).run(triplepack)
+        for i in range(len(subjects)):
+            SBOLCompliant(subjects[i]).run(triplepack, subjects)
 
         return triplepack
 
 
-class SBOLCompliantTopLevel:
+class SBOLCompliant:
     '''
-    Class to check if a toplevel component is SBOL compliant
-    '''
-    def __init__(self, for_subject):
-        self._subject = for_subject
-
-    def run(self, triplepack):
-        # Top level Object URI's : BaseName/ObjectType/ObjectName/Version
-        # Need to add Object Type to Base URI then Version @@@@
-          
-        #Validate TopLevel Object, Does it have persistentID, DisplayID and Version?
-        if not triplepack.has(self._subject, _sbol_pId): 
-            #Persistent ID = Object URI without version Number
-            pId = Uri(self._subject.uri, None)
-            triplepack.set(self._subject, _sbol_pId, pId)
-
-        if not triplepack.has(self._subject, _sbol_dId):
-            #Set display ID as object name (Dirty splicing URI)
-            dId = Value(self._subject.split()[-1])
-            triplepack.set(self._subject, _sbol_dId, dId)
-
-        if not triplepack.has(self._subject, _sbol_version):
-            #Set Default Version Number (1)
-            default_version = Value("1")
-            triplepack.set(self._subject, _sbol_version, default_version)
-
-
-
-class SBOLCompliantChild:
-    '''
-    Check if any Child/Non TopLevel objects are Valid SBOL.
+    Extension to check a single subject, naming an SBOL object, has an
+    SBOL compliant URI, and if not, attempts to modify triplepack such
+    that they are.
     '''
     def __init__(self, for_subject):
-        self._subject = for_subject
+        self.subject = for_subject
 
-    def run(self, triplepack):
-        '''
-        A SBOLCompliantChild is compliant when:
-            Has atleast one Parent. (This technicially should always be true for Non-TopLevel Objects)
-            If there is more than one parent parents must be a valid combination??
-            Must have a persistentID (If not set make one)
-            
-        '''
-        subpack = triplepack.sub_pack(self._subject)
-        parents = SBOLParent(triplepack, self._subject)
+    def run(self, triplepack, subjects):
+        # Everything has a display id
+        if not triplepack.search((self.subject, displayId, None)):
+            new_displayId = self.subject.split()[-1]
+            triplepack.add((self.subject, displayId, Value(new_displayId)))
 
+        # Everything has a Version
+        if get_SBOL_version(triplepack, self.subject) is None:
+            #Set default version of 1.
+            triplepack.add((self.subject, version, Value("1")))
 
-        for parent in parents:
-            # Child Object URI's : BaseName/ObjectType/ObjectName/Version
-            # Need to add Object Type to Base URI then Version @@@@
-            if not triplepack.has(parent, _sbol_pId):
-                SBOLCompliant(parent).run(triplepack)
+        parent = get_SBOL_parent(triplepack, self.subject)
 
-            #Validate Child Object, Does it have persistentID, DisplayID and Version?
-            if not triplepack.has(self._subject, _sbol_dId):
-                #Set display ID as object name (Dirty, splicing URI)
-                dId = Value(self._subject.split()[-1])
-                triplepack.set(self._subject, _sbol_dId, dId)
-                subpack.set(self._subject, _sbol_dId, Value(dId))
+        if parent is not None:
+            # its a child
+            if not triplepack.has(parent, persistentIdentity):
+                SBOLCompliant(parent).run(triplepack, subjects)
 
-            if not triplepack.has(self._subject, _sbol_version):
-                #Check if parent has a version and use that.
-                if triplepack.has(parent, _sbol_version):
-                    triplepack.set(self._subject,_sbol_version,triplepack.value(parent, _sbol_version))
-                else:
-                    #Set Default Version Number (1)
-                    default_version = Value("1")
-                    triplepack.set(self._subject, _sbol_version, default_version)
+            # parent uri might have changed!!!
+            parent = get_SBOL_parent(triplepack, self.subject)
+
+            # then use the parents details
+            set_childs_persistentIdentity(triplepack, parent, self.subject)
+            set_childs_version(triplepack, parent, self.subject)
+
+        elif not is_SBOL_Compliant(triplepack, self.subject):
+            if get_SBOL_persistentIdentity(triplepack, self.subject) is None:
+                pId = Uri(self.subject.uri)
+                triplepack.add((self.subject, persistentIdentity, pId))
 
 
-                #Persistent ID = Base URI + TopLevelURI + Child URI. without version Number and any intermediate Parent Objects (That arent TOP level)
-                parentpid = triplepack.value(parent, _sbol_pId)
-                pId = Uri(parentpid.uri + '/' + self._subject.split()[-1])
-                triplepack.set(self._subject, _sbol_pId, pId)
+        new_id = set_identity(triplepack, self.subject)
+        subjects[subjects.index(self.subject)] = new_id
+
+        return triplepack
+
+
+def is_SBOL_Compliant(triplepack, uri):
+    version = get_SBOL_version(triplepack, uri)
+    dId = get_SBOL_displayId(triplepack, uri)
+    pId = get_SBOL_persistentIdentity(triplepack, uri)
+
+    compliant = dId is not None and pId is not None
+    compliant = compliant and uri.uri == pId.uri + "/" + str(version.value)
+    if is_SBOL_TopLevel(triplepack, uri):
+        compliant = compliant and pId.split()[-1] == dId.value
+    return compliant
+
+
+def set_identity(triplepack, uri):
+    version = get_SBOL_version(triplepack, uri)
+    if version is not None:
+        pid = get_SBOL_persistentIdentity(triplepack, uri)
+        new_id = Uri(pid.uri + '/' + str(version.value))
+        triplepack.replace_with_type(uri, new_id, persistentIdentity)
+    else:
+        new_id = get_SBOL_persistentIdentity(triplepack, uri)
+        triplepack.replace_with_type(uri, new_id, persistentIdentity)
+    return new_id
+
+
+def set_childs_persistentIdentity(triplepack, parent, child):
+    parents_pId = get_SBOL_persistentIdentity(triplepack, parent)
+    childs_dId = get_SBOL_displayId(triplepack, child)
+    childs_pId = Uri(parents_pId.uri + '/' + childs_dId.value)
+    triplepack.set(child, persistentIdentity, childs_pId)
+
+
+def set_childs_version(triplepack, parent, child):
+    parents_version = get_SBOL_version(triplepack, parent)
+    if parents_version is not None:
+        triplepack.set(child, version, parents_version)
+
+
+def get_possible_SBOL_types(triplepack, uri):
+    '''
+    Return the possible SBOL object types based on the RDF.type
+    property attached to uri.
+
+    '''
+    return {o for (s, p, o) in triplepack.search((uri, rdf_type, None))}
+
+
+def is_SBOL_TopLevel(triplepack, uri):
+    '''
+    Checks if SBOL object named by uri is a TopLevel SBOL object.
+    '''
+    the_types = get_possible_SBOL_types(triplepack, uri)
+    return any([t in toplevels for t in the_types])
+
+
+def get_SBOL_parent(triplepack, child):
+    '''
+    Search the triplepack for the unique parent of the child, that is,
+    the unique subject that is related to the child by one of the
+    ownership predicates, or by the component predicate if the parent
+    is a ComponentDefinition
+
+    If more than one parent is found or the child is not a TopLevel
+    SBOL object and no parent is found, an SBOLComplianceError is
+    raised.
+
+    If the child is an SBOL TopLevel object, then None is returned. 
+    '''
+    possible_parents = set()
+
+    for predicate in ownership_predicates:
+        possible_parents |= {s for (s, p, o)
+                             in triplepack.search((None, predicate, child))}
+
+    # now for the components
+    component = Uri(sbolns.uri + 'component')
+    cd = Uri(sbolns.uri + 'ComponentDefinition')
+    sa = Uri(sbolns.uri + 'SequenceAnnotation')
+    possible_parents |= {s for (s, p, o)
+                         in triplepack.search((None, component, child))
+                         if cd in get_possible_SBOL_types(triplepack, s)
+                         and sa not in get_possible_SBOL_types(triplepack, s)}
+
+    # at this point we should have the parent/s
+    if len(possible_parents) > 1:
+        raise SBOLComplianceError(f"{child} has multiple SBOL parents\n" +
+                                  f"Which are:\n" +
+                                  f"{','.join(map(str, possible_parents))}")
+
+    elif not possible_parents and not is_SBOL_TopLevel(triplepack, child):
+        raise SBOLComplianceError(f"{child} is an orphaned SBOL child")
+
+    elif possible_parents and is_SBOL_TopLevel(triplepack, child):
+        raise SBOLComplianceError(f"{child} is a TopLevel SBOL object\n" +
+                                  f"But has parents:\n" +
+                                  f"{','.join(map(str, possible_parents))}")
+
+    parent = possible_parents.pop() if possible_parents else None
+    return parent
+
+
+def get_SBOL_version(triplepack, uri):
+    matches = {o for (s, p, o)
+               in triplepack.search((uri, version, None))}
+    if len(matches) > 1:
+        raise SBOLComplianceError(f"{uri} has multiple version's.")
+    elif not matches:
+        return None
+    else:
+        return matches.pop()
+
+
+def get_SBOL_persistentIdentity(triplepack, uri):
+    matches = {o for (s, p, o)
+               in triplepack.search((uri, persistentIdentity, None))}
+    if len(matches) > 1:
+        raise SBOLComplianceError(f"{uri} has multiple persistentIdentity's.")
+    elif not matches:
+        return None
+    else:
+        return matches.pop()
+
+
+def get_SBOL_displayId(triplepack, uri):
+    matches = {o for (s, p, o) in triplepack.search((uri, displayId, None))}
+    if len(matches) > 1:
+        raise SBOLComplianceError(f"{uri} has multiple displayId's.")
+    elif not matches:
+        return None
+    else:
+        return matches.pop()
+
 
 class SBOLComplianceError(ExtensionError):
 
@@ -154,72 +257,3 @@ class SBOLComplianceError(ExtensionError):
 
     def __str__(self):
         return ExtensionError.__str__(self) + format(" %s\n" % self._helpful_message)
-
-
-def SBOLversion(triplepack):
-    return triplepack.value(_sbol_version)
-
-
-def SBOLpId(triplepack):
-    return triplepack.value(_sbol_pId)
-
-
-def SBOLdId(triplepack):
-    return triplepack.value(_sbol_dId)
-
-
-def SBOLcheckIdentity(triplepack):
-    identity = triplepack.subjects.pop()
-    if SBOLversion(triplepack):
-        return identity.split()[-1] == triplepack.value(_sbol_version).value
-    else:
-        return True
-
-
-def SBOLParent(triplepack, child):
-    '''
-    Find any parents by searching triples with child object and checking for matches.
-    '''
-    with_child_as_object = triplepack.search((None, None, child))
-    possible_parents = set([(s,p,o) for (s, p, o) in with_child_as_object if p in ownership_predicates])
- 
-    if len(possible_parents) > 1:
-
-        # SBOL2 reuses the "component" predicate as both an ownership predicate (in
-        # the case of ComponentDefinition) and a referencing one (in the case of
-        # SequenceAnnotation).
-        #
-        for triple in possible_parents:
-            predicate = triple[1]
-            if predicate.uri == _sbolns.uri + 'component':
-                # The exact SequenceAnnotation is not already present in the graph.
-                if not triplepack.has(triple[0],RDF.type,Uri(_sbolns.uri + 'sequenceAnnotation')) :
-                    continue
-                    
-    
-            message = format("The SBOL object %s should only have one parent object."
-                            % child)
-            raise SBOLComplianceError(message)
-
-        return [s for (s,p,o) in possible_parents]
-
-    elif len(possible_parents) == 1:
-        return [s for (s,p,o) in possible_parents]
-    else:
-        message = format("The SBOL object %s does not have a parent object."
-                         % child)
-        raise SBOLComplianceError(message)
-
-
-def SBOLcheckTopLevel(triplepack):
-    '''
-    Checks if triple is a toplevel object.
-    Done by checking if type is in top_levels list.
-    '''
-    _type = triplepack.value(_rdf_type)
-    if isinstance(_type, list):
-        return any([t in _toplevels for t in _type])
-    else:
-        return _type in _toplevels
-
-    

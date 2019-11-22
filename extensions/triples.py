@@ -1,4 +1,5 @@
-import rdflib
+from rdfscript.core import Uri, Value
+
 
 class TriplePack(object):
     """
@@ -120,10 +121,42 @@ class TriplePack(object):
         self.add((owner, what, value))
         return (owner, what, value)
 
+    def set_owner(self, owner, new_owner):
+        if len(self.search((owner, None, None))) > 0:
+            triples = self.search((owner, None, None))
+            for triple in triples:
+                self.triples.remove(triple)
+                self.add((new_owner, triple[1], triple[2]))
+        return
 
-    def set_owner(self,what):
-        if what == 1:
-            print("df")
+    def replace(self, old, new):
+        def sub(triple):
+            return tuple(map(lambda x: new if x == old else x, triple))
+
+        self._triples = list(map(sub, self.triples))
+
+
+    def replace_with_type(self, old, new, type):
+        '''
+        Replaces all instances of URI in list apart from when predicate is of a certain type.
+        '''
+        new_triples = []
+        for (s,p,o) in self.triples:
+            new_s = s
+            new_p = p
+            new_o = o
+
+            if s == old:
+                new_s  = new
+
+            if o == old:
+                if p != type:
+                    new_o = new
+                
+            new_triples.append((new_s,new_p,new_o))
+        
+        self._triples = new_triples
+
 
     def sub_pack(self, owner):
         return TriplePack(self.search((owner, None, None)),
