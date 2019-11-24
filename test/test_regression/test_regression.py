@@ -6,7 +6,7 @@ import run
 
 test_files =os.path.join("tutorial_examples")
 templates = os.path.join("..","..","templates")
-output_fn = "test_output.xml"
+output_fn = "output_shortbol.xml"
 class TestRegression(unittest.TestCase):
     '''
     Test full system by checking final output so that we can check if any bugs have been added by chages

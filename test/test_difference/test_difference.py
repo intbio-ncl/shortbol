@@ -3,13 +3,17 @@ import unittest
 import os, sys
 sys.path.insert(1, os.path.join(sys.path[0], '..',".."))
 import run
-
-test_files =os.path.join("tutorial_examples")
+import rdf_diff_checker
+from sbol_tests import *
+shortbol_test_files = os.path.join("shortbol_examples")
+sbol_test_files = os.path.join("sbol_tests")
 templates = os.path.join("..","..","templates")
-output_fn = "test_output.xml"
-class TestRegression(unittest.TestCase):
+sbol_output_fn = "sbol_output.xml"
+shortbol_output_fn = "shortbol_output.xml"
+class TestDifference(unittest.TestCase):
     '''
-    Test full system by checking final output so that we can check if any bugs have been added by chages
+    Attempt to create the same theorical output from pySBOL and ShortBOL to find any difference.
+    Inspect to check if any possible bugs on ShortBOL's end may be present.
     '''
 
     def setUp(self):
@@ -17,26 +21,25 @@ class TestRegression(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove(os.path.join(test_files,"temporary_runner.rdfsh"))
+            os.remove(os.path.join(sbol_test_files,"temporary_runner.rdfsh"))
             os.remove(output_fn)
         except FileNotFoundError:
             None
 
     def test_regression_by_examples(self):
         failure_exceptions = []
-        for path, subdirs, files in os.walk(test_files):
+        for path, subdirs, files in os.walk(shortbol_test_files):
             for name in files:
                 if name.endswith(".rdfsh") or name.endswith(".txt"):
-                    file_to_run = os.path.join(path, name)
-                    
-                    print("Running with file: " + str(file_to_run))
+                    shortbol_file_to_run = os.path.join(path, name)
+                    sbol_file_to_run = os.path.join(sbol_test_files,name.split(".")[0]+".py")
+                    if not os.path.isfile(sbol_file_to_run):
+                        continue
                     return_code = "Error Thrown."
-                    try:
-                        return_code = run.parse_from_file(file_to_run,"sbolxml",[templates],output_fn,[])
-                    except Exception as e:
-                        failure_exceptions.append({file_to_run:e})
-                    self.assertEqual(return_code,"Valid.","When Testing with file: " + file_to_run)
-        for k,v in failure_exceptions:
-            print("Failure by Exception on:" + k + ", Exception: " + str(v))
-        if len(failure_exceptions) > 0:
-            self.fail("A test script failed by exception.")
+                    #return_code_shortbol = run.parse_from_file(shortbol_file_to_run,"sbolxml",[templates],shortbol_output_fn,[])
+                    print("Running: " + str(sbol_file_to_run))
+                    #return_code_sbol = exec("'"+ sbol_file_to_run +"'")
+                    os.system("python " + sbol_file_to_run)
+                    #print(return_code_sbol)
+
+
