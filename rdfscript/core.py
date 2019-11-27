@@ -189,7 +189,7 @@ class Value(Node):
     def __init__(self, python_literal, location=None):
 
         Node.__init__(self, location)
-        self._python_val = python_literal
+        self.value = python_literal
 
     def __eq__(self, other):
         return (isinstance(other, Value) and
@@ -203,54 +203,30 @@ class Value(Node):
         return format("[VALUE: %s]" % self.value)
 
     def __hash__(self):
-        return self._python_val.__hash__()
-
-    @property
-    def value(self):
-        return self._python_val
+        return self.value.__hash__()
 
     def evaluate(self, context):
         return self
 
 
-class Argument(Node):
+class Argument(Value):
 
     def __init__(self, value_expr, position, location=None):
         super().__init__(location)
-        self._value = value_expr
-        self._position = position
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, new_value):
-        self._value = new_value
-
-    @property
-    def position(self):
-        return self._position
-
-    def __eq__(self, other):
-        return (isinstance(other, Argument) and
-                self.value == other.value and
-                self.position == other.position)
+        self.value = value_expr
+        self.position = position
 
     def __str__(self):
-        return str(self.value)
+        return f"{self.value}"
 
     def __repr__(self):
-        return format("[RDFscript ARG: %s]" % self._value)
+        return f"[RDFscript ARG: {self.value}]"
 
     def marshal(self, param):
         if isinstance(param, Parameter) and param.position == self.position:
-            return self.value
+            return self
         else:
             return param
-
-    def evaluate(self, context):
-        return self.value.evaluate(context)
 
 
 class Assignment(Node):
