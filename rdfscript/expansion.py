@@ -1,5 +1,6 @@
 from rdfscript.core import Node, Argument, Name, Self
 from rdfscript.pragma import ExtensionPragma
+from rdfscript.error import TemplateNotFound
 
 
 class Expansion(Node):
@@ -7,23 +8,23 @@ class Expansion(Node):
     def __init__(self, name, template, args, body, location=None):
 
         super().__init__(location)
-        self._template = template
-        self._name = name
-        self._args = []
+        self.template = template
+        self.name = name
+        self.args = []
         for n in range(0, len(args)):
             arg = args[n]
             if isinstance(arg, Argument):
-                self._args.append(Argument(arg.value, n, location))
+                self.args.append(Argument(arg.value, n, location))
             else:
-                self._args.append(Argument(arg, n, location))
+                self.args.append(Argument(arg, n, location))
 
-        self._extensions = []
-        self._body = []
+        self.extensions = []
+        self.body = []
         for statement in body:
             if isinstance(statement, ExtensionPragma):
-                self._extensions.append(statement)
+                self.extensions.append(statement)
             else:
-                self._body.append(statement)
+                self.body.append(statement)
 
     def __eq__(self, other):
         return (isinstance(other, Expansion) and
@@ -36,22 +37,6 @@ class Expansion(Node):
         return format("%s is a %s(%s)\n  (%s)\n" %
                       (self.name, self.template, self.args, self.body))
 
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def template(self):
-        return self._template
-
-    @property
-    def args(self):
-        return self._args
-
-    @property
-    def body(self):
-        return self._body
-
     def get_extensions(self, env):
         template_uri = self.template.evaluate(env)
 
@@ -63,15 +48,13 @@ class Expansion(Node):
                 ext_args = [arg.marshal(ext_arg) for ext_arg in ext_args]
             processed_extensions += [ExtensionPragma(ext.name, ext_args)]
 
-        return processed_extensions + self._extensions
+        return processed_extensions + self.extensions
 
     def as_triples(self, context):
 
         triples = []
         try:
             triples = context.lookup_template(self.template.evaluate(context))
-            if triples is None:
-                raise KeyError
             triples = [marshal(self.args, triple) for triple in triples]
         except KeyError:
             raise TemplateNotFound(self.template.evaluate(
