@@ -5,7 +5,7 @@ from .error import (PrefixError,
                     UnexpectedType)
 
 
-class Node(object):
+class Node:
     """Language object."""
 
     def __init__(self, location):
@@ -39,7 +39,7 @@ class Name(Node):
         self.names = list(names)
 
     def __eq__(self, other):
-        return ((isinstance(other, Name) and self.names == other.names) or
+        return (isinstance(other, Name) and self.names == other.names or
                 isinstance(other, Self) and self.names == [Self()])
 
     def __str__(self):
@@ -96,6 +96,46 @@ class Name(Node):
         return uri
 
 
+class Parameter(Name):
+
+    def __init__(self, name_string, position, location=None):
+        super().__init__(name_string, location=location)
+        self.position = position
+
+    def __repr__(self):
+        return f"[PARAMETER: {self.names[0]}]"
+
+    def substitute(self, possible_parameter):
+        result = possible_parameter
+        if isinstance(possible_parameter, Name):
+            def replace(x):
+                result = self if self.names[0] == x else x
+                return result
+
+            new_names = map(replace, possible_parameter.names)
+            result = Name(*new_names, location=possible_parameter.location)
+
+        return result
+
+    def evaluate(self, env):
+        return self
+
+
+class Self(Parameter):
+
+    def __init__(self, location=None):
+        super().__init__('self', -1, location=location)
+
+    def __str__(self):
+        return "self"
+
+    def __repr__(self):
+        return format("[SELF]")
+
+    def evaluate(self, context):
+        return context.current_self
+
+
 class Uri(Node):
     """Language object for a URI."""
 
@@ -108,7 +148,7 @@ class Uri(Node):
 
         uri is converted to a string
         """
-        Node.__init__(self, location)
+        super().__init__(location)
         if isinstance(uri, rdflib.URIRef):
             self._uri = uri.toPython()
         elif isinstance(uri, Uri):
@@ -212,34 +252,13 @@ class Argument(Node):
     def evaluate(self, context):
         return self.value.evaluate(context)
 
-    
-class Self(Node):
-
-    def __init__(self, location=None):
-        Node.__init__(self, location)
-
-    def __eq__(self, other):
-        return (isinstance(other, Self) or
-                (isinstance(other, Name) and
-                 other.names == [Self()]))
-
-    def __str__(self):
-        return "self"
-
-    def __repr__(self):
-        return format("[SELF]")
-
-    def evaluate(self, context):
-        return context.current_self
-
 
 class Assignment(Node):
 
     def __init__(self, name, value, location=None):
-
-        Node.__init__(self, location)
-        self._name = name
-        self._value = value
+        super().__init__(location)
+        self.name = name
+        self.value = value
 
     def __eq__(self, other):
         return (isinstance(other, Assignment) and
@@ -247,19 +266,10 @@ class Assignment(Node):
                 self.value == other.value)
 
     def __str__(self):
-        return format("%s = %s" % (self.name, self.value))
+        return f"{self.name} = {self.value}"
 
     def __repr__(self):
-        return format("[ASSIGN: %s = %s]" %
-                      (self.name, self.value))
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def value(self):
-        return self._value
+        return f"[ASSIGN: {self.name} = {self.value}]"
 
     def evaluate(self, context):
         uri = self.name.evaluate(context)

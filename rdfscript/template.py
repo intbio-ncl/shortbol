@@ -1,31 +1,6 @@
-from .core import Node, Name, Self
+from .core import Node, Name, Self, Parameter
 from .pragma import ExtensionPragma
 from .expansion import Expansion
-
-
-class Parameter(Name):
-
-    def __init__(self, name_string, position, location=None):
-        super().__init__(name_string, location)
-        self.position = position
-
-    def __repr__(self):
-        return f"[PARAMETER: {self.names[0]}]"
-
-    def substitute(self, possible_parameter):
-        result = possible_parameter
-        if isinstance(possible_parameter, Name):
-            def replace(x):
-                result = self if self.names[0] == x else x
-                return result
-
-            new_names = map(replace, possible_parameter.names)
-            result = Name(*new_names, location=possible_parameter.location)
-
-        return result
-
-    def evaluate(self, env):
-        return self
 
 
 class Template(Node):
@@ -82,7 +57,6 @@ class Template(Node):
         return list(triples)
 
     def store_triples(self, context):
-
         triples = self.as_triples(context)
 
         def triple_eval(triple):
@@ -99,19 +73,15 @@ class Template(Node):
         return evaluated_triples
 
     def collect_extensions(self, context):
-
-        collected = []
+        collected = self.extensions
 
         for statement in self.body:
-            if isinstance(statement, ExtensionPragma):
-                collected.append(statement)
-            elif isinstance(statement, Expansion) and statement.name is None:
+            if isinstance(statement, Expansion) and statement.name is None:
                 collected += statement.get_extensions(context)
 
         return collected
 
     def store_extensions(self, context):
-
         extensions = self.collect_extensions(context)
         for ext in extensions:
             ext.substitute_params(self.parameters)
@@ -124,7 +94,6 @@ class Template(Node):
         return extensions
 
     def evaluate(self, context):
-
         old_self = context.current_self
         context.current_self = Name(Self())
 
@@ -134,8 +103,6 @@ class Template(Node):
         context.current_self = old_self
 
         return self.name.evaluate(context)
-
-
 
 
 class Property(Node):
@@ -186,7 +153,7 @@ class Property(Node):
             return [(context.current_self,
                      self.name,
                      self.value)]
-        
+
 
 def evaluate_triples(triples, context):
 
@@ -199,6 +166,7 @@ def evaluate_triples(triples, context):
     results = [evaluate_triple(triple) for triple in triples]
 
     return results
+
 
 def expand_expansion_in_triples(triples, context):
     new_triples = []
