@@ -2,16 +2,9 @@ import unittest
 
 from rdfscript.rdfscriptparser import RDFScriptParser
 from rdfscript.env import Env
-from rdfscript.core import (Name,
-                            Uri,
-                            Self,
-                            Value)
+from rdfscript.core import Name, Uri, Self, Value
 
-from rdfscript.template import (Template,
-                                Parameter,
-                                check_param_is_name,
-                                sub_params_in_triples,
-                                replace_self_in_name)
+from rdfscript.template import Template, Parameter
 
 from rdfscript.pragma import ExtensionPragma
 
@@ -29,89 +22,42 @@ class TemplateClassTest(unittest.TestCase):
         None
 
     def test_init(self):
-
         template = Template(Name('x'), [], [])
-
         self.assertEqual(template.name, Name('x'))
 
-    def test_check_param_not_name(self):
-
-        name = Name('x')
-        notname = Value(1)
-
-        with self.assertRaises(UnexpectedType):
-            check_param_is_name(notname)
-
-        self.assertTrue(check_param_is_name(name))
-
-    def test_check_param_not_simple_name(self):
-
-        notparam = Name(Uri('x'))
-
-        with self.assertRaises(UnexpectedType):
-            check_param_is_name(notparam)
-
-        notparam = Name(Self())
-
-        with self.assertRaises(UnexpectedType):
-            check_param_is_name(notparam)
-
-    def test_check_param_too_many_names(self):
-
-        notparam = Name('x', 'y')
-
-        with self.assertRaises(UnexpectedType):
-            check_param_is_name(notparam)
-
     def test_as_triples_empty(self):
-
         template = Template(Name('x'), [], [])
-
-        self.assertEqual(template.as_triples(self.env), [])
+        self.assertCountEqual(template.as_triples(self.env), [])
 
     def test_as_triples_simple_triple(self):
-
         template = self.parser.parse('t()(x = z)')[0]
-        expect = [(Self(),
-                   Name('x'),
-                   Name('z'))]
-
-        self.assertEqual(template.as_triples(self.env), expect)
+        expect = [(Self(), Name('x'), Name('z'))]
+        self.assertCountEqual(template.as_triples(self.env), expect)
 
     def test_as_triples_simple_triple_with_self(self):
-
         template = self.parser.parse('t()(x = self)')[0]
         expect = [(Self(), Name('x'), Name(Self()))]
-
-        self.assertEqual(template.as_triples(self.env), expect)
+        self.assertCountEqual(template.as_triples(self.env), expect)
 
     def test_as_triples_multiple_properties(self):
-
         template = self.parser.parse('t()(x = y z = 12345)')[0]
-        expect = [(Self(),
-                   Name('x'),
-                   Name('y')),
-                  (Self(),
-                   Name('z'),
-                   Value(12345))]
-
-        self.assertEqual(template.as_triples(self.env), expect)
+        expect = [(Self(), Name('x'), Name('y')),
+                  (Self(), Name('z'), Value(12345))]
+        
+        self.assertCountEqual(template.as_triples(self.env), expect)
 
     def test_as_triples_with_base(self):
-
         forms = self.parser.parse('a()(x = 1) b()(a() y = 2)')
         base = forms[0]
         specialised = forms[1]
-
         base.evaluate(self.env)
 
         expect = [(Self(), Name('x').evaluate(self.env), Value(1)),
                   (Self(), Name('y'), Value(2))]
 
-        self.assertEqual(specialised.as_triples(self.env), expect)
+        self.assertCountEqual(specialised.as_triples(self.env), expect)
 
     def test_as_triples_with_base_chain(self):
-
         forms = self.parser.parse('a()(x=1)' +
                                   'b()(a() y=2)' +
                                   'c()(b() z=3)')
@@ -126,28 +72,24 @@ class TemplateClassTest(unittest.TestCase):
                   (Self(), Name('y').evaluate(self.env), Value(2)),
                   (Self(), Name('z'), Value(3))]
 
-        self.assertEqual(c.as_triples(self.env), expect)
+        self.assertCountEqual(c.as_triples(self.env), expect)
 
     def test_as_triples_with_base_with_self(self):
-
         forms = self.parser.parse('a()(x = self) b()(a() y = 2)')
         base = forms[0]
         specialised = forms[1]
-
         base.evaluate(self.env)
 
         expect = [(Self(), Name('x').evaluate(self.env), Name(Self())),
                   (Self(), Name('y'), Value(2))]
 
-        self.assertEqual(specialised.as_triples(self.env), expect)
+        self.assertCountEqual(specialised.as_triples(self.env), expect)
 
     def test_as_triples_params(self):
-
         forms = self.parser.parse('a(x)(property = x)')
         a = forms[0]
-
         expect = [(Self(), Name('property'), Parameter('x', 0))]
-        self.assertEqual(a.as_triples(self.env), expect)
+        self.assertCountEqual(a.as_triples(self.env), expect)
 
     def test_as_triples_with_base_with_params(self):
 

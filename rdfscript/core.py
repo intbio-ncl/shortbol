@@ -21,15 +21,11 @@ class Node(object):
 
     @property
     def line(self):
-        return self._location.position.line
+        return self._location.line
 
     @property
     def col(self):
-        return self._location.position.col
-
-    @property
-    def position(self):
-        return self._location.position
+        return self._location.col
 
     @property
     def file(self):
@@ -39,25 +35,18 @@ class Node(object):
 class Name(Node):
 
     def __init__(self, *names, location=None):
-
-        Node.__init__(self, location)
-        self._names = list(names)
+        super().__init__(location)
+        self.names = list(names)
 
     def __eq__(self, other):
-        return ((isinstance(other, Name) and
-                 self.names == other.names) or
-                (isinstance(other, Self) and
-                 self.names == [Self()]))
+        return ((isinstance(other, Name) and self.names == other.names) or
+                isinstance(other, Self) and self.names == [Self()])
 
     def __str__(self):
         return ':'.join([str(name) for name in self.names])
 
     def __repr__(self):
-        return format("[NAME: %s]" % (self.names))
-
-    @property
-    def names(self):
-        return self._names
+        return f"[NAME: {self.names}]"
 
     def is_prefixed(self, context):
         if len(self.names) > 1 and isinstance(self.names[0], str):
@@ -184,6 +173,46 @@ class Value(Node):
         return self
 
 
+class Argument(Node):
+
+    def __init__(self, value_expr, position, location=None):
+        super().__init__(location)
+        self._value = value_expr
+        self._position = position
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        self._value = new_value
+
+    @property
+    def position(self):
+        return self._position
+
+    def __eq__(self, other):
+        return (isinstance(other, Argument) and
+                self.value == other.value and
+                self.position == other.position)
+
+    def __str__(self):
+        return str(self.value)
+
+    def __repr__(self):
+        return format("[RDFscript ARG: %s]" % self._value)
+
+    def marshal(self, param):
+        if isinstance(param, Parameter) and param.position == self.position:
+            return self.value
+        else:
+            return param
+
+    def evaluate(self, context):
+        return self.value.evaluate(context)
+
+    
 class Self(Node):
 
     def __init__(self, location=None):

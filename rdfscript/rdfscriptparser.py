@@ -16,9 +16,8 @@ from .pragma import (PrefixPragma,
                      ImportPragma,
                      ExtensionPragma)
 
-from .template import (Template,
-                       Property,
-                       Expansion)
+from .template import Template, Property
+from .expansion import Expansion
 
 from .error import RDFScriptSyntax
 
@@ -229,13 +228,12 @@ def p_error(p):
     if not p:
         pass
     else:
-        location = Location(Position(p.lineno, p.lexpos), p.lexer.filename)
+        location = Location(p.lineno, p.lexpos, p.lexer.filename)
         raise RDFScriptSyntax(p, location)
 
 
 def location(p):
-    pos = Position(p.lineno(0), p.lexpos(0))
-    return Location(pos, p.parser.filename)
+    return Location(p.lineno(0), p.lexpos(0), p.parser.filename)
 
 
 def make_parser(filename=None):
@@ -271,56 +269,26 @@ class RDFScriptParser:
                                  debug=self.dbg_logger)
 
 
-class Position:
-
-    def __init__(self, line, col):
-
-        self._line = line
-        self._col = col
-
-    def __repr__(self):
-        return format("(%s, %s)" % (self.line, self.col))
-
-    @property
-    def line(self):
-        return self._line
-
-    @property
-    def col(self):
-        return self._col
-
-
 class Location:
 
-    def __init__(self, position, filename=None):
-
-        self._position = position
+    def __init__(self, line, column, filename=None):
+        self.line = line
+        self.col = column
 
         if not filename:
-            self._filename = "REPL"
+            self.filename = "REPL"
         else:
-            self._filename = filename
+            self.filename = filename
 
     def __repr__(self):
         return format("%s in '%s'" % (self.position, self.filename))
-
-    @property
-    def position(self):
-        return self._position
-
-    @property
-    def filename(self):
-        return self._filename
 
     @property
     def col_on_line(self):
         with open(self.filename) as infile:
             characters = 0
             for lineno, line in enumerate(infile, 1):
-                if lineno == self.position.line:
-                    return self.position.col - characters
+                if lineno == self.line:
+                    return self.col - characters
                 characters += sum(len(word) for word in line)
-            return self.position.col
-
-
-
+            return self.col
