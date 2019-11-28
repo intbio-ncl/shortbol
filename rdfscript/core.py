@@ -34,19 +34,37 @@ class Node:
 
 class Name(Node):
 
-    def __init__(self, *names, location=None):
-        super().__init__(location)
-        self.names = list(names)
+    def __init__(self, name_string, position, location=None):
+        super().__init__(name_string, location=location)
+        self.position = position
 
     def __eq__(self, other):
         return (isinstance(other, Name) and self.names == other.names or
                 isinstance(other, Self) and self.names == [Self()])
 
     def __str__(self):
+        return f"[Name: {self.name_string} at location {self.location}]"
+
+    def __repr__(self):
+        return f"[Name: {self.name_string}]"
+
+    def evaluate(self, env):
+        return self
+
+def Variable(Node):
+
+    def __init__(self, *names, location=None):
+    super().__init__(location)
+    self.names = list(names)
+
+    def __eq__(self, other):
+        return (isinstance(other, Variable) and self.names == other.names)
+
+    def __str__(self):
         return ':'.join([str(name) for name in self.names])
 
     def __repr__(self):
-        return f"[NAME: {self.names}]"
+        return f"[Variable: {self.names}]"
 
     def is_prefixed(self, context):
         if len(self.names) > 1 and isinstance(self.names[0], str):
@@ -60,31 +78,23 @@ class Name(Node):
     def evaluate(self, context):
 
         uri = Uri(context.uri, location=self.location)
-
+    
         for n in range(0, len(self.names)):
-            if isinstance(self.names[n], Self):
-                current_self = context.current_self
-                if isinstance(current_self, Uri):
-                    if n > 0:
-                        uri.extend(context.current_self, delimiter='')
-                    else:
-                        uri = Uri(current_self, location=self.location)
-                elif isinstance(current_self, Name):
-                    rest = current_self.names + self.names[n + 1:]
-                    if n > 0:
-                        return Name(uri, *rest, location=self.location)
-                    else:
-                        return Name(*rest, location=self.location)
+            if isinstance(self.names[n], str):
+                #invalid, can't have a string in variable
+                raise UnexpectedType(Uri, uri, self.location)
+                
+            elif isinstance(self.names[n], Parameter):
+                #create another variable
+                rest = current_self.names + self.names[n + 1:]
+                return Variable(*rest, location=self.location)
+
             elif isinstance(self.names[n], Uri):
                 if n > 0:
                     uri.extend(self.names[n], delimiter='')
                 else:
-                    uri = Uri(self.names[n])
-            elif isinstance(self.names[n], str):
-                if n == 0 and self.is_prefixed(context):
-                    uri = self.is_prefixed(context)
-                else:
-                    uri.extend(Uri(self.names[n]), delimiter='')
+                    uri = Uri(self.names[n])    
+
 
             lookup = context.lookup(uri)
             if lookup is not None:
@@ -93,8 +103,29 @@ class Name(Node):
                 elif n == len(self.names) - 1:
                     uri = lookup
 
-        return uri
+        return uri          
 
+
+        '''???
+        if isinstance(self.names[n], Self):
+            current_self = context.current_self
+            if isinstance(current_self, Uri):
+                if n > 0:
+                    uri.extend(context.current_self, delimiter='')
+                else:
+                    uri = Uri(current_self, location=self.location)
+            elif isinstance(current_self, Name):
+                rest = current_self.names + self.names[n + 1:]
+                if n > 0:
+                    return Name(uri, *rest, location=self.location)
+                else:
+                    return Name(*rest, location=self.location)
+        '''
+
+
+
+
+    
 
 class Parameter(Name):
 
