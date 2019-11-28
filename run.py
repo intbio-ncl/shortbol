@@ -114,6 +114,7 @@ def hacky_conversion(filepath,template_dir):
                     param_string = split_params[0]
             else:
                 for param_index, param in enumerate(split_params):
+                    split_params[param_index] = split_params[param_index].replace(" ", "")
                     if sbol_dot not in split_params[param_index] and split_params[param_index] in shortbol_identifier_table:
                         param_string = param_string + sbol_dot + split_params[param_index]
                         if param_index != len(split_params) - 1 :
