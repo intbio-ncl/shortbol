@@ -6,7 +6,7 @@ import run
 
 test_files =os.path.join("tutorial_examples")
 templates = os.path.join("..","..","templates")
-output_fn = "test_output.xml"
+output_fn = "output_shortbol.xml"
 class TestRegression(unittest.TestCase):
     '''
     Test full system by checking final output so that we can check if any bugs have been added by chages
@@ -35,7 +35,7 @@ class TestRegression(unittest.TestCase):
                         return_code = run.parse_from_file(file_to_run,"sbolxml",[templates],output_fn,[])
                     except Exception as e:
                         failure_exceptions.append({file_to_run:e})
-                    self.assertEqual(return_code,"Valid.","When Testing with file: " + file_to_run)
+                    self.assertEqual(return_code,{"Valid.":[]},"When Testing with file: " + file_to_run)
         for k,v in failure_exceptions:
             print("Failure by Exception on:" + k + ", Exception: " + str(v))
         if len(failure_exceptions) > 0:

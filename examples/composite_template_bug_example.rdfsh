@@ -1,0 +1,8 @@
+target_gene is a Promoter()
+target is a Protein()
+
+target_gene_inhibition is a Inhibition(target_gene_inhibition, target_gene, target)
+CRISPR_Template is a ModuleDefinition()
+(
+    sbol.interaction = target_gene_inhibition
+)
