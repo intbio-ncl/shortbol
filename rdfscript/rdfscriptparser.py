@@ -193,9 +193,8 @@ def p_identifier(p):
 
 
 def p_name(p):
-    '''name :   SYMBOL
-                | uri
-                | self'''
+    '''name : SYMBOL'''
+    p[0] = Name(p[1], location=location(p))
 
 def p_self(p):
     '''self : SELF'''
@@ -231,6 +230,8 @@ def p_error(p):
         pass
     else:
         location = Location(p.lineno, p.lexpos, p.lexer.filename)
+        print(p)
+        print(location)
         raise RDFScriptSyntax(p, location)
 
 
@@ -283,7 +284,7 @@ class Location:
             self.filename = filename
 
     def __repr__(self):
-        return format("%s in '%s'" % (self.position, self.filename))
+        return f'{self.line},f{self.col} in {self.filename}'
 
     @property
     def col_on_line(self):
