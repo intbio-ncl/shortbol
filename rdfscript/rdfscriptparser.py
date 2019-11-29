@@ -9,7 +9,8 @@ from .core import (Uri,
                    Name,
                    Value,
                    Self,
-                   Assignment)
+                   Assignment,
+                   Variable)
 
 from .pragma import (PrefixPragma,
                      DefaultPrefixPragma,
@@ -43,7 +44,7 @@ def p_form_types(p):
 
 # assignment
 def p_assignment(p):
-    '''assignment : name '=' expr'''
+    '''assignment : variable '=' expr'''
     p[0] = Assignment(p[1], p[3], location(p))
 
 
@@ -77,20 +78,16 @@ def p_extension_args(p):
 ## expansions and templates
 
 def p_template(p):
-    '''template : name '(' exprlist ')' indentedinstancebody'''
+    '''template : variable '(' exprlist ')' indentedinstancebody'''
     p[0] = Template(p[1], p[3], p[5], location=location(p))
 
 def p_expansion(p):
-    '''expansion : name ISA name '(' exprlist ')' indentedinstancebody'''
+    '''expansion : variable ISA variable '(' exprlist ')' indentedinstancebody'''
     p[0] = Expansion(p[1], p[3], p[5], p[7], location(p))
 
 def p_anon_expansion(p):
-    '''anon_expansion : name '(' exprlist ')' indentedinstancebody'''
+    '''anon_expansion : variable '(' exprlist ')' indentedinstancebody'''
     p[0] = Expansion(None, p[1], p[3], p[5], location(p))
-
-# def p_triple(p):
-#     '''triple : name name expr'''
-#     p[0] = TripleObject(p[1], p[2], p[3], location(p))
 
 
 def p_expr(p):
@@ -137,7 +134,7 @@ def p_bodystatement(p):
 
 
 def p_property(p):
-    '''property : name '=' expr'''
+    '''property : variable '=' expr'''
 #                | name '=' expansion'''
     p[0] = Property(p[1], p[3], location=location(p))
 
@@ -172,10 +169,10 @@ def p_emptylist(p):
 # names
 
 
-def p_dotted_name(p):
-    '''name : dotted_list'''
+def p_dotted_variable(p):
+    '''variable : dotted_list'''
     l = location(p)
-    p[0] = Name(*p[1], location=l)
+    p[0] = Variable(*p[1], location=l)
 
 
 def p_dotted_list_1(p):
@@ -189,11 +186,16 @@ def p_dotted_list_n(p):
 
 
 def p_identifier(p):
-    '''identifier : SYMBOL
+    '''identifier : name
                   | uri
                   | self'''
     p[0] = p[1]
 
+
+def p_name(p):
+    '''name :   SYMBOL
+                | uri
+                | self'''
 
 def p_self(p):
     '''self : SELF'''
