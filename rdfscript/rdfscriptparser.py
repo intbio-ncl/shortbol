@@ -21,6 +21,7 @@ from .template import Template, Property
 from .expansion import Expansion
 
 from .error import RDFScriptSyntax
+import pdb
 
 
 # script level
@@ -51,18 +52,16 @@ def p_assignment(p):
 # pragma
 def p_pragma_prefix(p):
     '''pragma : PREFIX SYMBOL '=' expr'''
-    l = location(p)
-    p[0] = PrefixPragma(p[2], p[4], l)
+    p[0] = PrefixPragma(p[2], p[4],location(p))
 
 
 def p_defaultprefix_pragma(p):
     '''pragma : PREFIX SYMBOL'''
-    l = location(p)
-    p[0] = DefaultPrefixPragma(p[2], l)
+    p[0] = DefaultPrefixPragma(p[2], location(p))
 
 
 def p_pragma_import(p):
-    '''pragma : USE name'''
+    '''pragma : USE variable'''
     p[0] = ImportPragma(p[2], location(p))
 
 
@@ -91,7 +90,7 @@ def p_anon_expansion(p):
 
 
 def p_expr(p):
-    '''expr : name
+    '''expr : identifier
             | pragma
             | literal
             | expansion'''
@@ -230,8 +229,6 @@ def p_error(p):
         pass
     else:
         location = Location(p.lineno, p.lexpos, p.lexer.filename)
-        print(p)
-        print(location)
         raise RDFScriptSyntax(p, location)
 
 

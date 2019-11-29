@@ -35,17 +35,18 @@ class Node:
 class Name(Node):
 
     def __init__(self, name_string, location=None):
-        super().__init__(name_string, location=location)
+        super().__init__(location=location)
+        self.name = name_string
 
     def __eq__(self, other):
-        return (isinstance(other, Name) and self.names == other.names or
+        return (isinstance(other, Name) and self.names == other.name or
                 isinstance(other, Self) and self.names == [Self()])
 
     def __str__(self):
-        return f'Name: {self.name_string} at location {self.location}'
+        return f'Name: {self.name} at location {self.location}'
 
     def __repr__(self):
-        return f"[Name: {self.name_string}]"
+        return f"[Name: {self.name}]"
 
     def evaluate(self, env):
         return self
