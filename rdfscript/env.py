@@ -1,15 +1,14 @@
 import pathlib
 import logging
-import pdb
 
 from .core import Uri, Value
 
 from .pragma import ExtensionPragma
 
-from .error import (RDFScriptError,
-                    PrefixError)
+from .error import RDFScriptError
+from .error import PrefixError
 
-from .rdfscriptparser import RDFScriptParser
+from .parser import Parser
 
 from .importer import Importer
 
@@ -33,10 +32,8 @@ class Env(object):
         self._extension_manager = ExtensionManager(extras=extensions)
 
         self._rdf = RDFData(serializer=serializer)
-        self._prefix = None
-        self._uri = Uri(self._rdf._g.identifier.toPython())
-        self._self = self._uri
-
+        self.uri = Uri(self._rdf._g.identifier.toPython())
+        self.prefix = None
         if filename:
             paths.append(pathlib.Path(filename).parent)
             self._importer = Importer(paths)
@@ -53,10 +50,6 @@ class Env(object):
     @current_self.setter
     def current_self(self, uri):
         self._self = uri
-
-    @property
-    def uri(self):
-        return self._uri
 
     @property
     def prefix(self):
@@ -122,7 +115,6 @@ class Env(object):
         return self._extension_manager.get_extension(name)
 
     def run_extension_on_triples(self, extension, triples):
-
         #Get type of extension
         extension_class = self.get_extension(extension.name)
         #Creates instance.
@@ -164,7 +156,7 @@ class Env(object):
     def eval_import(self, uri):
 
         filename = uri.uri
-        parser = RDFScriptParser(filename=filename)
+        parser = Parser(filename=filename)
 
         import_text = self._importer.import_file(filename)
         if not import_text:
