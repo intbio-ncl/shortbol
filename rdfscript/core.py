@@ -32,48 +32,24 @@ class Node:
         return self._location.filename
 
 
-class Name(Node):
-
-    def __init__(self, name_string, location=None):
-        super().__init__(location=location)
-        self.name = name_string
-
-    def __eq__(self, other):
-        return (isinstance(other, Name) and self.names == other.name or
-                isinstance(other, Self) and self.names == [Self()])
-
-    def __str__(self):
-        return f'Name: {self.name} at location {self.location}'
-
-    def __repr__(self):
-        return f"[Name: {self.name}]"
-
-    def evaluate(self, env):
-        return self
-
-
-class Variable(Node):
-
-    def __init__(self, *names, location=None):
+class Identifier(Node):
+    def __init__(self, *parts, location=None):
         super().__init__(location)
-        self.names = list(names)
+        self.parts = list(parts)
 
     def __eq__(self, other):
-        return (isinstance(other, Variable) and self.names == other.names)
+        return isinstance(other, Identifier) and self.parts == other.parts
 
     def __str__(self):
-        return ':'.join([str(name) for name in self.names])
+        return ':'.join([str(part) for part in self.parts])
 
     def __repr__(self):
-        return f"[Variable: {self.names}]"
+        return f"[Identifier: {self.parts}]"
 
     def is_prefixed(self, context):
-        if len(self.names) > 1 and isinstance(self.names[0], str):
-            try:
-                return context.uri_for_prefix(self.names[0])
-            except PrefixError:
-                return False
-        else:
+        try:
+            return context.uri_for_prefix(self.parts[0])
+        except PrefixError:
             return False
 
     def evaluate(self, context):
@@ -105,6 +81,28 @@ class Variable(Node):
                     uri = lookup
 
         return uri          
+
+
+class Name(Node):
+
+    def __init__(self, name_string, location=None):
+        super().__init__(location=location)
+        self.name = name_string
+
+    def __eq__(self, other):
+        return (isinstance(other, Name) and self.name == other.name or
+                isinstance(other, Self) and self.name == [Self()])
+
+    def __str__(self):
+        return f'Name: {self.name} at location {self.location}'
+
+    def __repr__(self):
+        return f"[Name: {self.name}]"
+
+    def evaluate(self, env):
+        return self
+
+
 
 
         '''???
