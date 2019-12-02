@@ -245,6 +245,35 @@ def rdf_repl(serializer='nt',
 
     repl.start()
 
+
+def produce_tables(lib_paths):
+    '''
+    Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
+    process on the templates to produce the symbols and template tables.
+    This process is just the parse_from file method and returns the tables.
+    '''
+    optpaths = lib_paths
+    to_run_fn = "temp.rdfsh"
+    f= open(to_run_fn,"a")
+    f.write("use <sbol>")
+    f.close()
+
+    parser = RDFScriptParser(filename=to_run_fn, debug_lvl=1)
+
+    with open(to_run_fn, 'r') as in_file:
+        data = in_file.read()
+
+    env = Env(filename=to_run_fn,
+              serializer="sbolxml",
+              paths=optpaths)
+
+    forms = parser.parse(data)
+    env.interpret(forms)
+    os.remove(to_run_fn)
+    return env._symbol_table, env._template_table
+
+   
+
 def rdfscript_args():
 
     parser = argparse.ArgumentParser(description="RDFScript interpreter and REPL.")

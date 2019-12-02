@@ -19,6 +19,7 @@ from extensions.triples import TriplePack
 from .rdf_data import RDFData
 
 
+
 class Env(object):
     def __init__(self,
                  repl=False,
@@ -159,6 +160,7 @@ class Env(object):
                 logging.error(str(e))
             except ExtensionError as e:
                 logging.error(str(e))
+                
         return result
 
     def eval_import(self, uri):
