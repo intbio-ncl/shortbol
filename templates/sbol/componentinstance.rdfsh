@@ -1,18 +1,6 @@
 @prefix sbol
 
-ComponentInstance(type, def)
-(
-  Identified(type)
-  definition = def
-  access = sbol.public
-)
 
-PrivateComponentInstance(type, def)
-(
-  Identified(type)
-  definition = def
-  access = sbol.private
-)
 
 Component(def) 
 (
@@ -81,15 +69,21 @@ ReverseComplementRange(start,end)
   Range(start,end,reverseComplement)
 )
 
+Cut(at,orientation)
+(
+  Location(Cut,orientation)
+  sbol.at = at
+)
+
 InlineCut(at,orientation)
 (
-  Location(Cut,inline)
+  Cut(Cut,inline)
   sbol.at = at
 )
 
 ReverseComplementCut(at,orientation)
 (
-  Location(Cut,reverseComplement)
+  Cut(Cut,reverseComplement)
   sbol.at = at
 )
 

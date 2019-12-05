@@ -27,3 +27,17 @@ Model(s, l, f)
 )
 
 ModuleDefinition() (TopLevel(ModuleDefinition))
+
+ComponentInstance(type, def)
+(
+  Identified(type)
+  definition = def
+  access = sbol.public
+)
+
+PrivateComponentInstance(type, def)
+(
+  Identified(type)
+  definition = def
+  access = sbol.private
+)
