@@ -11,7 +11,7 @@ class Template(Node):
 
         self.parameters = []
         for pos, param in enumerate(parameters):
-            self.parameters.append(Parameter(param.variable[0], pos, location))
+            self.parameters.append(Parameter(param.name[0], pos, location))
 
         self.extensions = []
         self.body = []

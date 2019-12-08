@@ -32,24 +32,54 @@ class Node:
         return self._location.filename
 
 
-class Name(Node):
-
-    def __init__(self, name_string, position, location=None):
-        super().__init__(name_string, location=location)
-        self.position = position
+class Identifier(Node):
+    def __init__(self, *parts, location=None):
+        super().__init__(location)
+        self.parts = list(parts)
 
     def __eq__(self, other):
-        return (isinstance(other, Name) and self.names == other.names or
-                isinstance(other, Self) and self.names == [Self()])
+        return isinstance(other, Identifier) and self.parts == other.parts
 
     def __str__(self):
-        return f"[Name: {self.name_string} at location {self.location}]"
+        return ':'.join([str(part) for part in self.parts])
 
     def __repr__(self):
-        return f"[Name: {self.name_string}]"
+        return f"[Identifier: {self.parts}]"
+
+    def __iter__(self):
+        return iter(self.parts)
 
     def evaluate(self, env):
         return self
+
+    def prefixify(self, context):
+        uri = context.uri
+
+        if context.prefix is not None:
+            uri = context.uri_for_prefix(context.prefix)
+
+        try:
+            uri = context.uri_for_prefix(self.parts[0].name)
+            self.parts[0] = uri
+        except PrefixError:
+            self.parts.insert(0, uri)
+
+        return self
+
+    def evaluate(self, context):
+        if not isinstance(self.parts[0], (Uri, Parameter)):
+            self.prefixify(context)
+
+        uri = Uri('')
+
+        for i, part in enumerate(self.parts):
+            try:
+                uri = uri + part.evaluate(context)
+            except TypeError:
+                new_parts = self.parts if uri == Uri('') else [uri, *self.parts[i:]]
+                return Identifier(*new_parts, location=self.location)
+
+        return uri
 
 
 
@@ -58,78 +88,32 @@ class Name(Node):
 class Variable(Node):
 
     def __init__(self, *names, location=None):
-    super().__init__(location)
-    self.names = list(names)
+        super().__init__(location)
+        self.names = list(names)
+
+
+
+
+
+
+class Name(Node):
+
+    def __init__(self, name_string, location=None):
+        super().__init__(location=location)
+        self.name = name_string
 
     def __eq__(self, other):
-        return (isinstance(other, Variable) and self.names == other.names)
+        return isinstance(other, Name) and self.name == other.name
 
     def __str__(self):
-        return ':'.join([str(name) for name in self.names])
+        return self.name
 
     def __repr__(self):
-        return f"[Variable: {self.names}]"
-
-    def is_prefixed(self, context):
-        if len(self.names) > 1 and isinstance(self.names[0], str):
-            try:
-                return context.uri_for_prefix(self.names[0])
-            except PrefixError:
-                return False
-        else:
-            return False
+        return f"[Name: {self.name}]"
 
     def evaluate(self, context):
+        return Uri(self.name, location=self.location)
 
-        uri = Uri(context.uri, location=self.location)
-    
-        for n in range(0, len(self.names)):
-            if isinstance(self.names[n], str):
-                #invalid, can't have a string in variable
-                raise UnexpectedType(Uri, uri, self.location)
-                
-            elif isinstance(self.names[n], Parameter):
-                #create another variable
-                rest = current_self.names + self.names[n + 1:]
-                return Variable(*rest, location=self.location)
-
-            elif isinstance(self.names[n], Uri):
-                if n > 0:
-                    uri.extend(self.names[n], delimiter='')
-                else:
-                    uri = Uri(self.names[n])    
-
-
-            lookup = context.lookup(uri)
-            if lookup is not None:
-                if isinstance(lookup, Uri):
-                    uri = Uri(lookup, location=self.location)
-                elif n == len(self.names) - 1:
-                    uri = lookup
-
-        return uri          
-
-
-        '''???
-        if isinstance(self.names[n], Self):
-            current_self = context.current_self
-            if isinstance(current_self, Uri):
-                if n > 0:
-                    uri.extend(context.current_self, delimiter='')
-                else:
-                    uri = Uri(current_self, location=self.location)
-            elif isinstance(current_self, Name):
-                rest = current_self.names + self.names[n + 1:]
-                if n > 0:
-                    return Name(uri, *rest, location=self.location)
-                else:
-                    return Name(*rest, location=self.location)
-        '''
-
-
-
-
-    
 
 class Parameter(Name):
 
@@ -168,7 +152,7 @@ class Self(Parameter):
         return format("[SELF]")
 
     def evaluate(self, context):
-        return context.current_self
+        return self
 
 
 class Uri(Node):
@@ -185,31 +169,32 @@ class Uri(Node):
         """
         super().__init__(location)
         if isinstance(uri, rdflib.URIRef):
-            self._uri = uri.toPython()
+            self.uri = uri.toPython()
         elif isinstance(uri, Uri):
-            self._uri = uri.uri
+            self.uri = uri.uri
         else:
-            self._uri = uri
+            self.uri = uri
 
     def __eq__(self, other):
-        return (isinstance(other, Uri) and
-                self.uri == other.uri)
+        return isinstance(other, Uri) and self.uri == other.uri
 
     def __str__(self):
-        return '<' + self.uri + '>'
+        return f"<{self.uri}>"
 
     def __repr__(self):
-        return format("[URI: %s]" % self._uri)
+        return f"[URI: {self.uri}]"
 
     def __hash__(self):
         return self.uri.__hash__()
 
-    @property
-    def uri(self):
-        return self._uri
+    def __add__(self, other):
+        if not isinstance(other, Uri):
+            raise TypeError
+
+        return Uri(self.uri + other.uri)
 
     def extend(self, other, delimiter='#'):
-        self._uri = self.uri + delimiter + other.uri
+        self.uri = self.uri + delimiter + other.uri
 
     def split(self):
         return re.split('#|/|:', self.uri)

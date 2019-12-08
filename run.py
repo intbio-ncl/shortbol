@@ -197,6 +197,9 @@ def parse_from_file(filepath,
               extensions=extensions)
 
     forms = parser.parse(data)
+    print("Forms")
+    for form in forms:
+        print(form)
     env.interpret(forms)
     if not out:
         print(env)
