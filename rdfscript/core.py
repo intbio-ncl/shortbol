@@ -51,7 +51,11 @@ class Name(Node):
     def evaluate(self, env):
         return self
 
-def Variable(Node):
+
+
+
+
+class Variable(Node):
 
     def __init__(self, *names, location=None):
     super().__init__(location)

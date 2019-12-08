@@ -5,11 +5,7 @@ from . import reader
 
 from .reader import tokens
 
-from .core import (Uri,
-                   Name,
-                   Value,
-                   Self,
-                   Assignment)
+from .core import (Uri,Name,Value,Self,Assignment,Variable)
 
 from .pragma import (PrefixPragma,
                      DefaultPrefixPragma,
@@ -175,7 +171,7 @@ def p_emptylist(p):
 def p_dotted_name(p):
     '''name : dotted_list'''
     l = location(p)
-    p[0] = Name(*p[1], location=l)
+    p[0] = Variable(*p[1], location=l)
 
 
 def p_dotted_list_1(p):

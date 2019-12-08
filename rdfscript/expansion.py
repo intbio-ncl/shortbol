@@ -1,15 +1,15 @@
-from rdfscript.core import Node, Argument, Name, Self
+from rdfscript.core import Node, Argument, Name, Self, Variable
 from rdfscript.pragma import ExtensionPragma
 from rdfscript.error import TemplateNotFound
 
 
 class Expansion(Node):
 
-    def __init__(self, name, template, args, body, location=None):
+    def __init__(self, variable, template, args, body, location=None):
 
         super().__init__(location)
         self.template = template
-        self.name = name
+        self.variable = variable
         self.args = []
         for n in range(0, len(args)):
             arg = args[n]
@@ -29,13 +29,13 @@ class Expansion(Node):
     def __eq__(self, other):
         return (isinstance(other, Expansion) and
                 self.template == other.template and
-                self.name == other.name and
+                self.variable == other.variable and
                 self.args == other.args and
                 self.body == other.body)
 
     def __repr__(self):
         return format("%s is a %s(%s)\n  (%s)\n" %
-                      (self.name, self.template, self.args, self.body))
+                      (self.variable, self.template, self.args, self.body))
 
     def get_extensions(self, context):
         template_uri = self.template.evaluate(context)
@@ -46,7 +46,7 @@ class Expansion(Node):
             ext_args = ext.args
             for arg in self.args:
                 ext_args = [arg.marshal(ext_arg) for ext_arg in ext_args]
-            processed_extensions += [ExtensionPragma(ext.name, ext_args)]
+            processed_extensions += [ExtensionPragma(ext.variable, ext_args)]
 
         return processed_extensions + self.extensions
 
@@ -58,7 +58,7 @@ class Expansion(Node):
             raise TemplateNotFound(template_uri, self.template.location)
 
         old_self = context.current_self
-        context.current_self = self.name
+        context.current_self = self.variable
 
         for statement in self.body:
             triples += statement.as_triples(context)
@@ -72,19 +72,19 @@ class Expansion(Node):
 
         triples = map(argument_marshal, triples)
 
-        if self.name is not None:
-            triples = replace_self(triples, self.name)
+        if self.variable is not None:
+            triples = replace_self(triples, self.variable)
 
         context.current_self = old_self
 
         return triples
 
     def evaluate(self, context):
-        name = self.name.evaluate(context)
+        variable = self.variable.evaluate(context)
 
         triples = self.as_triples(context)
         old_self = context.current_self
-        context.current_self = name
+        context.current_self = variable
 
         def evaluate_triple(triple):
             return tuple(map(lambda x: x.evaluate(context), triple))
@@ -98,18 +98,18 @@ class Expansion(Node):
 
         context.add_triples(triples)
 
-        return name
+        return variable
 
 
 def replace_self(triples, replace_with):
     result = []
     for triple in triples:
         (s, p, o) = triple
-        if isinstance(s, Name):
+        if isinstance(s, Variable):
             s = replace_self_in_name(s, replace_with)
-        if isinstance(p, Name):
+        if isinstance(p, Variable):
             p = replace_self_in_name(p, replace_with)
-        if isinstance(o, Name):
+        if isinstance(o, Variable):
             o = replace_self_in_name(o, replace_with)
 
         result.append((s, p, o))
@@ -120,7 +120,7 @@ def replace_self_in_name(old_name, _with):
     names = old_name.names
     new_names = []
     for name in names:
-        if name == Self() and isinstance(_with, Name):
+        if name == Self() and isinstance(_with, Variable):
             new_names += _with.names
         elif name == Self():
             new_names.append(_with)

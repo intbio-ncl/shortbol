@@ -1,17 +1,17 @@
-from .core import Node, Name, Self, Parameter
+from .core import Node, Name, Self, Parameter, Variable
 from .pragma import ExtensionPragma
 from .expansion import Expansion
 
 
 class Template(Node):
 
-    def __init__(self, name, parameters, body, location=None):
+    def __init__(self, variable, parameters, body, location=None):
         super().__init__(location)
-        self.name = name
+        self.variable = variable
 
         self.parameters = []
         for pos, param in enumerate(parameters):
-            self.parameters.append(Parameter(param.names[0], pos, location))
+            self.parameters.append(Parameter(param.variable[0], pos, location))
 
         self.extensions = []
         self.body = []
@@ -23,22 +23,22 @@ class Template(Node):
 
     def __eq__(self, other):
         return (isinstance(other, Template) and
-                self.name == other.name and
+                self.variable == other.variable and
                 self.parameters == other.parameters and
                 self.body == other.body)
 
     def __repr__(self):
-        return f"[TEMPLATE: {self.name}, {self.parameters}, {self.body}]"
+        return f"[TEMPLATE: {self.variable}, {self.parameters}, {self.body}]"
 
     def __str__(self):
-        return (f"{self.name}({','.join(map(str, self.parameters))})" +
+        return (f"{self.variable}({','.join(map(str, self.parameters))})" +
                 f"({chr(10).join(map(str, self.body))})")
 
     def as_triples(self, context):
         triples = []
 
         old_self = context.current_self
-        context.current_self = Name(Self())
+        context.current_self = Variable(Self())
 
         for statement in self.body:
             triples += statement.as_triples(context)
@@ -67,7 +67,7 @@ class Template(Node):
 
         evaluated_triples = [triple_eval(triple) for triple in triples]
 
-        uri = self.name.evaluate(context)
+        uri = self.variable.evaluate(context)
         context.assign_template(uri, evaluated_triples)
 
         return evaluated_triples
@@ -76,7 +76,7 @@ class Template(Node):
         collected = self.extensions
 
         for statement in self.body:
-            if isinstance(statement, Expansion) and statement.name is None:
+            if isinstance(statement, Expansion) and statement.variable is None:
                 collected += statement.get_extensions(context)
 
         return collected
@@ -88,57 +88,50 @@ class Template(Node):
 
         extensions = [ext.evaluate(context) for ext in extensions]
 
-        uri = self.name.evaluate(context)
+        uri = self.variable.evaluate(context)
         context.assign_extensions(uri, extensions)
 
         return extensions
 
     def evaluate(self, context):
         old_self = context.current_self
-        context.current_self = Name(Self())
+        context.current_self = Variable(Self())
 
         self.store_triples(context)
         self.store_extensions(context)
 
         context.current_self = old_self
 
-        return self.name.evaluate(context)
+        return self.variable.evaluate(context)
 
 
 class Property(Node):
 
-    def __init__(self, name, value, location=None):
+    def __init__(self, variable, value, location=None):
 
         Node.__init__(self, location)
-        self._name = name
-        self._value = value
+        self.variable = variable
+        self.value = value
 
     def __eq__(self, other):
         return (isinstance(other, Property) and
-                self.name == other.name and
+                self.variable == other.variable and
                 self.value == other.value)
 
     def __str__(self):
-        return format("%s = %s\n" % (self.name, self.value))
+        return format("%s = %s\n" % (self.variable, self.value))
 
     def __repr__(self):
-        return format("%s = %s\n" % (self.name, self.value))
+        return format("%s = %s\n" % (self.variable, self.value))
 
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def value(self):
-        return self._value
 
     def substitute_params(self, parameters):
 
         for parameter in parameters:
-            if parameter.is_substitute(self.name):
-                self._name = parameter
+            if parameter.is_substitute(self.variable):
+                self.variable = parameter
             if parameter.is_substitute(self.value):
-                self._value = parameter
+                self.value = parameter
 
     def as_triples(self, context):
 
@@ -146,12 +139,12 @@ class Property(Node):
         if isinstance(self.value, Expansion):
             triples += self.value.as_triples(context)
             triples += [(context.current_self,
-                         self.name,
-                         self.value.name)]
+                         self.variable,
+                         self.value.variable)]
             return triples
         else:
             return [(context.current_self,
-                     self.name,
+                     self.variable,
                      self.value)]
 
 
@@ -175,7 +168,7 @@ def expand_expansion_in_triples(triples, context):
         extra_triples = []
         if isinstance(thing, Expansion):
             extra_triples += thing.as_triples(context)
-            thing = thing.name
+            thing = thing.variable
 
         return extra_triples
 
