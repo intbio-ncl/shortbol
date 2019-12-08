@@ -49,107 +49,106 @@ class TestCoreIdentifier(unittest.TestCase):
         actually = i.evaluate(self.env)
         self.assertEqual(expected, actually)
 
-    def test_name_evaluate_bound_local(self):
-        name = Name('first')
-        value = Value(1)
-        self.env.assign(name.evaluate(self.env), value)
-        self.assertEqual(value, name.evaluate(self.env))
+    def test_identifier_evaluate_bound_local(self):
+        i = Identifier(Name('first'))
+        expected = Value(1)
+        self.env.assign(i.evaluate(self.env), expected)
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-    def test_name_evaluate_bound_prefixed(self):
+    def test_identifier_evaluate_bound_prefixed(self):
+        i = Identifier(Name('first'), Name('second'))
+        expected = Value(1)
+        self.env.assign(i.evaluate(self.env), expected)
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-        name = Name('first', 'second')
-        value = Value(1)
-
-        self.env.assign(name.evaluate(self.env), value)
-        self.assertEqual(value, name.evaluate(self.env))
-
+    @unittest.skip("Self is now a 'magic' parameter.")
     def test_name_evaluate_bound_self(self):
-
         name = Name(Self(), 'second')
         value = Value(1)
-
         self.env.assign(name.evaluate(self.env), value)
         self.assertEqual(value, name.evaluate(self.env))
 
-    def test_name_evaluate_bound_chained(self):
+    def test_identifier_evaluate_bound_multiple_parts(self):
+        i = Identifier(Name('first'), Name('second'), Name('third'), Name('fourth'))
+        expected = Value(1)
+        self.env.assign(i.evaluate(self.env), expected)
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-        name = Name('first', 'second', 'third', 'fourth')
-        value = Value(1)
+    def test_identifier_evaluate_uri_and_symbol_parts(self):
+        i = Identifier(Uri('first'), Name('second'))
+        expected = Value(1)
 
-        self.env.assign(name.evaluate(self.env), value)
-        self.assertEqual(value, name.evaluate(self.env))
+        uri = Uri('firstsecond')
+        self.assertEqual(i.evaluate(self.env), uri)
 
-    def test_name_evaluate_chained_mix(self):
+        self.env.assign(i.evaluate(self.env), expected)
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-        name = Name(Self(), Uri('first'), 'third')
-        value = Value(1)
-        uri = Uri(self.env.current_self.uri + 'firstthird')
-
-        self.assertEqual(name.evaluate(self.env), uri)
-
-        self.env.assign(name.evaluate(self.env), value)
-        self.assertEqual(self.env.lookup(uri), value)
-
+    @unittest.skip("Self is now a magic parameter")
     def test_name_evaluate_unbound_unresolved_self_prefix(self):
-
         name = Name(Self(), 'first')
         self.env.current_self = Name(Self())
-
         self.assertEqual(name.evaluate(self.env), Name(Self(), 'first'))
 
+    @unittest.skip("Self is now a magic parameter")
     def test_name_evaluate_unbound_unresolved_self_suffix(self):
-
         name = Name('first', Uri('second'), Self())
         self.env.current_self = Name(Self())
 
         self.assertEqual(name.evaluate(self.env), Name(
             Uri('prefixfirstsecond'), Self()))
 
-    def test_name_evaluate_bound_prefix(self):
+    def test_identifier_evaluate_bound_prefix(self):
+        i = Identifier(Name('first'), Name('second'))
+        prefix = Uri('http://first.org/#')
+        self.env.assign(Identifier(Name('first')).evaluate(self.env), prefix)
 
-        name = Name('first', 'second')
-        value = Uri('http://first.org/#')
+        expected = Uri('http://first.org/#second')
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-        self.env.assign(Name('first').evaluate(self.env), value)
+    def test_identifier_evaluate_bound_double_prefix(self):
+        i = Identifier(Name('first'), Name('second'), Name('third'))
+        prefix = Uri('http://first.org/#second#')
+        uri = Identifier(Name('first'), Name('second')).evaluate(self.env)
 
-        self.assertEqual(name.evaluate(self.env),
-                         Uri('http://first.org/#second'))
+        self.env.assign(uri, prefix)
+        expected = Uri('http://first.org/#second#third')
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-    def test_name_evaluate_bound_double_prefix(self):
-
-        name = Name('first', 'second', 'third')
-        value = Uri('http://first.org/#second#')
-
-        self.env.assign(Name('first', 'second').evaluate(self.env), value)
-
-        self.assertEqual(name.evaluate(self.env), Uri(
-            'http://first.org/#second#third'))
-
-    def test_name_evaluate_bound_prefix_not_uri(self):
-
-        name = Name('first', 'second')
+    def test_identifier_evaluate_bound_prefix_not_uri(self):
+        i = Identifier(Name('first'), Name('second'))
         value = Value(12345)
 
-        self.env.assign(Name('first').evaluate(self.env), value)
+        self.env.assign(Identifier(Name('first')).evaluate(self.env), value)
+        expected = Uri('prefixfirstsecond')
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-        self.assertEqual(name.evaluate(self.env), Uri('prefixfirstsecond'))
-
-    def test_name_evaluate_double_bound_prefix_not_uri(self):
-
-        name = Name('first', 'second', 'third')
+    def test_identifier_evaluate_double_bound_prefix_not_uri(self):
+        i = Identifier(Name('first'), Name('second'), Name('third'))
         value = Value(12345)
 
-        self.env.assign(Name('first', 'second').evaluate(self.env), value)
+        prefix_part = Identifier(Name('first'), Name('second'))
+        self.env.assign(prefix_part.evaluate(self.env), value)
+        expected = Uri('prefixfirstsecondthird')
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
 
-        self.assertEqual(name.evaluate(self.env),
-                         Uri('prefixfirstsecondthird'))
 
+    @unittest.skip("Self is now a magic parameter")
     def test_name_self_equals_self(self):
 
         self.assertEqual(Name(Self()), Self())
         self.assertEqual(Self(), Name(Self()))
         self.assertNotEqual(Name(Self(), 'x'), Self())
 
+    @unittest.skip("Self is now a magic parameter")
     def test_name_self_in_context(self):
 
         name = Name(Self(), 'name')
@@ -159,6 +158,7 @@ class TestCoreIdentifier(unittest.TestCase):
 
         self.assertEqual(name.evaluate(self.env), Uri('selfname'))
 
+    @unittest.skip("Self is now a magic parameter")
     def test_name_self_in_unresolved_context(self):
 
         name = Name(Self(), 'name')
@@ -168,6 +168,7 @@ class TestCoreIdentifier(unittest.TestCase):
 
         self.assertEqual(name.evaluate(self.env), Name(Self(), 'name'))
 
+    @unittest.skip("Self is now a magic parameter")
     def test_name_self_in_unresolved_context_self_prefix(self):
 
         name = Name(Self(), 'name')
@@ -177,9 +178,9 @@ class TestCoreIdentifier(unittest.TestCase):
 
         self.assertEqual(name.evaluate(self.env), Name(Self(), 'name', 'name'))
 
-    def test_uri_first_unbound(self):
-
-        name = Name(Uri('http://literal.eg/'), 'literal')
-
-        self.assertEqual(name.evaluate(self.env),
-                         Uri('http://literal.eg/literal'))
+    def test_identifier_uri_first_unbound(self):
+        i = Identifier(Uri('http://literal.eg/'), Name('literal'))
+        expected = Uri('http://literal.eg/literal')
+        actually = i.evaluate(self.env)
+        self.assertEqual(expected, actually)
+                   

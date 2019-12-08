@@ -168,17 +168,10 @@ def p_emptylist(p):
     p[0] = []
 
 
-<<<<<<< HEAD:rdfscript/rdfscriptparser.py
-def p_dotted_name(p):
-    '''name : dotted_list'''
-    l = location(p)
-    p[0] = Variable(*p[1], location=l)
-=======
 # names
 def p_identifier(p):
     '''identifier : dotted_list'''
     p[0] = Identifier(*p[1], location=location(p))
->>>>>>> e55aac6966eb267b0dd45d830dc9cf7ab2217d6b:rdfscript/parser.py
 
 
 def p_dotted_list_1(p):

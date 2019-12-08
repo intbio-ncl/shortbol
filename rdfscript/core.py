@@ -49,6 +49,9 @@ class Identifier(Node):
     def __iter__(self):
         return iter(self.parts)
 
+    def __len__(self):
+        return len(self.parts)
+
     def evaluate(self, env):
         return self
 
@@ -75,6 +78,13 @@ class Identifier(Node):
         for i, part in enumerate(self.parts):
             try:
                 uri = uri + part.evaluate(context)
+
+                binding = context.lookup(uri)
+                if binding is not None and i == len(self) - 1 :
+                    uri = binding
+                elif isinstance(binding, Uri):
+                    uri = binding
+                    
             except TypeError:
                 new_parts = self.parts if uri == Uri('') else [uri, *self.parts[i:]]
                 return Identifier(*new_parts, location=self.location)
@@ -82,22 +92,7 @@ class Identifier(Node):
         return uri
 
 
-
-
-
-class Variable(Node):
-
-    def __init__(self, *names, location=None):
-        super().__init__(location)
-        self.names = list(names)
-
-
-
-
-
-
 class Name(Node):
-
     def __init__(self, name_string, location=None):
         super().__init__(location=location)
         self.name = name_string

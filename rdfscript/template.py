@@ -1,4 +1,4 @@
-from .core import Node, Name, Self, Parameter, Variable
+from .core import Node, Name, Self, Parameter, Identifier
 from .pragma import ExtensionPragma
 from .expansion import Expansion
 

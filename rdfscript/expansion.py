@@ -1,4 +1,4 @@
-from rdfscript.core import Node, Argument, Name, Self, Variable
+from rdfscript.core import Node, Argument, Name, Self, Identifier
 from rdfscript.pragma import ExtensionPragma
 from rdfscript.error import TemplateNotFound
 
