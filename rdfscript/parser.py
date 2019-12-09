@@ -78,7 +78,7 @@ def p_extension_args(p):
 
 # expansions and templates
 def p_template(p):
-    '''template : identifier '(' exprlist ')' indentedinstancebody'''
+    '''template : identifier '(' symbollist ')' indentedinstancebody'''
     p[0] = Template(p[1], p[3], p[5], location=location(p))
 
 
@@ -148,6 +148,7 @@ def p_exprlist(p):
     p[0] = p[1]
 
 
+
 def p_not_empty_exprlist_1(p):
     '''notemptyexprlist : expr'''
     p[0] = [p[1]]
@@ -155,6 +156,22 @@ def p_not_empty_exprlist_1(p):
 
 def p_not_empty_exprlist_n(p):
     '''notemptyexprlist : expr ',' notemptyexprlist'''
+    p[0] = [p[1]] + p[3]
+
+
+def p_symbollist(p):
+    '''symbollist : emptylist
+                | notemptysymbollist'''
+    p[0] = p[1]
+
+
+def p_not_empty_symbollist_1(p):
+    '''notemptysymbollist : SYMBOL'''
+    p[0] = [p[1]]
+
+
+def p_not_empty_symbollist_n(p):
+    '''notemptysymbollist : SYMBOL ',' notemptysymbollist'''
     p[0] = [p[1]] + p[3]
 
 

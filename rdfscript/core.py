@@ -117,17 +117,25 @@ class Parameter(Name):
         self.position = position
 
     def __repr__(self):
-        return f"[PARAMETER: {self.names[0]}]"
+        return f"[PARAMETER: {self.name}]"
+
+    def __eq__(self, other):
+        return isinstance(other, Parameter) and self.name == other.name
 
     def substitute(self, possible_parameter):
+        import pdb
+        #pdb.set_trace()
         result = possible_parameter
-        if isinstance(possible_parameter, Name):
+        if isinstance(possible_parameter, Identifier):
             def replace(x):
-                result = self if self.names[0] == x else x
-                return result
+                if isinstance(x, Name) and self.name == x.name:
+                    # Substitution
+                    return self
+                else:
+                    return x 
 
-            new_names = map(replace, possible_parameter.names)
-            result = Name(*new_names, location=possible_parameter.location)
+            new_names = map(replace, possible_parameter.parts)
+            result = Identifier(*new_names, location=possible_parameter.location)
 
         return result
 

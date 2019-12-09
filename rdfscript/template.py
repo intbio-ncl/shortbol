@@ -2,16 +2,14 @@ from .core import Node, Name, Self, Parameter, Identifier
 from .pragma import ExtensionPragma
 from .expansion import Expansion
 
-
 class Template(Node):
 
-    def __init__(self, variable, parameters, body, location=None):
+    def __init__(self, identifier, parameters, body, location=None):
         super().__init__(location)
-        self.variable = variable
-
+        self.identifier = identifier
         self.parameters = []
         for pos, param in enumerate(parameters):
-            self.parameters.append(Parameter(param.name[0], pos, location))
+            self.parameters.append(Parameter(param, pos, location))
 
         self.extensions = []
         self.body = []
@@ -23,21 +21,21 @@ class Template(Node):
 
     def __eq__(self, other):
         return (isinstance(other, Template) and
-                self.variable == other.variable and
+                self.identifier == other.identifier and
                 self.parameters == other.parameters and
                 self.body == other.body)
 
     def __repr__(self):
-        return f"[TEMPLATE: {self.variable}, {self.parameters}, {self.body}]"
+        return f"[TEMPLATE: {self.identifier}, {self.parameters}, {self.body}]"
 
     def __str__(self):
-        return (f"{self.variable}({','.join(map(str, self.parameters))})" +
+        return (f"{self.identifier}({','.join(map(str, self.parameters))})" +
                 f"({chr(10).join(map(str, self.body))})")
 
     def as_triples(self, context):
         triples = []
 
-        old_self = context.current_self
+        old_self = context.uri
         context.current_self = Identifier(Self())
 
         for statement in self.body:
@@ -67,7 +65,7 @@ class Template(Node):
 
         evaluated_triples = [triple_eval(triple) for triple in triples]
 
-        uri = self.variable.evaluate(context)
+        uri = self.identifier.evaluate(context)
         context.assign_template(uri, evaluated_triples)
 
         return evaluated_triples
@@ -76,7 +74,7 @@ class Template(Node):
         collected = self.extensions
 
         for statement in self.body:
-            if isinstance(statement, Expansion) and statement.variable is None:
+            if isinstance(statement, Expansion) and statement.identifier is None:
                 collected += statement.get_extensions(context)
 
         return collected
@@ -88,48 +86,48 @@ class Template(Node):
 
         extensions = [ext.evaluate(context) for ext in extensions]
 
-        uri = self.variable.evaluate(context)
+        uri = self.identifier.evaluate(context)
         context.assign_extensions(uri, extensions)
 
         return extensions
 
     def evaluate(self, context):
-        old_self = context.current_self
-        context.current_self = Variable(Self())
+        old_self = context.uri
+        context.current_self = Identifier(Self())
 
         self.store_triples(context)
         self.store_extensions(context)
 
         context.current_self = old_self
 
-        return self.variable.evaluate(context)
+        return self.identifier.evaluate(context)
 
 
 class Property(Node):
 
-    def __init__(self, variable, value, location=None):
+    def __init__(self, identifier, value, location=None):
 
         Node.__init__(self, location)
-        self.variable = variable
+        self.identifier = identifier
         self.value = value
 
     def __eq__(self, other):
         return (isinstance(other, Property) and
-                self.variable == other.variable and
+                self.identifier == other.identifier and
                 self.value == other.value)
 
     def __str__(self):
-        return format("%s = %s\n" % (self.variable, self.value))
+        return format("%s = %s\n" % (self.identifier, self.value))
 
     def __repr__(self):
-        return format("%s = %s\n" % (self.variable, self.value))
+        return format("%s = %s\n" % (self.identifier, self.value))
 
 
     def substitute_params(self, parameters):
 
         for parameter in parameters:
-            if parameter.is_substitute(self.variable):
-                self.variable = parameter
+            if parameter.is_substitute(self.identifier):
+                self.identifier = parameter
             if parameter.is_substitute(self.value):
                 self.value = parameter
 
@@ -139,12 +137,12 @@ class Property(Node):
         if isinstance(self.value, Expansion):
             triples += self.value.as_triples(context)
             triples += [(context.current_self,
-                         self.variable,
-                         self.value.variable)]
+                         self.identifier,
+                         self.value.identifier)]
             return triples
         else:
             return [(context.current_self,
-                     self.variable,
+                     self.identifier,
                      self.value)]
 
 
@@ -168,7 +166,7 @@ def expand_expansion_in_triples(triples, context):
         extra_triples = []
         if isinstance(thing, Expansion):
             extra_triples += thing.as_triples(context)
-            thing = thing.variable
+            thing = thing.identifier
 
         return extra_triples
 

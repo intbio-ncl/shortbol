@@ -44,14 +44,6 @@ class Env(object):
         return format("%s" % self._rdf.serialise())
 
     @property
-    def current_self(self):
-        return self._self
-
-    @current_self.setter
-    def current_self(self, uri):
-        self._self = uri
-
-    @property
     def prefix(self):
         return self._prefix
 
