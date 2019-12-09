@@ -1,8 +1,13 @@
 import unittest
 
-from rdfscript.rdfscriptparser import RDFScriptParser
+
+
+import sys, os
+sys.path.insert(1, os.path.join(sys.path[0], '..',".."))
+
 from rdfscript.env import Env
-from rdfscript.core import Name, Uri, Self, Value, Parameter
+from rdfscript.parser import Parser
+from rdfscript.core import Name, Uri, Self, Value, Parameter, Identifier
 
 from rdfscript.template import Template
 
@@ -13,7 +18,7 @@ class TemplateClassTest(unittest.TestCase):
 
     def setUp(self):
         self.env = Env()
-        self.parser = RDFScriptParser()
+        self.parser = Parser()
         self.maxDiff = None
 
     def tearDown(self):
@@ -81,11 +86,15 @@ class TemplateClassTest(unittest.TestCase):
                   (Name(Self()), Name('y'), Value(2))]
 
         self.assertCountEqual(specialised.as_triples(self.env), expect)
-
+    
+    #@@@
     def test_as_triples_params(self):
         forms = self.parser.parse('a(x)(property = x)')
         a = forms[0]
-        expect = [(Name(Self()), Name('property'), Name(Parameter('x', 0)))]
+        
+        #Name(Self())
+        #Identifier(Self())
+        expect = [(Identifier(Self()), Identifier(Name('property')), Identifier(Parameter('x',0)))]
         self.assertCountEqual(a.as_triples(self.env), expect)
 
     def test_as_triples_with_base_with_params(self):

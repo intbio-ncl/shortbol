@@ -38,7 +38,7 @@ class Template(Node):
         triples = []
 
         old_self = context.current_self
-        context.current_self = Variable(Self())
+        context.current_self = Identifier(Self())
 
         for statement in self.body:
             triples += statement.as_triples(context)
