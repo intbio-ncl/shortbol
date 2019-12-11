@@ -7,7 +7,7 @@ class Template(Node):
     def __init__(self, identifier, parameters, body, location=None):
         super().__init__(location)
         self.identifier = identifier
-        self.parameters = []
+        self.parameters = [Self()]
         for pos, param in enumerate(parameters):
             self.parameters.append(Parameter(param, pos, location))
 
@@ -35,13 +35,13 @@ class Template(Node):
     def as_triples(self, context):
         triples = []
 
-        old_self = context.uri
-        context.current_self = Identifier(Self())
+        # old_self = context.uri
+        # context.current_self = Identifier(Self())
 
         for statement in self.body:
             triples += statement.as_triples(context)
 
-        context.current_self = old_self
+        # context.current_self = old_self
 
         def parameter_substitution(triple):
             result = triple
@@ -136,12 +136,12 @@ class Property(Node):
         triples = []
         if isinstance(self.value, Expansion):
             triples += self.value.as_triples(context)
-            triples += [(context.current_self,
+            triples += [(Identifier(Self()),
                          self.identifier,
                          self.value.identifier)]
             return triples
         else:
-            return [(context.current_self,
+            return [(Identifier(Self()),
                      self.identifier,
                      self.value)]
 

@@ -123,8 +123,6 @@ class Parameter(Name):
         return isinstance(other, Parameter) and self.name == other.name
 
     def substitute(self, possible_parameter):
-        import pdb
-        #pdb.set_trace()
         result = possible_parameter
         if isinstance(possible_parameter, Identifier):
             def replace(x):
@@ -192,7 +190,7 @@ class Uri(Node):
 
     def __add__(self, other):
         if not isinstance(other, Uri):
-            raise TypeError
+            raise TypeError(f"{other}")
 
         return Uri(self.uri + other.uri)
 
@@ -246,10 +244,23 @@ class Argument(Value):
         return f"[RDFscript ARG: {self.value}]"
 
     def marshal(self, param):
-        if isinstance(param, Parameter) and param.position == self.position:
-            return self
-        else:
-            return param
+        result = param
+
+        def replace(x):
+            if isinstance(x, Parameter) and self.position == x.position:
+                # Substitution
+                return self.value
+            else:
+                return x
+                    
+        if isinstance(param, Identifier):
+            if isinstance(self.value, (Uri, Name, Parameter)):
+                new_parts = map(replace, param.parts)
+                result = Identifier(*new_parts, location=param.location)
+            elif len(param.parts) == 1 and isinstance(param.parts[0], Parameter) and param.parts[0].position == self.position:
+                result = self.value
+                
+        return result
 
 
 class Assignment(Node):

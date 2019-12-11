@@ -1,7 +1,7 @@
 import rdflib
 import pdb
 
-from .core import Uri, Value
+from .core import Uri, Value, Identifier
 from .error import InternalError, PrefixError
 import os
 import sys
@@ -26,6 +26,11 @@ class RDFData(object):
         return self.from_rdf(self._g.identifier)
 
     def to_rdf(self, language_object):
+        if isinstance(language_object, Identifier):
+            result = Uri('')
+            for part in language_object.parts:
+                result = result + part
+            return self.to_rdf(result)
         if isinstance(language_object, Uri):
             return rdflib.URIRef(language_object.uri)
         elif isinstance(language_object, Value):

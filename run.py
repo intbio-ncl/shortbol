@@ -3,7 +3,7 @@ import argparse
 import logging
 import os
 import re
-from rdfscript.rdfscriptparser import RDFScriptParser
+from rdfscript.parser import Parser
 from rdfscript.env import Env
 from repl import REPL
 from validate_sbol import validate_sbol
@@ -186,7 +186,7 @@ def parse_from_file(filepath,
 
     to_run_fn = hacky_conversion(filepath,template_dir)
 
-    parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
+    parser = Parser(filename=to_run_fn, debug_lvl=debug_lvl)
 
     with open(to_run_fn, 'r') as in_file:
         data = in_file.read()

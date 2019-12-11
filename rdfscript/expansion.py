@@ -6,11 +6,10 @@ from rdfscript.error import TemplateNotFound
 class Expansion(Node):
 
     def __init__(self, identifier, template, args, body, location=None):
-
         super().__init__(location)
         self.template = template
         self.identifier = identifier
-        self.args = []
+        self.args = [] if identifier is None else [Argument(identifier, -1)]
         for n in range(0, len(args)):
             arg = args[n]
             if isinstance(arg, Argument):
@@ -22,7 +21,9 @@ class Expansion(Node):
         self.body = []
         for statement in body:
             if isinstance(statement, ExtensionPragma):
-                self.extensions.append(statement)
+                for arg in self.args:
+                    ext_args = [arg.marshal(ext_arg) for ext_arg in statement.args]
+                self.extensions.append(ExtensionPragma(statement.name, ext_args))
             else:
                 self.body.append(statement)
 
@@ -57,9 +58,6 @@ class Expansion(Node):
         except KeyError:
             raise TemplateNotFound(template_uri, self.template.location)
 
-        old_self = context.current_self
-        context.current_self = self.identifier
-
         for statement in self.body:
             triples += statement.as_triples(context)
 
@@ -75,12 +73,14 @@ class Expansion(Node):
         if self.identifier is not None:
             triples = replace_self(triples, self.identifier)
 
-        context.current_self = old_self
-
         return triples
 
     def evaluate(self, context):
         identifier = self.identifier.evaluate(context)
+        evaluated_args = []
+        for arg in self.args:
+            evaluated_arg = Argument(arg.value.evaluate(context), arg.position)
+            evaluated_args.append(evaluated_arg)
 
         triples = self.as_triples(context)
         old_self = context.current_self

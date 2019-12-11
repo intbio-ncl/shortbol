@@ -1,3 +1,5 @@
+import pdb
+
 class RDFScriptError(Exception):
 
     def __init__(self, location):
@@ -144,6 +146,7 @@ class InternalError(RDFScriptError):
     def __init__(self, core_object, location):
         RDFScriptError.__init__(self, location)
         self._object = core_object
+        pdb.set_trace()
         self._type = 'RDFScript Internal Error'
 
     @property
