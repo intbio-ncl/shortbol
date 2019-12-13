@@ -1,4 +1,4 @@
-from rdfscript.core import Node, Argument, Name, Self, Identifier
+from rdfscript.core import Argument, Identifier, Name, Node, Self, Uri
 from rdfscript.pragma import ExtensionPragma
 from rdfscript.error import TemplateNotFound
 
@@ -102,29 +102,33 @@ class Expansion(Node):
 
 
 def replace_self(triples, replace_with):
+    #import pdb; pdb.set_trace()
     result = []
     for triple in triples:
         (s, p, o) = triple
         if isinstance(s, Identifier):
-            s = replace_self_in_name(s, replace_with)
+            s = replace_self_in_identifier(s, replace_with)
         if isinstance(p, Identifier):
-            p = replace_self_in_name(p, replace_with)
+            p = replace_self_in_identifier(p, replace_with)
         if isinstance(o, Identifier):
-            o = replace_self_in_name(o, replace_with)
+            o = replace_self_in_identifier(o, replace_with)
 
         result.append((s, p, o))
 
     return result
 
-def replace_self_in_name(old_name, _with):
-    names = old_name.parts
+#Maybe replace_self tests are written incorrectly and input for expansion tests are wrong.
+def replace_self_in_identifier(identifier, _with):
+    parts = identifier.parts
     new_names = []
-    for name in names:
-        if name == Self() and isinstance(_with, Identifier):
-            new_names += _with.parts
-        elif name == Self():
+    for part in parts:
+        # If Identifier then add parts?
+        if part == Self() and isinstance(_with, Identifier):
+            new_names.append(_with)          
+        #Anything else we can just add?  
+        elif part == Self():
             new_names.append(_with)
         else:
-            new_names.append(name)
+            new_names.append(part)
 
-    return Identifier(*new_names, location=old_name.location)
+    return Identifier(*new_names, location=identifier.location)

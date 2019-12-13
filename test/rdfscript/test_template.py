@@ -1,5 +1,10 @@
 import unittest
 
+import sys
+import os
+
+sys.path.insert(1, os.path.join(sys.path[0], '..', ".."))
+
 from rdfscript.env import Env
 from rdfscript.parser import Parser
 from rdfscript.core import Name, Uri, Self, Value, Parameter, Identifier
@@ -7,12 +12,9 @@ from rdfscript.core import Name, Uri, Self, Value, Parameter, Identifier
 from rdfscript.template import Template
 
 from rdfscript.pragma import ExtensionPragma
-from rdfscript.expansion import replace_self_in_name
+from rdfscript.expansion import replace_self_in_identifier
 
-import sys
-import os
 
-sys.path.insert(1, os.path.join(sys.path[0], '..', ".."))
 
 
 class TemplateClassTest(unittest.TestCase):
@@ -225,16 +227,16 @@ class TemplateClassTest(unittest.TestCase):
         forms = self.parser.parse('s()(z=self) t()(x=self.e is a s())')
         s = forms[0]
         t = forms[1]
-
+        
         s.evaluate(self.env)
 
         e = Identifier(Self(), Name('e'))
 
         expect_s = [(Identifier(Self()), Identifier(Name('z')), Identifier(Self()))]
-        expect_t = [(e, Identifier(Name('z')).evaluate(self.env), e),
-                    (Identifier(Self()), Identifier(Name('x')), e)]
-
         self.assertCountEqual(expect_s, s.as_triples(self.env))
+
+        expect_t = [(e, Identifier(Name('z')).evaluate(self.env), e),
+                   (Identifier(Self()), Identifier(Name('x')), e)]
         self.assertCountEqual(expect_t, t.as_triples(self.env))
 
     def test_as_triples_with_expansion_as_argument(self):
@@ -649,18 +651,23 @@ class TemplateClassTest(unittest.TestCase):
 
     def test_replace_self_with_name(self):
         name = Identifier(Self(), Name('name'))
-        name = replace_self_in_name(name, Identifier(Name('self')))
-        self.assertEqual(name, Identifier(Name('self', 'name')))
+        name = replace_self_in_identifier(name, Name('new_self'))
+        self.assertEqual(name, Identifier(Name('new_self'), Name('name')))
 
     def test_replace_self_with_dotted_name(self):
         name = Identifier(Self(), Name('name'))
-        name = replace_self_in_name(name, Identifier(list(map(Name,["self"]*3))))
-        self.assertEqual(name, Identifier(*list(map(Name, (['self'] * 3))), Name('name')))
+        name = replace_self_in_identifier(name, 
+                Identifier(Name("self_1"),Name("self_2"),Name("self_3")))
 
+        expected = Identifier(Identifier(Name("self_1"),Name("self_2"),Name("self_3")), Name('name'))
+        print(f"Expected: {expected}")
+        print(f'actual: {name}')
+        self.assertEqual(name,expected)
+        
     def test_replace_self_with_uri(self):
-        name = Identifier(Self(), 'name')
-        name = replace_self_in_name(name, Uri('self'))
-        self.assertEqual(name, Identifier(Name(Uri('self'), 'name')))
+        name = Identifier(Self(), Name('name'))
+        name = replace_self_in_identifier(name, Uri('uri_self'))
+        self.assertEqual(name, Identifier(Uri('uri_self'), Name('name')))
 
     def test_as_triples_multiple_inheritance(self):
         forms = self.parser.parse('s()(a=123)' +
