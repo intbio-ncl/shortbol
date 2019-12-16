@@ -51,6 +51,7 @@ class Expansion(Node):
         return processed_extensions + self.extensions
 
     def as_triples(self, context):
+        triples = []
         template_uri = self.template.evaluate(context)
         try:
             triples = context.lookup_template(template_uri)
@@ -65,7 +66,7 @@ class Expansion(Node):
             for argument in self.args:
                 result = tuple(map(lambda x: argument.marshal(x), result))
 
-            return result
+            return result 
 
         triples = map(argument_marshal, triples)
 
@@ -93,33 +94,4 @@ class Expansion(Node):
         return identifier
 
 
-def replace_self(triples, replace_with):
-    result = []
-    for triple in triples:
-        (s, p, o) = triple
-        if isinstance(s, Identifier):
-            s = replace_self_in_identifier(s, replace_with)
-        if isinstance(p, Identifier):
-            p = replace_self_in_identifier(p, replace_with)
-        if isinstance(o, Identifier):
-            o = replace_self_in_identifier(o, replace_with)
 
-        result.append((s, p, o))
-
-    return result
-
-#Maybe replace_self tests are written incorrectly and input for expansion tests are wrong.
-def replace_self_in_identifier(identifier, _with):
-    parts = identifier.parts
-    new_names = []
-    for part in parts:
-        # If Identifier then add parts?
-        if part == Self() and isinstance(_with, Identifier):
-            new_names += _with.parts
-        #Anything else we can just add?  
-        elif part == Self():
-            new_names.append(_with)
-        else:
-            new_names.append(part)
-
-    return Identifier(*new_names, location=identifier.location)

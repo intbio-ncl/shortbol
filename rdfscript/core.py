@@ -68,6 +68,16 @@ class Identifier(Node):
             self.parts.insert(0, uri)
 
         return self
+    
+    def flatten(self):
+        flat_list = []
+        for part in self.parts:
+            if isinstance(part,Identifier):
+                flat_list += part.parts
+            else:
+                flat_list.append(part)
+        return Identifier(*flat_list,location=self.location)
+
 
     def evaluate(self, context):
         if not isinstance(self.parts[0], (Uri, Parameter)):
@@ -245,7 +255,6 @@ class Argument(Value):
 
     def marshal(self, param):
         result = param
-
         def replace(x):
             if isinstance(x, Parameter) and self.position == x.position:
                 # Substitution
@@ -259,7 +268,14 @@ class Argument(Value):
                 result = Identifier(*new_parts, location=param.location)
             elif len(param.parts) == 1 and isinstance(param.parts[0], Parameter) and param.parts[0].position == self.position:
                 result = self.value
-                
+            elif isinstance(self.value,Identifier) and len(param.parts) > 1:
+                param_parts = param.parts
+                new_parts = []
+                for n in param_parts:
+                    #self.value.parts
+                    new_parts.append(replace(n))
+                result =  Identifier(*new_parts, location=param.location).flatten()
+
         return result
 
 

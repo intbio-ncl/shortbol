@@ -127,7 +127,6 @@ class Property(Node):
                 self.value = parameter
 
     def as_triples(self, context):
-
         triples = []
         if isinstance(self.value, Expansion):
             triples += self.value.as_triples(context)

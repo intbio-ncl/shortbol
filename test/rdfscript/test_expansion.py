@@ -1,6 +1,11 @@
 import unittest
 import pdb
 
+import sys
+import os
+
+sys.path.insert(1, os.path.join(sys.path[0], '..', ".."))
+
 from rdfscript.core import Name
 from rdfscript.core import Value
 from rdfscript.core import Uri
@@ -110,15 +115,15 @@ class TestExpansionClass(unittest.TestCase):
 
         t.evaluate(self.env)
 
-        pdb.set_trace()
         expect = [(Identifier(Name('e')),
                    Identifier(Name('e'), Name('p')),
                    Value(1)),
                   (Identifier(Name('e')),
                    Identifier(Name('x')),
                    Value(2))]
+        
+        self.assertCountEqual(expect, list(e.as_triples(self.env)))
 
-        self.assertCountEqual(expect, e.as_triples(self.env))
 
     def test_as_triples_with_expansion_in_template(self):
         forms = self.parser.parse('s()(z=true)' +
@@ -387,3 +392,60 @@ class TestExpansionClass(unittest.TestCase):
                   (Name('e'), Name('b').evaluate(self.env), Value(1))]
 
         self.assertCountEqual(expect, e.as_triples(self.env))
+
+    '''
+    as_triples regression tests.
+    '''
+    def test_as_triples_multiple_runs(self):
+        forms = self.parser.parse('t(x)(self.p=x) e is a t(1)(x=2)')
+        t = forms[0]
+        e = forms[1]
+
+        t.evaluate(self.env)
+        e.evaluate(self.env)
+
+        e_iter_1_triples = e.as_triples(self.env)
+        e_iter_2_triples = e.as_triples(self.env)
+
+        t_iter_1_triples = e.as_triples(self.env)
+        t_iter_2_triples = e.as_triples(self.env)
+
+        self.assertCountEqual(e_iter_1_triples, e_iter_2_triples)
+        self.assertCountEqual(t_iter_1_triples, t_iter_2_triples)
+
+
+    def test_as_triples_multiple_runs_multiple_inheritence(self):
+
+        forms = self.parser.parse('s()(a=123)' +
+                                  't()(b=456)' +
+                                  'u()(s() t())' +
+                                  'e is a u()')
+
+        s = forms[0]
+        t = forms[1]
+        u = forms[2]
+        e = forms[3]
+
+        s.evaluate(self.env)
+        t.evaluate(self.env)
+        u.evaluate(self.env)
+        e.evaluate(self.env)
+
+
+        s_iter_1_triples = s.as_triples(self.env)
+        s_iter_2_triples = s.as_triples(self.env)
+
+        t_iter_1_triples = t.as_triples(self.env)
+        t_iter_2_triples = t.as_triples(self.env)
+
+        u_iter_1_triples = u.as_triples(self.env)
+        u_iter_2_triples = u.as_triples(self.env)
+
+        e_iter_1_triples = e.as_triples(self.env)
+        e_iter_2_triples = e.as_triples(self.env)
+
+
+        self.assertCountEqual(s_iter_1_triples,s_iter_2_triples)
+        self.assertCountEqual(t_iter_1_triples,t_iter_2_triples)
+        self.assertCountEqual(u_iter_1_triples,u_iter_2_triples)
+        self.assertCountEqual(e_iter_1_triples,e_iter_2_triples)
