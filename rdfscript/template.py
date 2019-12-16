@@ -59,7 +59,12 @@ class Template(Node):
                     p.evaluate(context),
                     o.evaluate(context))
 
-        evaluated_triples = [triple_eval(triple) for triple in triples]
+        try:
+            evaluated_triples = [triple_eval(triple) for triple in triples]
+        except AttributeError as e:
+            print(triples)
+            raise AttributeError(e)
+
 
         uri = self.identifier.evaluate(context)
         context.assign_template(uri, evaluated_triples)
