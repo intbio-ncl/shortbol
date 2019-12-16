@@ -35,13 +35,8 @@ class Template(Node):
     def as_triples(self, context):
         triples = []
 
-        # old_self = context.uri
-        # context.current_self = Identifier(Self())
-
         for statement in self.body:
             triples += statement.as_triples(context)
-
-        # context.current_self = old_self
 
         def parameter_substitution(triple):
             result = triple

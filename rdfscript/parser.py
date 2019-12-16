@@ -114,9 +114,8 @@ def p_instancebody(p):
     '''instancebody : bodystatements'''
     p[0] = p[1]
 
+
 # bodies
-
-
 def p_bodystatements(p):
     '''bodystatements : bodystatement bodystatements'''
     p[0] = [p[1]] + p[2]

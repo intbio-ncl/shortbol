@@ -586,7 +586,6 @@ class TemplateClassTest(unittest.TestCase):
         self.assertEqual(t.identifier.evaluate(self.env), t.evaluate(self.env))
 
 
-    @unittest.skip("Not decided.")
     def test_extension_parameters(self):
         forms = self.parser.parse('t(a)(@extension AtLeastOne(a))')
         t = forms[0]
@@ -594,11 +593,11 @@ class TemplateClassTest(unittest.TestCase):
         t.evaluate(self.env)
 
         atleastone = self.env.lookup_extensions(t.identifier.evaluate(self.env))[0]
-        arg = t.parameters[1]
+        arg = Identifier(t.parameters[1])
 
         self.assertEqual(arg, atleastone.args[0])
 
-    @unittest.skip("Not decided.")
+
     def test_extension_parameters_multiple(self):
         forms = self.parser.parse('t(a, b)(@extension AtLeastOne(a, b))')
         t = forms[0]
@@ -606,7 +605,7 @@ class TemplateClassTest(unittest.TestCase):
         t.evaluate(self.env)
 
         atleastone = self.env.lookup_extensions(t.identifier.evaluate(self.env))[0]
-        args = t.parameters
+        args = [Identifier(p) for p in t.parameters[1:]]
 
         self.assertCountEqual(args, atleastone.args)
 
@@ -628,24 +627,20 @@ class TemplateClassTest(unittest.TestCase):
         self.assertCountEqual(expect, t.as_triples(self.env))
 
     def test_bodied_expansion_in_template_property(self):
-
         forms = self.parser.parse('s()(a = 1)' +
                                   't()(x = self.e is a s()(b = 2))')
-
         s = forms[0]
         t = forms[1]
-
         s.evaluate(self.env)
-
-        expect = [(Identifier(Self(), 'e'),
+        expect = [(Identifier(Self(), Name('e')),
                    Identifier(Name('a')).evaluate(self.env),
                    Value(1)),
-                  (Identifier(Self(), 'e'),
+                  (Identifier(Self(), Name('e')),
                    Identifier(Name('b')),
                    Value(2)),
                   (Identifier(Self()),
                    Identifier(Name('x')),
-                   Identifier(Self(), 'e'))]
+                   Identifier(Self(), Name('e')))]
 
         self.assertCountEqual(expect, t.as_triples(self.env))
 
@@ -659,9 +654,7 @@ class TemplateClassTest(unittest.TestCase):
         name = replace_self_in_identifier(name, 
                 Identifier(Name("self_1"),Name("self_2"),Name("self_3")))
 
-        expected = Identifier(Identifier(Name("self_1"),Name("self_2"),Name("self_3")), Name('name'))
-        print(f"Expected: {expected}")
-        print(f'actual: {name}')
+        expected = Identifier(Name("self_1"),Name("self_2"),Name("self_3"), Name('name'))
         self.assertEqual(name,expected)
         
     def test_replace_self_with_uri(self):

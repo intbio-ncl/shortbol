@@ -29,7 +29,10 @@ class RDFData(object):
         if isinstance(language_object, Identifier):
             result = Uri('')
             for part in language_object.parts:
-                result = result + part
+                try:
+                    result = result + part
+                except TypeError:
+                    pdb.set_trace()
             return self.to_rdf(result)
         if isinstance(language_object, Uri):
             return rdflib.URIRef(language_object.uri)

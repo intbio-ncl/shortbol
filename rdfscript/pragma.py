@@ -98,7 +98,6 @@ class ImportPragma(Node):
 
 
 class ExtensionPragma(Node):
-
     def __init__(self, name, args, location=None):
         super().__init__(location)
         self.name = name
@@ -113,7 +112,7 @@ class ExtensionPragma(Node):
         return self.__repr__()
 
     def __repr__(self):
-        return format("@extension %s(%s)" % (self.name, self.args))
+        return f"@extension {self.name}({self.args})"
 
     def substitute_params(self, parameters):
         for parameter in parameters:

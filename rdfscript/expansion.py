@@ -4,7 +4,6 @@ from rdfscript.error import TemplateNotFound
 
 
 class Expansion(Node):
-
     def __init__(self, identifier, template, args, body, location=None):
         super().__init__(location)
         self.template = template
@@ -70,9 +69,6 @@ class Expansion(Node):
 
         triples = map(argument_marshal, triples)
 
-        if self.identifier is not None:
-            triples = replace_self(triples, self.identifier)
-
         return triples
 
     def evaluate(self, context):
@@ -83,8 +79,6 @@ class Expansion(Node):
             evaluated_args.append(evaluated_arg)
 
         triples = self.as_triples(context)
-        old_self = context.current_self
-        context.current_self = identifier
 
         def evaluate_triple(triple):
             return tuple(map(lambda x: x.evaluate(context), triple))
@@ -94,15 +88,12 @@ class Expansion(Node):
         for ext in self.get_extensions(context):
             triples = ext.run(context, triples)
 
-        context.current_self = old_self
-
         context.add_triples(triples)
 
         return identifier
 
 
 def replace_self(triples, replace_with):
-    #import pdb; pdb.set_trace()
     result = []
     for triple in triples:
         (s, p, o) = triple
@@ -124,7 +115,7 @@ def replace_self_in_identifier(identifier, _with):
     for part in parts:
         # If Identifier then add parts?
         if part == Self() and isinstance(_with, Identifier):
-            new_names.append(_with)          
+            new_names += _with.parts
         #Anything else we can just add?  
         elif part == Self():
             new_names.append(_with)
