@@ -12,9 +12,6 @@ from rdfscript.core import Name, Uri, Self, Value, Parameter, Identifier
 from rdfscript.template import Template
 
 from rdfscript.pragma import ExtensionPragma
-from rdfscript.expansion import replace_self_in_identifier
-
-
 
 
 class TemplateClassTest(unittest.TestCase):
@@ -643,24 +640,6 @@ class TemplateClassTest(unittest.TestCase):
                    Identifier(Self(), Name('e')))]
 
         self.assertCountEqual(expect, t.as_triples(self.env))
-
-    def test_replace_self_with_name(self):
-        name = Identifier(Self(), Name('name'))
-        name = replace_self_in_identifier(name, Name('new_self'))
-        self.assertEqual(name, Identifier(Name('new_self'), Name('name')))
-
-    def test_replace_self_with_dotted_name(self):
-        name = Identifier(Self(), Name('name'))
-        name = replace_self_in_identifier(name, 
-                Identifier(Name("self_1"),Name("self_2"),Name("self_3")))
-
-        expected = Identifier(Name("self_1"),Name("self_2"),Name("self_3"), Name('name'))
-        self.assertEqual(name,expected)
-        
-    def test_replace_self_with_uri(self):
-        name = Identifier(Self(), Name('name'))
-        name = replace_self_in_identifier(name, Uri('uri_self'))
-        self.assertEqual(name, Identifier(Uri('uri_self'), Name('name')))
 
     def test_as_triples_multiple_inheritance(self):
         forms = self.parser.parse('s()(a=123)' +

@@ -2,14 +2,15 @@ from .core import Node, Name, Self, Parameter, Identifier
 from .pragma import ExtensionPragma
 from .expansion import Expansion
 
-class Template(Node):
 
+class Template(Node):
     def __init__(self, identifier, parameters, body, location=None):
         super().__init__(location)
         self.identifier = identifier
-        self.parameters = [Self()]
+        self.parameters = []
         for pos, param in enumerate(parameters):
             self.parameters.append(Parameter(param, pos, location))
+        self.parameters.insert(0, Self())
 
         self.extensions = []
         self.body = []
@@ -41,11 +42,11 @@ class Template(Node):
         def parameter_substitution(triple):
             result = triple
             for parameter in self.parameters:
-                result = tuple(map(lambda x: parameter.substitute(x), result))
+                result = tuple([parameter.substitute(x) for x in result])
 
             return result
 
-        triples = map(parameter_substitution, triples)
+        triples = [parameter_substitution(triple) for triple in triples]
 
         return list(triples)
 

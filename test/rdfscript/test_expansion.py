@@ -121,18 +121,8 @@ class TestExpansionClass(unittest.TestCase):
                   (Identifier(Name('e')),
                    Identifier(Name('x')),
                    Value(2))]
-
-        print(type(e.as_triples(self.env)))
-        for k in  e.as_triples(self.env):
-            print(k)
-        print("\n\n")
-        for k in  e.as_triples(self.env):
-            print(k)
-        print("\n\n")
-        for k in  e.as_triples(self.env):
-            print(k)
             
-        self.assertCountEqual(expect,e.as_triples(self.env))
+        self.assertCountEqual(expect, e.as_triples(self.env))
         self.assertCountEqual(expect, e.as_triples(self.env))
 
 
@@ -263,8 +253,8 @@ class TestExpansionClass(unittest.TestCase):
 
         s.evaluate(self.env)
         t.evaluate(self.env)
-        exts = [ExtensionPragma('ext', [Name(Self(), 'name')]),
-                ExtensionPragma('ext', [Name(Self(), 'name')])]
+        exts = [ExtensionPragma('ext', [Identifier(Name('e'), Name('name'))]),
+                ExtensionPragma('ext', [Identifier(Name('e'), Name('name'))])]
 
         self.assertCountEqual(e.get_extensions(self.env), exts)
 
@@ -380,11 +370,11 @@ class TestExpansionClass(unittest.TestCase):
         t.evaluate(self.env)
         u.evaluate(self.env)
 
-        expect = [(Name('e'),
-                   Name('a').evaluate(self.env),
+        expect = [(Identifier(Name('e')),
+                   Identifier(Name('a')).evaluate(self.env),
                    Value(123)),
-                  (Name('e'),
-                   Name('b').evaluate(self.env),
+                  (Identifier(Name('e')),
+                   Identifier(Name('b')).evaluate(self.env),
                    Value(456))]
 
         self.assertCountEqual(expect, e.as_triples(self.env))
@@ -399,8 +389,8 @@ class TestExpansionClass(unittest.TestCase):
 
         s.evaluate(self.env)
 
-        expect = [(Name('e'), Name('a').evaluate(self.env), Value(1)),
-                  (Name('e'), Name('b').evaluate(self.env), Value(1))]
+        expect = [(Identifier(Name('e')), Identifier(Name('a')).evaluate(self.env), Value(1)),
+                  (Identifier(Name('e')), Identifier(Name('b')).evaluate(self.env), Value(1))]
 
         self.assertCountEqual(expect, e.as_triples(self.env))
 
@@ -413,17 +403,31 @@ class TestExpansionClass(unittest.TestCase):
         e = forms[1]
 
         t.evaluate(self.env)
-        e.evaluate(self.env)
 
         e_iter_1_triples = e.as_triples(self.env)
         e_iter_2_triples = e.as_triples(self.env)
 
-        t_iter_1_triples = e.as_triples(self.env)
-        t_iter_2_triples = e.as_triples(self.env)
+        t_iter_1_triples = t.as_triples(self.env)
+        t_iter_2_triples = t.as_triples(self.env)
 
         self.assertCountEqual(e_iter_1_triples, e_iter_2_triples)
         self.assertCountEqual(t_iter_1_triples, t_iter_2_triples)
 
+    def test_as_triples_multiple_runs_empty_template(self):
+        forms = self.parser.parse('t(x)() e is a t(1)(x=2)')
+        t = forms[0]
+        e = forms[1]
+
+        t.evaluate(self.env)
+
+        e_iter_1_triples = e.as_triples(self.env)
+        e_iter_2_triples = e.as_triples(self.env)
+
+        t_iter_1_triples = t.as_triples(self.env)
+        t_iter_2_triples = t.as_triples(self.env)
+
+        self.assertCountEqual(e_iter_1_triples, e_iter_2_triples)
+        self.assertCountEqual(t_iter_1_triples, t_iter_2_triples)
 
     def test_as_triples_multiple_runs_multiple_inheritence(self):
 

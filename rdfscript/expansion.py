@@ -1,20 +1,24 @@
-from rdfscript.core import Argument, Identifier, Name, Node, Self, Uri
+from rdfscript.core import Argument, Identifier, Name, Node, Self, Uri, Parameter
 from rdfscript.pragma import ExtensionPragma
 from rdfscript.error import TemplateNotFound
+
+import pdb
 
 
 class Expansion(Node):
     def __init__(self, identifier, template, args, body, location=None):
         super().__init__(location)
         self.template = template
-        self.identifier = identifier
-        self.args = [] if identifier is None else [Argument(identifier, -1)]
+        self.identifier = Self() if identifier is None else identifier
+        self.args = []
         for n in range(0, len(args)):
             arg = args[n]
             if isinstance(arg, Argument):
                 self.args.append(Argument(arg.value, n, location))
             else:
                 self.args.append(Argument(arg, n, location))
+
+        self.args.append(Argument(identifier, -1))
 
         self.extensions = []
         self.body = []
@@ -61,14 +65,17 @@ class Expansion(Node):
         for statement in self.body:
             triples += statement.as_triples(context)
 
+        if self.num_expected_arguments(context) != len(self.args):
+            pdb.set_trace()
+
         def argument_marshal(triple):
             result = triple
             for argument in self.args:
-                result = tuple(map(lambda x: argument.marshal(x), result))
+                result = tuple([argument.marshal(x) for x in result])
 
-            return result 
+            return result
 
-        triples = map(argument_marshal, triples)
+        triples = [argument_marshal(triple) for triple in triples]
 
         return triples
 
@@ -82,9 +89,9 @@ class Expansion(Node):
         triples = self.as_triples(context)
 
         def evaluate_triple(triple):
-            return tuple(map(lambda x: x.evaluate(context), triple))
+            return tuple([x.evaluate(context) for x in triple])
 
-        triples = map(evaluate_triple, triples)
+        triples = [evaluate_triple(triple) for triple in triples]
 
         for ext in self.get_extensions(context):
             triples = ext.run(context, triples)
@@ -93,5 +100,27 @@ class Expansion(Node):
 
         return identifier
 
+    def num_expected_arguments(self, context):
+        template_uri = self.template.evaluate(context)
+        try:
+            triples = context.lookup_template(template_uri)
+        except KeyError:
+            raise TemplateNotFound(template_uri, self.template.location)
 
+        def get_top_parameter_in_identifier(identifier):
+            top_index = 0
+            for part in identifier.parts:
+                if isinstance(part, Parameter) and part.position > top_index:
+                    top_index = part.position
 
+            return top_index
+
+        num = 0
+        for triple in triples:
+            try:
+                num = max(num, *[get_top_parameter_in_identifier(x) for x in triple])
+            except AttributeError:
+                pass
+
+        return num
+                

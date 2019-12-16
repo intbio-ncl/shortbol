@@ -142,7 +142,7 @@ class Parameter(Name):
                 else:
                     return x 
 
-            new_names = map(replace, possible_parameter.parts)
+            new_names = [replace(part) for part in possible_parameter.parts]
             result = Identifier(*new_names, location=possible_parameter.location)
 
         return result
@@ -264,7 +264,7 @@ class Argument(Value):
                     
         if isinstance(param, Identifier):
             if isinstance(self.value, (Uri, Name, Parameter)):
-                new_parts = map(replace, param.parts)
+                new_parts = [replace(part) for part in param.parts]
                 result = Identifier(*new_parts, location=param.location)
             elif len(param.parts) == 1 and isinstance(param.parts[0], Parameter) and param.parts[0].position == self.position:
                 result = self.value
