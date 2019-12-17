@@ -18,7 +18,7 @@ class REPL:
                        paths=optpaths,
                        extensions=optextensions)
 
-        self.parser = parser.Parser(debug_lvl=debug_lvl)
+        self.parser = Parser()
         self.reader = self.parser.scanner
         self.out_file = out
 

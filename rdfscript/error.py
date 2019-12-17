@@ -155,3 +155,4 @@ class InternalError(RDFScriptError):
 
     def __str__(self):
         return RDFScriptError.__str__(self) + format("%s caused an internal error.\n\n" % self.object)
+

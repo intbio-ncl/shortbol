@@ -18,7 +18,7 @@ class Expansion(Node):
             else:
                 self.args.append(Argument(arg, n, location))
 
-        self.args.append(Argument(identifier, -1))
+        self.args.append(Argument(self.identifier, -1))
 
         self.extensions = []
         self.body = []
@@ -65,8 +65,8 @@ class Expansion(Node):
         for statement in self.body:
             triples += statement.as_triples(context)
 
-        if (self.num_expected_arguments(context) -1) != len(self.args):
-            pdb.set_trace()
+        #if (self.num_expected_arguments(context) -1) != len(self.args):
+         #   pdb.set_trace()
 
         def argument_marshal(triple):
             result = triple
@@ -101,7 +101,6 @@ class Expansion(Node):
         return identifier
 
     def num_expected_arguments(self, context):
-
         template_uri = self.template.evaluate(context)
         try:
             triples = context.lookup_template(template_uri)
@@ -109,21 +108,22 @@ class Expansion(Node):
             raise TemplateNotFound(template_uri, self.template.location)
 
         def get_top_parameter_in_identifier(identifier):
-            #pdb.set_trace()
             top_index = 0
             for part in identifier.parts:
-                if isinstance(part, Parameter) :#and part.position > top_index:
-                    top_index = top_index + 1# part.position
+                print(part)
+                if isinstance(part, Parameter) and part.position > top_index:
+                    top_index = part.position
 
             return top_index
 
+
         num = 0
         for triple in triples:
-            for x in triple:
-                try:
-                    num = num + get_top_parameter_in_identifier(x) #max(num, *[get_top_parameter_in_identifier(x) for x in triple])
-                except AttributeError:
-                    pass
+            try:
+                num = max(num, *[get_top_parameter_in_identifier(x) for x in triple])
+            except AttributeError:
+                pass
+
 
         return num
                 

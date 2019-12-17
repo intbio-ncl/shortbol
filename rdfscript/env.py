@@ -142,6 +142,7 @@ class Env(object):
                     self.run_extension_on_graph(form)
                     result = Value(True)
                 else:
+                    print(form)
                     result = form.evaluate(self)
             except RDFScriptError as e:
                 logging.error(str(e))

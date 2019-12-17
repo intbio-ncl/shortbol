@@ -2,20 +2,31 @@ use <sbol>
 
 @prefix sbol_prefix = <http://sbol_prefix.org/>
 @prefix sbol_prefix
+# Example 4
+# The TetR and LacI proteins
+TetR is a sbol.ProteinComponent()
+LacI is a sbol.ProteinComponent()
 
-# Declare a promoter named pTetR
-pTetR is a sbol.Promoter()
+TetR_fc is a sbol.FunctionalComponent(TetR,sbol.none)
+LacI_fc is a sbol.FunctionalComponent(LacI,sbol.none)
+
+#Make a participation for the two proteins
+TetR_part is a sbol.Participation(TetR_fc, inhibitor)
+LacI_part is a sbol.Participation(LacI_fc, inhibited)
+
+#Make an Interaction for the participants
+TetRLacI_int is a sbol.Interaction(Inhibition)
 (
-	# give pTetR a description
-    sbol.description =  "pTet promoter"
+    sbol.participation = TetR_part
+    sbol.participation = LacI_part	
 )
 
-#Declare a lacI coding sequence
-lacI_CDS is a sbol.CDS()
+# The TetR inverter module
+TetR_inverter is a sbol.ModuleDefinition()
 (
-	# Properties of lacI CDS
-    sbol.name =  "lacI"
-    sbol.description =  "LacI protein coding region"
+    sbol.description =  "TetR inverter"
+    sbol.functionalComponent = TetR_fc
+    sbol.functionalComponent = LacI_fc
+    sbol.interaction = TetRLacI_int
 )
-
 @extension SbolIdentity()
