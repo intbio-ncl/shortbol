@@ -89,6 +89,9 @@ class Env(object):
         self._symbol_table[uri] = value
 
     def lookup(self, uri):
+        print(f"Searching for alias for: {uri}")
+        print(type(uri))
+        print(self._symbol_table.get(uri, None))
         return self._symbol_table.get(uri, None)
 
     def assign_template(self, uri, template):
@@ -142,7 +145,6 @@ class Env(object):
                     self.run_extension_on_graph(form)
                     result = Value(True)
                 else:
-                    print(form)
                     result = form.evaluate(self)
             except RDFScriptError as e:
                 logging.error(str(e))

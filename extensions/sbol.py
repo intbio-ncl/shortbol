@@ -66,8 +66,6 @@ class SbolIdentity:
         subjects = list(triplepack.subjects)
 
         for i in range(len(subjects)):
-            print("?")
-            print(subjects[i])
             SBOLCompliant(subjects[i]).run(triplepack, subjects)
 
         return triplepack

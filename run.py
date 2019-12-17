@@ -205,6 +205,7 @@ def parse_from_file(filepath,
         print(env)
     else:
         with open(out, 'w') as o:
+            import pdb; pdb.set_trace()
             sbol = str(env)
         
             ret_code = ""

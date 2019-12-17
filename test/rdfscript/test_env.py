@@ -1,6 +1,11 @@
 import unittest
 
-from rdfscript.rdfscriptparser import RDFScriptParser
+import sys
+import os
+
+sys.path.insert(1, os.path.join(sys.path[0], '..', ".."))
+
+from rdfscript.parser import Parser
 from rdfscript.env import Env
 from rdfscript.core import (Name,
                             Value,
@@ -11,7 +16,7 @@ class EnvTest(unittest.TestCase):
 
     def setUp(self):
         self.env = Env()
-        self.parser = RDFScriptParser()
+        self.parser = Parser()
 
     def tearDown(self):
         None
@@ -36,10 +41,6 @@ class EnvTest(unittest.TestCase):
         self.env.prefix = prefix
         self.assertEqual(Uri('http://eg/'), self.env.uri)
         self.assertEqual('x', self.env.prefix)
-
-    def test_self_uri_init(self):
-
-        self.assertEqual(self.env.current_self, Uri(self.env._rdf._g.identifier.toPython()))
 
     def test_self_uri_set(self):
 
@@ -67,7 +68,7 @@ class EnvTest(unittest.TestCase):
     def test_template_binding(self):
 
         template = self.parser.parse('t()(x = 1 y = 2)')[0]
-        uri = template.name.evaluate(self.env)
+        uri = template.identifier.evaluate(self.env)
         self.assertFalse(self.env.lookup_template(uri))
 
         self.env.assign_template(uri, template.as_triples(self.env))
@@ -77,7 +78,7 @@ class EnvTest(unittest.TestCase):
     def test_template_lookup(self):
 
         template = self.parser.parse('t()(x = 1 y = 2)')[0]
-        uri = template.name.evaluate(self.env)
+        uri = template.identifier.evaluate(self.env)
         self.assertFalse(self.env.lookup_template(uri))
 
         self.env._template_table[uri] = template.as_triples(self.env)
@@ -88,7 +89,7 @@ class EnvTest(unittest.TestCase):
     def test_extension_binding(self):
 
         t = self.parser.parse('t()(@extension E() @extension F())')[0]
-        uri = t.name.evaluate(self.env)
+        uri = t.identifier.evaluate(self.env)
         extensions = t.extensions
 
         self.assertFalse(self.env.lookup_extensions(uri))
@@ -100,7 +101,7 @@ class EnvTest(unittest.TestCase):
     def test_extension_lookup(self):
 
         t = self.parser.parse('t()(@extension E() @extension F())')[0]
-        uri = t.name.evaluate(self.env)
+        uri = t.identifier.evaluate(self.env)
         extensions = t.extensions
 
         self.assertFalse(self.env.lookup_extensions(uri))

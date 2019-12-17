@@ -15,7 +15,7 @@ TetR_part is a sbol.Participation(TetR_fc, inhibitor)
 LacI_part is a sbol.Participation(LacI_fc, inhibited)
 
 #Make an Interaction for the participants
-TetRLacI_int is a sbol.Interaction(Inhibition)
+TetRLacI_int is a sbol.Interaction(sbol.inhibition)
 (
     sbol.participation = TetR_part
     sbol.participation = LacI_part	
