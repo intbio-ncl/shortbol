@@ -160,8 +160,7 @@ def hacky_conversion(filepath,template_dir):
                     #Re assemble line
                     split_text[curr_line_num] = lhs + " = " + rhs 
                     curr_line_num = curr_line_num + 1
-            
-  
+
 
     with open(temp_file, 'w') as modified:
         for line in split_text:

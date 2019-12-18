@@ -73,7 +73,7 @@ class Template(Node):
         collected = self.extensions
 
         for statement in self.body:
-            if isinstance(statement, Expansion) and statement.identifier is None:
+            if isinstance(statement, Expansion) and statement.identifier == Self():
                 collected += statement.get_extensions(context)
 
         return collected
@@ -120,15 +120,6 @@ class Property(Node):
 
     def __repr__(self):
         return format("%s = %s\n" % (self.identifier, self.value))
-
-
-    def substitute_params(self, parameters):
-
-        for parameter in parameters:
-            if parameter.is_substitute(self.identifier):
-                self.identifier = parameter
-            if parameter.is_substitute(self.value):
-                self.value = parameter
 
     def as_triples(self, context):
         triples = []

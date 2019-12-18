@@ -1,15 +1,15 @@
 import unittest
-import rdflib
 
 from extensions.triples import TriplePack
-from rdfscript.core import (Uri,
-                            Value,
-                            Name)
+from rdfscript.core import Uri
+from rdfscript.core import Value
+from rdfscript.core import Name
+from rdfscript.core import Identifier
+from rdfscript.parser import Parser
 
-from rdfscript.template import (Template,
-                                Property,
-                                Expansion)
+from rdfscript.template import Expansion
 from rdfscript.env import Env
+
 
 def triple_eval(triple, env):
     (s, p, o) = triple
@@ -19,31 +19,23 @@ def triple_eval(triple, env):
 
     return (s, p, o)
 
+
 class TriplePackTest(unittest.TestCase):
 
     def setUp(self):
         self.env = Env()
+        self.parser = Parser()
+        self.vuri = self.parser.parse('<http://test.triplepack/#variable>')[0].parts[0]
+        self.env.assign(self.vuri, Value(42))
 
-        self.v_uri = Uri('http://test.triplepack/#variable')
-        self.env.assign(self.v_uri,
-                        Value(42))
+        self.template = self.parser.parse(
+            ('A(x, y)(x = 42 '
+             '<http://example.eg/predicate> = y)'))[0]
 
-        self.template = Template(Name('A'),
-                                  [Name('x'),
-                                   Name('y')],
-                                  [Property(Name('x'),
-                                            Value(42)),
-                                   Property(Uri('http://example.eg/predicate'),
-                                            Name('y'))])
-
-        self.expansion = Expansion(Name('e'),
-                                   Name('A'),
-                                   [Value(1),
-                                    Value(2)],
-                                   [])
+        self.expansion = self.parser.parse('e is a A(1, 2)')[0]
         self.template.evaluate(self.env)
 
-        triples =  self.expansion.as_triples(self.env)
+        triples = self.expansion.as_triples(self.env)
         triples = [triple_eval(triple, self.env) for triple in triples]
 
         bindings = self.env._symbol_table
@@ -55,8 +47,7 @@ class TriplePackTest(unittest.TestCase):
         None
 
     def test_triples_init(self):
-
-        exp_uri = Name('e').evaluate(self.env)
+        exp_uri = Identifier(Name('e')).evaluate(self.env)
         triples = [(exp_uri,
                     Value(1),
                     Value(42)),
@@ -64,20 +55,18 @@ class TriplePackTest(unittest.TestCase):
                     Uri('http://example.eg/predicate'),
                     Value(2))]
 
-        self.assertEqual(self.pack.triples, triples)
-        self.assertEqual(self.pack.bindings, self.env._symbol_table)
-        self.assertEqual(self.pack.templates, self.env._template_table)
+        self.assertCountEqual(self.pack.triples, triples)
+        self.assertCountEqual(self.pack.bindings, self.env._symbol_table)
+        self.assertCountEqual(self.pack.templates, self.env._template_table)
 
     def test_triples_lookup(self):
-
-        self.assertEqual(self.pack.lookup(self.v_uri), Value(42))
+        self.assertEqual(self.pack.lookup(self.vuri), Value(42))
         self.assertEqual(self.pack.lookup(Uri('http://triplepack.org/#not')), None)
 
     def test_triples_lookup_template(self):
-
-        self.assertEqual(self.pack.lookup_template(self.template.name.evaluate(self.env)),
+        self.assertCountEqual(self.pack.lookup_template(self.template.identifier.evaluate(self.env)),
                          self.template.as_triples(self.env))
-        self.assertEqual(self.pack.lookup_template(Uri('http://triplepack.org/#not')), None)
+        self.assertCountEqual(self.pack.lookup_template(Uri('http://triplepack.org/#not')), None)
 
     def test_triples_get_subjects_1(self):
 

@@ -29,8 +29,6 @@ class RDFData(object):
         if isinstance(language_object, Identifier):
             result = Uri('')
             for part in language_object.parts:
-                print(result)
-                print(part)
                 result = result + part
             return self.to_rdf(result)
         if isinstance(language_object, Uri):

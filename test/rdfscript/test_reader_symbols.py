@@ -1,12 +1,12 @@
 import unittest
-import ply.lex as leex
 
-import rdfscript.reader as reader
+from rdfscript.parser import Parser
+
 
 class ReaderSymbolTest(unittest.TestCase):
 
     def setUp(self):
-        self.reader = leex.lex(module=reader)
+        self.reader = Parser().scanner
         self.reader.at_line_start = True
         self.reader.indent_stack = [0]
 
@@ -61,21 +61,6 @@ class ReaderSymbolTest(unittest.TestCase):
 
         token = self.reader.token()
         self.assertEqual(token.value, 'end/')
-        self.assertEqual(token.type, 'SYMBOL')
-
-    def test_symbol_hash(self):
-        self.reader.input('start#end #start end#')
-
-        token = self.reader.token()
-        self.assertEqual(token.value, 'start#end')
-        self.assertEqual(token.type, 'SYMBOL')
-
-        token = self.reader.token()
-        self.assertEqual(token.value, '#start')
-        self.assertEqual(token.type, 'SYMBOL')
-
-        token = self.reader.token()
-        self.assertEqual(token.value, 'end#')
         self.assertEqual(token.type, 'SYMBOL')
 
     def test_symbol_colon(self):
