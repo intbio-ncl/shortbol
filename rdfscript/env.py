@@ -89,9 +89,6 @@ class Env(object):
         self._symbol_table[uri] = value
 
     def lookup(self, uri):
-        print(f"Searching for alias for: {uri}")
-        print(type(uri))
-        print(self._symbol_table.get(uri, None))
         return self._symbol_table.get(uri, None)
 
     def assign_template(self, uri, template):
@@ -117,8 +114,7 @@ class Env(object):
         #Get type of extension
         extension_class = self.get_extension(extension.name)
         #Creates instance.
-        extension_obj = extension_class(*extension.args)
-        
+        extension_obj = extension_class(*extension.args)    
         #Creates instance of TriplePack which just holds the triples with extra utility.
         pack = TriplePack(triples, self._symbol_table, self._template_table)
         return extension_obj.run(pack).triples

@@ -35,10 +35,13 @@ class EnvTest(unittest.TestCase):
         prefix = 'x'
         self.env.bind_prefix(prefix, Uri('http://eg/'))
         before = Uri(self.env._rdf._g.identifier.toPython())
+
+        
         self.assertEqual(before, self.env.uri)
         self.assertEqual(self.env.prefix, None)
 
         self.env.prefix = prefix
+        self.env.uri = Uri('http://eg/')
         self.assertEqual(Uri('http://eg/'), self.env.uri)
         self.assertEqual('x', self.env.prefix)
 

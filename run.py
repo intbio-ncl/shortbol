@@ -205,7 +205,18 @@ def parse_from_file(filepath,
         print(env)
     else:
         with open(out, 'w') as o:
-            import pdb; pdb.set_trace()
+           # import pdb; pdb.set_trace()
+            for triples in env._template_table.values():
+                for triple in triples:
+                    print("-----------------")
+                    for t in triple:
+
+                        print(f'{type(t)} : {t}')
+            print("------------------------------------------")
+            for triple in env._symbol_table:
+                if  str(triple) == "<http://sbols.org/v2#inhibition>":
+                    print("Is present in symbol table")
+                print(triple)
             sbol = str(env)
         
             ret_code = ""
