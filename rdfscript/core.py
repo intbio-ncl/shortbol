@@ -1,8 +1,8 @@
 import rdflib
 import re
 
-from .error import (PrefixError,
-                    UnexpectedType)
+from .error import PrefixError
+from .error import UnexpectedType
 
 
 class Node:
