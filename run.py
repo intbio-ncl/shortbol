@@ -253,7 +253,7 @@ def produce_tables(lib_paths):
     This process is just the parse_from file method and returns the tables.
     '''
     optpaths = lib_paths
-    to_run_fn = "temp.rdfsh"
+    to_run_fn = os.path.join(lib_paths[0],"temp.rdfsh")
     f= open(to_run_fn,"a")
     f.write("use <sbol>")
     f.close()

@@ -1,8 +1,0 @@
-lacI_term is a ComponentDefinition(ComponentDefinition_role_promoter)
-(
-  sequence = lacI_term_seq
-)
-pTetR is a ComponentDefinition(promoter)
-(
-  sequence = pTetR_seq
-)
