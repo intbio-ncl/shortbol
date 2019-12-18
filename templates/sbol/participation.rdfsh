@@ -1,0 +1,59 @@
+@prefix sbol
+
+# Participation Templates
+Participation(functional_component, withrole)
+(
+  Identified(Participation)
+  role = withrole
+  participant = functional_component
+)
+
+Inhibitor(functional_component)
+(
+  Participation(functional_component,sbol.inhibitor)
+)
+
+Inhibited(functional_component)
+(
+  Participation(functional_component,sbol.inhibited)
+)
+
+Reactant(functional_component)
+(
+  Participation(functional_component,sbol.reactant)
+)
+
+Stimulator(functional_component)
+(
+  Participation(functional_component,sbol.stimulator)
+)
+
+Stimulated(functional_component)
+(
+  Participation(functional_component,sbol.stimulated)
+)
+
+Product(functional_component)
+(
+  Participation(functional_component,sbol.product)
+)
+
+Promoter_t(functional_component)
+(
+  Participation(functional_component,sbol.promoter_t)
+)
+
+Modifier(functional_component)
+(
+  Participation(functional_component,sbol.modifier)
+)
+
+Modified(functional_component)
+(
+  Participation(functional_component,sbol.modified)
+)
+
+Template(functional_component)
+(
+  Participation(functional_component,sbol.template)
+)

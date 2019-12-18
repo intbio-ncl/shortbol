@@ -1,9 +1,11 @@
 @prefix sbol
 
-iupacDNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
-iupacRNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
-iupacProtein = <http://www.chem.qmul.ac.uk/iupac/AminoAcid/>
-opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
+Sequence(x, y)
+(
+  TopLevel(Sequence)
+  elements = x
+  encoding = y
+)
 
 DnaSequence(x)       (Sequence(x, iupacDNA))
 
@@ -12,3 +14,37 @@ RnaSequence(x)       (Sequence(x, iupacDNA))
 ProteinSequence(x)   (Sequence(x, iupacProtein))
 
 ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
+
+SequenceAnnotation(location)
+(
+  TopLevel(SequenceAnnotation)
+  sbol.location = location
+)
+
+SequenceConstraint(subject, object, restriction)
+(
+  TopLevel(SequenceConstraint)
+  sbol.subject = subject
+  sbol.object = object
+  sbol.restriction = restriction
+)
+
+Precedes(subject, object)              
+(
+  SequenceConstraint(subject, object, sbol.precedes)
+)
+
+SameOrientationAs(subject, object)     
+(
+  SequenceConstraint(subject, object, sbol.sameOrientationAs)
+)
+
+OppositeOrientationAs(subject, object) 
+(
+  SequenceConstraint(subject, object, sbol.oppositeOrientationAs)
+)
+
+differentFrom(subject, object)         
+(
+  SequenceConstraint(subject, object, sbol.differentFrom)
+)

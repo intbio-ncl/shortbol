@@ -1,8 +1,8 @@
-target_gene is a Promoter()
-target is a Protein()
-
-target_gene_inhibition is a Inhibition(target_gene_inhibition, target_gene, target)
-CRISPR_Template is a ModuleDefinition()
+lacI_term is a ComponentDefinition(ComponentDefinition_role_promoter)
 (
-    sbol.interaction = target_gene_inhibition
+  sequence = lacI_term_seq
+)
+pTetR is a ComponentDefinition(promoter)
+(
+  sequence = pTetR_seq
 )

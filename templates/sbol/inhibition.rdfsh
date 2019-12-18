@@ -1,0 +1,57 @@
+@prefix sbol
+
+# Interaction Templates
+Interaction(type)
+(
+  Identified(Interaction)
+  sbol.type = type
+)
+
+
+Inhibition(name, of, by)
+(
+  name.of is a OutputComponent(of)
+  name.by is a InputComponent(by)
+  
+  name is a Interaction(inhibition)
+  (
+    self.participation.of is a Participation(name.of, inhibited)
+    self.participation.by is a Participation(name.by, inhibitor)
+    participation = self.participation.of
+    participation = self.participation.by
+  )
+)
+
+NonCovBonding(name, reactantA, reactantB)
+(
+  name.reactantA is a InOutComponent(reactantA)
+  name.reactantB is a InOutComponent(reactantB)  
+  
+  name is a Interaction(noncovalent_bonding)
+  (
+    self.participation.reactantA is a Participation(name.reactantA, reactant)
+    self.participation.reactantB is a Participation(name.reactantB, reactant)
+    participation = self.participation.reactantA
+    participation = self.participation.reactantB
+  )
+)
+
+NonCovBonding3(name, reactantA, reactantB, reactantC)
+(
+  name.reactantA is a InOutComponent(reactantA)
+  name.reactantB is a InOutComponent(reactantB)
+  name.reactantC is a InOutComponent(reactantC)    
+  
+  name is a Interaction(noncovalent_bonding)
+  (
+    self.participation.reactantA is a Participation(name.reactantA, reactant)
+    self.participation.reactantB is a Participation(name.reactantB, reactant)
+    self.participation.reactantC is a Participation(name.reactantC, reactant)
+    
+    participation = self.participation.reactantA
+    participation = self.participation.reactantB
+    participation = self.participation.reactantC    
+  )
+
+  interaction = name
+)

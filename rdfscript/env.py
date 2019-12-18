@@ -37,6 +37,7 @@ class Env(object):
         self._prefix = None
         self._uri = Uri(self._rdf._g.identifier.toPython())
         self._self = self._uri
+        self._paths = paths
 
         if filename:
             paths.append(pathlib.Path(filename).parent)
@@ -130,7 +131,7 @@ class Env(object):
         extension_obj = extension_class(*extension.args)
         
         #Creates instance of TriplePack which just holds the triples with extra utility.
-        pack = TriplePack(triples, self._symbol_table, self._template_table)
+        pack = TriplePack(triples, self._symbol_table, self._template_table, self._paths)
         return extension_obj.run(pack).triples
 
 

@@ -1,5 +1,5 @@
 import rdflib
-
+import os
 from .logic import And
 from .error import ExtensionError
 from rdfscript.core import Uri, Value
@@ -36,6 +36,9 @@ ownership_predicates = {Uri(sbolns.uri + predicate) for predicate in
                          'location',
                          'sequenceAnnotation']}
 
+
+
+
 # other special URIs in the context of SBOL compliant URIs
 persistentIdentity = Uri(sbolns.uri + 'persistentIdentity')
 displayId = Uri(sbolns.uri + 'displayId')
@@ -64,9 +67,10 @@ class SbolIdentity:
 
     def run(self, triplepack):
         subjects = list(triplepack.subjects)
+        identifiers = get_identifier_uris(triplepack._paths)
 
         for i in range(len(subjects)):
-            SBOLCompliant(subjects[i]).run(triplepack, subjects)
+            SBOLCompliant(subjects[i], identifiers).run(triplepack, subjects)
 
         return triplepack
 
@@ -77,10 +81,16 @@ class SBOLCompliant:
     SBOL compliant URI, and if not, attempts to modify triplepack such
     that they are.
     '''
-    def __init__(self, for_subject):
+    def __init__(self, for_subject, identifiers):
         self.subject = for_subject
+        self.identifiers = identifiers
 
     def run(self, triplepack, subjects):
+        
+
+        if not is_valid_parameters(self.identifiers, triplepack,subjects):
+            raise SBOLComplianceError(f"Invalid Parameter type for {subjects}")
+
         # Everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
             new_displayId = self.subject.split()[-1]
@@ -96,7 +106,7 @@ class SBOLCompliant:
         if parent is not None:
             # its a child
             if not triplepack.has(parent, persistentIdentity):
-                SBOLCompliant(parent).run(triplepack, subjects)
+                SBOLCompliant(parent,self.identifiers).run(triplepack, subjects)
 
             # parent uri might have changed!!!
             parent = get_SBOL_parent(triplepack, self.subject)
@@ -116,6 +126,53 @@ class SBOLCompliant:
 
         return triplepack
 
+def is_valid_parameters(identifiers, triplepack, subjects):
+    #print(triplepack)
+    return True
+
+def get_identifier_uris(paths):
+    name = "identifiers.rdfsh"
+    identifier_path = None
+    for path in paths:
+        for root, dirs, files in os.walk(path):
+            if name in files:
+                identifier_path = os.path.join(root, name)
+                break
+    if identifier_path is None:
+        raise FileNotFoundError(f"Can't find file {name} for SBOL identifier extension")
+
+    identifiers = {}
+    data = open(identifier_path,"r")
+    lines = data.readlines()[1:]
+    cur_template_types = []
+    cur_template_property = ""
+    for line in lines:
+        if "=" not in line and "#" not in line:
+            continue
+        else:
+            line = line.replace(" ", "").replace("\n","")
+            if line[0] == "#":
+                template_types = line.split("(")[1].split(")")[0].split(",")
+                template_property = line.split(")")[1]
+                for template_type in template_types:
+                    if template_type not in identifiers.keys():
+                        identifiers[template_type]= {}
+                    identifiers[template_type][template_property] = []
+                    cur_template_types = template_types
+                    cur_template_property = template_property
+
+            if line[0] != "#" and "=" in line:
+                name = line.split("=")[0]
+                for cur_template_type in cur_template_types:
+                    identifiers[cur_template_type][cur_template_property].append(name)
+
+
+            
+
+    data.close()
+    for k,v in identifiers.items():
+        print(f'{k} : {v}')
+    return identifiers
 
 def is_SBOL_Compliant(triplepack, uri):
     version = get_SBOL_version(triplepack, uri)
@@ -257,3 +314,4 @@ class SBOLComplianceError(ExtensionError):
 
     def __str__(self):
         return ExtensionError.__str__(self) + format(" %s\n" % self._helpful_message)
+

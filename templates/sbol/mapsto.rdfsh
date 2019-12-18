@@ -1,0 +1,31 @@
+@prefix sbol
+
+MapsTo(local, remote, ref)
+(
+  Identified(MapsTo)
+  sbol.local = local
+  sbol.remote = remote
+  refinement = ref
+)
+
+MapsUseRemote(local, remote) 
+(
+  MapsTo(local, remote, sbol.useRemote)
+)
+
+MapsUseLocal(local, remote)  
+(
+  MapsTo(local, remote, sbol.useLocal)
+)
+
+MapsIdentical(local, remote) 
+(
+  MapsTo(local, remote, sbol.verifyIdentical)
+)
+
+MapsMerge(local, remote)     
+(
+  MapsTo(local, remote, sbol.merge)
+)
+
+

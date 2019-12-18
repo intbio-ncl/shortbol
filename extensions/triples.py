@@ -15,11 +15,12 @@ class TriplePack(object):
                 Template objects as values.
     """
 
-    def __init__(self, triples, bindings, templates):
+    def __init__(self, triples, bindings, templates, paths):
 
         self._triples = triples
         self._bindings = bindings
         self._templates = templates
+        self._paths = paths
 
     @property
     def triples(self):

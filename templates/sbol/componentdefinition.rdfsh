@@ -1,28 +1,10 @@
 @prefix sbol
 
-# ComponentDefinition type
-dNA = biopax.DnaRegion
-rNA = biopax.RnaRegion
-protein = biopax.Protein
-smallMolecule = biopax.SmallMolecule
-complex = biopax.Complex
-
-# ComponentDefinition role
-promoter       = <http://identifiers.org/so/SO:0000167>
-rbs            = <http://identifiers.org/so/SO:0000139>
-cds            = <http://identifiers.org/so/SO:0000316>
-terminator     = <http://identifiers.org/so/SO:0000141>
-gene           = <http://identifiers.org/so/SO:0000704>
-operator       = <http://identifiers.org/so/SO:0000057>
-engineeredGene = <http://identifiers.org/so/SO:0000280>
-mRNA           = <http://identifiers.org/so/SO:0000234>
-engineeredRegion = <http://identifiers.org/so/SO:0000804>
-nonCovBindingSite = <http://identifiers.org/so/SO:0001091>
-effector       = <http://identifiers.org/chebi/CHEBI:35224>
-startCodon     = <http://identifiers.org/so/SO:0000318>
-tag            = <http://identifiers.org/so/SO:0000324>
-engineeredTag  = <http://identifiers.org/so/SO:0000807>
-sgRNA          = <http://identifiers.org/so/SO:0001998>
+ComponentDefinition(t)
+(
+  TopLevel(ComponentDefinition)
+  type = t
+)
 
 DnaComponent() (ComponentDefinition(dNA))
 

@@ -1,0 +1,54 @@
+@prefix sbol
+
+Location(type,orientation) 
+(
+  TopLevel(type)
+  sbol.orientation = orientation
+)
+
+
+Range(start, end, orientation)
+(
+  Location(Range,orientation)
+  sbol.start = start
+  sbol.end = end
+)
+
+InlineRange(start,end)
+(
+  Range(start,end,inline)
+)
+
+ReverseComplementRange(start,end)
+(
+  Range(start,end,reverseComplement)
+)
+
+InlineCut(at,orientation)
+(
+  Location(Cut,inline)
+  sbol.at = at
+)
+
+ReverseComplementCut(at,orientation)
+(
+  Location(Cut,reverseComplement)
+  sbol.at = at
+)
+
+GenericLocation(orientation) 
+(
+  Location(GenericLocation,orientation)
+)
+
+InlineGenericLocation(at,orientation)
+(
+  GenericLocation(inline)
+)
+
+ReverseComplementGenericLocation(at,orientation)
+(
+  GenericLocation(reverseComplement)
+)
+
+
