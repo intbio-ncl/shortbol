@@ -121,5 +121,5 @@ class RDFData(object):
             return self._g.serialize(format='turtle').decode("utf-8")
         elif self._serializer == 'sbolxml':
             pysbolG = SBOL2Graph()
-            pysbolG.g = self._g
+            pysbolG += self._g
             return serialize_sboll2(pysbolG).decode("utf-8")

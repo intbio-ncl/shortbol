@@ -204,7 +204,6 @@ def parse_from_file(filepath,
         print(env)
     else:
         with open(out, 'w') as o:
-           # import pdb; pdb.set_trace()
             for triples in env._template_table.values():
                 for triple in triples:
                     print("-----------------")
@@ -217,7 +216,7 @@ def parse_from_file(filepath,
                     print("Is present in symbol table")
                 print(triple)
             sbol = str(env)
-        
+            
             ret_code = ""
             if not no_validation:
                 errors = []

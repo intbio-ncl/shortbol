@@ -41,7 +41,7 @@ class Env(object):
             self._importer = Importer(paths)
 
     def __repr__(self):
-        return format("%s" % self._rdf.serialise())
+        return f"{self._rdf.serialise()}"
 
     @property
     def prefix(self):
