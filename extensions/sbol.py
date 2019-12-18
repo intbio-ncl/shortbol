@@ -165,13 +165,8 @@ def get_identifier_uris(paths):
                 name = line.split("=")[0]
                 for cur_template_type in cur_template_types:
                     identifiers[cur_template_type][cur_template_property].append(name)
-
-
-            
-
+                    
     data.close()
-    for k,v in identifiers.items():
-        print(f'{k} : {v}')
     return identifiers
 
 def is_SBOL_Compliant(triplepack, uri):

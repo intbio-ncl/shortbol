@@ -1,0 +1,31 @@
+use <sbol>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+# Declare a promoter named pTetR
+pTetR is a sbol.Promoter()
+(
+# give pTetR a description
+    sbol.description =  "pTet promoter"
+)
+
+# Declare a CDS named pTetR
+lacI_CDS is a sbol.CDS()
+(
+	# Properties of lacI CDS
+    sbol.name =  "lacI"
+    sbol.description =  "LacI protein coding region"
+)
+# Declare a RBS named lacI_RBS
+lacI_RBS is a sbol.RBS()
+(
+    sbol.name =  "lacI_RBS"
+    sbol.description =  "RBS for the lacI CDS"
+)
+# Declare a terminator named lacI_term
+lacI_term is a sbol.Terminator()
+(
+    sbol.name =  "lacI_term"
+    sbol.description =  "Terminator for the lacI CDS"
+)
+@extension SbolIdentity()
