@@ -7,7 +7,7 @@ import json
 import sys
 import logging
 
-def validate_sbol(sbol, validator_url = 'http://www.async.ece.utah.edu/validate/'):
+def validate_sbol(sbol, validator_url = 'https://validator.sbolstandard.org/validate/'):
 
     # Structure POST request
     headers = {
