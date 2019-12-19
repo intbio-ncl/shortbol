@@ -24,7 +24,13 @@ wasDerivedFrom = prov.wasDerivedFrom
 
 use <sbol/identified>
 use <sbol/toplevel>
-use <sbol/sequence>
 use <sbol/componentdefinition>
 use <sbol/componentinstance>
+use <sbol/functionalcomponent>
+use <sbol/identifiers>
+use <sbol/location>
+use <sbol/mapsto>
 use <sbol/moduledefinition>
+use <sbol/participation>
+use <sbol/sequence>
+use <sbol/interaction>
