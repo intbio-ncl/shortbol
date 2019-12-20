@@ -1,23 +1,24 @@
 # Answer 5
 # The TetR and LacI proteins
+test is a ComponentDefinition(dNA)
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 
 TetR_fc is a FunctionalComponent(TetR,none)
 LacI_fc is a FunctionalComponent(LacI,none)
 
-#Make a participation for the two proteins
-TetR_part is a Participation(TetR_fc, inhibitor)
-LacI_part is a Participation(LacI_fc, inhibited)
+#Make a participation for the two proteins in the Lacinverter module
+LacI_lacinv_part is a Participation(LacI_fc, inhibitor)
+TetR_lacinv_part is a Participation(TetR_fc, inhibited)
 
-#Make an Interaction for the participants
+#Make an Interaction for the participants in the Lacinverter module
 LacITetR_int is a Interaction(inhibition)
 (
-	participation = TetR_part
-	participation = LacI_part	
+	participation = TetR_lacinv_part
+	participation = LacI_lacinv_part	
 )
 
-# The TetR inverter module
+# The LacI inverter module
 LacI_inverter is a ModuleDefinition()
 (
   description = "LacI inverter"
