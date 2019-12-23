@@ -3,7 +3,7 @@
 
 pTetR is a Promoter()
 (
-  hasSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac",inhibitor)
+  hasSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
 )
 
 pTetR_c is a Component(pTetR)

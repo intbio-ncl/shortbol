@@ -74,8 +74,6 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
     if next_line == "(" :
         curr_line_num = curr_line_num + 2
         while split_text[curr_line_num] != ")":
-            print(split_text[curr_line_num - 1])
-            print(split_text[curr_line_num])
             # A comment move on.
             if split_text[curr_line_num] == "" or split_text[curr_line_num] == None or split_text[curr_line_num].lstrip()[0] == "#":
                 curr_line_num = curr_line_num + 1
