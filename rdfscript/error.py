@@ -3,48 +3,30 @@ import pdb
 class RDFScriptError(Exception):
 
     def __init__(self, location):
-        self._location = location
+        if location is not None:
+            super().__init__(f"ERROR LINE {location.line} COLUMN {location.col}")
+        else:
+            super().__init__(f"ERROR")
         self._type = 'RDFScriptError'
-
-    @property
-    def location(self):
-        return self._location
-
-    def __str__(self):
-        return format("\nERROR: %s on line: %s at position: %s in file: %s\n" % (self._type, self.location.line,self.location.col_on_line, self.location.filename))
 
 
 class FailToImport(RDFScriptError):
 
     def __init__(self, target, path, location):
-        RDFScriptError.__init__(self, location)
-        self._target = target
+        super().__init__(location)
+        self.message += '\n'
+        self.message += f"Could not find import '{self.target}'"
         self._type = 'Import Failure Error'
         self._path = path
-
-    @property
-    def target(self):
-        return self._target
-
-    def __str__(self):
-        return RDFScriptError.__str__(self) + format("Could not find import '%s'\non path %s\n\n"
-                                                     % (self.target, self._path))
 
 
 class RDFScriptSyntax(RDFScriptError):
 
     def __init__(self, token, location):
-        RDFScriptError.__init__(self, location)
-        self._token = token
+        super().__init__(location)
+        self.message += '\n'
+        self.message += f"Invalid syntax '{self.token}'"
         self._type = 'Invalid Syntax Error'
-
-    @property
-    def token(self):
-        return self._token
-
-    def __str__(self):
-        return RDFScriptError.__str__(self) + format("Did not expect to find '%s'\n\n"
-                                                     % self.token)
 
 
 class UnexpectedType(RDFScriptError):
@@ -85,16 +67,10 @@ class PrefixError(RDFScriptError):
 class TemplateNotFound(RDFScriptError):
 
     def __init__(self, template, location):
-        RDFScriptError.__init__(self, location)
-        self._template = template
+        super().__init__(location)
+        self.message += '\n'
+        self.message += f"Cound not find template '{template}'"
         self._type = 'Template Not Found Error'
-
-    @property
-    def template(self):
-        return self._template
-
-    def __str__(self):
-        return RDFScriptError.__str__(self) + format("Cannot find template '%s'.\n\n" % self.template)
 
 
 class NoSuchExtension(RDFScriptError):

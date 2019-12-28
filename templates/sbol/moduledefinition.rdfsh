@@ -3,7 +3,7 @@
 Module(definition)
 (
   Identified(Module)
-  sbol.definition = definition
+  sbol.<definition> = definition
 )
 
 in = <http://sbols.org/v2#in>
@@ -14,13 +14,13 @@ none = <http://sbols.org/v2#none>
 FunctionalComponent(def, direction)
 (
   ComponentInstance(FunctionalComponent, def)
-  sbol.direction = direction
+  sbol.<direction> = direction
 )
 
 PrivateFunctionalComponent(def, direction)
 (
   PrivateComponentInstance(FunctionalComponent, def)
-  sbol.direction = direction
+  sbol.<direction> = direction
 )
 
 InputComponent(def)  
@@ -128,7 +128,7 @@ control = <http://identifiers.org/biomodels.sbo/SBO:0000168>
 Interaction(type)
 (
   Identified(Interaction)
-  sbol.type = type
+  sbol.<type> = type
 )
 
 

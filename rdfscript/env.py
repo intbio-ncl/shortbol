@@ -95,10 +95,8 @@ class Env(object):
         self._template_table[uri] = template
 
     def lookup_template(self, uri):
-        triples = self._template_table.get(uri)
-        if triples is not None:
-            triples = [triple for triple in triples]
-
+        triples = self._template_table[uri]
+        triples = [triple for triple in triples]
         return triples
 
     def assign_extensions(self, uri, extensions):

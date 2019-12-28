@@ -256,8 +256,8 @@ class TemplateClassTest(unittest.TestCase):
     def test_evaluate_stores_triples(self):
         forms = self.parser.parse('t()(x=1 y=2)')
         t = forms[0]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         t.evaluate(self.env)
 
@@ -271,8 +271,8 @@ class TemplateClassTest(unittest.TestCase):
         forms = self.parser.parse('s()(z=3)t()(x=1 y=2 s())')
         s = forms[0]
         t = forms[1]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         s.evaluate(self.env)
         t.evaluate(self.env)
@@ -289,8 +289,8 @@ class TemplateClassTest(unittest.TestCase):
         q = forms[0]
         s = forms[1]
         t = forms[2]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         q.evaluate(self.env)
         s.evaluate(self.env)
@@ -309,8 +309,8 @@ class TemplateClassTest(unittest.TestCase):
         q = forms[0]
         s = forms[1]
         t = forms[2]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         q.evaluate(self.env)
         s.evaluate(self.env)
@@ -331,8 +331,8 @@ class TemplateClassTest(unittest.TestCase):
         q = forms[0]
         s = forms[1]
         t = forms[2]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         q.evaluate(self.env)
         s.evaluate(self.env)
@@ -353,8 +353,8 @@ class TemplateClassTest(unittest.TestCase):
         q = forms[0]
         s = forms[1]
         t = forms[2]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         q.evaluate(self.env)
         s.evaluate(self.env)
@@ -375,8 +375,8 @@ class TemplateClassTest(unittest.TestCase):
         q = forms[0]
         s = forms[1]
         t = forms[2]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         q.evaluate(self.env)
         s.evaluate(self.env)
@@ -399,8 +399,8 @@ class TemplateClassTest(unittest.TestCase):
         q = forms[0]
         s = forms[1]
         t = forms[2]
-
-        self.assertFalse(self.env.lookup_template(t.identifier.evaluate(self.env)))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(t.identifier.evaluate(self.env))
 
         q.evaluate(self.env)
         s.evaluate(self.env)

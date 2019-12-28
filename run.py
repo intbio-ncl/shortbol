@@ -196,25 +196,11 @@ def parse_from_file(filepath,
               extensions=extensions)
 
     forms = parser.parse(data)
-    print("Forms")
-    for form in forms:
-        print(form)
     env.interpret(forms)
     if not out:
         print(env)
     else:
         with open(out, 'w') as o:
-            for triples in env._template_table.values():
-                for triple in triples:
-                    print("-----------------")
-                    for t in triple:
-
-                        print(f'{type(t)} : {t}')
-            print("------------------------------------------")
-            for triple in env._symbol_table:
-                if  str(triple) == "<http://sbols.org/v2#inhibition>":
-                    print("Is present in symbol table")
-                print(triple)
             sbol = str(env)
             
             ret_code = ""
@@ -222,15 +208,14 @@ def parse_from_file(filepath,
                 errors = []
                 response = validate_sbol(sbol)
                 if response['valid']:
-                    print('Valid.')
-                    ret_code = "Valid."
+                    ret_code = "SBOL validation success."
                 else:
                     for e in response['errors']:
                         print(e)
                     errors = response['errors']
-                    ret_code =  "Invalid."
+                    ret_code =  "SBOL validation failed."
             else:
-                ret_code = "No Validation."
+                ret_code = "No SBOL validation"
                 errors = ["No Validation."]
 
             xml_preamble = '<?xml version="1.0" ?>\n'

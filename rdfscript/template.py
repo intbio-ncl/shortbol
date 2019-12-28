@@ -62,8 +62,6 @@ class Template(Node):
         
         evaluated_triples = [triple_eval(triple) for triple in triples]
 
-
-
         uri = self.identifier.evaluate(context)
         context.assign_template(uri, evaluated_triples)
 
@@ -91,13 +89,8 @@ class Template(Node):
         return extensions
 
     def evaluate(self, context):
-        old_self = context.uri
-        context.current_self = Identifier(Self())
-
         self.store_triples(context)
         self.store_extensions(context)
-
-        context.current_self = old_self
 
         return self.identifier.evaluate(context)
 

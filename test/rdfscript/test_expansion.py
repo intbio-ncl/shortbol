@@ -82,6 +82,34 @@ class TestExpansionClass(unittest.TestCase):
 
         self.assertCountEqual(expect, e.as_triples(self.env))
 
+    def test_as_triples_with_expansion_in_body(self):
+        forms = self.parser.parse(
+            't(x)(<http://predicate.com>=x) e is a t(1)(x is a t(2))')
+        t = forms[0]
+        e = forms[1]
+
+        t.evaluate(self.env)
+
+        expect = [(Identifier(Name('e')), Uri('http://predicate.com'), Value(1)),
+                  (Identifier(Name('x')), Uri('http://predicate.com'), Value(2))]
+
+        self.assertCountEqual(expect, e.as_triples(self.env))
+
+
+    def test_as_triples_with_nameless_expansion_in_body(self):
+        forms = self.parser.parse(
+            't(x)(<http://predicate.com>=x) e is a t(1)(t(2))')
+        t = forms[0]
+        e = forms[1]
+
+        t.evaluate(self.env)
+
+        expect = [(Identifier(Name('e')), Uri('http://predicate.com'), Value(1)),
+                  (Identifier(Name('e')), Uri('http://predicate.com'), Value(2))]
+
+        self.assertCountEqual(expect, e.as_triples(self.env))
+
+
     def test_as_triples_args_with_self(self):
         forms = self.parser.parse('t(x)(self=x) e is a t(1)(x=2)')
         t = forms[0]

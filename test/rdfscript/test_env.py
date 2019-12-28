@@ -7,9 +7,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..', ".."))
 
 from rdfscript.parser import Parser
 from rdfscript.env import Env
-from rdfscript.core import (Name,
-                            Value,
-                            Uri)
+from rdfscript.core import Name, Value, Uri, Identifier
 
 
 class EnvTest(unittest.TestCase):
@@ -60,8 +58,6 @@ class EnvTest(unittest.TestCase):
         self.assertEqual(self.env._symbol_table.get(uri), value)
 
     def test_lookup(self):
-
-        # assume test_assignment passed
         uri = Uri('http://test.variable/#x')
         value = Value(12345)
 
@@ -69,20 +65,20 @@ class EnvTest(unittest.TestCase):
         self.assertEqual(self.env.lookup(uri), value)
 
     def test_template_binding(self):
-
         template = self.parser.parse('t()(x = 1 y = 2)')[0]
         uri = template.identifier.evaluate(self.env)
-        self.assertFalse(self.env.lookup_template(uri))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(uri)
 
         self.env.assign_template(uri, template.as_triples(self.env))
         self.assertEqual(self.env._template_table.get(uri, False),
                          template.as_triples(self.env))
 
     def test_template_lookup(self):
-
         template = self.parser.parse('t()(x = 1 y = 2)')[0]
         uri = template.identifier.evaluate(self.env)
-        self.assertFalse(self.env.lookup_template(uri))
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(uri)
 
         self.env._template_table[uri] = template.as_triples(self.env)
 

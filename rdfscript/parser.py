@@ -294,7 +294,7 @@ class Location:
             self.filename = filename
 
     def __repr__(self):
-        return f'{self.line},f{self.col} in {self.filename}'
+        return f"{self.line}, {self.col} in {self.filename}"
 
     @property
     def col_on_line(self):

@@ -7,8 +7,17 @@ opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
 
 DnaSequence(x)       (Sequence(x, iupacDNA))
 
+DnaSeq(x)       (Sequence(x, iupacDNA))
+
 RnaSequence(x)       (Sequence(x, iupacDNA))
 
 ProteinSequence(x)   (Sequence(x, iupacProtein))
 
 ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
+
+hasSequence(x)
+(
+        sequence = self._sequence
+        self._sequence is a DnaSequence(x)
+)
+

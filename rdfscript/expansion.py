@@ -65,9 +65,6 @@ class Expansion(Node):
         for statement in self.body:
             triples += statement.as_triples(context)
 
-        #if (self.num_expected_arguments(context) -1) != len(self.args):
-         #   pdb.set_trace()
-
         def argument_marshal(triple):
             result = triple
             for argument in self.args:
