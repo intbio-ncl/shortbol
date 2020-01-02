@@ -18,4 +18,3 @@ Component(def)
 (
   ComponentInstance(Component, def)
 )
-

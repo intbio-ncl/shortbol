@@ -35,25 +35,25 @@ Stimulated(functional_component)
 
 Product(functional_component)
 (
-  Participation(functional_component,sbol.product)
+  Participation(functional_component, sbol.product)
 )
 
 Promoter_t(functional_component)
 (
-  Participation(functional_component,sbol.promoter_t)
+  Participation(functional_component, sbol.promoter_t)
 )
 
 Modifier(functional_component)
 (
-  Participation(functional_component,sbol.modifier)
+  Participation(functional_component, sbol.modifier)
 )
 
 Modified(functional_component)
 (
-  Participation(functional_component,sbol.modified)
+  Participation(functional_component, sbol.modified)
 )
 
 Template(functional_component)
 (
-  Participation(functional_component,sbol.template)
+  Participation(functional_component, sbol.template)
 )

@@ -1,15 +1,20 @@
 import unittest
 import logging
 
-from rdfscript.rdfscriptparser import RDFScriptParser
-from rdfscript.core import Value, Uri, Self, Name, Assignment
+from rdfscript.parser import Parser
+from rdfscript.core import Value
+from rdfscript.core import Uri
+from rdfscript.core import Self
+from rdfscript.core import Name
+from rdfscript.core import Assignment
+from rdfscript.core import Identifier
 from rdfscript.template import Expansion
 
 
-class ParserTopLevelTest(unittest.TestCase):
+class ParserAssignmentTest(unittest.TestCase):
 
     def setUp(self):
-        self.parser = RDFScriptParser()
+        self.parser = Parser()
         self.maxDiff = None
         self.logger = logging.getLogger(__name__)
 
@@ -18,125 +23,119 @@ class ParserTopLevelTest(unittest.TestCase):
 
     def test_assignment_name_string(self):
         script = 'Name = "hello"'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Value("hello"))])
+        expected = [Assignment(Identifier(Name('Name')), Value("hello"))]
+        actually = self.parser.parse(script)
+        self.assertCountEqual(expected, actually)
 
     def test_assignment_name_integer(self):
         script = 'Name = 12345'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Value(12345))])
+        expected = [Assignment(Identifier(Name('Name')), Value(12345))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_name_boolean(self):
         script = 'Name = true'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Value(True))])
+        expected = [Assignment(Identifier(Name('Name')), Value(True))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
         script = 'Name = false'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Value(False))])
+        expected = [Assignment(Identifier(Name('Name')), Value(False))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_name_double(self):
         script = 'Name = 0.12345'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Value(0.12345))])
+        actually = self.parser.parse(script)
+        expected = [Assignment(Identifier(Name('Name')), Value(0.12345))]
+        self.assertEqual(expected, actually)
 
     def test_assignment_name_uri(self):
         script = 'Name = <http://uri.org/>'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Name(Uri('http://uri.org/')))])
+        expected = [Assignment(Identifier(Name('Name')),
+                               Identifier(Uri('http://uri.org/')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_name_name(self):
         script = 'Name = Name'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('Name'),
-                                            Name('Name'))])
+        expected = [Assignment(Identifier(Name('Name')),
+                               Identifier(Name('Name')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_string(self):
         script = '<http://uri.org/> = "hello"'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Value("hello"))])
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Value("hello"))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_integer(self):
         script = '<http://uri.org/> = 12345'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Value(12345))])
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Value(12345))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_boolean(self):
         script = '<http://uri.org/> = true'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Value(True))])
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Value(True))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
         script = '<http://uri.org/> = false'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Value(False))])
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Value(False))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_double(self):
         script = '<http://uri.org/> = 0.12345'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Value(0.12345))])
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Value(0.12345))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_uri(self):
         script = '<http://uri.org/> = <http://value.org>'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Name(Uri('http://value.org')))])
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Identifier(Uri('http://value.org')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_name(self):
         script = '<http://uri.org/> = Name'
-        forms = self.parser.parse(script)
+        expected = [Assignment(Identifier(Uri('http://uri.org/')),
+                               Identifier(Name('Name')))]
+        actually = self.parser.parse(script)
 
-        self.assertEqual(forms, [Assignment(Name(Uri('http://uri.org/')),
-                                            Name('Name'))])
+        self.assertEqual(expected, actually)
 
     def test_assignment_self_name(self):
         script = 'self.v = Name'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Self(), 'v'),
-                                            Name('Name'))])
+        expected = [Assignment(Identifier(Self(), Name('v')),
+                               Identifier(Name('Name')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_name_expansion(self):
-
         script = 'expansion = e is a t()'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name('expansion'),
-                                            Expansion(Name('e'),
-                                                      Name('t'),
-                                                      [],
-                                                      []))])
+        expected = [Assignment(Identifier(Name('expansion')),
+                               Expansion(Identifier(Name('e')),
+                                         Identifier(Name('t')),
+                                         [],
+                                         []))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_assignment_uri_expansion(self):
-
         script = '<expansion> = e is a t()'
-        forms = self.parser.parse(script)
-
-        self.assertEqual(forms, [Assignment(Name(Uri('expansion')),
-                                            Expansion(Name('e'),
-                                                      Name('t'),
-                                                      [],
-                                                      []))])
+        expected = [Assignment(Identifier(Uri('expansion')),
+                               Expansion(Identifier(Name('e')),
+                                         Identifier(Name('t')),
+                                         [],
+                                         []))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)

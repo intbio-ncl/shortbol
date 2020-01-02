@@ -1,15 +1,14 @@
 import pathlib
 import logging
-import pdb
 
 from .core import Uri, Value
 
 from .pragma import ExtensionPragma
 
-from .error import (RDFScriptError,
-                    PrefixError)
+from .error import RDFScriptError
+from .error import PrefixError
 
-from .rdfscriptparser import RDFScriptParser
+from .parser import Parser
 
 from .importer import Importer
 
@@ -17,7 +16,6 @@ from .extensions import ExtensionManager
 from extensions.error import ExtensionError
 from extensions.triples import TriplePack
 from .rdf_data import RDFData
-
 
 
 class Env(object):
@@ -34,11 +32,10 @@ class Env(object):
         self._extension_manager = ExtensionManager(extras=extensions)
 
         self._rdf = RDFData(serializer=serializer)
-        self._prefix = None
-        self._uri = Uri(self._rdf._g.identifier.toPython())
-        self._self = self._uri
-        self._paths = paths
+        self.uri = Uri(self._rdf._g.identifier.toPython())
+        self.prefix = None
 
+        self._paths = paths
         if filename:
             paths.append(pathlib.Path(filename).parent)
             self._importer = Importer(paths)
@@ -46,19 +43,7 @@ class Env(object):
             self._importer = Importer(paths)
 
     def __repr__(self):
-        return format("%s" % self._rdf.serialise())
-
-    @property
-    def current_self(self):
-        return self._self
-
-    @current_self.setter
-    def current_self(self, uri):
-        self._self = uri
-
-    @property
-    def uri(self):
-        return self._uri
+        return f"{self._rdf.serialise()}"
 
     @property
     def prefix(self):
@@ -112,7 +97,9 @@ class Env(object):
         self._template_table[uri] = template
 
     def lookup_template(self, uri):
-        return self._template_table.get(uri, None)
+        triples = self._template_table[uri]
+        triples = [triple for triple in triples]
+        return triples
 
     def assign_extensions(self, uri, extensions):
         self._extension_table[uri] = extensions
@@ -124,16 +111,13 @@ class Env(object):
         return self._extension_manager.get_extension(name)
 
     def run_extension_on_triples(self, extension, triples):
-
         #Get type of extension
         extension_class = self.get_extension(extension.name)
         #Creates instance.
-        extension_obj = extension_class(*extension.args)
-        
+        extension_obj = extension_class(*extension.args)    
         #Creates instance of TriplePack which just holds the triples with extra utility.
         pack = TriplePack(triples, self._symbol_table, self._template_table, self._paths)
         return extension_obj.run(pack).triples
-
 
     def run_extension_on_graph(self, extension):
         graph_triples = self._rdf.triples
@@ -143,7 +127,7 @@ class Env(object):
 
         for triple in graph_triples:
             (s, p, o) = triple
-            self._rdf.add(s, p, o) 
+            self._rdf.add(s, p, o)
         return graph_triples
 
     def interpret(self, forms):
@@ -167,7 +151,7 @@ class Env(object):
     def eval_import(self, uri):
 
         filename = uri.uri
-        parser = RDFScriptParser(filename=filename)
+        parser = Parser(filename=filename)
 
         import_text = self._importer.import_file(filename)
         if not import_text:

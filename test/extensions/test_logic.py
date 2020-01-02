@@ -49,13 +49,13 @@ class LogicExtensionsTest(unittest.TestCase):
 
             return (s, p, o)
 
-        triples =  self.expansion.as_triples(self.env)
+        triples = self.expansion.as_triples(self.env)
         triples = [triple_eval(triple) for triple in triples]
 
         bindings = self.env._symbol_table
         templates = self.env._template_table
 
-        self.pack = TriplePack(triples, bindings, templates)
+        self.pack = TriplePack(triples, bindings, templates, [])
 
     def test_and_true_true(self):
 

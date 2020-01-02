@@ -3,8 +3,8 @@
 MapsTo(local, remote, ref)
 (
   Identified(MapsTo)
-  sbol.local = local
-  sbol.remote = remote
+  sbol.<local> = local
+  sbol.<remote> = remote
   refinement = ref
 )
 
