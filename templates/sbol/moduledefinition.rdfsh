@@ -3,10 +3,7 @@
 Module(moduledefinition_uri)
 (
   Identified(Module)
-  sbol.definition = moduledefinition_uri
+  sbol.<definition> = definition
 )
 
 ModuleDefinition() (TopLevel(ModuleDefinition))
-
-
-

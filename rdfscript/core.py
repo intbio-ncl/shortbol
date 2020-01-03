@@ -1,11 +1,11 @@
 import rdflib
 import re
 
-from .error import (PrefixError,
-                    UnexpectedType)
+from .error import PrefixError
+from .error import UnexpectedType
 
 
-class Node(object):
+class Node:
     """Language object."""
 
     def __init__(self, location):
@@ -21,90 +21,149 @@ class Node(object):
 
     @property
     def line(self):
-        return self._location.position.line
+        return self._location.line
 
     @property
     def col(self):
-        return self._location.position.col
-
-    @property
-    def position(self):
-        return self._location.position
+        return self._location.col
 
     @property
     def file(self):
         return self._location.filename
 
 
-class Name(Node):
-
-    def __init__(self, *names, location=None):
-
-        Node.__init__(self, location)
-        self._names = list(names)
+class Identifier(Node):
+    def __init__(self, *parts, location=None):
+        super().__init__(location)
+        self.parts = list(parts)
 
     def __eq__(self, other):
-        return ((isinstance(other, Name) and
-                 self.names == other.names) or
-                (isinstance(other, Self) and
-                 self.names == [Self()]))
+        return isinstance(other, Identifier) and self.parts == other.parts
 
     def __str__(self):
-        return ':'.join([str(name) for name in self.names])
+        return ':'.join([str(part) for part in self.parts])
 
     def __repr__(self):
-        return format("[NAME: %s]" % (self.names))
+        return f"[Identifier: {self.parts}]"
 
-    @property
-    def names(self):
-        return self._names
+    def __iter__(self):
+        return iter(self.parts)
 
-    def is_prefixed(self, context):
-        if len(self.names) > 1 and isinstance(self.names[0], str):
-            try:
-                return context.uri_for_prefix(self.names[0])
-            except PrefixError:
-                return False
-        else:
-            return False
+    def __len__(self):
+        return len(self.parts)
+
+    def evaluate(self, env):
+        return self
+
+    def prefixify(self, context):
+        uri = context.uri
+
+        if context.prefix is not None:
+            uri = context.uri_for_prefix(context.prefix)
+
+        try:
+            uri = context.uri_for_prefix(self.parts[0].name)
+            self.parts[0] = uri
+        except PrefixError:
+            self.parts.insert(0, uri)
+
+        return self
+    
+    def flatten(self):
+        flat_list = []
+        for part in self.parts:
+            if isinstance(part,Identifier):
+                flat_list += part.parts
+            else:
+                flat_list.append(part)
+        return Identifier(*flat_list,location=self.location)
+
 
     def evaluate(self, context):
+        if not isinstance(self.parts[0], (Uri, Parameter)):
+            self.prefixify(context)
 
-        uri = Uri(context.uri, location=self.location)
+        uri = Uri('')
 
-        for n in range(0, len(self.names)):
-            if isinstance(self.names[n], Self):
-                current_self = context.current_self
-                if isinstance(current_self, Uri):
-                    if n > 0:
-                        uri.extend(context.current_self, delimiter='')
-                    else:
-                        uri = Uri(current_self, location=self.location)
-                elif isinstance(current_self, Name):
-                    rest = current_self.names + self.names[n + 1:]
-                    if n > 0:
-                        return Name(uri, *rest, location=self.location)
-                    else:
-                        return Name(*rest, location=self.location)
-            elif isinstance(self.names[n], Uri):
-                if n > 0:
-                    uri.extend(self.names[n], delimiter='')
-                else:
-                    uri = Uri(self.names[n])
-            elif isinstance(self.names[n], str):
-                if n == 0 and self.is_prefixed(context):
-                    uri = self.is_prefixed(context)
-                else:
-                    uri.extend(Uri(self.names[n]), delimiter='')
+        for i, part in enumerate(self.parts):
+            try:
+                uri = uri + part.evaluate(context)
 
-            lookup = context.lookup(uri)
-            if lookup is not None:
-                if isinstance(lookup, Uri):
-                    uri = Uri(lookup, location=self.location)
-                elif n == len(self.names) - 1:
-                    uri = lookup
+                binding = context.lookup(uri)
+                if binding is not None and i == len(self) - 1 :
+                    uri = binding
+                elif isinstance(binding, Uri):
+                    uri = binding
+                    
+            except TypeError:
+                new_parts = self.parts if uri == Uri('') else [uri, *self.parts[i:]]
+                return Identifier(*new_parts, location=self.location)
 
         return uri
+
+
+class Name(Node):
+    def __init__(self, name_string, location=None):
+        super().__init__(location=location)
+        self.name = name_string
+
+    def __eq__(self, other):
+        return isinstance(other, Name) and self.name == other.name
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"[Name: {self.name}]"
+
+    def evaluate(self, context):
+        return Uri(self.name, location=self.location)
+
+
+class Parameter(Name):
+
+    def __init__(self, name_string, position, location=None):
+        super().__init__(name_string, location=location)
+        self.position = position
+
+    def __repr__(self):
+        return f"[PARAMETER: {self.name}]"
+
+    def __eq__(self, other):
+        return isinstance(other, Parameter) and self.name == other.name
+
+    def substitute(self, possible_parameter):
+        result = possible_parameter
+        if isinstance(possible_parameter, Identifier):
+            def replace(x):
+                if isinstance(x, Name) and self.name == x.name:
+                    # Substitution
+                    return self
+                else:
+                    return x 
+
+            new_names = [replace(part) for part in possible_parameter.parts]
+            result = Identifier(*new_names, location=possible_parameter.location)
+
+        return result
+
+    def evaluate(self, env):
+        return self
+
+
+class Self(Parameter):
+
+    def __init__(self, location=None):
+        super().__init__('self', -1, location=location)
+
+    def __str__(self):
+        return "self"
+
+    def __repr__(self):
+        return format("[SELF]")
+
+    def evaluate(self, context):
+        return self
 
 
 class Uri(Node):
@@ -119,33 +178,34 @@ class Uri(Node):
 
         uri is converted to a string
         """
-        Node.__init__(self, location)
+        super().__init__(location)
         if isinstance(uri, rdflib.URIRef):
-            self._uri = uri.toPython()
+            self.uri = uri.toPython()
         elif isinstance(uri, Uri):
-            self._uri = uri.uri
+            self.uri = uri.uri
         else:
-            self._uri = uri
+            self.uri = uri
 
     def __eq__(self, other):
-        return (isinstance(other, Uri) and
-                self.uri == other.uri)
+        return isinstance(other, Uri) and self.uri == other.uri
 
     def __str__(self):
-        return '<' + self.uri + '>'
+        return f"<{self.uri}>"
 
     def __repr__(self):
-        return format("[URI: %s]" % self._uri)
+        return f"[URI: {self.uri}]"
 
     def __hash__(self):
         return self.uri.__hash__()
 
-    @property
-    def uri(self):
-        return self._uri
+    def __add__(self, other):
+        if not isinstance(other, Uri):
+            raise TypeError(f"{other}")
+
+        return Uri(self.uri + other.uri)
 
     def extend(self, other, delimiter='#'):
-        self._uri = self.uri + delimiter + other.uri
+        self.uri = self.uri + delimiter + other.uri
 
     def split(self):
         return re.split('#|/|:', self.uri)
@@ -160,7 +220,7 @@ class Value(Node):
     def __init__(self, python_literal, location=None):
 
         Node.__init__(self, location)
-        self._python_val = python_literal
+        self.value = python_literal
 
     def __eq__(self, other):
         return (isinstance(other, Value) and
@@ -174,43 +234,57 @@ class Value(Node):
         return format("[VALUE: %s]" % self.value)
 
     def __hash__(self):
-        return self._python_val.__hash__()
-
-    @property
-    def value(self):
-        return self._python_val
+        return self.value.__hash__()
 
     def evaluate(self, context):
         return self
 
 
-class Self(Node):
+class Argument(Value):
 
-    def __init__(self, location=None):
-        Node.__init__(self, location)
-
-    def __eq__(self, other):
-        return (isinstance(other, Self) or
-                (isinstance(other, Name) and
-                 other.names == [Self()]))
+    def __init__(self, value_expr, position, location=None):
+        super().__init__(location)
+        self.value = value_expr
+        self.position = position
 
     def __str__(self):
-        return "self"
+        return f"{self.value}"
 
     def __repr__(self):
-        return format("[SELF]")
+        return f"[RDFscript ARG: {self.value}]"
 
-    def evaluate(self, context):
-        return context.current_self
+    def marshal(self, param):
+        result = param
+        def replace(x):
+            if isinstance(x, Parameter) and self.position == x.position:
+                # Substitution
+                return self.value
+            else:
+                return x
+                    
+        if isinstance(param, Identifier):
+            if isinstance(self.value, (Uri, Name, Parameter)):
+                new_parts = [replace(part) for part in param.parts]
+                result = Identifier(*new_parts, location=param.location)
+            elif len(param.parts) == 1 and isinstance(param.parts[0], Parameter) and param.parts[0].position == self.position:
+                result = self.value
+            elif isinstance(self.value,Identifier) and len(param.parts) > 1:
+                param_parts = param.parts
+                new_parts = []
+                for n in param_parts:
+                    #self.value.parts
+                    new_parts.append(replace(n))
+                result =  Identifier(*new_parts, location=param.location).flatten()
+
+        return result
 
 
 class Assignment(Node):
 
     def __init__(self, name, value, location=None):
-
-        Node.__init__(self, location)
-        self._name = name
-        self._value = value
+        super().__init__(location)
+        self.name = name
+        self.value = value
 
     def __eq__(self, other):
         return (isinstance(other, Assignment) and
@@ -218,19 +292,10 @@ class Assignment(Node):
                 self.value == other.value)
 
     def __str__(self):
-        return format("%s = %s" % (self.name, self.value))
+        return f"{self.name} = {self.value}"
 
     def __repr__(self):
-        return format("[ASSIGN: %s = %s]" %
-                      (self.name, self.value))
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def value(self):
-        return self._value
+        return f"[ASSIGN: {self.name} = {self.value}]"
 
     def evaluate(self, context):
         uri = self.name.evaluate(context)

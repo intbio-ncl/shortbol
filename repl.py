@@ -1,4 +1,4 @@
-import rdfscript.rdfscriptparser as parser
+from rdfscript.parser import Parser
 from rdfscript.env import Env
 
 import sys
@@ -18,7 +18,7 @@ class REPL:
                        paths=optpaths,
                        extensions=optextensions)
 
-        self.parser = parser.RDFScriptParser(debug_lvl=debug_lvl)
+        self.parser = Parser()
         self.reader = self.parser.scanner
         self.out_file = out
 

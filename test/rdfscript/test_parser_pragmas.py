@@ -3,70 +3,69 @@ import logging
 import ply.yacc as yacc
 import ply.lex as leex
 
-from rdfscript.rdfscriptparser import RDFScriptParser
+from rdfscript.parser import Parser
 
 from rdfscript.pragma import (PrefixPragma,
                               DefaultPrefixPragma,
                               ExtensionPragma,
                               ImportPragma)
 
-from rdfscript.core import Uri, Name
+from rdfscript.core import Uri, Name, Identifier
+
 
 class ParserPragmaTest(unittest.TestCase):
 
     def setUp(self):
-        self.parser = RDFScriptParser()
+        self.parser = Parser()
 
     def tearDown(self):
         None
 
     def test_prefix_pragma_uri(self):
         script = "@prefix Prefix = <http://example.eg/>"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms,
-                         [PrefixPragma('Prefix', Name(Uri('http://example.eg/')))])
+        expected = [PrefixPragma('Prefix',
+                                 Identifier(Uri('http://example.eg/')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_prefix_pragma_name(self):
         script = "@prefix Prefix = name"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms,
-                         [PrefixPragma('Prefix', Name('name'))])
+        expected = [PrefixPragma('Prefix', Identifier(Name('name')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_default_prefix_pragma(self):
         script = "@prefix Prefix"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms,
-                         [DefaultPrefixPragma('Prefix')])
+        expected = [DefaultPrefixPragma('Prefix')]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_import_pragma_uri(self):
         script = "@use <import>"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms, [ImportPragma(Name(Uri('import')))])
+        expected = [ImportPragma(Identifier(Uri('import')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
         script = "use <import>"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms, [ImportPragma(Name(Uri('import')))])
+        expected = [ImportPragma(Identifier(Uri('import')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_import_pragma_name(self):
         script = "@use this.target"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms, [ImportPragma(Name('this', 'target'))])
+        expected = [ImportPragma(Identifier(Name('this'), Name('target')))]
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
         script = "use this.target"
-        forms  = self.parser.parse(script)
-
-        self.assertEqual(forms, [ImportPragma(Name('this', 'target'))])
+        actually = self.parser.parse(script)
+        self.assertEqual(expected, actually)
 
     def test_extension_pragma(self):
-        forms = self.parser.parse('@extension E()')
+        expected = [ExtensionPragma('E', [])]
+        actually = self.parser.parse('@extension E()')
+        self.assertEqual(expected, actually)
 
-        self.assertEqual(forms, [ExtensionPragma('E', [])])
 
 if __name__ == '__main__':
     unittest.main()

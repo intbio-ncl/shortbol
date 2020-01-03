@@ -3,8 +3,8 @@
 MapsTo(componentinstance_uri_local, componentinstance_uri_remote, ref)
 (
   Identified(MapsTo)
-  sbol.local = componentinstance_uri_local
-  sbol.remote = componentinstance_uri_remote
+  sbol.<local> = local
+  sbol.<remote> = remote
   refinement = ref
 )
 

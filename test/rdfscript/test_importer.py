@@ -1,13 +1,9 @@
 import unittest
-import logging
-import ply.yacc as yacc
-import ply.lex as leex
-import rdflib
 import pathlib
 
 from rdfscript.env import Env
-from rdfscript.rdfscriptparser import RDFScriptParser
 from rdfscript.importer import Importer
+
 
 class ImporterTest(unittest.TestCase):
 
@@ -18,7 +14,6 @@ class ImporterTest(unittest.TestCase):
         pass
 
     def test_importer_setup(self):
-
         i = Importer([])
 
         self.assertEqual(i.path, [pathlib.Path('.').resolve()])

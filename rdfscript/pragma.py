@@ -89,7 +89,6 @@ class ImportPragma(Node):
     def evaluate(self, context):
 
         uri = self.target.evaluate(context)
-
         if not context.eval_import(uri):
             raise FailToImport(
                 self.target, context.get_current_path(), self.location)
@@ -98,11 +97,10 @@ class ImportPragma(Node):
 
 
 class ExtensionPragma(Node):
-
     def __init__(self, name, args, location=None):
-        Node.__init__(self, location)
-        self._name = name
-        self._args = args
+        super().__init__(location)
+        self.name = name
+        self.args = args
 
     def __eq__(self, other):
         return (isinstance(other, ExtensionPragma) and
@@ -113,25 +111,14 @@ class ExtensionPragma(Node):
         return self.__repr__()
 
     def __repr__(self):
-        return format("@extension %s(%s)" % (self.name, self.args))
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def args(self):
-        return self._args
+        return f"@extension {self.name}({self.args})"
 
     def substitute_params(self, parameters):
         for parameter in parameters:
-            self._args = [parameter
-                          if parameter.is_substitute(arg)
-                          else arg
-                          for arg in self.args]
+            self.args = [parameter.substitute(arg) for arg in self.args]
 
     def evaluate(self, context):
-        self._args = [arg.evaluate(context) for arg in self.args]
+        self.args = [arg.evaluate(context) for arg in self.args]
         return self
 
     def run(self, context, triples):

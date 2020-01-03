@@ -1,10 +1,10 @@
 @prefix sbol
 
 # Interaction Templates
-Interaction(type)
+Interaction(t)
 (
   Identified(Interaction)
-  sbol.type = type
+  sbol.type = t
 )
 
 

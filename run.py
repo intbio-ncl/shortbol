@@ -3,11 +3,149 @@ import argparse
 import logging
 import os
 import re
-from rdfscript.rdfscriptparser import RDFScriptParser
+from rdfscript.parser import Parser
 from rdfscript.env import Env
 from repl import REPL
 from validate_sbol import validate_sbol
 
+
+#SBOL Namespace
+sbol_namespace = "use <sbol>"
+f_prefix = "@prefix sbol_prefix"
+f_equals = " = "
+default_prefix = "<http://sbol_prefix.org/>"
+s_prefix = "@prefix "
+sbol_compliant_extension = "@extension SbolIdentity()"
+is_a_template = "is a"
+sbol_dot = "sbol."
+
+def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
+    parts = type.replace(" ", "")
+    parts = parts.split(".")
+    # When sbol. is not present
+    if len(parts) == 1 :
+        if parts[0] in shortbol_template_table:
+            #SBOL. is not present and template is in libary
+            return sbol_dot + parts[0]
+        else:
+            #SBOL. is not present but template NOT in libary
+            raise NameError(f'Template: {parts[0]}  on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
+    elif len(parts) == 2:
+        if parts[1] in shortbol_template_table:
+            #SBOL. is  present and template is in libary
+            return ""
+        else:
+            #SBOL. is  present but template NOT in libary
+            raise NameError(f'Template: {parts[0]} on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
+    else:
+        exit(0)
+
+
+def hacky_conversion_handle_parameters(parameters,shortbol_identifier_table):
+    split_params = parameters.replace("(","").replace(")","").replace(" ","").split(",")
+    param_string = ""
+    if len(split_params) == 0:
+        return ""
+    elif len(split_params) == 1 :
+        if sbol_dot not in split_params[0] and split_params[0] in shortbol_identifier_table:
+            param_string = sbol_dot + split_params[0]
+        else:
+            param_string = split_params[0]
+    else:
+        for param_index, param in enumerate(split_params):
+            if sbol_dot not in split_params[param_index] and split_params[param_index] in shortbol_identifier_table:
+                param_string = param_string + sbol_dot + split_params[param_index]
+                if param_index != len(split_params) - 1 :
+                    param_string = param_string + ","
+            else:
+                param_string = param_string + split_params[param_index]
+                if param_index != len(split_params) - 1 :
+                    param_string = param_string + ","
+
+    return f'({param_string})'
+
+
+def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table):
+    try:
+        next_line = split_text[curr_line_num + 1]
+    except IndexError:
+        next_line = None
+
+    if next_line == "(" :
+        curr_line_num = curr_line_num + 2
+        while split_text[curr_line_num] != ")":
+            # A comment move on.
+            if split_text[curr_line_num] == "" or split_text[curr_line_num] == None or split_text[curr_line_num].lstrip()[0] == "#":
+                curr_line_num = curr_line_num + 1
+                continue
+            
+            # an assignment (eg n = 1)
+            elif "=" in split_text[curr_line_num]:
+                if "displayId" in split_text[curr_line_num]:
+                    print(f'Warn for Template: {split_text[curr_line_num]}, displayId property should not be overwritten, {split_text[curr_line_num]} will be used.') 
+                    split_text[curr_line_num] = ""
+                    curr_line_num = curr_line_num + 1
+                    
+                if "persistentIdentity" in split_text[curr_line_num]:
+                    print(f'Warn for Template: {split_text[curr_line_num]}, persistentIdentity property should NEVER be overwritten.') 
+                    split_text[curr_line_num] = ""
+                    curr_line_num = curr_line_num + 1
+                    
+
+                sections = split_text[curr_line_num].split("=")
+                lhs = sections[0]
+                rhs = sections[-1]
+                if '"' not in rhs:
+                    rhs = rhs.replace(" ", "")
+                if sbol_dot not in lhs:
+                    lhs = lhs.lstrip()
+                    lhs = lhs.replace(" ", "")
+                    lhs = "    " + sbol_dot + lhs
+                if sbol_dot not in rhs:
+                    if rhs in shortbol_identifier_table:
+                        rhs = sbol_dot + rhs
+                                    
+                #Re assemble line
+                split_text[curr_line_num] = lhs + " = " + rhs 
+                curr_line_num = curr_line_num + 1
+            # An implicit instance creation eg (hasSequence("atcg"))
+            elif "has" in split_text[curr_line_num]:
+                #@@ Need to change this if its in the template_table
+                temporary_has_table = ["hasSequence","hasPromoter","hasInlineRange","hasComponent","hasSequenceAnnotation"]
+                line_parts = split_text[curr_line_num].split("(")
+                template_type = hacky_conversion_handle_type(line_parts[0],temporary_has_table,curr_line_num)
+                parameters = hacky_conversion_handle_parameters(line_parts[1],shortbol_identifier_table)
+                split_text[curr_line_num] = f'  {template_type}{parameters}'
+                curr_line_num = curr_line_num + 1
+            elif is_a_template in split_text[curr_line_num]:
+                split_text, new_curr_line = hacky_conversion_handle_template_instance(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table)
+                curr_line_num = new_curr_line
+            else:
+                curr_line_num = curr_line_num + 1
+   
+    
+    return split_text, curr_line_num
+
+
+def hacky_conversion_handle_template_instance(split_text,index,shortbol_template_table,shortbol_identifier_table):
+    line = split_text[index]
+    name = line.split(is_a_template)[0]
+    try:
+        parameters = f'({line.split("(")[1]}'
+    except IndexError:
+        raise NameError(f'Template: {name} on line: {str(index - 1)} is missing brackets.') 
+    parts = line.split(is_a_template)[-1].split("(")[0]
+
+    # Handle name and type (n is a ComponentDefinition)
+    template_type = name + is_a_template + " " + hacky_conversion_handle_type(parts,shortbol_template_table,index)
+    # Handle parameter ((dNA,"atg") etc)
+    parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
+    split_text[index] = f'{template_type}{parameters}'
+
+    # Handle expansion (if present) ((sequence = seq) etc)
+    split_text, curr_line_num = hacky_conversion_handle_expansions(split_text,index,shortbol_template_table,shortbol_identifier_table)
+
+    return split_text, curr_line_num + 1
 
 
 def hacky_conversion(filepath,template_dir):
@@ -17,17 +155,6 @@ def hacky_conversion(filepath,template_dir):
     temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.rdfsh")
     if os.path.isfile(temp_file):
         os.remove(temp_file)
-
-    #SBOL Namespace
-    sbol_namespace = "use <sbol>"
-    f_prefix = "@prefix sbol_prefix"
-    f_equals = " = "
-    default_prefix = "<http://sbol_prefix.org/>"
-    s_prefix = "@prefix "
-    sbol_compliant_extension = "@extension SbolIdentity()"
-    is_a_template = "is a"
-    sbol_dot = "sbol."
-    
 
     
     with open(filepath, 'r') as original: data = original.read()
@@ -47,11 +174,6 @@ def hacky_conversion(filepath,template_dir):
             if s_prefix in line:
                 split_text.insert(index + 1,s_prefix + line.split(" ")[1])
                 break
-    # Check if sbol compliant extension is present @extension SbolIdentity()
-    if not sbol_compliant_extension in split_text:
-        split_text.append(sbol_compliant_extension)
-
-    
 
     shortbol_template_table = set()
     shortbol_identifier_table = set()
@@ -71,105 +193,26 @@ def hacky_conversion(filepath,template_dir):
             template.close()
 
 
-    for index,line in enumerate(split_text):
+    #for index,line in enumerate(split_text):
+    curr_line_num = 0
+    while curr_line_num != len(split_text):
+        line = split_text[curr_line_num]
         if line and line[0].lstrip() == "#" :
+            curr_line_num = curr_line_num + 1
             continue 
         if is_a_template in line :
-            name = line.split(is_a_template)[0]
-            try:
-                params = "(" + line.split("(")[1]
-            except IndexError:
-                raise NameError("Template: " + name + " on line: " + str(index - 1) + " is missing brackets.") 
-            
-            parts = line.split(is_a_template)[-1].split("(")[0]
-            parts = parts.replace(" ", "")
-            parts = parts.split(".")
-            # When sbol. is not present
-            if len(parts) == 1 :
-                if parts[0] in shortbol_template_table:
-                    #SBOL. is not present and template is in libary
-                    split_text[index] = name + is_a_template + " " + sbol_dot + parts[0]
-                    
-                else:
-                    raise NameError("Template: " + parts[0] + " on line: " + str(index - 1) + " is not defined in the Shortbol Libaries.") 
-                    #SBOL. is not present but template NOT in libary
-            elif len(parts) == 2:
-                if parts[1] in shortbol_template_table:
-                    #SBOL. is  present and template is in libary
-                    continue
-                else:
-                    raise NameError("Template: " + parts[0] + " on line: " + str(index - 1) + " is not defined in the Shortbol Libaries.") 
-                    #SBOL. is  present but template NOT in libary
-            else:
-                exit(0)
-
-            split_params = params.replace("(","").replace(")","").split(",")
-            param_string = ""
-            if len(split_params) == 0:
-                param_string = "()"
-            elif len(split_params) == 1 :
-                if sbol_dot not in split_params[0] and split_params[0] in shortbol_identifier_table:
-                    param_string = sbol_dot + split_params[0]
-                else:
-                    param_string = split_params[0]
-            else:
-                for param_index, param in enumerate(split_params):
-                    split_params[param_index] = split_params[param_index].replace(" ", "")
-                    if sbol_dot not in split_params[param_index] and split_params[param_index] in shortbol_identifier_table:
-                        param_string = param_string + sbol_dot + split_params[param_index]
-                        if param_index != len(split_params) - 1 :
-                            param_string = param_string + ","
-                    else:
-                        param_string = param_string + split_params[param_index]
-                        if param_index != len(split_params) - 1 :
-                            param_string = param_string + ","
-
-            split_text[index] = split_text[index] + "(" + param_string + ")"
-
-            # When extension is present, cueco each statement inside and add sbol where needed.
-            if split_text[index + 1] == "(" :
-                curr_line_num = index + 2
-                
-                while split_text[curr_line_num] != ")":
-                    if "=" not in split_text[curr_line_num] or split_text[curr_line_num].lstrip()[0] == "#":
-                        curr_line_num = curr_line_num + 1
-                        continue
-                    if "displayId" in split_text[curr_line_num]:
-                        print("Warn for Template: " + name + ", displayId property should not be overwritten, " + name +  "will be used.") 
-                        split_text[curr_line_num] = ""
-                        curr_line_num = curr_line_num + 1
-                        continue
-                    if "persistentIdentity" in split_text[curr_line_num]:
-                        print("Warn for Template: " + name + ", persistentIdentity property should NEVER be overwritten.") 
-                        split_text[curr_line_num] = ""
-                        curr_line_num = curr_line_num + 1
-                        continue
-                    
-                    sections = split_text[curr_line_num].split("=")
-                    lhs = sections[0]
-                    rhs = sections[-1]
-                    if '"' not in rhs:
-                        rhs = rhs.replace(" ", "")
-                    if sbol_dot not in lhs:
-                        lhs = lhs.lstrip()
-                        lhs = lhs.replace(" ", "")
-                        lhs = "    " + sbol_dot + lhs
-                    if sbol_dot not in rhs:
-                        if rhs in shortbol_identifier_table:
-                            rhs = sbol_dot + rhs
-                                        
-                    #Re assemble line
-                    split_text[curr_line_num] = lhs + " = " + rhs 
-                    curr_line_num = curr_line_num + 1
-            
-  
-
+            split_text,curr_line_num = hacky_conversion_handle_template_instance(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table)
+        else:
+            curr_line_num = curr_line_num + 1
+           
+    # Check if sbol compliant extension is present @extension SbolIdentity()
+    if not sbol_compliant_extension in split_text:
+        split_text.append(sbol_compliant_extension)
+        
     with open(temp_file, 'w') as modified:
         for line in split_text:
             modified.write(line)
             modified.write("\n")
-
-
 
     return temp_file
 
@@ -187,7 +230,7 @@ def parse_from_file(filepath,
 
     to_run_fn = hacky_conversion(filepath,template_dir)
 
-    parser = RDFScriptParser(filename=to_run_fn, debug_lvl=debug_lvl)
+    parser = Parser(filename=to_run_fn, debug_lvl=debug_lvl)
 
     with open(to_run_fn, 'r') as in_file:
         data = in_file.read()
@@ -223,7 +266,23 @@ def parse_from_file(filepath,
     if not out:
         print(sbol)
     else:
-        with open(out, 'w') as o:        
+        with open(out, 'w') as o:
+            sbol = str(env)
+            
+            ret_code = ""
+            if not no_validation:
+                errors = []
+                response = validate_sbol(sbol)
+                if response['valid']:
+                    ret_code = "SBOL validation success."
+                else:
+                    for e in response['errors']:
+                        print(e)
+                    errors = response['errors']
+                    ret_code =  "SBOL validation failed."
+            else:
+                ret_code = "No SBOL validation"
+                errors = ["No Validation."]
 
             o.write(sbol)
             return {ret_code : errors}

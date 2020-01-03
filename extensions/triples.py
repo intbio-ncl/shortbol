@@ -1,7 +1,4 @@
-from rdfscript.core import Uri, Value
-
-
-class TriplePack(object):
+class TriplePack:
     """
     The object passed to an extensions' run() method.
 
@@ -16,7 +13,6 @@ class TriplePack(object):
     """
 
     def __init__(self, triples, bindings, templates, paths):
-
         self._triples = triples
         self._bindings = bindings
         self._templates = templates

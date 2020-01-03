@@ -1,5 +1,6 @@
 # Answer 5
 # The TetR and LacI proteins
+test is a ComponentDefinition(dNA)
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 

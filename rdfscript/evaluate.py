@@ -6,7 +6,8 @@ from .core import (Uri,
                    Value,
                    Name,
                    LocalName,
-                   Self)
+                   Self,
+                   Name)
 
 from .pragma import (PrefixPragma,
                      DefaultPrefixPragma,

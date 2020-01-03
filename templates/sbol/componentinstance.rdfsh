@@ -20,4 +20,3 @@ Component(componentdefinition_uri)
 (
   ComponentInstance(Component, componentdefinition_uri)
 )
-

@@ -1,6 +1,4 @@
 import unittest
-import rdflib
-import pdb
 
 from extensions.triples import TriplePack
 from extensions.cardinality import (AtLeastOne,
@@ -56,7 +54,7 @@ class CardinalityExtensionsTest(unittest.TestCase):
         bindings = self.env._symbol_table
         templates = self.env._template_table
 
-        self.pack = TriplePack(triples, bindings, templates)
+        self.pack = TriplePack(triples, bindings, templates, [])
 
     def test_at_least_one(self):
 

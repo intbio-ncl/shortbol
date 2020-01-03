@@ -9,6 +9,8 @@ Sequence(x, y)
 
 DnaSequence(x)       (Sequence(x, iupacDNA))
 
+DnaSeq(x)       (Sequence(x, iupacDNA))
+
 RnaSequence(x)       (Sequence(x, iupacDNA))
 
 ProteinSequence(x)   (Sequence(x, iupacProtein))
@@ -18,15 +20,15 @@ ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
 SequenceAnnotation(range_cut_genericlocation_uri)
 (
   TopLevel(SequenceAnnotation)
-  sbol.location = range_cut_genericlocation_uri
+  sbol.<location> = location
 )
 
 SequenceConstraint(component_uri_subject, component_uri_object, restriction)
 (
   TopLevel(SequenceConstraint)
-  sbol.subject = component_uri_subject
-  sbol.object = component_uri_object
-  sbol.restriction = restriction
+  sbol.<subject> = subject
+  sbol.<object> = object
+  sbol.<restriction> = restriction
 )
 
 Precedes(component_uri_subject, component_uri_object)              
@@ -46,5 +48,11 @@ OppositeOrientationAs(component_uri_subject, component_uri_object)
 
 differentFrom(component_uri_subject, component_uri_object)         
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, sbol.differentFrom)
+  SequenceConstraint(subject, object, sbol.differentFrom)
+)
+
+hasSequence(x)
+(
+    sequence = self._sequence
+    self._sequence is a DnaSequence(x)
 )

@@ -3,13 +3,13 @@
 FunctionalComponent(componentDefinition_uri, direction)
 (
   ComponentInstance(FunctionalComponent, componentDefinition_uri)
-  sbol.direction = direction
+  sbol.<direction> = direction
 )
 
 PrivateFunctionalComponent(componentDefinition_uri, direction)
 (
   PrivateComponentInstance(FunctionalComponent, componentDefinition_uri)
-  sbol.direction = direction
+  sbol.<direction> = direction
 )
 
 InputComponent(componentDefinition_uri)  
