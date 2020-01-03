@@ -199,30 +199,32 @@ def parse_from_file(filepath,
 
     forms = parser.parse(data)
     env.interpret(forms)
-    if not out:
-        print(env)
-    else:
-        with open(out, 'w') as o:
-            sbol = str(env)
-        
-            ret_code = ""
-            if not no_validation:
-                errors = []
-                response = validate_sbol(sbol)
-                if response['valid']:
-                    print('Valid.')
-                    ret_code = "Valid."
-                else:
-                    for e in response['errors']:
-                        print(e)
-                    errors = response['errors']
-                    ret_code =  "Invalid."
-            else:
-                ret_code = "No Validation."
-                errors = ["No Validation."]
+    sbol = '<?xml version="1.0" ?>\n' + str(env)
 
-            xml_preamble = '<?xml version="1.0" ?>\n'
-            o.write(xml_preamble)
+    ret_code = ""
+    if not no_validation:
+        errors = []
+        response = validate_sbol(sbol)
+        try:
+            if response['valid']:
+                print('Valid.')
+                ret_code = "Valid."
+            else:
+                for e in response['errors']:
+                    print(e)
+                errors = response['errors']
+                ret_code =  "Invalid."
+        except TypeError:
+            errors = ["Unable to Validate output."]
+    else:
+        ret_code = "No Validation."
+        errors = ["No Validation."]
+
+    if not out:
+        print(sbol)
+    else:
+        with open(out, 'w') as o:        
+
             o.write(sbol)
             return {ret_code : errors}
 

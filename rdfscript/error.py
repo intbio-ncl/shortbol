@@ -10,7 +10,9 @@ class RDFScriptError(Exception):
 
     def __str__(self):
         return format("\nERROR: %s on line: %s at position: %s in file: %s\n" % (self._type, self.location.position.line,self.location.col_on_line, self.location.filename))
-
+    
+    def simplified_error_message(self):
+        return f'\nERROR: {self._type} on line: {self.location.position.line} at position: {self.location.col_on_line}\n'
 
 class FailToImport(RDFScriptError):
 
@@ -27,6 +29,7 @@ class FailToImport(RDFScriptError):
     def __str__(self):
         return RDFScriptError.__str__(self) + format("Could not find import '%s'\non path %s\n\n"
                                                      % (self.target, self._path))
+                                                     
 
 
 class RDFScriptSyntax(RDFScriptError):
@@ -43,6 +46,8 @@ class RDFScriptSyntax(RDFScriptError):
     def __str__(self):
         return RDFScriptError.__str__(self) + format("Did not expect to find '%s'\n\n"
                                                      % self.token)
+    def simplified_error_message(self):
+        return f'{RDFScriptError.simplified_error_message(self)}, Did not expect to find: "{self.token.value}"'
 
 
 class UnexpectedType(RDFScriptError):
@@ -63,6 +68,9 @@ class UnexpectedType(RDFScriptError):
     def __str__(self):
         return RDFScriptError.__str__(self) + format("Expected object of type: %s, but found %s.\n\n"
                                                      % (self.expected, self.actual))
+
+    def simplified_error_message(self):
+        return f'{RDFScriptError.simplified_error_message(self)}, Expected object of type: {self.expected}, but found {self.actual}'
 
 
 class PrefixError(RDFScriptError):
@@ -94,6 +102,9 @@ class TemplateNotFound(RDFScriptError):
     def __str__(self):
         return RDFScriptError.__str__(self) + format("Cannot find template '%s'.\n\n" % self.template)
 
+    def simplified_error_message(self):
+        return f'{RDFScriptError.simplified_error_message(self)}, Cannot find template: {self.template}'
+
 
 class NoSuchExtension(RDFScriptError):
 
@@ -124,6 +135,9 @@ class ExtensionFailure(RDFScriptError):
     def __str__(self):
         return RDFScriptError.__str__(self) + format("%s" % self._message)
 
+    def simplified_error_message(self):
+        return f'{RDFScriptError.simplified_error_message(self)}, {self._message}'
+
 
 class UnknownConstruct(RDFScriptError):
 
@@ -152,3 +166,6 @@ class InternalError(RDFScriptError):
 
     def __str__(self):
         return RDFScriptError.__str__(self) + format("%s caused an internal error.\n\n" % self.object)
+
+    def simplified_error_message(self):
+        return f'{RDFScriptError.simplified_error_message(self)}, {self.object} caused an internal error.'

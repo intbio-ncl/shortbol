@@ -24,15 +24,21 @@ ReverseComplementRange(start,end)
   Range(start,end,reverseComplement)
 )
 
+Cut(at, orientation)
+(
+  Location(Cut,orientation)
+  sbol.at = at
+)
+
 InlineCut(at,orientation)
 (
-  Location(Cut,inline)
+  Cut(Cut,inline)
   sbol.at = at
 )
 
 ReverseComplementCut(at,orientation)
 (
-  Location(Cut,reverseComplement)
+  Cut(Cut,reverseComplement)
   sbol.at = at
 )
 
@@ -41,12 +47,12 @@ GenericLocation(orientation)
   Location(GenericLocation,orientation)
 )
 
-InlineGenericLocation(at,orientation)
+InlineGenericLocation(orientation)
 (
   GenericLocation(inline)
 )
 
-ReverseComplementGenericLocation(at,orientation)
+ReverseComplementGenericLocation(orientation)
 (
   GenericLocation(reverseComplement)
 )
