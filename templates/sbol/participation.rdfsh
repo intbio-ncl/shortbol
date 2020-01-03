@@ -38,9 +38,9 @@ Product(functionalcomponent_uri)
   Participation(functionalcomponent_uri,sbol.product)
 )
 
-Participation_Promoter(functionalcomponent_uri)
+ParticipationPromoter(functionalcomponent_uri)
 (
-  Participation(functional_component, sbol.promoter_t)
+  Participation(functionalcomponent_uri, sbol.promoter_t)
 )
 
 Modifier(functionalcomponent_uri)

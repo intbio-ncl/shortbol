@@ -28,8 +28,8 @@ TetR_inverter is a ModuleDefinition()
 
 #The toggle switch module
 
-TetR_map is a sbol.MapsUseLocal(TetR_lacinv_fc,TetR_fc)
-LacI_map is a sbol.MapsUseLocal(LacI_lacinv_fc,LacI_fc)
+TetR_map is a MapsUseLocal(TetR_lacinv_fc,TetR_fc)
+LacI_map is a MapsUseLocal(LacI_lacinv_fc,LacI_fc)
 toggleSwitch is a Module(TetR_inverter)
 (
 	description = "toggle switch"

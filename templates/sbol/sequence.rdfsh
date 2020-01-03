@@ -19,15 +19,15 @@ ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
 
 SequenceAnnotation(range_cut_genericlocation_uri)
 (
-  TopLevel(SequenceAnnotation)
-  sbol.<location> = location
+  Identified(SequenceAnnotation)
+  sbol.<location> = range_cut_genericlocation_uri
 )
 
 SequenceConstraint(component_uri_subject, component_uri_object, restriction)
 (
-  TopLevel(SequenceConstraint)
-  sbol.<subject> = subject
-  sbol.<object> = object
+  Identified(SequenceConstraint)
+  sbol.<subject> = component_uri_subject
+  sbol.<object> = component_uri_object
   sbol.<restriction> = restriction
 )
 

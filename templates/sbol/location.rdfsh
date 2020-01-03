@@ -2,7 +2,7 @@
 
 Location(type, orientation) 
 (
-  TopLevel(type)
+  Identified(type)
   sbol.<orientation> = orientation
 )
 
