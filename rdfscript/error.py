@@ -13,7 +13,7 @@ class RDFScriptError(Exception):
 
     def simplified_error_message(self):
         return f'\nERROR: {self._type} on line: {self.location.line} at position: {self.location.col}\n'
-
+    
 
 class FailToImport(RDFScriptError):
     def __init__(self, target, path, location):
