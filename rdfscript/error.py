@@ -2,6 +2,7 @@ import pdb
 
 class RDFScriptError(Exception):
     def __init__(self, location, msg):
+        self.location = location
         if location is not None:
             message = f"ERROR LINE {location.line} COLUMN {location.col}:{msg}"
         else:
@@ -11,18 +12,19 @@ class RDFScriptError(Exception):
         self._type = 'RDFScriptError'
 
     def simplified_error_message(self):
-        return f'\nERROR: {self._type} on line: {self.location.position.line} at position: {self.location.col_on_line}\n'
+        return f'\nERROR: {self._type} on line: {self.location.line} at position: {self.location.col}\n'
 
 
 class FailToImport(RDFScriptError):
     def __init__(self, target, path, location):
         message = '\n'
-        message += f"Could not find import '{self.target}'"
+        message += f"Could not find import '{target}'"
         super().__init__(location, message)
 
 
 class RDFScriptSyntax(RDFScriptError):
     def __init__(self, token, location):
+        self.token = token
         message = '\n'
         message += f"Invalid syntax '{token}'"
         super().__init__(location, message)
@@ -33,6 +35,8 @@ class RDFScriptSyntax(RDFScriptError):
 
 class UnexpectedType(RDFScriptError):
     def __init__(self, expected, actual, location):
+        self.expected = expected
+        self.actual = actual
         message = '\n'
         message += f"Expected object of type {expected}, but found {actual}"
         super().__init__(location, message)
@@ -51,6 +55,7 @@ class PrefixError(RDFScriptError):
 class TemplateNotFound(RDFScriptError):
 
     def __init__(self, template, location):
+        self.template = template
         message = '\n'
         message += f"Cound not find template '{template}'"
         super().__init__(location, message)
