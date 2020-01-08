@@ -7,13 +7,17 @@ Interaction(t)
   sbol.type = t
 )
 
+Inhibition()
+(
 
-Inhibition(name, of, by)
+)
+
+inhibition(of, by)
 (
   name.of is a OutputComponent(of)
   name.by is a InputComponent(by)
   
-  name is a Interaction(inhibition)
+  name is a Inhibition()
   (
     self.participation.of is a Participation(name.of, inhibited)
     self.participation.by is a Participation(name.by, inhibitor)

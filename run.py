@@ -75,6 +75,7 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
         curr_line_num = curr_line_num + 2
         while split_text[curr_line_num] != ")":
             # A comment move on.
+            print(split_text[curr_line_num])
             if split_text[curr_line_num] == "" or split_text[curr_line_num] == None or split_text[curr_line_num].lstrip()[0] == "#":
                 curr_line_num = curr_line_num + 1
                 continue
@@ -108,12 +109,12 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
                 #Re assemble line
                 split_text[curr_line_num] = lhs + " = " + rhs 
                 curr_line_num = curr_line_num + 1
-            # An implicit instance creation eg (hasSequence("atcg"))
-            elif "has" in split_text[curr_line_num]:
-                #@@ Need to change this if its in the template_table
-                line_parts = split_text[curr_line_num].split("(")
-                template_type = hacky_conversion_handle_type(line_parts[0],shortbol_template_table,curr_line_num)
-                parameters = hacky_conversion_handle_parameters(line_parts[1],shortbol_identifier_table)
+            # An implicit instance creation eg ( precedes(n,w) )
+            elif any(template_name in split_text[curr_line_num] for template_name in shortbol_template_table):
+                template_type = split_text[curr_line_num].split("(")[0]
+                parameters = split_text[curr_line_num].split("(")[1]
+                template_type = hacky_conversion_handle_type(template_type,shortbol_template_table,curr_line_num)
+                parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
                 split_text[curr_line_num] = f'  {template_type}{parameters}'
                 curr_line_num = curr_line_num + 1
             elif is_a_template in split_text[curr_line_num]:
@@ -221,13 +222,17 @@ def parse_from_file(filepath,
                     out=None,
                     extensions=[],
                     debug_lvl=1,
-                    no_validation = None):
+                    no_validation = None,
+                    no_hack = None):
     
     if len(optpaths) == 0:
         optpaths.append("templates")
     template_dir = optpaths[0]
 
-    to_run_fn = hacky_conversion(filepath,template_dir)
+    if not no_hack:
+        to_run_fn = hacky_conversion(filepath,template_dir)
+    else:
+        to_run_fn = filepath
 
     parser = Parser(filename=to_run_fn, debug_lvl=debug_lvl)
 
@@ -333,6 +338,7 @@ def rdfscript_args():
 
     parser.add_argument('-o', '--output', help="The name of the output file", default=None)
     parser.add_argument('-nv', '--no_validation', help="Stops the output from being sent via HTTP to online validator.", default=None, action='store_true')
+    parser.add_argument('-nh', '--no_hack', help="Stops the hack from modiying the file.", default=None, action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 0.0alpha')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
 
@@ -355,7 +361,8 @@ if __name__ == "__main__":
                         optpaths=args.path,
                         extensions=extensions,
                         debug_lvl=args.debug_lvl,
-                        no_validation = args.no_validation)
+                        no_validation = args.no_validation,
+                        no_hack = args.no_hack)
     else:
         rdf_repl(serializer=args.serializer,
                  out=args.output,

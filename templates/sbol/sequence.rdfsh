@@ -1,5 +1,7 @@
 @prefix sbol
 
+# Sequence Templates
+
 Sequence(x, y)
 (
   TopLevel(Sequence)
@@ -17,11 +19,25 @@ ProteinSequence(x)   (Sequence(x, iupacProtein))
 
 ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
 
+hasSequence(x)
+(
+    sequence = self._sequence
+    self._sequence is a DnaSequence(x)
+)
+
+
+
+#SequenceAnnotation Templates
+
 SequenceAnnotation(range_cut_genericlocation_uri)
 (
   Identified(SequenceAnnotation)
   sbol.<location> = range_cut_genericlocation_uri
 )
+
+
+
+#Sequence Constraint Templates
 
 SequenceConstraint(component_uri_subject, component_uri_object, restriction)
 (
@@ -33,19 +49,7 @@ SequenceConstraint(component_uri_subject, component_uri_object, restriction)
 
 Precedes(component_uri_subject, component_uri_object)              
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, sbol.<precedes>)
-)
-
-precedes(subject, object)
-(
- subject._component is a Component(subject)
- object._component is a Component(object)
-
- component = subject._component
- component = object._component
-  
- subject._component_preceding._.object._component is a Precedes(subject._component, object._component)
- sequenceConstraint = subject._component_preceding._.object._component
+  SequenceConstraint(component_uri_subject, component_uri_object, sbol.precedes)
 )
 
 SameOrientationAs(component_uri_subject, component_uri_object)     
@@ -58,13 +62,45 @@ OppositeOrientationAs(component_uri_subject, component_uri_object)
   SequenceConstraint(component_uri_subject, component_uri_object, sbol.oppositeOrientationAs)
 )
 
-differentFrom(component_uri_subject, component_uri_object)         
+DifferentFrom(component_uri_subject, component_uri_object)         
 (
-  SequenceConstraint(subject, object, sbol.differentFrom)
+  SequenceConstraint(component_uri_subject, component_uri_object, sbol.differentFrom)
 )
 
-hasSequence(x)
+
+SequenceAnnotationComposite(subject,object,restriction)
 (
-    sequence = self._sequence
-    self._sequence is a DnaSequence(x)
+ subject._component is a Component(subject)
+ object._component is a Component(object)
+
+ component = subject._component
+ component = object._component
+  
+ subject._component_.restriction._.object._component is a SequenceConstraint(subject._component, object._component,restriction)
+ sequenceConstraint = subject._component_.restriction._.object._component
 )
+
+precedes(subject, object)
+(
+  SequenceAnnotationComposite(subject,object,sbol.differentFrom)
+)
+
+sameOrientationAs(subject, object)
+(
+  SequenceAnnotationComposite(subject,object,sbol.sameOrientationAs)
+)
+
+oppositeOrientationAs(subject, object)
+(
+  SequenceAnnotationComposite(subject,object,sbol.oppositeOrientationAs)
+)
+
+differentFrom(subject, object)
+(
+  SequenceAnnotationComposite(subject,object,sbol.differentFrom)
+)
+
+
+
+
+
