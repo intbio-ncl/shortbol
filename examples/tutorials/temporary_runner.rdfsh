@@ -2,18 +2,53 @@ use <sbol>
 
 @prefix sbol_prefix = <http://sbol_prefix.org/>
 @prefix sbol_prefix
-# Answer 5
+# Example 4
 # The TetR and LacI proteins
-
 TetR is a sbol.ProteinComponent()
 LacI is a sbol.ProteinComponent()
 
-TetR_fc is a sbol.FunctionalComponent(TetR,sbol.none)
-LacI_fc is a sbol.FunctionalComponent(LacI,sbol.none)
+TetR_fc is a sbol.FunctionalComponent(TetR,sbol.inout)
+LacI_fc is a sbol.FunctionalComponent(LacI,sbol.inout)
+
+#Make a participation for the two proteins
+TetR_part is a sbol.Participation(TetR_fc,sbol.inhibitor)
+LacI_part is a sbol.Participation(LacI_fc,sbol.inhibited)
+
+#Make an Interaction for the participants
+TetRLacI_int is a sbol.Interaction(sbol.inhibition)
+(
+    sbol.participation = TetR_part
+    sbol.participation = LacI_part	
+)
+
+# The TetR inverter module
+TetR_inverter is a sbol.ModuleDefinition()
+(
+    sbol.description =  "TetR inverter"
+    sbol.functionalComponent = TetR_fc
+    sbol.functionalComponent = LacI_fc
+    sbol.interaction = TetRLacI_int
+)
+
+#The toggle switch module
+
+TetR_map is a sbol.MapsUseLocal(TetR_lacinv_fc,TetR_fc)
+LacI_map is a sbol.MapsUseLocal(LacI_lacinv_fc,LacI_fc)
+toggleSwitch is a sbol.Module(TetR_inverter)
+(
+    sbol.description =  "toggle switch"
+    sbol.mapsTo = TetR_map
+    sbol.mapsTo = LacI_map
+)
+
+#Make new FunctionalComponents
+TetR_lacinv_fc is a sbol.FunctionalComponent(TetR,sbol.inout)
+LacI_lacinv_fc is a sbol.FunctionalComponent(LacI,sbol.inout)
+
 
 #Make a participation for the two proteins in the Lacinverter module
-LacI_lacinv_part is a sbol.Participation(LacI_fc,sbol.inhibitor)
-TetR_lacinv_part is a sbol.Participation(TetR_fc,sbol.inhibited)
+LacI_lacinv_part is a sbol.Participation(LacI_lacinv_fc,sbol.inhibitor)
+TetR_lacinv_part is a sbol.Participation(TetR_lacinv_fc,sbol.inhibited)
 
 #Make an Interaction for the participants in the Lacinverter module
 LacITetR_int is a sbol.Interaction(sbol.inhibition)
@@ -26,8 +61,10 @@ LacITetR_int is a sbol.Interaction(sbol.inhibition)
 LacI_inverter is a sbol.ModuleDefinition()
 (
     sbol.description =  "LacI inverter"
-    sbol.functionalComponent = TetR_fc
-    sbol.functionalComponent = LacI_fc
+    sbol.functionalComponent = TetR_lacinv_fc
+    sbol.functionalComponent = LacI_lacinv_fc
     sbol.interaction = LacITetR_int
+    sbol.module = toggleSwitch
 )
+
 @extension SbolIdentity()

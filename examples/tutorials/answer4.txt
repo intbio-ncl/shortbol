@@ -1,12 +1,6 @@
 # Answer 4
-# The sequences of the TetR inverter parts
-
-lacI_term_seq is a DnaSequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
-
-lacI2_term_seq is a DnaSequence("ccggcttatcggtcagtttcacctgatttacgtaaaaacccgcttcggcgggtttttgcttttggaggggcagaaagatgaatgactgtccacgacgctatacccaaaagaaa")
-
-
 # The genetic parts of the TetR inverter
+
 pTetR is a Promoter()
 (
   hasSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")

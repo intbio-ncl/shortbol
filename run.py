@@ -33,7 +33,7 @@ def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
     elif len(parts) == 2:
         if parts[1] in shortbol_template_table:
             #SBOL. is  present and template is in libary
-            return ""
+            return type
         else:
             #SBOL. is  present but template NOT in libary
             raise NameError(f'Template: {parts[0]} on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
@@ -242,31 +242,35 @@ def parse_from_file(filepath,
 
     forms = parser.parse(data)
     env.interpret(forms)
+    sbol = '<?xml version="1.0" ?>\n' + str(env)
+
+    ret_code = ""
+    if not no_validation:
+        errors = []
+        response = validate_sbol(sbol)
+        try:
+            if response['valid']:
+                print('SBOL validator success.')
+                ret_code = "SBOL validator success."
+            else:
+                print("SBOL validator failure.")
+                for e in response['errors']:
+                    print(e)
+                errors = response['errors']
+                ret_code =  "SBOL validator failure."
+        except TypeError:
+            errors = ["Unable to Validate output."]
+    else:
+        ret_code = "No Validation."
+        errors = ["No Validation."]
+
     if not out:
-        print(env)
+        print(sbol)
     else:
         with open(out, 'w') as o:
             sbol = str(env)
-            
-            ret_code = ""
-            if not no_validation:
-                errors = []
-                response = validate_sbol(sbol)
-                if response['valid']:
-                    ret_code = "SBOL validation success."
-                else:
-                    for e in response['errors']:
-                        print(e)
-                    errors = response['errors']
-                    ret_code =  "SBOL validation failed."
-            else:
-                ret_code = "No SBOL validation"
-                errors = ["No Validation."]
-
-            xml_preamble = '<?xml version="1.0" ?>\n'
-            o.write(xml_preamble)
             o.write(sbol)
-            return {ret_code : errors}
+    return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
              out=None,
@@ -286,6 +290,33 @@ def rdf_repl(serializer='nt',
                 debug_lvl=debug_lvl)
 
     repl.start()
+
+def produce_tables(lib_paths):
+    '''
+    Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
+    process on the templates to produce the symbols and template tables.
+    This process is just the parse_from file method and returns the tables.
+    '''
+    optpaths = lib_paths
+    to_run_fn = os.path.join(lib_paths[0],"temp.rdfsh")
+    f= open(to_run_fn,"a")
+    f.write("use <sbol>")
+    f.close()
+
+    parser = Parser(filename=to_run_fn, debug_lvl=1)
+
+    with open(to_run_fn, 'r') as in_file:
+        data = in_file.read()
+
+    env = Env(filename=to_run_fn,
+              serializer="sbolxml",
+              paths=optpaths)
+
+    forms = parser.parse(data)
+    env.interpret(forms)
+    os.remove(to_run_fn)
+    return env._symbol_table, env._template_table
+
 
 def rdfscript_args():
 

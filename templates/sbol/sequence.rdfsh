@@ -17,23 +17,23 @@ ProteinSequence(x)   (Sequence(x, iupacProtein))
 
 ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
 
-SequenceAnnotation(location)
+SequenceAnnotation(range_cut_genericlocation_uri)
 (
-  TopLevel(SequenceAnnotation)
-  sbol.<location> = location
+  Identified(SequenceAnnotation)
+  sbol.<location> = range_cut_genericlocation_uri
 )
 
-SequenceConstraint(subject, object, restriction)
+SequenceConstraint(component_uri_subject, component_uri_object, restriction)
 (
-  TopLevel(SequenceConstraint)
-  sbol.<subject> = subject
-  sbol.<object> = object
+  Identified(SequenceConstraint)
+  sbol.<subject> = component_uri_subject
+  sbol.<object> = component_uri_object
   sbol.<restriction> = restriction
 )
 
-Precedes(subject, object)              
+Precedes(component_uri_subject, component_uri_object)              
 (
-  SequenceConstraint(subject, object, sbol.<precedes>)
+  SequenceConstraint(component_uri_subject, component_uri_object, sbol.<precedes>)
 )
 
 precedes(subject, object)
@@ -48,23 +48,23 @@ precedes(subject, object)
  sequenceConstraint = subject._component_preceding._.object._component
 )
 
-SameOrientationAs(subject, object)     
+SameOrientationAs(component_uri_subject, component_uri_object)     
 (
-  SequenceConstraint(subject, object, sbol.sameOrientationAs)
+  SequenceConstraint(component_uri_subject, component_uri_object, sbol.sameOrientationAs)
 )
 
-OppositeOrientationAs(subject, object) 
+OppositeOrientationAs(component_uri_subject, component_uri_object) 
 (
-  SequenceConstraint(subject, object, sbol.oppositeOrientationAs)
+  SequenceConstraint(component_uri_subject, component_uri_object, sbol.oppositeOrientationAs)
 )
 
-differentFrom(subject, object)         
+differentFrom(component_uri_subject, component_uri_object)         
 (
   SequenceConstraint(subject, object, sbol.differentFrom)
 )
 
 hasSequence(x)
 (
-        sequence = self._sequence
-        self._sequence is a DnaSequence(x)
+    sequence = self._sequence
+    self._sequence is a DnaSequence(x)
 )

@@ -1,59 +1,59 @@
 @prefix sbol
 
 # Participation Templates
-Participation(functional_component, withrole)
+Participation(functionalcomponent_uri, withrole)
 (
   Identified(Participation)
   role = withrole
-  participant = functional_component
+  participant = functionalcomponent_uri
 )
 
-Inhibitor(functional_component)
+Inhibitor(functionalcomponent_uri)
 (
-  Participation(functional_component,sbol.inhibitor)
+  Participation(functionalcomponent_uri,sbol.inhibitor)
 )
 
-Inhibited(functional_component)
+Inhibited(functionalcomponent_uri)
 (
-  Participation(functional_component,sbol.inhibited)
+  Participation(functionalcomponent_uri,sbol.inhibited)
 )
 
-Reactant(functional_component)
+Reactant(functionalcomponent_uri)
 (
-  Participation(functional_component,sbol.reactant)
+  Participation(functionalcomponent_uri,sbol.reactant)
 )
 
-Stimulator(functional_component)
+Stimulator(functionalcomponent_uri)
 (
-  Participation(functional_component,sbol.stimulator)
+  Participation(functionalcomponent_uri,sbol.stimulator)
 )
 
-Stimulated(functional_component)
+Stimulated(functionalcomponent_uri)
 (
-  Participation(functional_component,sbol.stimulated)
+  Participation(functionalcomponent_uri,sbol.stimulated)
 )
 
-Product(functional_component)
+Product(functionalcomponent_uri)
 (
-  Participation(functional_component, sbol.product)
+  Participation(functionalcomponent_uri,sbol.product)
 )
 
-Promoter_t(functional_component)
+ParticipationPromoter(functionalcomponent_uri)
 (
-  Participation(functional_component, sbol.promoter_t)
+  Participation(functionalcomponent_uri, sbol.promoter_t)
 )
 
-Modifier(functional_component)
+Modifier(functionalcomponent_uri)
 (
-  Participation(functional_component, sbol.modifier)
+  Participation(functionalcomponent_uri,sbol.modifier)
 )
 
-Modified(functional_component)
+Modified(functionalcomponent_uri)
 (
-  Participation(functional_component, sbol.modified)
+  Participation(functionalcomponent_uri,sbol.modified)
 )
 
-Template(functional_component)
+Template(functionalcomponent_uri)
 (
-  Participation(functional_component, sbol.template)
+  Participation(functionalcomponent_uri,sbol.template)
 )

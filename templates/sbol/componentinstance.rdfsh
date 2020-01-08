@@ -1,5 +1,7 @@
 @prefix sbol
 
+
+# Abstract class
 ComponentInstance(type, def)
 (
   Identified(type)
@@ -14,7 +16,7 @@ PrivateComponentInstance(type, def)
   access = sbol.private
 )
 
-Component(def) 
+Component(componentdefinition_uri) 
 (
-  ComponentInstance(Component, def)
+  ComponentInstance(Component, componentdefinition_uri)
 )

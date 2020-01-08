@@ -1,32 +1,33 @@
 @prefix sbol
 
-FunctionalComponent(def, direction)
+FunctionalComponent(componentDefinition_uri, direction)
 (
-  ComponentInstance(FunctionalComponent, def)
+  ComponentInstance(FunctionalComponent, componentDefinition_uri)
   sbol.<direction> = direction
 )
 
-PrivateFunctionalComponent(def, direction)
+PrivateFunctionalComponent(componentDefinition_uri, direction)
 (
-  PrivateComponentInstance(FunctionalComponent, def)
+  PrivateComponentInstance(FunctionalComponent, componentDefinition_uri)
   sbol.<direction> = direction
 )
 
-InputComponent(def)  
+InputComponent(componentDefinition_uri)  
 (
-  FunctionalComponent(def, sbol.in)
-)
-OutputComponent(def) 
-(
-  FunctionalComponent(def, sbol.out)
+  FunctionalComponent(componentDefinition_uri, sbol.in)
 )
 
-InOutComponent(def)  
+OutputComponent(componentDefinition_uri) 
 (
-  FunctionalComponent(def, sbol.inout)
+  FunctionalComponent(componentDefinition_uri, sbol.out)
 )
 
-NoneComponent(def)   
+InOutComponent(componentDefinition_uri)  
 (
-  FunctionalComponent(def, sbol.none)
+  FunctionalComponent(componentDefinition_uri, sbol.inout)
+)
+
+NoneComponent(componentDefinition_uri)   
+(
+  FunctionalComponent(componentDefinition_uri, sbol.none)
 )

@@ -10,7 +10,7 @@ Model(s, l, f)
 (
   TopLevel(Model)
   source = s
-  language = l
-  framework = f
+  sbol.language = l
+  sbol.framework = f
 )
 

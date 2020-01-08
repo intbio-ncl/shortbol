@@ -2,11 +2,13 @@
 @prefix sbol
 
 # (ComponentDefinition) type
-dNA = biopax.DnaRegion
-rNA = biopax.RnaRegion
-protein = biopax.Protein
-smallMolecule = biopax.SmallMolecule
-complex = biopax.Complex
+dNA = <http://www.biopax.org/release/biopax-level3.owl#Dna>
+dNARegion = <http://www.biopax.org/release/biopax-level3.owl#DnaRegion>
+rNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
+rNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
+protein = <http://www.biopax.org/release/biopax-level3.owl#Protein>
+smallMolecule = <http://www.biopax.org/release/biopax-level3.owl#SmallMolecule>
+complex = <http://www.biopax.org/release/biopax-level3.owl#Complex>
 
 
 # (ComponentDefinition) role
@@ -25,6 +27,7 @@ startCodon     = <http://identifiers.org/so/SO:0000318>
 tag            = <http://identifiers.org/so/SO:0000324>
 engineeredTag  = <http://identifiers.org/so/SO:0000807>
 sgRNA          = <http://identifiers.org/so/SO:0001998>
+transcriptionFactor = <http://identifiers.org/go/GO:0003700> 
 
 # (Range,Cut,GenericLocation) orientation
 inline = <http://sbols.org/v2#inline>
@@ -64,3 +67,27 @@ iupacDNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
 iupacRNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
 iupacProtein = <http://www.chem.qmul.ac.uk/iupac/AminoAcid/>
 opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
+
+
+# (SequenceConstraint) restriction
+precedes = <http://sbols.org/v2#precedes>
+sameOrientationAs = <http://sbols.org/v2#sameOrientationAs>
+oppositeOrientationAs = <http://sbols.org/v2#oppositeOrientationAs>
+differentFrom = <http://sbols.org/v2#differentFrom>
+
+
+# (Model) language
+SBML = <http://identifiers.org/edam/format_2585>
+CellML = <http://identifiers.org/edam/format_3240>
+BioPAX = <http://identifiers.org/edam/format_3156>
+
+# (Model) framework
+continuous =  <http://identifiers.org/biomodels.sbo/SBO:0000062>
+discrete = <http://identifiers.org/biomodels.sbo/SBO:0000063>
+
+
+#  (MapsTo) refinement
+useRemote = <http://sbols.org/v2#useRemote>
+useLocal = <http://sbols.org/v2#useLocal> 
+verifyIdentical  = <http://sbols.org/v2#verifyIdentical>
+merge = <http://sbols.org/v2#merge> 

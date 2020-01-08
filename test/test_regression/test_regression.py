@@ -4,7 +4,7 @@ import os, sys
 sys.path.insert(1, os.path.join(sys.path[0], '..',".."))
 import run
 
-test_files =os.path.join("tutorial_examples")
+test_files =os.path.join("..","..","examples")
 templates = os.path.join("..","..","templates")
 output_fn = "output_shortbol.xml"
 class TestRegression(unittest.TestCase):
@@ -26,6 +26,8 @@ class TestRegression(unittest.TestCase):
         failure_exceptions = []
         for path, subdirs, files in os.walk(test_files):
             for name in files:
+                if name == os.path.join(path,"temporary_runner"):
+                    continue
                 if name.endswith(".rdfsh") or name.endswith(".txt"):
                     file_to_run = os.path.join(path, name)
                     
@@ -36,7 +38,7 @@ class TestRegression(unittest.TestCase):
                     except Exception as e:
                         failure_exceptions.append({file_to_run:e})
                         
-                    self.assertEqual(return_code,{"Valid.":[]},"When Testing with file: " + file_to_run)
+                    self.assertEqual(return_code,{"SBOL validator success.":[]},"When Testing with file: " + file_to_run)
         for k,v in failure_exceptions:
             print("Failure by Exception on:" + k + ", Exception: " + str(v))
         if len(failure_exceptions) > 0:
