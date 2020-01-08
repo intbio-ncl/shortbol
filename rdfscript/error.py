@@ -3,7 +3,7 @@ import pdb
 class RDFScriptError(Exception):
     def __init__(self, location, msg):
         if location is not None:
-            message = f"ERROR LINE {location.line} COLUMN {location.col}:{msg}"
+            message = f"ERROR LINE {location.line} COLUMN {location.col}:{msg} in {location.filename}"
         else:
             message = f"ERROR:{msg}"
 

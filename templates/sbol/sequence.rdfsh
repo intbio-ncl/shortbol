@@ -33,7 +33,19 @@ SequenceConstraint(subject, object, restriction)
 
 Precedes(subject, object)              
 (
-  SequenceConstraint(subject, object, sbol.precedes)
+  SequenceConstraint(subject, object, sbol.<precedes>)
+)
+
+precedes(subject, object)
+(
+ subject._component is a Component(subject)
+ object._component is a Component(object)
+
+ component = subject._component
+ component = object._component
+  
+ subject._component_preceding._.object._component is a Precedes(subject._component, object._component)
+ sequenceConstraint = subject._component_preceding._.object._component
 )
 
 SameOrientationAs(subject, object)     
