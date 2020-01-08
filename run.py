@@ -290,7 +290,6 @@ def rdf_repl(serializer='nt',
 
     repl.start()
 
-
 def produce_tables(lib_paths):
     '''
     Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
@@ -317,7 +316,6 @@ def produce_tables(lib_paths):
     os.remove(to_run_fn)
     return env._symbol_table, env._template_table
 
-   
 
 def rdfscript_args():
 
