@@ -111,9 +111,8 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
             # An implicit instance creation eg (hasSequence("atcg"))
             elif "has" in split_text[curr_line_num]:
                 #@@ Need to change this if its in the template_table
-                temporary_has_table = ["hasSequence","hasPromoter","hasInlineRange","hasComponent","hasSequenceAnnotation"]
                 line_parts = split_text[curr_line_num].split("(")
-                template_type = hacky_conversion_handle_type(line_parts[0],temporary_has_table,curr_line_num)
+                template_type = hacky_conversion_handle_type(line_parts[0],shortbol_template_table,curr_line_num)
                 parameters = hacky_conversion_handle_parameters(line_parts[1],shortbol_identifier_table)
                 split_text[curr_line_num] = f'  {template_type}{parameters}'
                 curr_line_num = curr_line_num + 1

@@ -26,7 +26,7 @@ class TestRegression(unittest.TestCase):
         failure_exceptions = []
         for path, subdirs, files in os.walk(test_files):
             for name in files:
-                if name == os.path.join(path,"temporary_runner"):
+                if name == "temporary_runner.rdfsh":
                     continue
                 if name.endswith(".rdfsh") or name.endswith(".txt"):
                     file_to_run = os.path.join(path, name)

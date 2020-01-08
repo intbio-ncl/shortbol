@@ -4,5 +4,5 @@
 
 Identified(type)
 (
-        rdf.<type> = type
+   rdf.<type> = type
 )

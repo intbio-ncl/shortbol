@@ -7,9 +7,6 @@ pTetR is a Promoter()
 )
 
 pTetR_c is a Component(pTetR)
-(
-  hasPromoter(pTetR)
-)
 
 pTetR_sa is a SequenceAnnotation(pTetR_loc)
 (
