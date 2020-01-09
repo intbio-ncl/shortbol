@@ -23,12 +23,14 @@ def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
     parts = type.replace(" ", "")
     parts = parts.split(".")
     # When sbol. is not present
+    print(parts)
     if len(parts) == 1 :
         if parts[0] in shortbol_template_table:
             #SBOL. is not present and template is in libary
             return sbol_dot + parts[0]
         else:
             #SBOL. is not present but template NOT in libary
+            
             raise NameError(f'Template: {parts[0]}  on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
     elif len(parts) == 2:
         if parts[1] in shortbol_template_table:
@@ -75,7 +77,6 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
         curr_line_num = curr_line_num + 2
         while split_text[curr_line_num] != ")":
             # A comment move on.
-            print(split_text[curr_line_num])
             if split_text[curr_line_num] == "" or split_text[curr_line_num] == None or split_text[curr_line_num].lstrip()[0] == "#":
                 curr_line_num = curr_line_num + 1
                 continue
@@ -196,6 +197,7 @@ def hacky_conversion(filepath,template_dir):
     #for index,line in enumerate(split_text):
     curr_line_num = 0
     while curr_line_num != len(split_text):
+        print(split_text)
         line = split_text[curr_line_num]
         if line and line[0].lstrip() == "#" :
             curr_line_num = curr_line_num + 1

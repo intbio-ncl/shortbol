@@ -31,11 +31,23 @@ hasSequence(x)
 
 SequenceAnnotation(range_cut_genericlocation_uri)
 (
-  Identified(SequenceAnnotation)
-  sbol.<location> = range_cut_genericlocation_uri
+    Identified(SequenceAnnotation)
+    sbol.<location> = range_cut_genericlocation_uri
 )
 
 
+sequenceAnnotation(subject, location)
+(
+    subject._component is a Component(subject)
+    component = subject._component
+
+    subject._.sequenceAnnotation is a SequenceAnnotation(location)
+    (
+      sbol.<component> = subject._component
+    )
+
+    sequenceAnnotation = subject._.sequenceAnnotation
+)
 
 #Sequence Constraint Templates
 
@@ -68,7 +80,7 @@ DifferentFrom(component_uri_subject, component_uri_object)
 )
 
 
-SequenceAnnotationComposite(subject,object,restriction)
+sequenceConstraint(subject,object,restriction)
 (
  subject._component is a Component(subject)
  object._component is a Component(object)
@@ -82,22 +94,22 @@ SequenceAnnotationComposite(subject,object,restriction)
 
 precedes(subject, object)
 (
-  SequenceAnnotationComposite(subject,object,sbol.differentFrom)
+  sequenceConstraint(subject,object,sbol.differentFrom)
 )
 
 sameOrientationAs(subject, object)
 (
-  SequenceAnnotationComposite(subject,object,sbol.sameOrientationAs)
+  sequenceConstraint(subject,object,sbol.sameOrientationAs)
 )
 
 oppositeOrientationAs(subject, object)
 (
-  SequenceAnnotationComposite(subject,object,sbol.oppositeOrientationAs)
+  sequenceConstraint(subject,object,sbol.oppositeOrientationAs)
 )
 
 differentFrom(subject, object)
 (
-  SequenceAnnotationComposite(subject,object,sbol.differentFrom)
+  sequenceConstraint(subject,object,sbol.differentFrom)
 )
 
 

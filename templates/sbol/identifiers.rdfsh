@@ -43,13 +43,13 @@ none = <http://sbols.org/v2#none>
 # (Participation) role
 inhibitor = <http://identifiers.org/biomodels.sbo/SBO:0000020>
 inhibited = <http://identifiers.org/biomodels.sbo/SBO:0000642>
-reactant = <http://identifiers.org/biomodels.sbo/SBO:0000010>
 stimulator =  <http://identifiers.org/biomodels.sbo/SBO:0000459>
 stimulated = <http://identifiers.org/biomodels.sbo/SBO:0000643>
-product = <http://identifiers.org/biomodels.sbo/SBO:0000011>
-promoter_t = <http://identifiers.org/biomodels.sbo/SBO:0000598> 
 modifier = <http://identifiers.org/biomodels.sbo/SBO:0000019>
 modified = <http://identifiers.org/biomodels.sbo/SBO:0000644>
+product = <http://identifiers.org/biomodels.sbo/SBO:0000011>
+reactant = <http://identifiers.org/biomodels.sbo/SBO:0000010>
+participation_promoter = <http://identifiers.org/biomodels.sbo/SBO:0000598> 
 template = <http://identifiers.org/biomodels.sbo/SBO:0000645>
 
 

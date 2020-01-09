@@ -4,7 +4,7 @@ LacI is a ProteinComponent()
 
 # The TetR inverter
 TetR_inverter is a ModuleDefinition()
-)
+(
   description = "TetR inverter"
-  repression(TetR, LacI)
+  inhibition(TetR, LacI)
 )

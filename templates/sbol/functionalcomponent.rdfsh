@@ -31,3 +31,35 @@ NoneComponent(componentDefinition_uri)
 (
   FunctionalComponent(componentDefinition_uri, sbol.none)
 )
+
+hasFunctionalComponent(cd,direction)
+(
+  functionalComponent = self._functionalComponent
+  self._functionalComponent is a FunctionalComponent(cd,direction)
+)
+
+hasPrivateFunctionalComponent(cd,direction)
+(
+  functionalComponent = self._functionalComponent
+  self._functionalComponent is a PrivateFunctionalComponent(cd,direction)
+)
+
+hasInputComponent(cd)
+(
+  hasFunctionalComponent(cd,in)
+)
+
+hasOutputComponent(cd)
+(
+  hasFunctionalComponent(cd,out)
+)
+
+hasInOutComponent(cd)
+(
+  hasFunctionalComponent(cd,inout)
+)
+
+hasNoneComponent(cd)
+(
+  hasFunctionalComponent(cd,none)
+)

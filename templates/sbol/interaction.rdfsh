@@ -9,53 +9,91 @@ Interaction(t)
 
 Inhibition()
 (
-
+  Interaction(sbol.inhibition)
 )
 
-inhibition(of, by)
+Stimulation()
 (
-  name.of is a OutputComponent(of)
-  name.by is a InputComponent(by)
-  
-  name is a Inhibition()
-  (
-    self.participation.of is a Participation(name.of, inhibited)
-    self.participation.by is a Participation(name.by, inhibitor)
-    participation = self.participation.of
-    participation = self.participation.by
-  )
+  Interaction(sbol.stimulation)
 )
 
-NonCovBonding(name, reactantA, reactantB)
+BiochemicalReaction()
 (
-  name.reactantA is a InOutComponent(reactantA)
-  name.reactantB is a InOutComponent(reactantB)  
-  
-  name is a Interaction(noncovalent_bonding)
-  (
-    self.participation.reactantA is a Participation(name.reactantA, reactant)
-    self.participation.reactantB is a Participation(name.reactantB, reactant)
-    participation = self.participation.reactantA
-    participation = self.participation.reactantB
-  )
+  Interaction(sbol.biochemical_reaction)
 )
 
-NonCovBonding3(name, reactantA, reactantB, reactantC)
+NoncovalentBonding()
 (
-  name.reactantA is a InOutComponent(reactantA)
-  name.reactantB is a InOutComponent(reactantB)
-  name.reactantC is a InOutComponent(reactantC)    
-  
-  name is a Interaction(noncovalent_bonding)
-  (
-    self.participation.reactantA is a Participation(name.reactantA, reactant)
-    self.participation.reactantB is a Participation(name.reactantB, reactant)
-    self.participation.reactantC is a Participation(name.reactantC, reactant)
-    
-    participation = self.participation.reactantA
-    participation = self.participation.reactantB
-    participation = self.participation.reactantC    
-  )
+  Interaction(sbol.noncovalent_bonding)
+)
 
-  interaction = name
+Degradation()
+(
+  Interaction(sbol.degradation)
+)
+
+GeneticProduction()
+(
+  Interaction(sbol.genetic_production)
+)
+
+Control()
+(
+  Interaction(sbol.control)
+)
+
+
+interaction(of, of_type, of_direction, by, by_type, by_direction,type)
+(
+  of._fc is a FunctionalComponent(of,of_direction)
+  by._fc is a FunctionalComponent(by,by_direction)
+
+  functionalComponent = of._fc
+  functionalComponent = by._fc
+  
+  of._fc._.type._with_.by._fc is a Interaction(type)
+  (
+    of._fc._.of_type is a Participation(of._fc, of_type)
+    by._fc._.by_type is a Participation(by._fc, by_type)
+
+    participation = of._fc._.of_type 
+    participation = by._fc._.by_type
+  )
+  interaction = of._fc._.type._with_.by._fc
+)
+
+inhibition(inhibitor_cd, inhibited_cd)
+(
+  interaction(inhibitor_cd, inhibitor, in, inhibited_cd, inhibited, out, inhibition)
+)
+
+stimulation(stimulator_cd, stimulated_cd)
+(
+  interaction(stimulator_cd, stimulator, in, stimulated_cd, stimulated, out, stimulation)
+)
+
+nonCovalentBonding(reactantA, reactantB)
+(
+  interaction(reactantA, reactant,inout, reactantB, reactant, inout, noncovalent_bonding)
+)
+
+bioChemicalReaction(reactant_cd, product_cd)
+(
+  interaction(reactant_cd, reactant, in, product_cd, product, out, biochemical_reaction)
+)
+
+geneticProduction(template_cd, product_cd)
+(
+  interaction(template_cd, template, in, product_cd, product, out, genetic_production)
+)
+
+#???
+degradation(inp1, inp2)
+(
+  interaction(inp1, template, in, inp2, product, out, degradation)
+)
+
+control(modifier_cd, modified_cd)
+(
+  interaction(template_cd, template, in, product_cd, product, out, control)
 )

@@ -20,3 +20,9 @@ Component(componentdefinition_uri)
 (
   ComponentInstance(Component, componentdefinition_uri)
 )
+
+hasComponent(componentdefinition_uri)
+(
+  component = self._component
+  self._component is a Component(componentdefinition_uri)
+)

@@ -55,4 +55,3 @@ ReverseComplementGenericLocation(orientation)
   GenericLocation(reverseComplement)
 )
 
-

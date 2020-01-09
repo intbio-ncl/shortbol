@@ -57,3 +57,59 @@ Template(functionalcomponent_uri)
 (
   Participation(functionalcomponent_uri,sbol.template)
 )
+
+hasParticipation(functionalcomponent_uri,role)
+(
+  participant = self._participant
+  self._participant is a Participation(functionalcomponent_uri, role)
+)
+
+hasInhibitor(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.inhibitor)
+)
+
+hasInhibited(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.inhibited)
+)
+
+hasReactant(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.reactant)
+)
+
+hasStimulator(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.stimulator)
+)
+
+hasStimulated(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.stimulated)
+)
+
+hasProduct(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.product)
+)
+
+hasParticipationPromoter(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri, sbol.promoter_t)
+)
+
+hasModifier(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.modifier)
+)
+
+hasModified(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.modified)
+)
+
+hasTemplate(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.template)
+)

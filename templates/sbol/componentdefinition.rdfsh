@@ -6,7 +6,10 @@ ComponentDefinition(t)
   type = t
 )
 
-DnaComponent() (ComponentDefinition(dNA))
+DnaComponent() 
+(
+  ComponentDefinition(dNA)
+)
 
 Dna()
 (
@@ -92,3 +95,4 @@ CDS_RNA()
   RnaComponent()
   sbol.role = cds
 )
+
