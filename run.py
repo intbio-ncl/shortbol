@@ -23,7 +23,7 @@ def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
     parts = type.replace(" ", "")
     parts = parts.split(".")
     # When sbol. is not present
-    print(parts)
+    print(type)
     if len(parts) == 1 :
         if parts[0] in shortbol_template_table:
             #SBOL. is not present and template is in libary
@@ -81,7 +81,7 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
                 curr_line_num = curr_line_num + 1
                 continue
             
-            # an assignment (eg n = 1)
+            # an assignment (eg component = LacI)
             elif "=" in split_text[curr_line_num]:
                 if "displayId" in split_text[curr_line_num]:
                     print(f'Warn for Template: {split_text[curr_line_num]}, displayId property should not be overwritten, {split_text[curr_line_num]} will be used.') 
@@ -110,6 +110,9 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
                 #Re assemble line
                 split_text[curr_line_num] = lhs + " = " + rhs 
                 curr_line_num = curr_line_num + 1
+            elif is_a_template in split_text[curr_line_num]:
+                split_text, new_curr_line = hacky_conversion_handle_template_instance(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table)
+                curr_line_num = new_curr_line
             # An implicit instance creation eg ( precedes(n,w) )
             elif any(template_name in split_text[curr_line_num] for template_name in shortbol_template_table):
                 template_type = split_text[curr_line_num].split("(")[0]
@@ -118,9 +121,7 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
                 parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
                 split_text[curr_line_num] = f'  {template_type}{parameters}'
                 curr_line_num = curr_line_num + 1
-            elif is_a_template in split_text[curr_line_num]:
-                split_text, new_curr_line = hacky_conversion_handle_template_instance(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table)
-                curr_line_num = new_curr_line
+
             else:
                 curr_line_num = curr_line_num + 1
    
@@ -149,13 +150,10 @@ def hacky_conversion_handle_template_instance(split_text,index,shortbol_template
     return split_text, curr_line_num + 1
 
 
-def hacky_conversion(filepath,template_dir):
+def hacky_conversion(filepath, temp_file, template_dir):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
     '''
-    temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.rdfsh")
-    if os.path.isfile(temp_file):
-        os.remove(temp_file)
 
     
     with open(filepath, 'r') as original: data = original.read()
@@ -197,7 +195,6 @@ def hacky_conversion(filepath,template_dir):
     #for index,line in enumerate(split_text):
     curr_line_num = 0
     while curr_line_num != len(split_text):
-        print(split_text)
         line = split_text[curr_line_num]
         if line and line[0].lstrip() == "#" :
             curr_line_num = curr_line_num + 1
@@ -232,7 +229,10 @@ def parse_from_file(filepath,
     template_dir = optpaths[0]
 
     if not no_hack:
-        to_run_fn = hacky_conversion(filepath,template_dir)
+        temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.rdfsh")
+        if os.path.isfile(temp_file):
+            os.remove(temp_file)
+        to_run_fn = hacky_conversion(filepath,temp_file,template_dir)
     else:
         to_run_fn = filepath
 
@@ -276,6 +276,9 @@ def parse_from_file(filepath,
         with open(out, 'w') as o:
             sbol = str(env)
             o.write(sbol)
+    
+    if os.path.isfile(temp_file):
+        os.remove(temp_file)
     return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
