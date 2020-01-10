@@ -2,13 +2,13 @@
 
 ComponentDefinition(t)
 (
-  TopLevel(ComponentDefinition)
-  type = t
+    TopLevel(ComponentDefinition)
+    type = t
 )
 
 DnaComponent() 
 (
-  ComponentDefinition(dNA)
+    ComponentDefinition(dNA)
 )
 
 Dna()

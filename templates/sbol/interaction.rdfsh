@@ -24,7 +24,7 @@ BiochemicalReaction()
 
 NoncovalentBonding()
 (
-  Interaction(sbol.noncovalent_bonding)
+    Interaction(sbol.noncovalent_bonding)
 )
 
 Degradation()

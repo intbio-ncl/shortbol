@@ -9,15 +9,30 @@ Sequence(x, y)
   encoding = y
 )
 
-DnaSequence(x)       (Sequence(x, iupacDNA))
+DnaSequence(x)       
+(
+    Sequence(x, iupacDNA)
+)
 
-DnaSeq(x)       (Sequence(x, iupacDNA))
+DnaSeq(x)       
+(
+    Sequence(x, iupacDNA)
+)
 
-RnaSequence(x)       (Sequence(x, iupacDNA))
+RnaSequence(x)       
+(
+    Sequence(x, iupacDNA)
+)
 
-ProteinSequence(x)   (Sequence(x, iupacProtein))
+ProteinSequence(x)   
+(
+    Sequence(x, iupacProtein)
+)
 
-ChemicalStructure(x) (Sequence(x, opensmilesSMILES))
+ChemicalStructure(x) 
+(
+    Sequence(x, opensmilesSMILES)
+)
 
 hasSequence(x)
 (
