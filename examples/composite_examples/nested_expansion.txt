@@ -11,12 +11,12 @@ pTetR_sa is a SequenceAnnotation(pTetR_loc)
   (
     pTetR is a Promoter()
     (
-      pTetR_seq is a DnaSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+      pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
     )
   )
 )
 
-tetRInverter is a DnaComponent()
+tetRInverter is a DNAComponent()
 (
   # include the child components
   component = pTetR_c

@@ -2,10 +2,10 @@
 @prefix sbol
 
 # (ComponentDefinition) type
-dNA = <http://www.biopax.org/release/biopax-level3.owl#Dna>
-dNARegion = <http://www.biopax.org/release/biopax-level3.owl#DnaRegion>
-rNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
-rNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
+DNA = <http://www.biopax.org/release/biopax-level3.owl#Dna>
+DNARegion = <http://www.biopax.org/release/biopax-level3.owl#DnaRegion>
+DNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
+DNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
 protein = <http://www.biopax.org/release/biopax-level3.owl#Protein>
 smallMolecule = <http://www.biopax.org/release/biopax-level3.owl#SmallMolecule>
 complex = <http://www.biopax.org/release/biopax-level3.owl#Complex>

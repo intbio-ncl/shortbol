@@ -10,7 +10,7 @@ lacI_RBS_loc is a InlineRange(56,68,Inline)
 lacI_CDS_loc is a InlineRange(169,1197,Inline)
 lacI_term_loc is a InlineRange(1197,1240,Inline)
 
-tetRInverter is a DnaComponent()
+tetRInverter is a DNAComponent()
 (
   sequenceAnnotation(pTetR,pTetR_loc)
   sequenceAnnotation(lacI_RBS, lacI_RBS_loc)

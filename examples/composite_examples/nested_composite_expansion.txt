@@ -8,7 +8,7 @@ pTetR is a Promoter()
 
 pTetR_loc is a InlineRange(1,55)
 
-tetRInverter is a DnaComponent()
+tetRInverter is a DNAComponent()
 (
   sequenceAnnotation(pTetR,pTetR_loc)
 )

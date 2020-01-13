@@ -1,20 +1,57 @@
-ToggleSwitch is a ModuleDefinition ()
+# Example 4
+# The TetR and LacI proteins
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+TetR_fc is a FunctionalComponent(TetR,inout)
+LacI_fc is a FunctionalComponent(LacI,inout)
+
+#Make new FunctionalComponents
+TetR_lacinv_fc is a FunctionalComponent(TetR,inout)
+LacI_lacinv_fc is a FunctionalComponent(LacI,inout)
+
+
+TetR_map is a MapsUseLocal(TetR_lacinv_fc,TetR_fc)
+LacI_map is a MapsUseLocal(LacI_lacinv_fc,LacI_fc)
+
+
+TetR_inverter is a ModuleDefinition()
 (
-  description = "LacI/TetR toggle switch"
-  functionalComponent = OurLacI
-  functionalComponent = OurTetR
-)
-  
-tetInverter is a Module()
-(
-    definition = TetR_Inverter
-    mapsTo = OurLacI mergedWith LacI
-    mapsTo = OurTetR mergedWith TetR
+  functionalComponent = TetR_fc
+  functionalComponent = LacI_fc
 )
 
-lacInverter is a Module()
+toggleSwitch is a Module(TetR_inverter)
 (
-    definition = LacI_Inverter
-    mapsTo = OurLacI mergedWith LacI
-    mapsTo = OurTetR mergedWith TetR
+	mapsTo = TetR_map
+	mapsTo = LacI_map
+)
+
+LacI_inverter is a ModuleDefinition()
+(
+  functionalComponent = TetR_lacinv_fc
+  functionalComponent = LacI_lacinv_fc
+  module = toggleSwitch
+)
+
+
+
+
+
+# Desired
+# The TetR and LacI proteins
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+
+TetR_inverter is a ModuleDefinition()
+
+
+LacI_inverter is a ModuleDefinition()
+(
+  module(TetR_inverter)
+  (
+    mapsUseLocal(TetR,LacI)
+    mapsUseLocal(LacI,TetR)
+  )
 )

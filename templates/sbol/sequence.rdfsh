@@ -9,17 +9,17 @@ Sequence(x, y)
   encoding = y
 )
 
-DnaSequence(x)       
+DNASequence(x)       
 (
     Sequence(x, iupacDNA)
 )
 
-DnaSeq(x)       
+DNASeq(x)       
 (
     Sequence(x, iupacDNA)
 )
 
-RnaSequence(x)       
+RNASequence(x)       
 (
     Sequence(x, iupacDNA)
 )
@@ -37,7 +37,7 @@ ChemicalStructure(x)
 hasSequence(x)
 (
     sequence = self._sequence
-    self._sequence is a DnaSequence(x)
+    self._sequence is a DNASequence(x)
 )
 
 
@@ -109,7 +109,7 @@ sequenceConstraint(subject,object,restriction)
 
 precedes(subject, object)
 (
-  sequenceConstraint(subject,object,sbol.differentFrom)
+  sequenceConstraint(subject,object,sbol.precedes)
 )
 
 sameOrientationAs(subject, object)

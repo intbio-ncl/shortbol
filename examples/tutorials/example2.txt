@@ -15,7 +15,7 @@ pair2 is a Precedes(lacI_RBS_c, lacI_CDS_c)
 pair3 is a Precedes(lacI_CDS_c, lacI_term_c)
 
 # The composite device for the TetR inverter
-tetRInverter is a DnaComponent()
+tetRInverter is a DNAComponent()
 (
   # include the child components
   component = pTetR_c

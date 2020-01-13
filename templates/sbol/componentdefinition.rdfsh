@@ -6,24 +6,24 @@ ComponentDefinition(t)
     type = t
 )
 
-DnaComponent() 
+DNAComponent() 
 (
     ComponentDefinition(dNA)
 )
 
-Dna()
+DNA()
 (
   ComponentDefinition(dNA)
 )
 
-RnaComponent()
+RNAComponent()
 (
-  ComponentDefinition(rNA)
+  ComponentDefinition(RNA)
 )
 
-Rna()
+RNA()
 (
-  ComponentDefinition(rNA)
+  ComponentDefinition(RNA)
 )
 
 ProteinComponent()
@@ -60,31 +60,31 @@ Complex()
 
 Promoter()
 (
-  DnaComponent()
+  DNAComponent()
   sbol.role = promoter
 )
 
 RBS()
 (
-  DnaComponent()
+  DNAComponent()
   sbol.role = rbs
 )
 
 CDS()
 (
-  DnaComponent()
+  DNAComponent()
   sbol.role = cds
 )
 
 Terminator()
 (
-  DnaComponent()
+  DNAComponent()
   sbol.role = terminator
 )
 
 Operator()
 (
-  DnaComponent()
+  DNAComponent()
   sbol.role = operator
 )
 
@@ -92,7 +92,13 @@ Operator()
 
 CDS_RNA()
 (
-  RnaComponent()
+  RNAComponent()
   sbol.role = cds
+)
+
+SGRNA()
+(
+  RNAComponent()
+  sbol.role = sgRNA
 )
 

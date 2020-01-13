@@ -42,8 +42,23 @@ Control()
   Interaction(sbol.control)
 )
 
+interaction_1(of, of_type, of_direction,type)
+(
+  of._fc is a FunctionalComponent(of,of_direction)
 
-interaction(of, of_type, of_direction, by, by_type, by_direction,type)
+  functionalComponent = of._fc
+  
+  of._fc._.type is a Interaction(type)
+  (
+    of._fc._.of_type is a Participation(of._fc, of_type)
+
+    participation = of._fc._.of_type 
+  )
+  interaction = of._fc._.type
+)
+
+
+interaction_2(of, of_type, of_direction, by, by_type, by_direction,type)
 (
   of._fc is a FunctionalComponent(of,of_direction)
   by._fc is a FunctionalComponent(by,by_direction)
@@ -64,36 +79,36 @@ interaction(of, of_type, of_direction, by, by_type, by_direction,type)
 
 inhibition(inhibitor_cd, inhibited_cd)
 (
-  interaction(inhibitor_cd, inhibitor, in, inhibited_cd, inhibited, out, inhibition)
+  interaction_2(inhibitor_cd, inhibitor, in, inhibited_cd, inhibited, out, inhibition)
 )
 
 stimulation(stimulator_cd, stimulated_cd)
 (
-  interaction(stimulator_cd, stimulator, in, stimulated_cd, stimulated, out, stimulation)
+  interaction_2(stimulator_cd, stimulator, in, stimulated_cd, stimulated, out, stimulation)
 )
 
 nonCovalentBonding(reactantA, reactantB)
 (
-  interaction(reactantA, reactant,inout, reactantB, reactant, inout, noncovalent_bonding)
+  interaction_2(reactantA, reactant,inout, reactantB, reactant, inout, noncovalent_bonding)
 )
 
 bioChemicalReaction(reactant_cd, product_cd)
 (
-  interaction(reactant_cd, reactant, in, product_cd, product, out, biochemical_reaction)
+  interaction_2(reactant_cd, reactant, in, product_cd, product, out, biochemical_reaction)
 )
 
-geneticProduction(template_cd, product_cd)
+geneticProduction(promoter_cd, product_cd)
 (
-  interaction(template_cd, template, in, product_cd, product, out, genetic_production)
+  interaction_2(promoter_cd, promoter, in, product_cd, product, out, genetic_production)
 )
 
-#???
-degradation(inp1, inp2)
+degradation(reactant_cd)
 (
-  interaction(inp1, template, in, inp2, product, out, degradation)
+  interaction_1(reactant_cd, reactant, in, degradation)
 )
 
+#?????
 control(modifier_cd, modified_cd)
 (
-  interaction(template_cd, template, in, product_cd, product, out, control)
+  interaction_2(template_cd, template, in, product_cd, product, out, control)
 )
