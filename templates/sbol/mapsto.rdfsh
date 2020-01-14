@@ -28,4 +28,39 @@ MapsMerge(componentinstance_uri_local, componentinstance_uri_remote)
   MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.merge)
 )
 
+mapsTo(local,remote, refinment)
+(
+ local._fc is a FunctionalComponent(local)
+ remote._fc is a FunctionalComponent(remote)
+
+ functionalcomponent = local._fc
+ functionalcomponent = remote._fc
+  
+ local._fc._mapsTo_.remote._fc is a MapsTo(local._fc, remote._fc,refinment)
+ mapsTo = local._fc._mapsTo_.remote._fc
+)
+
+
+mapsUseRemote(componentinstance_uri_local, componentinstance_uri_remote) 
+(
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useRemote)
+)
+
+mapsUseLocal(componentinstance_uri_local, componentinstance_uri_remote)  
+(
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useLocal)
+)
+
+mapsIdentical(componentinstance_uri_local, componentinstance_uri_remote) 
+(
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.verifyIdentical)
+)
+
+mapsMerge(componentinstance_uri_local, componentinstance_uri_remote)     
+(
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.merge)
+)
+
+
+
 

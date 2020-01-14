@@ -1,0 +1,19 @@
+# Example 3
+# The genetic parts of the TetR inverter
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  is a Terminator()
+
+pTetR_loc is a InlineRange(1,55,Inline)
+lacI_RBS_loc is a InlineRange(56,68,Inline)
+lacI_CDS_loc is a InlineRange(169,1197,Inline)
+lacI_term_loc is a InlineRange(1197,1240,Inline)
+
+tetRInverter is a DNAComponent()
+(
+  sequenceAnnotation(pTetR,pTetR_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+  sequenceAnnotation(lacI_term, lacI_term_loc)
+)

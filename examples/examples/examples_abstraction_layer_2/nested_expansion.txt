@@ -1,0 +1,26 @@
+# Shortbol definitions can be nested.
+# Thus removes the typing but can become complex with bigger designs.
+
+#Specify the range for each part
+pTetR_loc is a InlineRange(1,55)
+
+pTetR_sa is a SequenceAnnotation(pTetR_loc)
+(
+  #Build components for each of the DNAComponents
+  pTetR_c is a Component(pTetR)
+  (
+    pTetR is a Promoter()
+    (
+      pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+    )
+  )
+)
+
+tetRInverter is a DNAComponent()
+(
+  # include the child components
+  component = pTetR_c
+
+  # absolute positions of child components
+  sequenceAnnotation = pTetR_sa
+)

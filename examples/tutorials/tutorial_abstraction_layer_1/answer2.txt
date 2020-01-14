@@ -1,0 +1,26 @@
+# Declare a promoter named pTetR
+pTetR is a Promoter()
+(
+# give pTetR a description
+  	description = "pTet promoter"
+)
+
+# Declare a CDS named pTetR
+lacI_CDS is a CDS()
+(
+	# Properties of lacI CDS
+	name = "lacI"
+	description = "LacI protein coding region"
+)
+# Declare a RBS named lacI_RBS
+lacI_RBS is a RBS()
+(
+	name = "lacI_RBS"
+	description = "RBS for the lacI CDS"
+)
+# Declare a terminator named lacI_term
+lacI_term is a Terminator()
+(
+	name = "lacI_term"
+	description = "Terminator for the lacI CDS"
+)

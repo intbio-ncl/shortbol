@@ -34,10 +34,40 @@ ChemicalStructure(x)
     Sequence(x, opensmilesSMILES)
 )
 
-hasSequence(x)
+hasSequence(x, encoding)
 (
     sequence = self._sequence
-    self._sequence is a DNASequence(x)
+    self._sequence is a Sequence(x,encoding)
+)
+
+hasDNASequence(x)
+(
+  hasSequence(x,iupacDNA)
+)
+
+hasDNASeq(x)       
+(
+    Sequence(x, iupacDNA)
+)
+
+hasRNASequence(x)
+(
+  hasSequence(x,iupacDNA)
+)
+
+hasRNASequence(x)
+(
+  hasSequence(x,iupacDNA)
+)
+
+hasProteinSequence(x)   
+(
+    hasSequence(x,iupacProtein)
+)
+
+hasChemicalStructure(x) 
+(
+    hasSequence(x,opensmilesSMILES)
 )
 
 
@@ -103,8 +133,8 @@ sequenceConstraint(subject,object,restriction)
  component = subject._component
  component = object._component
   
- subject._component_.restriction._.object._component is a SequenceConstraint(subject._component, object._component,restriction)
- sequenceConstraint = subject._component_.restriction._.object._component
+ subject._component._.restriction._.object._component is a SequenceConstraint(subject._component, object._component,restriction)
+ sequenceConstraint = subject._component._.restriction._.object._component
 )
 
 precedes(subject, object)

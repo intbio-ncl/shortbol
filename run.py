@@ -19,11 +19,41 @@ sbol_compliant_extension = "@extension SbolIdentity()"
 is_a_template = "is a"
 sbol_dot = "sbol."
 
+
+def get_name(line,line_no):
+    try:
+        name = line.split(is_a_template)[0]
+    except IndexError:
+        raise NameError(f"Error Template Declaration on line: {line_no - 2} is malformed.")
+    return name
+
+def get_template_type(line,line_no):
+    template_type = ""
+    try:
+        if is_a_template in line:
+            template_type = line.split(is_a_template)[-1].split("(")[0]
+        else:
+            template_type = line.split("(")[0]
+        
+    except IndexError:
+        raise NameError(f"Error Template Declaration on line: {line_no - 2} is malformed.")
+
+    return template_type
+    
+def get_parameters(line,line_no):
+    parameters = []
+    try:
+        parameters = line.split("(")[1]
+        parameters = parameters.replace("(","").replace(")","").replace(" ","").split(",")
+    except IndexError:
+        raise NameError(f"Error Parameters on line: {line_no - 2} is malformed.")
+    return parameters
+    
+
 def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
     parts = type.replace(" ", "")
     parts = parts.split(".")
     # When sbol. is not present
-    print(type)
     if len(parts) == 1 :
         if parts[0] in shortbol_template_table:
             #SBOL. is not present and template is in libary
@@ -40,28 +70,27 @@ def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
             #SBOL. is  present but template NOT in libary
             raise NameError(f'Template: {parts[0]} on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
     else:
-        exit(0)
+        raise ValueError(f"Error Template Malformed on line: {line_no - 1}")
 
 
 def hacky_conversion_handle_parameters(parameters,shortbol_identifier_table):
-    split_params = parameters.replace("(","").replace(")","").replace(" ","").split(",")
     param_string = ""
-    if len(split_params) == 0:
+    if len(parameters) == 0:
         return ""
-    elif len(split_params) == 1 :
-        if sbol_dot not in split_params[0] and split_params[0] in shortbol_identifier_table:
-            param_string = sbol_dot + split_params[0]
+    elif len(parameters) == 1 :
+        if sbol_dot not in parameters[0] and parameters[0] in shortbol_identifier_table:
+            param_string = sbol_dot + parameters[0]
         else:
-            param_string = split_params[0]
+            param_string = parameters[0]
     else:
-        for param_index, param in enumerate(split_params):
-            if sbol_dot not in split_params[param_index] and split_params[param_index] in shortbol_identifier_table:
-                param_string = param_string + sbol_dot + split_params[param_index]
-                if param_index != len(split_params) - 1 :
+        for param_index, param in enumerate(parameters):
+            if sbol_dot not in parameters[param_index] and parameters[param_index] in shortbol_identifier_table:
+                param_string = param_string + sbol_dot + parameters[param_index]
+                if param_index != len(parameters) - 1 :
                     param_string = param_string + ","
             else:
-                param_string = param_string + split_params[param_index]
-                if param_index != len(split_params) - 1 :
+                param_string = param_string + parameters[param_index]
+                if param_index != len(parameters) - 1 :
                     param_string = param_string + ","
 
     return f'({param_string})'
@@ -115,10 +144,13 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
                 curr_line_num = new_curr_line
             # An implicit instance creation eg ( precedes(n,w) )
             elif any(template_name in split_text[curr_line_num] for template_name in shortbol_template_table):
-                template_type = split_text[curr_line_num].split("(")[0]
-                parameters = split_text[curr_line_num].split("(")[1]
+
+                template_type = get_template_type(split_text[curr_line_num],curr_line_num)
+                parameters = get_parameters(split_text[curr_line_num],curr_line_num)
+
                 template_type = hacky_conversion_handle_type(template_type,shortbol_template_table,curr_line_num)
                 parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
+
                 split_text[curr_line_num] = f'  {template_type}{parameters}'
                 curr_line_num = curr_line_num + 1
 
@@ -131,18 +163,14 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
 
 def hacky_conversion_handle_template_instance(split_text,index,shortbol_template_table,shortbol_identifier_table):
     line = split_text[index]
-    name = line.split(is_a_template)[0]
-    try:
-        parameters = f'({line.split("(")[1]}'
-    except IndexError:
-        raise NameError(f'Template: {name} on line: {str(index - 1)} is missing brackets.') 
-    parts = line.split(is_a_template)[-1].split("(")[0]
-
+    name = get_name(line,index)
+    parameters = get_parameters(line, index)
+    template_type = get_template_type(line,index)
     # Handle name and type (n is a ComponentDefinition)
-    template_type = name + is_a_template + " " + hacky_conversion_handle_type(parts,shortbol_template_table,index)
+    template_str = name + is_a_template + " " + hacky_conversion_handle_type(template_type,shortbol_template_table,index)
     # Handle parameter ((dNA,"atg") etc)
     parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
-    split_text[index] = f'{template_type}{parameters}'
+    split_text[index] = f'{template_str}{parameters}'
 
     # Handle expansion (if present) ((sequence = seq) etc)
     split_text, curr_line_num = hacky_conversion_handle_expansions(split_text,index,shortbol_template_table,shortbol_identifier_table)
@@ -192,7 +220,6 @@ def hacky_conversion(filepath, temp_file, template_dir):
             template.close()
 
 
-    #for index,line in enumerate(split_text):
     curr_line_num = 0
     while curr_line_num != len(split_text):
         line = split_text[curr_line_num]
