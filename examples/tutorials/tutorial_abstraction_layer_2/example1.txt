@@ -1,4 +1,5 @@
 # The genetic parts of the TetR inverter
+# Components can still be explicitly created.
 pTetR   	is a Promoter()
 
 pTetR_c is a Component(pTetR)

@@ -1,0 +1,337 @@
+cas9_generic is a Protein()
+
+gRNA_generic is a SGRNA()
+
+cas9_gRNA_complex is a Complex()
+
+target_gene is a Promoter()
+
+target is a Protein()
+
+
+cas9_generic_fc is a InOutComponent(cas9_generic)
+
+gRNA_generic_fc is a InOutComponent(gRNA_generic)
+
+cas9_gRNA_complex_fc is a InOutComponent(cas9_gRNA_complex)
+
+target_gene_fc is a InOutComponent(target_gene)
+
+target_fc is a InOutComponent(target)
+
+
+
+cas9_generic_participation is a Participation(cas9_generic_fc, reactant)
+gRNA_generic_participation is a Participation(gRNA_generic_fc, reactant)
+cas9_gRNA_complex_participation is a Participation(cas9_gRNA_complex_fc, product)
+cas9_complex_formation is a Interaction(noncovalent_bonding)
+(
+    participation = cas9_generic_participation
+    participation = gRNA_generic_participation
+    participation = cas9_gRNA_complex_participation
+)
+
+target_gene_participation is a Participation(target_gene_fc, promoter)
+target_participation is a Participation(target_fc, product)
+target_production is a Interaction(genetic_production)
+(
+    participation = target_gene_participation
+    participation = target_participation
+)
+
+cas9_gRNA_complex_reactant_participation is a Participation(cas9_gRNA_complex_fc, reactant)
+target_gene_reactant_participation is a Participation(target_fc, reactant)
+target_gene_inhibition is a Interaction(inhibition)
+(
+    participation = cas9_gRNA_complex_reactant_participation
+    participation = target_gene_reactant_participation
+)
+
+
+CRISPR_Template is a ModuleDefinition()
+(
+
+    functionalComponent = cas9_generic_fc
+    functionalComponent = gRNA_generic_fc
+    functionalComponent = cas9_gRNA_complex_fc
+    functionalComponent = target_gene_fc
+    functionalComponent = target_fc
+
+    interaction = cas9_complex_formation
+    interaction = target_production
+    interaction = target_gene_inhibition
+)
+
+CRa_U6_seq is a DNASequence("GGTTTACCGAGCTCTTATTGGTTTTCAAACTTCATTGACTGTGCCAAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATATTTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAATTTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGAAAGTAATAATTTCTTGGGTAGTTTGCAGTTTTAAAATTATGTTTTAAAATGGACTATCATATGCTTACCGTAACTTGAAATATAGAACCGATCCTCCCATTGGTATATATTATAGAACCGATCCTCCCATTGGCTTGTGGAAAGGACGAAACACCGTACCTCATCAGGAACATGTGTTTAAGAGCTATGCTGGAAACAGCAGAAATAGCAAGTTTAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTTTTGGTGCGTTTTTATGCTTGTAGTATTGTATAATGTTTTT")
+gRNA_b_seq is a DNASequence("AAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATATTTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAATTTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGAAAGTAATAATTTCTTGGGTAGTTTGCAGTTTTAAAATTATGTTTTAAAATGGACTATCATATGCTTACCGTAACTTGAAAGTATTTCGATTTCTTGGCTTTATATATCTTGTGGAAAGGACGAAACACCGTACCTCATCAGGAACATGTGTTTAAGAGCTATGCTGGAAACAGCAGAAATAGCAAGTTTAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTTTT")
+mKate_seq is a DNASequence("TCTAAGGGCGAAGAGCTGATTAAGGAGAACATGCACATGAAGCTGTACATGGAGGGCACCGTGAACAACCACCACTTCAAGTGCACATCCGAGGGCGAAGGCAAGCCCTACGAGGGCACCCAGACCATGAGAATCAAGGTGGTCGAGGGCGGCCCTCTCCCCTTCGCCTTCGACATCCTGGCTACCAGCTTCATGTACGGCAGCAAAACCTTCATCAACCACACCCAGGGCATCCCCGACTTCTTTAAGCAGTCCTTCCCTGAGGTAAGTGGTCCTACCTCATCAGGAACATGTGTTTTAGAGCTAGAAATAGCAAGTTAAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTACTAACTCTCGAGTCTTCTTTTTTTTTTTCACAGGGCTTCACATGGGAGAGAGTCACCACATACGAAGACGGGGGCGTGCTGACCGCTACCCAGGACACCAGCCTCCAGGACGGCTGCCTCATCTACAACGTCAAGATCAGAGGGGTGAACTTCCCATCCAACGGCCCTGTGATGCAGAAGAAAACACTCGGCTGGGAGGCCTCCACCGAGATGCTGTACCCCGCTGACGGCGGCCTGGAAGGCAGAAGCGACATGGCCCTGAAGCTCGTGGGCGGGGGCCACCTGATCTGCAACTTGAAGACCACATACAGATCCAAGAAACCCGCTAAGAACCTCAAGATGCCCGGCGTCTACTATGTGGACAGAAGACTGGAAAGAATCAAGGAGGCCGACAAAGAGACCTACGTCGAGCAGCACGAGGTGGCTGTGGCCAGATACTGCG")
+CRP_b_seq is a DNASequence("GCTCCGAATTTCTCGACAGATCTCATGTGATTACGCCAAGCTACGGGCGGAGTACTGTCCTCCGAGCGGAGTACTGTCCTCCGAGCGGAGTACTGTCCTCCGAGCGGAGTACTGTCCTCCGAGCGGAGTTCTGTCCTCCGAGCGGAGACTCTAGATACCTCATCAGGAACATGTTGGAATTCTAGGCGTGTACGGTGGGAGGCCTATATAAGCAGAGCTCGTTTAGTGAACCGTCAGATCGCCTCGAGTACCTCATCAGGAACATGTTGGATCCAATTCGACC")
+
+
+pConst_c_cas9 is a Component(pConst)
+
+pConst_c_mKate is a Component(pConst)
+
+pConst_c_Gal is a Component(pConst)
+
+CRa_U6_c is a Component(CRa_U6)
+
+gRNA_b_nc_c is a Component(gRNA_b_nc)
+
+cas9m_BFP_cds_c is a Component(cas9m_BFP_cds)
+
+gRNA_b_terminator_c is a Component(gRNA_b_terminator)
+
+mKate_cds_c is a Component(mKate_cds)
+
+Gal4VP16_cds_c is a Component(Gal4VP16_cds)
+
+CRP_b_c is a Component(CRP_b)
+
+EYFP_cds_c is a Component(EYFP_cds)
+
+
+cas9m_BFP_gene_constraint is a Precedes(pConst_c_cas9, cas9m_BFP_cds_c)
+
+gRNA_b_gene_constraint1 is a Precedes(CRa_U6_c, gRNA_b_nc_c)
+
+gRNA_b_gene_constraint2 is a Precedes(gRNA_b_nc_c, gRNA_b_terminator_c)
+
+mKate_gene_constraint is a Precedes(pConst_c_mKate, mKate_cds_c)
+
+GAL4VP16_gene_constraint is a Precedes(pConst_c_Gal, Gal4VP16_cds_c)
+
+EYFP_gene_constraint is a Precedes(CRP_b_c, EYFP_cds_c)
+
+
+pConst is a Promoter()
+
+cas9m_BFP_cds is a CDS()
+
+cas9m_BFP_gene is a Promoter()
+(
+    component = pConst_c_cas9
+    component = cas9m_BFP_cds_c
+
+    sequenceConstraint = cas9m_BFP_gene_constraint
+)
+
+cas9m_BFP is a Protein()
+
+CRa_U6 is a Promoter()
+(
+    sequence = CRa_U6_seq
+)
+
+CRa_U6 is a CDS()
+(
+    sequence = gRNA_b_seq
+)
+
+gRNA_b_terminator is a Terminator()
+gRNA_b_gene is a Promoter()
+(
+    component = CRa_U6_c
+    component = gRNA_b_nc_c
+    component = gRNA_b_terminator_c
+
+    sequenceConstraint = gRNA_b_gene_constraint1
+    sequenceConstraint = gRNA_b_gene_constraint2
+)
+
+gRNA_b is a SGRNA()
+cas9m_BFP_gRNA_b is a Complex()
+mKate_cds is a CDS()
+(
+    sequence = mKate_seq
+)
+
+mKate_gene is a Promoter()
+(
+    component = pConst_c_mKate
+    component = mKate_cds_c
+
+    sequenceConstraint = mKate_gene_constraint
+)
+
+mKate is a Protein()
+
+Gal4VP16_cds is a CDS() 
+
+Gal4VP16_gene is a Promoter()
+(
+    component = pConst_c_Gal
+    component = Gal4VP16_cds_c
+
+    sequenceConstraint = GAL4VP16_gene_constraint
+)
+
+Gal4VP16 is a Protein()
+
+CRP_b is a Promoter()
+(
+    sequence = CRP_b_seq
+)
+
+EYFP_cds is a CDS() 
+
+EYFP_gene is a Promoter()
+(
+    component = CRP_b_c
+    component = EYFP_cds_c
+
+    sequenceConstraint = EYFP_gene_constraint
+)
+
+EYFP is a Protein()
+
+EYFP_fc is a NoneComponent(EYFP)
+
+EYFP_gene_fc is a NoneComponent(EYFP_gene)
+
+cas9m_BFP_fc is a NoneComponent(cas9m_BFP)
+
+cas9m_BFP_gene_fc is a NoneComponent(cas9m_BFP_gene)
+
+cas9m_BFP_gRNA_b_fc is a NoneComponent(cas9m_BFP_gRNA_b)
+
+gRNA_b_fc is a NoneComponent(gRNA_b)
+
+gRNA_b_gene_fc is a NoneComponent(gRNA_b_gene)
+
+mKate_fc is a NoneComponent(mKate)
+
+mKate_gene_fc is a NoneComponent(mKate_gene)
+
+Gal4VP16_fc is a NoneComponent(Gal4VP16)
+
+Gal4VP16_gene_fc is a NoneComponent(Gal4VP16_gene)
+
+
+mKate_gene_participant is a Participation(mKate_gene_fc, reactant)
+mKate_participant is a Participation(mKate_fc, reactant)
+mKate_production is a Interaction(genetic_production)
+(
+    participation = mKate_gene_participant
+    participation = mKate_participant
+)
+
+Gal4VP16_gene_participant is a Participation(Gal4VP16_gene_fc, reactant)
+Gal4VP16_participant is a Participation(Gal4VP16_fc, reactant)
+Gal4VP16_production is a Interaction(genetic_production)
+(
+    participation = Gal4VP16_gene_participant
+    participation = Gal4VP16_participant
+)
+
+cas9m_BFP_gene_participant is a Participation(Gal4VP16_gene_fc, reactant)
+cas9m_BFP_participant is a Participation(Gal4VP16_fc, reactant)
+cas9m_BFP_production is a Interaction(genetic_production)
+(
+    participation = cas9m_BFP_gene_participant
+    participation = cas9m_BFP_participant
+)
+
+
+gRNA_b_gene_participant is a Participation(gRNA_b_gene_fc, reactant)
+gRNA_b_participant is a Participation(gRNA_b_fc, reactant)
+gRNA_b_production is a Interaction(genetic_production)
+(
+    participation = gRNA_b_gene_participant
+    participation = gRNA_b_participant
+)
+
+EYFP_activation_production_gene_participant is a Participation(EYFP_gene_fc, reactant)
+Gal4VP16_activation_production_participant is a Participation(Gal4VP16_fc, reactant)
+EYFP_Activation_production is a Interaction(stimulation)
+(
+    participation = EYFP_activation_production_gene_participant
+    participation = Gal4VP16_activation_production_participant
+)
+
+
+mKate_deg_participant is a Participation(mKate_fc, reactant)
+mKate_deg is a Interaction(degradation)
+(
+    participation = mKate_deg_participant
+)
+
+Gal4VP16_deg_participant is a Participation(Gal4VP16_fc, reactant)
+Gal4VP16_deg is a Interaction(degradation)
+(
+    participation = Gal4VP16_deg_participant
+)
+
+cas9m_BFP_reactant_participant is a Participation(cas9m_BFP_fc, reactant)
+cas9m_BFP_deg is a Interaction(degradation)
+(
+    participation = cas9m_BFP_reactant_participant
+)
+
+gRNA_b_BFP_participant is a Participation(gRNA_b_fc, reactant)
+gRNA_b_BFP_deg is a Interaction(degradation)
+(
+    participation = gRNA_b_BFP_participant
+)
+
+EYFP_participant is a Participation(EYFP_fc, reactant)
+EYFP_deg is a Interaction(degradation)
+(
+    participation = EYFP_participant
+)
+
+cas9m_BFP_gRNA_b_participation is a Participation(cas9m_BFP_gRNA_b_fc, reactant)
+cas9m_BFP_gRNA_b_deg is a Interaction(degradation)
+(
+    participation = cas9m_BFP_gRNA_b_participation
+)
+
+CRPb_characterization_Circuit is a ModuleDefinition()
+(
+    functionalComponent = EYFP_fc
+    functionalComponent = EYFP_gene_fc
+    functionalComponent = cas9m_BFP_fc
+    functionalComponent = cas9m_BFP_gene_fc
+    functionalComponent = cas9m_BFP_gRNA_b_fc
+
+    functionalComponent = gRNA_b_fc
+    functionalComponent = gRNA_b_gene_fc
+    functionalComponent = mKate_fc
+    functionalComponent = mKate_gene_fc
+    functionalComponent = Gal4VP16_fc
+    functionalComponent = Gal4VP16_gene_fc
+
+    interaction = mKate_production
+    interaction = Gal4VP16_production
+    interaction = cas9m_BFP_production
+    interaction = gRNA_b_production
+    interaction = EYFP_Activation_production
+    interaction = mKate_deg
+    interaction = Gal4VP16_deg
+    interaction = cas9m_BFP_deg
+    interaction = gRNA_b_BFP_deg
+    interaction = EYFP_deg
+    interaction = cas9m_BFP_gRNA_b_deg
+
+    module = Template_Module
+)
+
+
+cas9m_BFP_map is a MapsUseLocal(cas9m_BFP_fc,cas9_generic_fc)
+
+gRNA_b_map is a MapsUseLocal(gRNA_b_fc,gRNA_generic_fc)
+
+cas9m_BFP_gRNA_map is a MapsUseLocal(cas9m_BFP_gRNA_b_fc,cas9_gRNA_complex_fc)
+
+EYFP_map is a MapsUseLocal(EYFP_fc,target_fc)
+
+EYFP_gene_map is a MapsUseLocal(cas9m_BFP_fc,target_gene_fc)
+
+Template_Module is a Module(CRISPR_Template)
+(
+    mapsTo = cas9m_BFP_map
+    mapsTo = gRNA_b_map
+    mapsTo = cas9m_BFP_gRNA_map
+    mapsTo = EYFP_map
+    mapsTo = EYFP_gene_map
+)

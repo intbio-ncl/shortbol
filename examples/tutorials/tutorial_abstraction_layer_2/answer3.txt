@@ -1,12 +1,9 @@
-lacI_term_seq is a DNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
-
-pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
-
+# has Series of templates are available that create template instances behind the scenes.
 lacI_term is a Terminator()
 (
-  sequence = lacI_term_seq
+  hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
 )
 pTetR is a Promoter()
 (
-  sequence = pTetR_seq
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
 )

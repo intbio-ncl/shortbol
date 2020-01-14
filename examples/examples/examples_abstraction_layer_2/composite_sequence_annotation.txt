@@ -1,4 +1,3 @@
-# Example 3
 # The genetic parts of the TetR inverter
 pTetR   	is a Promoter()
 lacI_RBS 	is a RBS()
