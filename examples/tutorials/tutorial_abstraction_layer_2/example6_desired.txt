@@ -1,57 +1,56 @@
-# Example 4
-# The TetR and LacI proteins
-TetR is a ProteinComponent()
-LacI is a ProteinComponent()
 
-TetR_fc is a FunctionalComponent(TetR,inout)
-LacI_fc is a FunctionalComponent(LacI,inout)
-
-#Make new FunctionalComponents
-TetR_lacinv_fc is a FunctionalComponent(TetR,inout)
-LacI_lacinv_fc is a FunctionalComponent(LacI,inout)
-
-
-TetR_map is a MapsUseLocal(TetR_lacinv_fc,TetR_fc)
-LacI_map is a MapsUseLocal(LacI_lacinv_fc,LacI_fc)
-
-
-TetR_inverter is a ModuleDefinition()
+# --------------------------- LacI ----------------------------
+# Declare a RBS named lacI_RBS
+lacI_RBS is a RBS()
 (
-  functionalComponent = TetR_fc
-  functionalComponent = LacI_fc
+	  name = "lacI_RBS"
+	  description = "RBS for the lacI CDS"
+    hasDNASequence("aa")
 )
 
-toggleSwitch is a Module(TetR_inverter)
+lacI_CDS is a CDS()
 (
-	mapsTo = TetR_map
-	mapsTo = LacI_map
+	  name = "lacI"
+	  description = "LacI protein coding region"
+    hasDNASequence("aaggaggtg")
+
 )
 
+# Declare a terminator named lacI_term
+lacI_term is a Terminator()
+(
+	  name = "lacI_term"
+	  description = "Terminator for the lacI CDS"
+    hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+pTetR_loc is a InlineRange(1,55,Inline)
+lacI_RBS_loc is a InlineRange(56,68,Inline)
+lacI_CDS_loc is a InlineRange(169,1197,Inline)
+lacI_term_loc is a InlineRange(1197,1240,Inline)
+
+
+lacI is a DNAComponent()
+(
+  # relative positions of child components
+  precedes(pTetR, lacI_RBS)
+  precedes(lacI_RBS, lacI_CDS)
+  precedes(lacI_CDS, lacI_term)
+  sequenceAnnotation(pTetR,pTetR_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+  sequenceAnnotation(lacI_term, lacI_term_loc)
+)
+
+
+
+# --------------------------- TetR ----------------------------
+
+TetR is a Protein()
+
+# The TetR inverter
 LacI_inverter is a ModuleDefinition()
 (
-  functionalComponent = TetR_lacinv_fc
-  functionalComponent = LacI_lacinv_fc
-  module = toggleSwitch
-)
-
-
-
-
-
-# Desired
-# The TetR and LacI proteins
-TetR is a ProteinComponent()
-LacI is a ProteinComponent()
-
-
-TetR_inverter is a ModuleDefinition()
-
-
-LacI_inverter is a ModuleDefinition()
-(
-  module(TetR_inverter)
-  (
-    mapsUseLocal(TetR,LacI)
-    mapsUseLocal(LacI,TetR)
-  )
+  description = "TetR inverter"
+  inhibition(LacI,TetR)
 )

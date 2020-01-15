@@ -30,8 +30,8 @@ MapsMerge(componentinstance_uri_local, componentinstance_uri_remote)
 
 mapsTo(local,remote, refinment)
 (
- local._fc is a FunctionalComponent(local)
- remote._fc is a FunctionalComponent(remote)
+ local._fc is a FunctionalComponent(local,inout)
+ remote._fc is a FunctionalComponent(remote,inout)
 
  functionalcomponent = local._fc
  functionalcomponent = remote._fc

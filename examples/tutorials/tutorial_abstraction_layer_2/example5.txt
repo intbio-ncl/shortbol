@@ -3,6 +3,9 @@
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 
+TetR_inv is a ProteinComponent()
+LacI_inv is a ProteinComponent()
+
 # The TetR inverter module
 TetR_inverter is a ModuleDefinition()
 (
@@ -14,14 +17,14 @@ TetR_inverter is a ModuleDefinition()
 toggleSwitch is a Module(TetR_inverter)
 (
 	description = "toggle switch"
-	mapsUseLocal(TetR_lacinv_fc,TetR_fc)
-	mapsUseLocal(LacI_lacinv_fc,LacI_fc)
+  mapsUseLocal(TetR,TetR_inv)
+  mapsUseLocal(LacI,LacI_inv)
 )
 
 # The LacI inverter module
 LacI_inverter is a ModuleDefinition()
 (
   description = "LacI inverter"
-  inhibition(LacI,TetR)
+  inhibition(LacI_inv,TetR_inv)
   module = toggleSwitch
 )

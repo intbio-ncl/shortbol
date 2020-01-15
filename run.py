@@ -50,8 +50,8 @@ def get_parameters(line,line_no):
     return parameters
     
 
-def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
-    parts = type.replace(" ", "")
+def hacky_conversion_handle_type(template_type,shortbol_template_table,line_no):
+    parts = template_type.replace(" ", "")
     parts = parts.split(".")
     # When sbol. is not present
     if len(parts) == 1 :
@@ -60,12 +60,13 @@ def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
             return sbol_dot + parts[0]
         else:
             #SBOL. is not present but template NOT in libary
-            
+            for k in shortbol_template_table:
+                print(parts)
             raise NameError(f'Template: {parts[0]}  on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
     elif len(parts) == 2:
         if parts[1] in shortbol_template_table:
             #SBOL. is  present and template is in libary
-            return type
+            return template_type
         else:
             #SBOL. is  present but template NOT in libary
             raise NameError(f'Template: {parts[0]} on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
@@ -185,8 +186,10 @@ def hacky_conversion(filepath, temp_file, template_dir):
 
     
     with open(filepath, 'r') as original: data = original.read()
-    split_text = data.split("\n")
-
+    split_text = data.lstrip()
+    split_text = data.replace("\t","")
+    split_text = split_text.split("\n")
+    
     # Check if sbol namespace present. (use <sbol>)
     if not sbol_namespace in split_text:
         split_text.insert(0,sbol_namespace + "\n")
@@ -304,8 +307,8 @@ def parse_from_file(filepath,
             sbol = str(env)
             o.write(sbol)
     
-    if os.path.isfile(temp_file):
-        os.remove(temp_file)
+    #if temp_file :
+     #   os.remove(temp_file)
     return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
