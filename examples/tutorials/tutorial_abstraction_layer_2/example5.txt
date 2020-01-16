@@ -16,7 +16,7 @@ TetR_inverter is a ModuleDefinition()
 #The toggle switch module
 toggleSwitch is a Module(TetR_inverter)
 (
-	description = "toggle switch"
+  description = "toggle switch"
   mapsUseLocal(TetR,TetR_inv)
   mapsUseLocal(LacI,LacI_inv)
 )
