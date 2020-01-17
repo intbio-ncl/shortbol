@@ -1,0 +1,18 @@
+use <sbol>
+
+
+@prefix p = <http://github.com/lgrozinger/#>
+
+
+p.uri
+
+
+
+@prefix p
+
+
+uri
+
+
+
+@extension SbolIdentity()

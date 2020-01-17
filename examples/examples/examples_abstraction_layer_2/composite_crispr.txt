@@ -57,7 +57,7 @@ Gal4VP16_cds is a CDS()
 
 Gal4VP16_gene is a Promoter()
 (
-    precedes(pConst,Gal4VP16_cds_c)
+    precedes(pConst,Gal4VP16_cds)
 )
 
 Gal4VP16 is a Protein()

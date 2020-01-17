@@ -24,6 +24,7 @@ class TestRegression(unittest.TestCase):
 
     def test_regression_by_examples(self):
         failure_exceptions = []
+        sbol_validation_errors=[]
         for path, subdirs, files in os.walk(test_files):
             for name in files:
                 if name == "temporary_runner.rdfsh":
@@ -36,10 +37,19 @@ class TestRegression(unittest.TestCase):
                     try:
                         return_code = run.parse_from_file(file_to_run,"sbolxml",[templates],output_fn,[])
                     except Exception as e:
-                        failure_exceptions.append({file_to_run:e})
-                        
-                    self.assertEqual(return_code,{"SBOL validator success.":[]},"When Testing with file: " + file_to_run)
-        for k,v in failure_exceptions:
-            print("Failure by Exception on:" + k + ", Exception: " + str(v))
+                        failure_exceptions.append({file_to_run : e})
+                    if return_code != {"SBOL validator success.":[]}:
+                        sbol_validation_errors.append({file_to_run : return_code})
+
         if len(failure_exceptions) > 0:
+            for exception in failure_exceptions:
+                for k,v in exception.items():
+                    print("Failure by Exception on:" + k + ", Exception: " + str(v))
             self.fail("A test script failed by exception.")
+
+        if len(sbol_validation_errors) > 0:
+            for validation_error in sbol_validation_errors:
+                for k,v in validation_error.items():
+                    print("Failure by SBOL Validation on:" + str(k) + ", with validation errors: " + str(v))
+            self.fail("A test script failed by SBOL validation errors.")
+        

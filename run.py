@@ -107,7 +107,7 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
         curr_line_num = curr_line_num + 2
         while split_text[curr_line_num] != ")":
             # A comment move on.
-            if split_text[curr_line_num] == "" or split_text[curr_line_num] == None or split_text[curr_line_num].lstrip()[0] == "#":
+            if split_text[curr_line_num] == "" or split_text[curr_line_num] == None :
                 curr_line_num = curr_line_num + 1
                 continue
             
@@ -179,6 +179,21 @@ def hacky_conversion_handle_template_instance(split_text,index,shortbol_template
     return split_text, curr_line_num + 1
 
 
+def pre_process(text):
+    text = text.lstrip()
+    text = text.replace("\t","")
+    text = text.split("\n")
+
+    for line_no,line in enumerate(text):
+        if line and line[0].lstrip() == "#" :
+            text[line_no] = ""
+        if "#" in line:
+            comment_index = line.find('#')
+            if "<" not in line[0:comment_index] or ">" not in line[comment_index:]:
+                text[line_no] = line[0:comment_index]
+
+    return text
+
 def hacky_conversion(filepath, temp_file, template_dir):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
@@ -186,10 +201,8 @@ def hacky_conversion(filepath, temp_file, template_dir):
 
     
     with open(filepath, 'r') as original: data = original.read()
-    split_text = data.lstrip()
-    split_text = data.replace("\t","")
-    split_text = split_text.split("\n")
     
+    split_text = pre_process(data)
     # Check if sbol namespace present. (use <sbol>)
     if not sbol_namespace in split_text:
         split_text.insert(0,sbol_namespace + "\n")
@@ -226,9 +239,6 @@ def hacky_conversion(filepath, temp_file, template_dir):
     curr_line_num = 0
     while curr_line_num != len(split_text):
         line = split_text[curr_line_num]
-        if line and line[0].lstrip() == "#" :
-            curr_line_num = curr_line_num + 1
-            continue 
         if is_a_template in line :
             split_text,curr_line_num = hacky_conversion_handle_template_instance(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table)
         else:

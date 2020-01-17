@@ -1,0 +1,32 @@
+use <sbol>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+
+
+
+
+pTetR_loc is a sbol.InlineRange(1,55)
+
+pTetR_sa is a sbol.SequenceAnnotation(pTetR_loc)
+(
+  
+  pTetR_c is a sbol.Component(pTetR)
+  (
+    pTetR is a sbol.Promoter()
+    (
+      pTetR_seq is a sbol.DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+    )
+  )
+)
+
+tetRInverter is a sbol.DNAComponent()
+(
+  
+    sbol.component = pTetR_c
+
+  
+    sbol.sequenceAnnotation = pTetR_sa
+)
+
+@extension SbolIdentity()
