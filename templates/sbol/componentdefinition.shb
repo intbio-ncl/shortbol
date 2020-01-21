@@ -8,12 +8,12 @@ ComponentDefinition(t)
 
 DNAComponent() 
 (
-    ComponentDefinition(dNA)
+    ComponentDefinition(DNA)
 )
 
 DNA()
 (
-  ComponentDefinition(dNA)
+  ComponentDefinition(DNA)
 )
 
 RNAComponent()
