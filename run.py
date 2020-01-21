@@ -60,8 +60,6 @@ def hacky_conversion_handle_type(template_type,shortbol_template_table,line_no):
             return sbol_dot + parts[0]
         else:
             #SBOL. is not present but template NOT in libary
-            for k in shortbol_template_table:
-                print(parts)
             raise NameError(f'Template: {parts[0]}  on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
     elif len(parts) == 2:
         if parts[1] in shortbol_template_table:
@@ -256,7 +254,7 @@ def hacky_conversion(filepath, temp_file, template_dir):
     return temp_file
 
 def parse_from_file(filepath,
-                    serializer='nt',
+                    serializer='sbolxml',
                     optpaths=[],
                     out=None,
                     extensions=[],
@@ -291,7 +289,7 @@ def parse_from_file(filepath,
     sbol = '<?xml version="1.0" ?>\n' + str(env)
 
     ret_code = ""
-    if not no_validation:
+    if not no_validation and serializer == "sbolxml":
         errors = []
         response = validate_sbol(sbol)
         try:
@@ -309,16 +307,15 @@ def parse_from_file(filepath,
     else:
         ret_code = "No Validation."
         errors = ["No Validation."]
-
-    if not out:
+    if out is None:
         print(sbol)
     else:
         with open(out, 'w') as o:
             sbol = str(env)
             o.write(sbol)
     
-    #if temp_file :
-     #   os.remove(temp_file)
+    if temp_file :
+        os.remove(temp_file)
     return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
@@ -371,7 +368,7 @@ def rdfscript_args():
 
     parser = argparse.ArgumentParser(description="RDFScript interpreter and REPL.")
 
-    parser.add_argument('-s', '--serializer', default='nt',
+    parser.add_argument('-s', '--serializer', default="sbolxml",
                         choices=['rdfxml', 'n3', 'turtle', 'sbolxml', 'nt'],
                         help="The format into which the graph is serialised")
     parser.add_argument('-p', '--path',
@@ -381,9 +378,10 @@ def rdfscript_args():
     parser.add_argument('filename', default=None, nargs='?',
                         help="File to parse as RDFScript")
 
-    parser.add_argument('-o', '--output', help="The name of the output file", default=None)
+    parser.add_argument('-o', '--output', help="The name of the output file", default="shortbol_output.rdf")
     parser.add_argument('-nv', '--no_validation', help="Stops the output from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('-nh', '--no_hack', help="Stops the hack from modiying the file.", default=None, action='store_true')
+    parser.add_argument('-no', '--no_output', help="Stops writing output to file, instead prints to console.", default=None, action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 0.0alpha')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
 
@@ -398,11 +396,11 @@ if __name__ == "__main__":
     logging.basicConfig(format='\n%(message)s\n', level=logging.DEBUG)
     args = rdfscript_args()
     extensions = [(ext[0], ext[1]) for ext in args.extensions]
-
+    out = None if args.no_output else args.output  
     if args.filename is not None:
         parse_from_file(args.filename,
                         serializer=args.serializer,
-                        out=args.output,
+                        out=out,
                         optpaths=args.path,
                         extensions=extensions,
                         debug_lvl=args.debug_lvl,
