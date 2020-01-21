@@ -17,7 +17,7 @@ class TestRegression(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove(os.path.join(test_files,"temporary_runner.rdfsh"))
+            os.remove(os.path.join(test_files,"temporary_runner.shb"))
             os.remove(output_fn)
         except FileNotFoundError:
             None
@@ -27,9 +27,9 @@ class TestRegression(unittest.TestCase):
         sbol_validation_errors=[]
         for path, subdirs, files in os.walk(test_files):
             for name in files:
-                if name == "temporary_runner.rdfsh":
+                if name == "temporary_runner.shb":
                     continue
-                if name.endswith(".rdfsh") or name.endswith(".txt"):
+                if name.endswith(".shb") or name.endswith(".txt"):
                     file_to_run = os.path.join(path, name)
                     
                     print("Running with file: " + str(file_to_run))

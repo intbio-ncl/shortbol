@@ -221,7 +221,7 @@ def hacky_conversion(filepath, temp_file, template_dir):
 
     sbol_dir = os.path.join(template_dir,"sbol")
     for filename in os.listdir(sbol_dir):
-        if filename.endswith(".rdfsh"): 
+        if os.path.isfile(os.path.join(sbol_dir,filename)): 
             template = open(os.path.join(sbol_dir, filename), "r")
             for line in template:
                 x = re.search(".+[(].*[)]", line)
@@ -232,7 +232,6 @@ def hacky_conversion(filepath, temp_file, template_dir):
                     if x is not None:
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
             template.close()
-
 
     curr_line_num = 0
     while curr_line_num != len(split_text):
@@ -267,7 +266,7 @@ def parse_from_file(filepath,
     template_dir = optpaths[0]
 
     if not no_hack:
-        temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.rdfsh")
+        temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.shb")
         if os.path.isfile(temp_file):
             os.remove(temp_file)
         to_run_fn = hacky_conversion(filepath,temp_file,template_dir)
@@ -344,7 +343,7 @@ def produce_tables(lib_paths):
     This process is just the parse_from file method and returns the tables.
     '''
     optpaths = lib_paths
-    to_run_fn = os.path.join(lib_paths[0],"temp.rdfsh")
+    to_run_fn = os.path.join(lib_paths[0],"temp.shb")
     f= open(to_run_fn,"a")
     f.write("use <sbol>")
     f.close()
