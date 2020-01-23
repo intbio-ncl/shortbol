@@ -34,14 +34,14 @@ NoneComponent(componentDefinition_uri)
 
 hasFunctionalComponent(cd,direction)
 (
-  functionalComponent = self._functionalComponent
-  self._functionalComponent is a FunctionalComponent(cd,direction)
+  functionalComponent = cd._functionalComponent
+  cd._functionalComponent is a FunctionalComponent(cd,direction)
 )
 
 hasPrivateFunctionalComponent(cd,direction)
 (
-  functionalComponent = self._functionalComponent
-  self._functionalComponent is a PrivateFunctionalComponent(cd,direction)
+  functionalComponent = cd._functionalComponent
+  cd._functionalComponent is a PrivateFunctionalComponent(cd,direction)
 )
 
 hasInputComponent(cd)
@@ -62,4 +62,9 @@ hasInOutComponent(cd)
 hasNoneComponent(cd)
 (
   hasFunctionalComponent(cd,none)
+)
+
+instanceOf(cd)
+(
+  hasInOutComponent(cd)
 )
