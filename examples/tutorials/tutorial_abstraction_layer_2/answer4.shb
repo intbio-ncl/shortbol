@@ -22,10 +22,10 @@ lacI_term is a Terminator()
   hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
 )
 
-pTetR_loc is a InlineRange(1,55,Inline)
-lacI_RBS_loc is a InlineRange(56,68,Inline)
-lacI_CDS_loc is a InlineRange(169,1197,Inline)
-lacI_term_loc is a InlineRange(1197,1240,Inline)
+pTetR_loc is a InlineRange(1,55)
+lacI_RBS_loc is a InlineRange(56,68)
+lacI_CDS_loc is a InlineRange(169,1197)
+lacI_term_loc is a InlineRange(1197,1240)
 
 tetRInverter is a DNAComponent()
 (

@@ -4,15 +4,15 @@
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 
-TetR_fc is a FunctionalComponent(TetR,none)
-LacI_fc is a FunctionalComponent(LacI,none)
+TetR_fc is a NoneComponent(TetR)
+LacI_fc is a NoneComponent(LacI)
 
 #Make a participation for the two proteins in the Lacinverter module
-LacI_lacinv_part is a Participation(LacI_fc, inhibitor)
-TetR_lacinv_part is a Participation(TetR_fc, inhibited)
+LacI_lacinv_part is a Inhibitor(LacI_fc)
+TetR_lacinv_part is a Inhibited(TetR_fc)
 
 #Make an Interaction for the participants in the Lacinverter module
-LacITetR_int is a Interaction(inhibition)
+LacITetR_int is a Inhibition()
 (
 	participation = TetR_lacinv_part
 	participation = LacI_lacinv_part	

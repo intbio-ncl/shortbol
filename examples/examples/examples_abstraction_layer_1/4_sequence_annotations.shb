@@ -1,7 +1,7 @@
 # Answer 4
 # The genetic parts of the TetR inverter
 
-pTetR_seq is a DNASequence ("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
 pTetR is a Promoter()
 (
   sequence = pTetR_seq

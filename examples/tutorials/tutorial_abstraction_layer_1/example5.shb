@@ -3,15 +3,15 @@
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 
-TetR_fc is a FunctionalComponent(TetR,inout)
-LacI_fc is a FunctionalComponent(LacI,inout)
+TetR_fc is a InOutComponent(TetR)
+LacI_fc is a InOutComponent(LacI)
 
 #Make a participation for the two proteins
-TetR_part is a Participation(TetR_fc, inhibitor)
-LacI_part is a Participation(LacI_fc, inhibited)
+TetR_part is a Inhibitor(TetR_fc)
+LacI_part is a Inhibited(LacI_fc)
 
 #Make an Interaction for the participants
-TetRLacI_int is a Interaction(inhibition)
+TetRLacI_int is a Inhibition()
 (
 	participation = TetR_part
 	participation = LacI_part	
@@ -38,16 +38,16 @@ toggleSwitch is a Module(TetR_inverter)
 )
 
 #Make new FunctionalComponents
-TetR_lacinv_fc is a FunctionalComponent(TetR,inout)
-LacI_lacinv_fc is a FunctionalComponent(LacI,inout)
+TetR_lacinv_fc is a InOutComponent(TetR)
+LacI_lacinv_fc is a InOutComponent(LacI)
 
 
 #Make a participation for the two proteins in the Lacinverter module
-LacI_lacinv_part is a Participation(LacI_lacinv_fc, inhibitor)
-TetR_lacinv_part is a Participation(TetR_lacinv_fc, inhibited)
+LacI_lacinv_part is a Inhibitor(LacI_lacinv_fc)
+TetR_lacinv_part is a Inhibitor(TetR_lacinv_fc)
 
 #Make an Interaction for the participants in the Lacinverter module
-LacITetR_int is a Interaction(inhibition)
+LacITetR_int is a Inhibition()
 (
 	participation = TetR_lacinv_part
 	participation = LacI_lacinv_part	

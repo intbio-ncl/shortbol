@@ -16,12 +16,12 @@ Range(start, end, orientation)
 
 InlineRange(start, end)
 (
-  Range(start, end, inline)
+  Range(start, end, i_inline)
 )
 
 ReverseComplementRange(start, end)
 (
-  Range(start, end, reverseComplement)
+  Range(start, end, i_reverseComplement)
 )
 
 Cut(at, orientation)
@@ -32,12 +32,12 @@ Cut(at, orientation)
 
 InlineCut(at,orientation)
 (
-  Cut(at,inline)
+  Cut(at,i_inline)
 )
 
 ReverseComplementCut(at, orientation)
 (
-  Cut(at,reverseComplement)
+  Cut(at,i_reverseComplement)
 )
 
 GenericLocation(orientation) 
@@ -47,11 +47,11 @@ GenericLocation(orientation)
 
 InlineGenericLocation(orientation)
 (
-  GenericLocation(inline)
+  GenericLocation(i_inline)
 )
 
 ReverseComplementGenericLocation(orientation)
 (
-  GenericLocation(reverseComplement)
+  GenericLocation(i_reverseComplement)
 )
 

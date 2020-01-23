@@ -10,28 +10,28 @@ MapsTo(componentinstance_uri_local, componentinstance_uri_remote, ref)
 
 MapsUseRemote(componentinstance_uri_local, componentinstance_uri_remote) 
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useRemote)
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useRemote)
 )
 
 MapsUseLocal(componentinstance_uri_local, componentinstance_uri_remote)  
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useLocal)
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useLocal)
 )
 
 MapsIdentical(componentinstance_uri_local, componentinstance_uri_remote) 
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.verifyIdentical)
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_verifyIdentical)
 )
 
 MapsMerge(componentinstance_uri_local, componentinstance_uri_remote)     
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.merge)
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_merge)
 )
 
 mapsTo(local,remote, refinment)
 (
- local._fc is a FunctionalComponent(local,inout)
- remote._fc is a FunctionalComponent(remote,inout)
+ local._fc is a InOutComponent(local)
+ remote._fc is a InOutComponent(remote)
 
  functionalcomponent = local._fc
  functionalcomponent = remote._fc
@@ -43,22 +43,22 @@ mapsTo(local,remote, refinment)
 
 mapsUseRemote(componentinstance_uri_local, componentinstance_uri_remote) 
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useRemote)
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useRemote)
 )
 
 mapsUseLocal(componentinstance_uri_local, componentinstance_uri_remote)  
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useLocal)
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useLocal)
 )
 
 mapsIdentical(componentinstance_uri_local, componentinstance_uri_remote) 
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.verifyIdentical)
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_verifyIdentical)
 )
 
 mapsMerge(componentinstance_uri_local, componentinstance_uri_remote)     
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.merge)
+  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_merge)
 )
 
 

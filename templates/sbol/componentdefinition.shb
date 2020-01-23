@@ -8,52 +8,52 @@ ComponentDefinition(t)
 
 DNAComponent() 
 (
-    ComponentDefinition(DNA)
+    ComponentDefinition(i_DNA)
 )
 
 DNA()
 (
-  ComponentDefinition(DNA)
+  ComponentDefinition(i_DNA)
 )
 
 RNAComponent()
 (
-  ComponentDefinition(RNA)
+  ComponentDefinition(i_RNA)
 )
 
 RNA()
 (
-  ComponentDefinition(RNA)
+  ComponentDefinition(i_RNA)
 )
 
 ProteinComponent()
 (
-  ComponentDefinition(protein)
+  ComponentDefinition(i_protein)
 )
 
 Protein()
 (
-  ComponentDefinition(protein)
+  ComponentDefinition(i_protein)
 )
 
 SmallMoleculeComponent()
 (
-  ComponentDefinition(smallMolecule)
+  ComponentDefinition(i_smallMolecule)
 )
 
 SmallMolecule()
 (
-  ComponentDefinition(smallMolecule)
+  ComponentDefinition(i_smallMolecule)
 )
 
 ComplexComponent()
 (
-  ComponentDefinition(complex)
+  ComponentDefinition(i_complex)
 )
 
 Complex()
 (
-  ComponentDefinition(complex)
+  ComponentDefinition(i_complex)
 )
 
 # Common DNA components
@@ -61,31 +61,31 @@ Complex()
 Promoter()
 (
   DNAComponent()
-  sbol.role = promoter
+  sbol.role = i_promoter
 )
 
 RBS()
 (
   DNAComponent()
-  sbol.role = rbs
+  sbol.role = i_rbs
 )
 
 CDS()
 (
   DNAComponent()
-  sbol.role = cds
+  sbol.role = i_cds
 )
 
 Terminator()
 (
   DNAComponent()
-  sbol.role = terminator
+  sbol.role = i_terminator
 )
 
 Operator()
 (
   DNAComponent()
-  sbol.role = operator
+  sbol.role = i_operator
 )
 
 # Common RNA components
@@ -93,11 +93,11 @@ Operator()
 CDS_RNA()
 (
   RNAComponent()
-  sbol.role = cds
+  sbol.role = i_cds
 )
 
 SGRNA()
 (
   RNAComponent()
-  sbol.role = sgRNA
+  sbol.role = i_sgRNA
 )

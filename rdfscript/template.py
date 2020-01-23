@@ -62,7 +62,7 @@ class Template(Node):
         
         evaluated_triples = [triple_eval(triple) for triple in triples]
 
-        uri = self.identifier.evaluate(context)
+        uri = self.identifier.evaluate_raw(context)
         context.assign_template(uri, evaluated_triples)
 
         return evaluated_triples

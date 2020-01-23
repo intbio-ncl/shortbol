@@ -1,6 +1,6 @@
-lacI_term_seq is a DNASequence ("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+lacI_term_seq is a DNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
 
-pTetR_seq is a DNASequence ("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
 
 lacI_term is a Terminator()
 (

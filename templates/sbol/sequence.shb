@@ -11,63 +11,63 @@ Sequence(x, y)
 
 DNASequence(x)       
 (
-    Sequence(x, iupacDNA)
+    Sequence(x, i_iupacDNA)
 )
 
 DNASeq(x)       
 (
-    Sequence(x, iupacDNA)
+    Sequence(x, i_iupacDNA)
 )
 
 RNASequence(x)       
 (
-    Sequence(x, iupacDNA)
+    Sequence(x, i_iupacDNA)
 )
 
 ProteinSequence(x)   
 (
-    Sequence(x, iupacProtein)
+    Sequence(x, i_iupacProtein)
 )
 
 ChemicalStructure(x) 
 (
-    Sequence(x, opensmilesSMILES)
+    Sequence(x, i_opensmilesSMILES)
 )
 
 hasSequence(x, encoding)
 (
-    sequence = self._sequence
-    self._sequence is a Sequence(x,encoding)
+    sequence = self._sequence_brah
+    self._sequence_brah is a Sequence(x,encoding)
 )
 
 hasDNASequence(x)
 (
-  hasSequence(x,iupacDNA)
+  hasSequence(x,i_iupacDNA)
 )
 
 hasDNASeq(x)       
 (
-    Sequence(x, iupacDNA)
+    Sequence(x, i_iupacDNA)
 )
 
 hasRNASequence(x)
 (
-  hasSequence(x,iupacDNA)
+  hasSequence(x,i_iupacDNA)
 )
 
 hasRNASequence(x)
 (
-  hasSequence(x,iupacDNA)
+  hasSequence(x,i_iupacDNA)
 )
 
 hasProteinSequence(x)   
 (
-    hasSequence(x,iupacProtein)
+    hasSequence(x,i_iupacProtein)
 )
 
 hasChemicalStructure(x) 
 (
-    hasSequence(x,opensmilesSMILES)
+    hasSequence(x,i_opensmilesSMILES)
 )
 
 
@@ -106,22 +106,22 @@ SequenceConstraint(component_uri_subject, component_uri_object, restriction)
 
 Precedes(component_uri_subject, component_uri_object)              
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, sbol.precedes)
+  SequenceConstraint(component_uri_subject, component_uri_object, i_precedes)
 )
 
 SameOrientationAs(component_uri_subject, component_uri_object)     
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, sbol.sameOrientationAs)
+  SequenceConstraint(component_uri_subject, component_uri_object, i_sameOrientationAs)
 )
 
 OppositeOrientationAs(component_uri_subject, component_uri_object) 
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, sbol.oppositeOrientationAs)
+  SequenceConstraint(component_uri_subject, component_uri_object, i_oppositeOrientationAs)
 )
 
 DifferentFrom(component_uri_subject, component_uri_object)         
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, sbol.differentFrom)
+  SequenceConstraint(component_uri_subject, component_uri_object, i_differentFrom)
 )
 
 
@@ -139,22 +139,22 @@ sequenceConstraint(subject,object,restriction)
 
 precedes(subject, object)
 (
-  sequenceConstraint(subject,object,sbol.precedes)
+  sequenceConstraint(subject,object,i_precedes)
 )
 
 sameOrientationAs(subject, object)
 (
-  sequenceConstraint(subject,object,sbol.sameOrientationAs)
+  sequenceConstraint(subject,object,i_sameOrientationAs)
 )
 
 oppositeOrientationAs(subject, object)
 (
-  sequenceConstraint(subject,object,sbol.oppositeOrientationAs)
+  sequenceConstraint(subject,object,i_oppositeOrientationAs)
 )
 
 differentFrom(subject, object)
 (
-  sequenceConstraint(subject,object,sbol.differentFrom)
+  sequenceConstraint(subject,object,i_differentFrom)
 )
 
 

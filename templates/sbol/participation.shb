@@ -10,52 +10,52 @@ Participation(functionalcomponent_uri, withrole)
 
 Inhibitor(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.inhibitor)
+  Participation(functionalcomponent_uri,i_inhibitor)
 )
 
 Inhibited(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.inhibited)
+  Participation(functionalcomponent_uri,i_inhibited)
 )
 
 Reactant(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.reactant)
+  Participation(functionalcomponent_uri,i_reactant)
 )
 
 Stimulator(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.stimulator)
+  Participation(functionalcomponent_uri,i_stimulator)
 )
 
 Stimulated(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.stimulated)
+  Participation(functionalcomponent_uri,i_stimulated)
 )
 
 Product(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.product)
+  Participation(functionalcomponent_uri,i_product)
 )
 
 ParticipationPromoter(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri, sbol.promoter_t)
+  Participation(functionalcomponent_uri, i_promoter_t)
 )
 
 Modifier(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.modifier)
+  Participation(functionalcomponent_uri, i_modifier)
 )
 
 Modified(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.modified)
+  Participation(functionalcomponent_uri,i_modified)
 )
 
 Template(functionalcomponent_uri)
 (
-  Participation(functionalcomponent_uri,sbol.template)
+  Participation(functionalcomponent_uri,i_template)
 )
 
 hasParticipation(functionalcomponent_uri,role)
@@ -66,50 +66,50 @@ hasParticipation(functionalcomponent_uri,role)
 
 hasInhibitor(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.inhibitor)
+  hasParticipation(functionalcomponent_uri,i_inhibitor)
 )
 
 hasInhibited(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.inhibited)
+  hasParticipation(functionalcomponent_uri,i_inhibited)
 )
 
 hasReactant(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.reactant)
+  hasParticipation(functionalcomponent_uri,i_reactant)
 )
 
 hasStimulator(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.stimulator)
+  hasParticipation(functionalcomponent_uri,i_stimulator)
 )
 
 hasStimulated(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.stimulated)
+  hasParticipation(functionalcomponent_uri,i_stimulated)
 )
 
 hasProduct(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.product)
+  hasParticipation(functionalcomponent_uri,i_product)
 )
 
 hasParticipationPromoter(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri, sbol.promoter_t)
+  hasParticipation(functionalcomponent_uri, i_promoter_t)
 )
 
 hasModifier(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.modifier)
+  hasParticipation(functionalcomponent_uri, i_modifier)
 )
 
 hasModified(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.modified)
+  hasParticipation(functionalcomponent_uri, i_modified)
 )
 
 hasTemplate(functionalcomponent_uri)
 (
-  hasParticipation(functionalcomponent_uri,sbol.template)
+  hasParticipation(functionalcomponent_uri, i_template)
 )

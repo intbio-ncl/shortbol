@@ -21,27 +21,27 @@ target_fc is a InOutComponent(target)
 
 
 
-cas9_generic_participation is a Participation(cas9_generic_fc, reactant)
-gRNA_generic_participation is a Participation(gRNA_generic_fc, reactant)
-cas9_gRNA_complex_participation is a Participation(cas9_gRNA_complex_fc, product)
-cas9_complex_formation is a Interaction(noncovalent_bonding)
+cas9_generic_participation is a Reactant(cas9_generic_fc)
+gRNA_generic_participation is a Reactant(gRNA_generic_fc)
+cas9_gRNA_complex_participation is a Product(cas9_gRNA_complex_fc, product)
+cas9_complex_formation is a NoncovalentBonding()
 (
     participation = cas9_generic_participation
     participation = gRNA_generic_participation
     participation = cas9_gRNA_complex_participation
 )
 
-target_gene_participation is a Participation(target_gene_fc, promoter)
-target_participation is a Participation(target_fc, product)
-target_production is a Interaction(genetic_production)
+target_gene_participation is a ParticipationPromoter(target_gene_fc)
+target_participation is a Product(target_fc)
+target_production is a GeneticProduction()
 (
     participation = target_gene_participation
     participation = target_participation
 )
 
-cas9_gRNA_complex_reactant_participation is a Participation(cas9_gRNA_complex_fc, reactant)
-target_gene_reactant_participation is a Participation(target_fc, reactant)
-target_gene_inhibition is a Interaction(inhibition)
+cas9_gRNA_complex_reactant_participation is a Reactant(cas9_gRNA_complex_fc)
+target_gene_reactant_participation is a Reactant(target_fc)
+target_gene_inhibition is a Inhibition()
 (
     participation = cas9_gRNA_complex_reactant_participation
     participation = target_gene_reactant_participation
@@ -208,80 +208,80 @@ Gal4VP16_fc is a NoneComponent(Gal4VP16)
 Gal4VP16_gene_fc is a NoneComponent(Gal4VP16_gene)
 
 
-mKate_gene_participant is a Participation(mKate_gene_fc, reactant)
-mKate_participant is a Participation(mKate_fc, reactant)
-mKate_production is a Interaction(genetic_production)
+mKate_gene_participant is a Reactant(mKate_gene_fc)
+mKate_participant is a Reactant(mKate_fc)
+mKate_production is a GeneticProduction()
 (
     participation = mKate_gene_participant
     participation = mKate_participant
 )
 
-Gal4VP16_gene_participant is a Participation(Gal4VP16_gene_fc, reactant)
-Gal4VP16_participant is a Participation(Gal4VP16_fc, reactant)
-Gal4VP16_production is a Interaction(genetic_production)
+Gal4VP16_gene_participant is a Reactant(Gal4VP16_gene_fc)
+Gal4VP16_participant is a Reactant(Gal4VP16_fc)
+Gal4VP16_production is a GeneticProduction()
 (
     participation = Gal4VP16_gene_participant
     participation = Gal4VP16_participant
 )
 
-cas9m_BFP_gene_participant is a Participation(Gal4VP16_gene_fc, reactant)
-cas9m_BFP_participant is a Participation(Gal4VP16_fc, reactant)
-cas9m_BFP_production is a Interaction(genetic_production)
+cas9m_BFP_gene_participant is a Reactant(Gal4VP16_gene_fc)
+cas9m_BFP_participant is a Reactant(Gal4VP16_fc)
+cas9m_BFP_production is a GeneticProduction()
 (
     participation = cas9m_BFP_gene_participant
     participation = cas9m_BFP_participant
 )
 
 
-gRNA_b_gene_participant is a Participation(gRNA_b_gene_fc, reactant)
-gRNA_b_participant is a Participation(gRNA_b_fc, reactant)
-gRNA_b_production is a Interaction(genetic_production)
+gRNA_b_gene_participant is a Reactant(gRNA_b_gene_fc)
+gRNA_b_participant is a Reactant(gRNA_b_fc)
+gRNA_b_production is a GeneticProduction()
 (
     participation = gRNA_b_gene_participant
     participation = gRNA_b_participant
 )
 
-EYFP_activation_production_gene_participant is a Participation(EYFP_gene_fc, reactant)
-Gal4VP16_activation_production_participant is a Participation(Gal4VP16_fc, reactant)
-EYFP_Activation_production is a Interaction(stimulation)
+EYFP_activation_production_gene_participant is a Reactant(EYFP_gene_fc)
+Gal4VP16_activation_production_participant is a Reactant(Gal4VP16_fc)
+EYFP_Activation_production is a Stimulation()
 (
     participation = EYFP_activation_production_gene_participant
     participation = Gal4VP16_activation_production_participant
 )
 
 
-mKate_deg_participant is a Participation(mKate_fc, reactant)
-mKate_deg is a Interaction(degradation)
+mKate_deg_participant is a Reactant(mKate_fc)
+mKate_deg is a Degradation()
 (
     participation = mKate_deg_participant
 )
 
-Gal4VP16_deg_participant is a Participation(Gal4VP16_fc, reactant)
-Gal4VP16_deg is a Interaction(degradation)
+Gal4VP16_deg_participant is a Reactant(Gal4VP16_fc)
+Gal4VP16_deg is a Degradation()
 (
     participation = Gal4VP16_deg_participant
 )
 
-cas9m_BFP_reactant_participant is a Participation(cas9m_BFP_fc, reactant)
-cas9m_BFP_deg is a Interaction(degradation)
+cas9m_BFP_reactant_participant is a Reactant(cas9m_BFP_fc)
+cas9m_BFP_deg is a Degradation()
 (
     participation = cas9m_BFP_reactant_participant
 )
 
-gRNA_b_BFP_participant is a Participation(gRNA_b_fc, reactant)
-gRNA_b_BFP_deg is a Interaction(degradation)
+gRNA_b_BFP_participant is a Reactant(gRNA_b_fc)
+gRNA_b_BFP_deg is a Degradation()
 (
     participation = gRNA_b_BFP_participant
 )
 
-EYFP_participant is a Participation(EYFP_fc, reactant)
-EYFP_deg is a Interaction(degradation)
+EYFP_participant is a Reactant(EYFP_fc)
+EYFP_deg is a Degradation()
 (
     participation = EYFP_participant
 )
 
-cas9m_BFP_gRNA_b_participation is a Participation(cas9m_BFP_gRNA_b_fc, reactant)
-cas9m_BFP_gRNA_b_deg is a Interaction(degradation)
+cas9m_BFP_gRNA_b_participation is a Reactant(cas9m_BFP_gRNA_b_fc)
+cas9m_BFP_gRNA_b_deg is a Degradation()
 (
     participation = cas9m_BFP_gRNA_b_participation
 )
