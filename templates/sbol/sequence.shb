@@ -36,8 +36,8 @@ ChemicalStructure(x)
 
 hasSequence(x, encoding)
 (
-    sequence = self._sequence_brah
-    self._sequence_brah is a Sequence(x,encoding)
+    sequence = self._sequence
+    self._sequence is a Sequence(x,encoding)
 )
 
 hasDNASequence(x)
