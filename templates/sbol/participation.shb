@@ -58,58 +58,58 @@ Template(functionalcomponent_uri)
   Participation(functionalcomponent_uri,i_template)
 )
 
-hasParticipation(functionalcomponent_uri,role)
+hasParticipation(component_definition_uri,role)
 (
   participant = self._participant
-  self._participant is a Participation(functionalcomponent_uri, role)
+  self._participant is a Participation(component_definition_uri, role)
 )
 
-hasInhibitor(functionalcomponent_uri)
+hasInhibitor(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri,i_inhibitor)
+  hasParticipation(component_definition_uri,i_inhibitor)
 )
 
-hasInhibited(functionalcomponent_uri)
+hasInhibited(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri,i_inhibited)
+  hasParticipation(component_definition_uri,i_inhibited)
 )
 
-hasReactant(functionalcomponent_uri)
+hasReactant(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri,i_reactant)
+  hasParticipation(component_definition_uri,i_reactant)
 )
 
-hasStimulator(functionalcomponent_uri)
+hasStimulator(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri,i_stimulator)
+  hasParticipation(component_definition_uri,i_stimulator)
 )
 
-hasStimulated(functionalcomponent_uri)
+hasStimulated(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri,i_stimulated)
+  hasParticipation(component_definition_uri,i_stimulated)
 )
 
-hasProduct(functionalcomponent_uri)
+hasProduct(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri,i_product)
+  hasParticipation(component_definition_uri,i_product)
 )
 
-hasParticipationPromoter(functionalcomponent_uri)
+hasParticipationPromoter(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri, i_promoter_t)
+  hasParticipation(component_definition_uri, i_promoter_t)
 )
 
-hasModifier(functionalcomponent_uri)
+hasModifier(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri, i_modifier)
+  hasParticipation(component_definition_uri, i_modifier)
 )
 
-hasModified(functionalcomponent_uri)
+hasModified(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri, i_modified)
+  hasParticipation(component_definition_uri, i_modified)
 )
 
-hasTemplate(functionalcomponent_uri)
+hasTemplate(component_definition_uri)
 (
-  hasParticipation(functionalcomponent_uri, i_template)
+  hasParticipation(component_definition_uri, i_template)
 )

@@ -6,11 +6,11 @@ TopLevel(type)
 )
 
 
-Model(s, l, f)
+Model(source, language, framework)
 (
   TopLevel(Model)
-  source = s
-  sbol.language = l
-  sbol.framework = f
+  sbol.<source> = source
+  sbol.<language> = language
+  sbol.<framework> = framework
 )
 

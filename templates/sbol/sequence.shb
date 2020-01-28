@@ -2,72 +2,72 @@
 
 # Sequence Templates
 
-Sequence(x, y)
+Sequence(sequence, y)
 (
   TopLevel(Sequence)
-  elements = x
-  encoding = y
+  elements = sequence
+  sbol.<encoding> = encoding
 )
 
 DNASequence(x)       
 (
-    Sequence(x, i_iupacDNA)
+    Sequence(sequence, i_iupacDNA)
 )
 
-DNASeq(x)       
+DNASeq(sequence)       
 (
-    Sequence(x, i_iupacDNA)
+    Sequence(sequence, i_iupacDNA)
 )
 
-RNASequence(x)       
+RNASequence(sequence)       
 (
-    Sequence(x, i_iupacDNA)
+    Sequence(sequence, i_iupacDNA)
 )
 
-ProteinSequence(x)   
+ProteinSequence(sequence)   
 (
-    Sequence(x, i_iupacProtein)
+    Sequence(sequence, i_iupacProtein)
 )
 
-ChemicalStructure(x) 
+ChemicalStructure(sequence) 
 (
-    Sequence(x, i_opensmilesSMILES)
+    Sequence(sequence, i_opensmilesSMILES)
 )
 
-hasSequence(x, encoding)
+hasSequence(seq, encoding)
 (
     sequence = self._sequence
-    self._sequence is a Sequence(x,encoding)
+    self._sequence is a Sequence(seq,encoding)
 )
 
-hasDNASequence(x)
+hasDNASequence(sequence)
 (
-  hasSequence(x,i_iupacDNA)
+  hasSequence(sequence,i_iupacDNA)
 )
 
-hasDNASeq(x)       
+hasDNASeq(sequence)       
 (
-    Sequence(x, i_iupacDNA)
+    Sequence(sequence, i_iupacDNA)
 )
 
-hasRNASequence(x)
+hasRNASequence(sequence)
 (
-  hasSequence(x,i_iupacDNA)
+  hasSequence(sequence,i_iupacDNA)
 )
 
-hasRNASequence(x)
+hasRNASequence(sequence)
 (
-  hasSequence(x,i_iupacDNA)
+  hasSequence(sequence,i_iupacDNA)
 )
 
-hasProteinSequence(x)   
+hasProteinSequence(sequence)   
 (
-    hasSequence(x,i_iupacProtein)
+    hasSequence(sequence,i_iupacProtein)
 )
 
-hasChemicalStructure(x) 
+hasChemicalStructure(sequence) 
 (
-    hasSequence(x,i_opensmilesSMILES)
+    hasSequence(sequence,i_opensmilesSMILES)
 )
 
 
