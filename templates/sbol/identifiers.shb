@@ -33,7 +33,7 @@ i_transcriptionFactor = <http://identifiers.org/go/GO:0003700>
 i_inline = <http://sbols.org/v2#inline>
 i_reverseComplement = <http://sbols.org/v2#reverseComplement>
 
-# (FunctionalComponent) direction
+# (FunctionalComponent, hasFunctionalComponent, hasPrivateFunctionalComponent) direction
 i_in = <http://sbols.org/v2#in>
 i_out = <http://sbols.org/v2#out>
 i_inout = <http://sbols.org/v2#inout> 

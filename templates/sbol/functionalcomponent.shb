@@ -32,39 +32,39 @@ NoneComponent(componentDefinition_uri)
   FunctionalComponent(componentDefinition_uri, sbol.none)
 )
 
-hasFunctionalComponent(cd,direction)
+hasFunctionalComponent(componentDefinition_uri,direction)
 (
-  functionalComponent = cd._functionalComponent
-  cd._functionalComponent is a FunctionalComponent(cd,direction)
+  functionalComponent = componentDefinition_uri._functionalComponent
+  componentDefinition_uri._functionalComponent is a FunctionalComponent(componentDefinition_uri,direction)
 )
 
-hasPrivateFunctionalComponent(cd,direction)
+hasPrivateFunctionalComponent(componentDefinition_uri,direction)
 (
-  functionalComponent = cd._functionalComponent
-  cd._functionalComponent is a PrivateFunctionalComponent(cd,direction)
+  functionalComponent = componentDefinition_uri._functionalComponent
+  componentDefinition_uri._functionalComponent is a PrivateFunctionalComponent(componentDefinition_uri,direction)
 )
 
-hasInputComponent(cd)
+hasInputComponent(componentDefinition_uri)
 (
-  hasFunctionalComponent(cd,in)
+  hasFunctionalComponent(componentDefinition_uri,in)
 )
 
-hasOutputComponent(cd)
+hasOutputComponent(componentDefinition_uri)
 (
-  hasFunctionalComponent(cd,out)
+  hasFunctionalComponent(componentDefinition_uri,out)
 )
 
-hasInOutComponent(cd)
+hasInOutComponent(componentDefinition_uri)
 (
-  hasFunctionalComponent(cd,inout)
+  hasFunctionalComponent(componentDefinition_uri,inout)
 )
 
-hasNoneComponent(cd)
+hasNoneComponent(componentDefinition_uri)
 (
-  hasFunctionalComponent(cd,none)
+  hasFunctionalComponent(componentDefinition_uri,none)
 )
 
-instanceOf(cd)
+instanceOf(componentDefinition_uri)
 (
-  hasInOutComponent(cd)
+  hasInOutComponent(componentDefinition_uri)
 )

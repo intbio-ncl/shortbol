@@ -1,10 +1,10 @@
 @prefix sbol
 
 # Interaction Templates
-Interaction(t)
+Interaction(type)
 (
   Identified(Interaction)
-  sbol.type = t
+  sbol.<type> = type
 )
 
 Inhibition()
@@ -42,20 +42,22 @@ Control()
   Interaction(i_control)
 )
 
-interaction_1(of, of_type, of_direction,type)
+interaction_1(componentDefinition_uri, of_type, of_direction,type)
 (
-  of._fc is a FunctionalComponent(of,of_direction)
+  componentDefinition_uri._fc is a FunctionalComponent(componentDefinition_uri,of_direction)
 
-  functionalComponent = of._fc
+  functionalComponent = componentDefinition_uri._fc
   
-  of._fc._.type is a Interaction(type)
+  componentDefinition_uri._fc._.type is a Interaction(type)
   (
-    of._fc._.of_type is a Participation(of._fc, of_type)
+    componentDefinition_uri._fc._.of_type is a Participation(componentDefinition_uri._fc, of_type)
 
-    participation = of._fc._.of_type 
+    participation = componentDefinition_uri._fc._.of_type 
   )
-  interaction = of._fc._.type
+  interaction = componentDefinition_uri._fc._.type
 )
+
+
 
 
 interaction_2(of, of_type, of_direction, by, by_type, by_direction,type)
