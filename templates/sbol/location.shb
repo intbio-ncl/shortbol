@@ -30,12 +30,12 @@ Cut(at, orientation)
   sbol.<at> = at
 )
 
-InlineCut(at,orientation)
+InlineCut(at)
 (
   Cut(at,i_inline)
 )
 
-ReverseComplementCut(at, orientation)
+ReverseComplementCut(at)
 (
   Cut(at,i_reverseComplement)
 )

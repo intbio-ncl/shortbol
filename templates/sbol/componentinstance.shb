@@ -1,27 +1,33 @@
 @prefix sbol
 
 # Abstract class
-ComponentInstance(type, def)
+ComponentInstance(type, definition)
 (
   Identified(type)
-  definition = def
+  sbol.<definition> = definition
   access = sbol.public
 )
 
-PrivateComponentInstance(type, def)
+PrivateComponentInstance(type, definition)
 (
   Identified(type)
-  definition = def
+  sbol.<definition> = definition
   access = sbol.private
 )
 
-Component(componentdefinition_uri) 
+Component(componentDefinition) 
 (
-  ComponentInstance(Component, componentdefinition_uri)
+  ComponentInstance(Component, componentDefinition)
 )
 
-hasComponent(componentdefinition_uri)
+hasComponent(componentDefinition)
 (
-  component = self._component
-  self._component is a Component(componentdefinition_uri)
+  component = componentDefinition._component
+  componentDefinition._component is a Component(componentDefinition)
+)
+
+subComponent(componentDefinition)
+(
+  component = componentDefinition._component
+  componentDefinition._component is a Component(componentDefinition)
 )

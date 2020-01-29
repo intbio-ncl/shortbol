@@ -2,159 +2,158 @@
 
 # Sequence Templates
 
-Sequence(sequence, y)
+Sequence(elements, encoding)
 (
   TopLevel(Sequence)
-  elements = sequence
+  sbol.<elements> = elements
   sbol.<encoding> = encoding
 )
 
-DNASequence(x)       
+DNASequence(elements)       
 (
-    Sequence(sequence, i_iupacDNA)
+    Sequence(elements, i_iupacDNA)
 )
 
-DNASeq(sequence)       
+DNASeq(elements)       
 (
-    Sequence(sequence, i_iupacDNA)
+    Sequence(elements, i_iupacDNA)
 )
 
-RNASequence(sequence)       
+RNASequence(elements)       
 (
-    Sequence(sequence, i_iupacDNA)
+    Sequence(elements, i_iupacDNA)
 )
 
-ProteinSequence(sequence)   
+ProteinSequence(elements)   
 (
-    Sequence(sequence, i_iupacProtein)
+    Sequence(elements, i_iupacProtein)
 )
 
-ChemicalStructure(sequence) 
+ChemicalStructure(elements) 
 (
-    Sequence(sequence, i_opensmilesSMILES)
+    Sequence(elements, i_opensmilesSMILES)
 )
 
-hasSequence(seq, encoding)
+hasSequence(elements, encoding)
 (
     sequence = self._sequence
-    self._sequence is a Sequence(seq,encoding)
+    self._sequence is a Sequence(elements,encoding)
 )
 
-hasDNASequence(sequence)
+hasDNASequence(elements)
 (
-  hasSequence(sequence,i_iupacDNA)
+  hasSequence(elements,i_iupacDNA)
 )
 
-hasDNASeq(sequence)       
+hasDNASeq(elements)       
 (
-    Sequence(sequence, i_iupacDNA)
+    Sequence(elements, i_iupacDNA)
 )
 
-hasRNASequence(sequence)
+hasRNASequence(elements)
 (
-  hasSequence(sequence,i_iupacDNA)
+  hasSequence(elements,i_iupacDNA)
 )
 
-hasRNASequence(sequence)
+hasRNASequence(elements)
 (
-  hasSequence(sequence,i_iupacDNA)
+  hasSequence(elements,i_iupacDNA)
 )
 
-hasProteinSequence(sequence)   
+hasProteinSequence(elements)   
 (
-    hasSequence(sequence,i_iupacProtein)
+    hasSequence(elements,i_iupacProtein)
 )
 
-hasChemicalStructure(sequence) 
+hasChemicalStructure(elements) 
 (
-    hasSequence(sequence,i_opensmilesSMILES)
+    hasSequence(elements,i_opensmilesSMILES)
 )
 
 
 
 #SequenceAnnotation Templates
 
-SequenceAnnotation(range_cut_genericlocation_uri)
+SequenceAnnotation(range_cut_genericLocation)
 (
     Identified(SequenceAnnotation)
-    sbol.<location> = range_cut_genericlocation_uri
+    location = range_cut_genericLocation
 )
 
 
-sequenceAnnotation(subject, location)
+sequenceAnnotation(componentDefinition, range_cut_genericLocation)
 (
-    subject._component is a Component(subject)
-    component = subject._component
+    componentDefinition._component is a Component(componentDefinition)
+    component = componentDefinition._component
 
-    subject._.sequenceAnnotation is a SequenceAnnotation(location)
+    componentDefinition._.sequenceAnnotation is a SequenceAnnotation(range_cut_genericLocation)
     (
-      sbol.<component> = subject._component
+      sbol.<component> = componentDefinition._component
     )
 
-    sequenceAnnotation = subject._.sequenceAnnotation
+    sequenceAnnotation = componentDefinition._.sequenceAnnotation
 )
 
 #Sequence Constraint Templates
-
-SequenceConstraint(component_uri_subject, component_uri_object, restriction)
+SequenceConstraint(component_subject, component_object, restriction)
 (
   Identified(SequenceConstraint)
-  sbol.<subject> = component_uri_subject
-  sbol.<object> = component_uri_object
+  subject = component_subject
+  object = component_object
   sbol.<restriction> = restriction
 )
 
-Precedes(component_uri_subject, component_uri_object)              
+Precedes(component_subject, component_object)              
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, i_precedes)
+  SequenceConstraint(component_subject, component_object, i_precedes)
 )
 
-SameOrientationAs(component_uri_subject, component_uri_object)     
+SameOrientationAs(component_subject, component_object)     
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, i_sameOrientationAs)
+  SequenceConstraint(component_subject, component_object, i_sameOrientationAs)
 )
 
-OppositeOrientationAs(component_uri_subject, component_uri_object) 
+OppositeOrientationAs(component_subject, component_object) 
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, i_oppositeOrientationAs)
+  SequenceConstraint(component_subject, component_object, i_oppositeOrientationAs)
 )
 
-DifferentFrom(component_uri_subject, component_uri_object)         
+DifferentFrom(component_subject, component_object)         
 (
-  SequenceConstraint(component_uri_subject, component_uri_object, i_differentFrom)
+  SequenceConstraint(component_subject, component_object, i_differentFrom)
 )
 
 
-sequenceConstraint(subject,object,restriction)
+sequenceConstraint(componentDefinition_subject,componentDefinition_object,restriction)
 (
- subject._component is a Component(subject)
- object._component is a Component(object)
+ componentDefinition_subject._component is a Component(componentDefinition_subject)
+ componentDefinition_object._component is a Component(componentDefinition_object)
 
- component = subject._component
- component = object._component
+ component = componentDefinition_subject._component
+ component = componentDefinition_object._component
   
- subject._component._.restriction._.object._component is a SequenceConstraint(subject._component, object._component,restriction)
- sequenceConstraint = subject._component._.restriction._.object._component
+ componentDefinition_subject._component._.restriction._.componentDefinition_object._component is a SequenceConstraint(componentDefinition_subject._component, componentDefinition_object._component,restriction)
+ sequenceConstraint = componentDefinition_subject._component._.restriction._.componentDefinition_object._component
 )
 
-precedes(subject, object)
+precedes(componentDefinition_subject, componentDefinition_object)
 (
-  sequenceConstraint(subject,object,i_precedes)
+  sequenceConstraint(componentDefinition_subject,componentDefinition_object,i_precedes)
 )
 
-sameOrientationAs(subject, object)
+sameOrientationAs(componentDefinition_subject, componentDefinition_object)
 (
-  sequenceConstraint(subject,object,i_sameOrientationAs)
+  sequenceConstraint(componentDefinition_subject, componentDefinition_object,i_sameOrientationAs)
 )
 
-oppositeOrientationAs(subject, object)
+oppositeOrientationAs(componentDefinition_subject, componentDefinition_object)
 (
-  sequenceConstraint(subject,object,i_oppositeOrientationAs)
+  sequenceConstraint(componentDefinition_subject, componentDefinition_object,i_oppositeOrientationAs)
 )
 
-differentFrom(subject, object)
+differentFrom(componentDefinition_subject, componentDefinition_object)
 (
-  sequenceConstraint(subject,object,i_differentFrom)
+  sequenceConstraint(componentDefinition_subject, componentDefinition_object,i_differentFrom)
 )
 
 

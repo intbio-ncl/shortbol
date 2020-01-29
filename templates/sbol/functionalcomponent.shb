@@ -1,70 +1,70 @@
 @prefix sbol
 
-FunctionalComponent(componentDefinition_uri, direction)
+FunctionalComponent(componentDefinition, direction)
 (
-  ComponentInstance(FunctionalComponent, componentDefinition_uri)
+  ComponentInstance(FunctionalComponent, componentDefinition)
   sbol.<direction> = direction
 )
 
-PrivateFunctionalComponent(componentDefinition_uri, direction)
+PrivateFunctionalComponent(componentDefinition, direction)
 (
-  PrivateComponentInstance(FunctionalComponent, componentDefinition_uri)
+  PrivateComponentInstance(FunctionalComponent, componentDefinition)
   sbol.<direction> = direction
 )
 
-InputComponent(componentDefinition_uri)  
+InputComponent(componentDefinition)  
 (
-  FunctionalComponent(componentDefinition_uri, sbol.in)
+  FunctionalComponent(componentDefinition, in)
 )
 
-OutputComponent(componentDefinition_uri) 
+OutputComponent(componentDefinition) 
 (
-  FunctionalComponent(componentDefinition_uri, sbol.out)
+  FunctionalComponent(componentDefinition, out)
 )
 
-InOutComponent(componentDefinition_uri)  
+InOutComponent(componentDefinition)  
 (
-  FunctionalComponent(componentDefinition_uri, sbol.inout)
+  FunctionalComponent(componentDefinition, inout)
 )
 
-NoneComponent(componentDefinition_uri)   
+NoneComponent(componentDefinition)   
 (
-  FunctionalComponent(componentDefinition_uri, sbol.none)
+  FunctionalComponent(componentDefinition, none)
 )
 
-hasFunctionalComponent(componentDefinition_uri,direction)
+hasFunctionalComponent(componentDefinition,direction)
 (
-  functionalComponent = componentDefinition_uri._functionalComponent
-  componentDefinition_uri._functionalComponent is a FunctionalComponent(componentDefinition_uri,direction)
+  functionalComponent = componentDefinition._fc
+  componentDefinition._fc is a FunctionalComponent(componentDefinition,direction)
 )
 
-hasPrivateFunctionalComponent(componentDefinition_uri,direction)
+hasPrivateFunctionalComponent(componentDefinition,direction)
 (
-  functionalComponent = componentDefinition_uri._functionalComponent
-  componentDefinition_uri._functionalComponent is a PrivateFunctionalComponent(componentDefinition_uri,direction)
+  functionalComponent = componentDefinition._functionalComponent
+  componentDefinition._functionalComponent is a PrivateFunctionalComponent(componentDefinition,direction)
 )
 
-hasInputComponent(componentDefinition_uri)
+hasInputComponent(componentDefinition)
 (
-  hasFunctionalComponent(componentDefinition_uri,in)
+  hasFunctionalComponent(componentDefinition,in)
 )
 
-hasOutputComponent(componentDefinition_uri)
+hasOutputComponent(componentDefinition)
 (
-  hasFunctionalComponent(componentDefinition_uri,out)
+  hasFunctionalComponent(componentDefinition,out)
 )
 
-hasInOutComponent(componentDefinition_uri)
+hasInOutComponent(componentDefinition)
 (
-  hasFunctionalComponent(componentDefinition_uri,inout)
+  hasFunctionalComponent(componentDefinition,inout)
 )
 
-hasNoneComponent(componentDefinition_uri)
+hasNoneComponent(componentDefinition)
 (
-  hasFunctionalComponent(componentDefinition_uri,none)
+  hasFunctionalComponent(componentDefinition,none)
 )
 
-instanceOf(componentDefinition_uri)
+instanceOf(componentDefinition)
 (
-  hasInOutComponent(componentDefinition_uri)
+  hasInOutComponent(componentDefinition)
 )

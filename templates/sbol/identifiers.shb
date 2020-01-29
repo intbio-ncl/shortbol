@@ -11,7 +11,7 @@ i_smallMolecule = <http://www.biopax.org/release/biopax-level3.owl#SmallMolecule
 i_complex = <http://www.biopax.org/release/biopax-level3.owl#Complex>
 
 
-# (ComponentDefinition) role
+# (ComponentDefinition, DNAComponent,DNA,RNAComponent,RNA,ProteinComponent,Protein,SmallMoleculeComponent,SmallMolecule,ComplexComponent,Complex) role
 i_promoter       = <http://identifiers.org/so/SO:0000167>
 i_rbs            = <http://identifiers.org/so/SO:0000139>
 i_cds            = <http://identifiers.org/so/SO:0000316>
@@ -40,7 +40,7 @@ i_inout = <http://sbols.org/v2#inout>
 i_none = <http://sbols.org/v2#none>
 
 
-# (Participation) role
+# (Participation, hasParticipation) role
 i_inhibitor = <http://identifiers.org/biomodels.sbo/SBO:0000020>
 i_inhibited = <http://identifiers.org/biomodels.sbo/SBO:0000642>
 i_stimulator =  <http://identifiers.org/biomodels.sbo/SBO:0000459>
@@ -53,7 +53,7 @@ i_participation_promoter = <http://identifiers.org/biomodels.sbo/SBO:0000598>
 i_template = <http://identifiers.org/biomodels.sbo/SBO:0000645>
 
 
-# (Interaction) type
+# (Interaction, interaction, interaction_1, interaction_2) type
 i_inhibition = <http://identifiers.org/biomodels.sbo/SBO:0000169>
 i_stimulation = <http://identifiers.org/biomodels.sbo/SBO:0000170>
 i_biochemical_reaction = <http://identifiers.org/biomodels.sbo/SBO:0000176>
@@ -62,14 +62,14 @@ i_degradation = <http://identifiers.org/biomodels.sbo/SBO:0000179>
 i_genetic_production = <http://identifiers.org/biomodels.sbo/SBO:0000589>
 i_control = <http://identifiers.org/biomodels.sbo/SBO:0000168>
 
-# (Sequence) encoding
+# (Sequence, hasSequence) encoding
 i_iupacDNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
 i_iupacRNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
 i_iupacProtein = <http://www.chem.qmul.ac.uk/iupac/AminoAcid/>
 i_opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
 
 
-# (SequenceConstraint) restriction
+# (SequenceConstraint, sequenceConstraint) restriction
 i_precedes = <http://sbols.org/v2#precedes>
 i_sameOrientationAs = <http://sbols.org/v2#sameOrientationAs>
 i_oppositeOrientationAs = <http://sbols.org/v2#oppositeOrientationAs>
@@ -86,7 +86,7 @@ i_continuous =  <http://identifiers.org/biomodels.sbo/SBO:0000062>
 i_discrete = <http://identifiers.org/biomodels.sbo/SBO:0000063>
 
 
-#  (MapsTo) refinement
+#  (MapsTo, mapsTo) refinement
 i_useRemote = <http://sbols.org/v2#useRemote>
 i_useLocal = <http://sbols.org/v2#useLocal> 
 i_verifyIdentical  = <http://sbols.org/v2#verifyIdentical>

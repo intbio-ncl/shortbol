@@ -1,64 +1,61 @@
 @prefix sbol
 
-MapsTo(componentinstance_uri_local, componentinstance_uri_remote, ref)
+MapsTo(component_functionalComponent_local, component_functionalComponent_remote, refinement)
 (
   Identified(MapsTo)
-  sbol.<local> = componentinstance_uri_local
-  sbol.<remote> = componentinstance_uri_remote
-  refinement = ref
+  local = component_functionalComponent_local
+  remote = component_functionalComponent_remote
+  sbol.<refinement> = refinement
 )
 
-MapsUseRemote(componentinstance_uri_local, componentinstance_uri_remote) 
+MapsUseRemote(component_functionalComponent_local, component_functionalComponent_remote) 
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useRemote)
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_useRemote)
 )
 
-MapsUseLocal(componentinstance_uri_local, componentinstance_uri_remote)  
+MapsUseLocal(component_functionalComponent_local, component_functionalComponent_remote)  
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useLocal)
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_useLocal)
 )
 
-MapsIdentical(componentinstance_uri_local, componentinstance_uri_remote) 
+MapsIdentical(component_functionalComponent_local, component_functionalComponent_remote) 
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_verifyIdentical)
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_verifyIdentical)
 )
 
-MapsMerge(componentinstance_uri_local, componentinstance_uri_remote)     
+MapsMerge(component_functionalComponent_local, component_functionalComponent_remote)     
 (
-  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_merge)
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_merge)
 )
 
-mapsTo(local,remote, refinment)
+mapsTo(componentDefinition_local,componentDefinition_remote, refinment)
 (
- local._fc is a InOutComponent(local)
- remote._fc is a InOutComponent(remote)
-
- functionalcomponent = local._fc
- functionalcomponent = remote._fc
+ functionalComponent = componentDefinition_local._fc
+ functionalComponent = componentDefinition_remote._fc
   
- local._fc._mapsTo_.remote._fc is a MapsTo(local._fc, remote._fc,refinment)
- mapsTo = local._fc._mapsTo_.remote._fc
+ componentDefinition_local._fc._mapsTo_.componentDefinition_remote._fc is a MapsTo(componentDefinition_local._fc, componentDefinition_remote._fc,refinment)
+ mapsTo = componentDefinition_local._fc._mapsTo_.componentDefinition_remote._fc
 )
 
 
-mapsUseRemote(componentinstance_uri_local, componentinstance_uri_remote) 
+mapsUseRemote(componentDefinition_local, componentDefinition_remote) 
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useRemote)
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_useRemote)
 )
 
-mapsUseLocal(componentinstance_uri_local, componentinstance_uri_remote)  
+mapsUseLocal(componentDefinition_local, componentDefinition_remote)  
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_useLocal)
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_useLocal)
 )
 
-mapsIdentical(componentinstance_uri_local, componentinstance_uri_remote) 
+mapsIdentical(componentDefinition_local, componentDefinition_remote) 
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_verifyIdentical)
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_verifyIdentical)
 )
 
-mapsMerge(componentinstance_uri_local, componentinstance_uri_remote)     
+mapsMerge(componentDefinition_local, componentDefinition_remote)     
 (
-  mapsTo(componentinstance_uri_local, componentinstance_uri_remote, i_merge)
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_merge)
 )
 
 

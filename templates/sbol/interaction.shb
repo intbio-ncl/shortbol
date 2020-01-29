@@ -42,74 +42,71 @@ Control()
   Interaction(i_control)
 )
 
-interaction_1(componentDefinition_uri, of_type, of_direction,type)
+interaction_1(componentDefinition, part_type, direction, type)
 (
-  componentDefinition_uri._fc is a FunctionalComponent(componentDefinition_uri,of_direction)
-
-  functionalComponent = componentDefinition_uri._fc
+  componentDefinition._fc is a FunctionalComponent(componentDefinition,direction)
+  functionalComponent = componentDefinition._fc
   
-  componentDefinition_uri._fc._.type is a Interaction(type)
+  componentDefinition._fc._.type is a Interaction(type)
   (
-    componentDefinition_uri._fc._.of_type is a Participation(componentDefinition_uri._fc, of_type)
-
-    participation = componentDefinition_uri._fc._.of_type 
+    componentDefinition._fc._.part_type is a Participation(componentDefinition._fc, part_type)
+    participation = componentDefinition._fc._.part_type 
   )
-  interaction = componentDefinition_uri._fc._.type
+  interaction = componentDefinition._fc._.type
 )
 
 
-
-
-interaction_2(of, of_type, of_direction, by, by_type, by_direction,type)
+interaction_2(componentDefinition_participant_1, part_1_type, direction_1, componentDefinition_participant_2, part_2_type, direction_2,type)
 (
-  of._fc is a FunctionalComponent(of,of_direction)
-  by._fc is a FunctionalComponent(by,by_direction)
+  componentDefinition_participant_1._fc is a FunctionalComponent(componentDefinition_participant_1,direction_1)
+  componentDefinition_participant_2._fc is a FunctionalComponent(componentDefinition_participant_2,direction_2)
 
-  functionalComponent = of._fc
-  functionalComponent = by._fc
+  functionalComponent = componentDefinition_participant_1._fc
+  functionalComponent = componentDefinition_participant_2._fc
   
-  of._fc._.type._with_.by._fc is a Interaction(type)
+  componentDefinition_participant_1._fc._.type._with_.by._fc is a Interaction(type)
   (
-    of._fc._.of_type is a Participation(of._fc, of_type)
-    by._fc._.by_type is a Participation(by._fc, by_type)
+    componentDefinition_participant_1._fc._.part_1_type is a Participation(componentDefinition_participant_1._fc, part_1_type)
+    componentDefinition_participant_2._fc._.part_2_type is a Participation(componentDefinition_participant_2._fc, part_2_type)
 
-    participation = of._fc._.of_type 
-    participation = by._fc._.by_type
+    participation = componentDefinition_participant_1._fc._.part_1_type 
+    participation = componentDefinition_participant_2._fc._.part_2_type
   )
-  interaction = of._fc._.type._with_.by._fc
+  interaction = componentDefinition_participant_1._fc._.type._with_.by._fc
 )
 
-inhibition(inhibitor_cd, inhibited_cd)
+inhibition(componentDefinition_inhibitor, componentDefinition_inhibited)
 (
-  interaction_2(inhibitor_cd, i_inhibitor, in, inhibited_cd, i_inhibited, out, i_inhibition)
+  interaction_2(componentDefinition_inhibitor, i_inhibitor, in, componentDefinition_inhibited, i_inhibited, out, i_inhibition)
 )
 
-stimulation(stimulator_cd, stimulated_cd)
+
+stimulation(componentDefinition_stimulator, componentDefinition_stimulated)
 (
-  interaction_2(stimulator_cd, i_stimulator, in, stimulated_cd, i_stimulated, out, i_stimulation)
+  interaction_2(componentDefinition_stimulator, i_stimulator, in, componentDefinition_stimulated, i_stimulated, out, i_stimulation)
 )
 
-nonCovalentBonding(reactantA, reactantB)
+nonCovalentBonding(componentDefinition_reactant_1, componentDefinition_reactant_2)
 (
-  interaction_2(reactantA, i_reactant,inout, reactantB, i_reactant, inout, i_noncovalent_bonding)
+  interaction_2(componentDefinition_reactant_1, i_reactant,inout, componentDefinition_reactant_2, i_reactant, inout, i_noncovalent_bonding)
 )
 
-bioChemicalReaction(reactant_cd, product_cd)
+bioChemicalReaction(componentDefinition_reactant, componentDefinition_product)
 (
-  interaction_2(reactant_cd, i_reactant, in, product_cd, i_product, out, i_biochemical_reaction)
+  interaction_2(componentDefinition_reactant, i_reactant, in, componentDefinition_product, i_product, out, i_biochemical_reaction)
 )
 
-geneticProduction(promoter_cd, product_cd)
+geneticProduction(componentDefinition_promoter, componentDefinition_product)
 (
-  interaction_2(promoter_cd, i_promoter, in, product_cd, i_product, out, i_genetic_production)
+  interaction_2(componentDefinition_promoter, i_promoter, in, componentDefinition_product, i_product, out, i_genetic_production)
 )
 
-degradation(reactant_cd)
+degradation(componentDefinition_reactant)
 (
-  interaction_1(reactant_cd, i_reactant, in, i_degradation)
+  interaction_1(componentDefinition_reactant, i_reactant, in, i_degradation)
 )
 
-control(modifier_cd, modified_cd)
+control(componentDefinition_modifier, componentDefinition_modified)
 (
-  interaction_2(modifier_cd, i_template, in, modified_cd, i_product, out, i_control)
+  interaction_2(componentDefinition_modifier, i_template, in, componentDefinition_modified, i_product, out, i_control)
 )
