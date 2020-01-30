@@ -1,4 +1,4 @@
-# has Series of templates are available that create template instances behind the scenes.
+# has Series of templates attach a provided sequence to a compondentDefinition
 lacI_term is a Terminator()
 (
   hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")

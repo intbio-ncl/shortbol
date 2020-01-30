@@ -2,7 +2,7 @@
 pTetR   	is a Promoter()
 lacI_RBS 	is a RBS()
 lacI_CDS	is a CDS()
-lacI_term  is a Terminator()
+lacI_term   is a Terminator()
 
 pTetR_loc is a InlineRange(1,55)
 lacI_RBS_loc is a InlineRange(56,68)

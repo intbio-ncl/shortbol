@@ -32,6 +32,11 @@ NoneComponent(componentDefinition)
   FunctionalComponent(componentDefinition, none)
 )
 
+InstanceOf(componentDefinition)
+(
+    FunctionalComponent(componentDefinition,inout)
+)
+
 hasFunctionalComponent(componentDefinition,direction)
 (
   functionalComponent = componentDefinition._fc

@@ -28,15 +28,10 @@ DSM is a DNAComponent()
 LacI_inv is a ProteinComponent()
 
 
-#lacI_fc is a InstanceOf(lacI)
-#lacI_fc_2 is a InstanceOf(lacI)
-#DSM_fc is a InstanceOf(DSM)
-#LacI_inv is a InstanceOf(LacI_inv)
-
-lacI_fc is a InputComponent(lacI)
-lacI_fc_2 is a InputComponent(lacI)
-DSM_fc is a InputComponent(DSM)
-LacI_inv_fc is a InputComponent(LacI_inv)
+lacI_fc is a InstanceOf(lacI)
+lacI_fc_2 is a InstanceOf(lacI)
+DSM_fc is a InstanceOf(DSM)
+LacI_inv_fc is a InstanceOf(LacI_inv)
 
 TetR_inverter is a ModuleDefinition()
 (
@@ -45,13 +40,13 @@ TetR_inverter is a ModuleDefinition()
 
 toggleSwitch is a Module(TetR_inverter)
 (
-  mapsUseLocal(lacI_fc,lacI_fc_2)
-  mapsUseLocal(DSM_fc,LacI_inv)
+  mapsUseLocal(lacI_fc_2, lacI_fc)
+  mapsUseLocal(LacI_inv_fc, DSM_fc)
 )
 
 LacI_inverter is a ModuleDefinition()
 (
   inhibition(lacI_fc_2,LacI_inv_fc)
-#  module = toggleSwitch
+  module = toggleSwitch
 )
 

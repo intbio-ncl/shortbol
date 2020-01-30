@@ -28,13 +28,10 @@ MapsMerge(component_functionalComponent_local, component_functionalComponent_rem
   MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_merge)
 )
 
-mapsTo(componentDefinition_local,componentDefinition_remote, refinment)
-(
- functionalComponent = componentDefinition_local._fc
- functionalComponent = componentDefinition_remote._fc
-  
- componentDefinition_local._fc._mapsTo_.componentDefinition_remote._fc is a MapsTo(componentDefinition_local._fc, componentDefinition_remote._fc,refinment)
- mapsTo = componentDefinition_local._fc._mapsTo_.componentDefinition_remote._fc
+mapsTo(functionalComponent_local,functionalComponent_remote, refinment)
+(  
+ functionalComponent_local._mapsTo_.functionalComponent_remote is a MapsTo(functionalComponent_local, functionalComponent_remote, refinment)
+ mapsTo = functionalComponent_local._mapsTo_.functionalComponent_remote
 )
 
 

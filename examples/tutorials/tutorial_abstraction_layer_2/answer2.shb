@@ -1,4 +1,3 @@
-# Simple definitions are unchanged from abstraction levels.
 # Declare a promoter named pTetR
 pTetR is a Promoter()
 (

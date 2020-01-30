@@ -1,4 +1,4 @@
-# Interactions can be invoked inside an instance of another Template.
+# SequenceAnnotations can be invoked inside an instance of another Template.
 # This removes the need to create Components and many assignments.
 
 # The genetic parts of the TetR inverter

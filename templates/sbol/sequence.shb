@@ -80,7 +80,6 @@ SequenceAnnotation(range_cut_genericLocation)
     location = range_cut_genericLocation
 )
 
-
 sequenceAnnotation(componentDefinition, range_cut_genericLocation)
 (
     componentDefinition._component is a Component(componentDefinition)

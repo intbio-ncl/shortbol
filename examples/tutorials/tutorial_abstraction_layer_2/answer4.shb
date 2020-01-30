@@ -1,6 +1,5 @@
 # Answer 4
-# sequenceAnnotation can be invoked inside an instance of another Template.
-# This removes the need to create Components and many assignments.
+# sequenceAnnotation can be defined stated attaching a location to a componentDefinition.
 # The genetic parts of the TetR inverter
 pTetR is a Promoter()
 (
