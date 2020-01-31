@@ -187,6 +187,19 @@ class Self(Parameter):
     def evaluate(self, context):
         return self
 
+class Parent(Parameter):
+    def __init__(self, location=None):
+        super().__init__('self', -1, location=location)
+
+    def __str__(self):
+        return "self"
+
+    def __repr__(self):
+        return format("[SELF]")
+
+    def evaluate(self, context):
+        return self
+
 
 class Uri(Node):
     """Language object for a URI."""

@@ -5,9 +5,11 @@
 TetR_inv is a ProteinComponent()
 LacI_inv is a ProteinComponent()
 
+TetR_inv_fc is a InstanceOf(TetR_inv)
+LacI_inv_fc is a InstanceOf(LacI_inv)
 # The TetR inverter
 TetR_inverter is a ModuleDefinition()
 (
   description = "TetR inverter"
-  inhibition(TetR_inv, LacI_inv)
+  inhibition(TetR_inv_fc, LacI_inv_fc)
 )

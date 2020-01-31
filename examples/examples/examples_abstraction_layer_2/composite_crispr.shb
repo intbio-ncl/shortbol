@@ -14,7 +14,7 @@ cas9m_BFP_cds is a CDS()
 
 cas9m_BFP_gene is a Promoter()
 (
-    precedes(pConst,cas9m_BFP_cds)
+    #precedes(pConst,cas9m_BFP_cds)
 )
 
 cas9m_BFP is a Protein()
@@ -48,7 +48,7 @@ mKate_cds is a CDS()
 
 mKate_gene is a Promoter()
 (
-    precedes(pConst_c_mKate, mKate_cds_c)
+    precedes(pConst, mKate_cds)
 )
 
 mKate is a Protein()
@@ -76,6 +76,10 @@ EYFP_gene is a Promoter()
 
 EYFP is a Protein()
 
+
+
+
+
 cas9_generic_fc is a InstanceOf(cas9_generic)
 gRNA_generic_fc is a InstanceOf(gRNA_generic)
 target_gene_fc is a InstanceOf(target_gene)
@@ -93,12 +97,6 @@ cas9m_BFP_fc is a InstanceOf(cas9m_BFP)
 gRNA_b_gene_fc is a InstanceOf(gRNA_b_gene)
 gRNA_b_fc is a InstanceOf(gRNA_b)
 EYFP_gene_fc is a InstanceOf(EYFP_gene)
-
-# Gal4VP16_fc is a InstanceOf(Gal4VP16)
-# mKate is a InstanceOf(cas9_generic)
-# Gal4VP16 is a InstanceOf(cas9_generic)
-#cas9m_BFP is a InstanceOf(cas9_generic)
-#gRNA_b is a InstanceOf(cas9_generic)
 EYFP_fc is a InstanceOf(EYFP)
 cas9m_BFP_gRNA_b_fc is a InstanceOf(cas9m_BFP_gRNA_b_fc)
 
