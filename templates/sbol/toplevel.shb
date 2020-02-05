@@ -14,3 +14,39 @@ Model(source, language, framework)
   sbol.<framework> = framework
 )
 
+SBMLModel(source, framework)
+(
+  Model(source,i_SBML,framework)
+)
+
+CellMLModel(source, framework)
+(
+  Model(source,i_CellML,framework)
+)
+
+BioPAXModel(source, framework)
+(
+  Model(source,i_BioPAX,framework)
+)
+
+
+hasModel(source,language,framework)
+(
+    model = self._model
+    self._model is a Model(source,language,framework)
+)
+
+hasSBMLModel(source, framework)
+(
+  hasModel(source,i_SBML,framework)
+)
+
+hasCellMLModel(source, framework)
+(
+  hasModel(source,i_CellML,framework)
+)
+
+hasBioPAXModel(source, framework)
+(
+  hasModel(source,i_BioPAX,framework)
+)

@@ -1,0 +1,197 @@
+# -- docs-family Layer 1 start --
+# Name: Interaction
+# Summary: How FunctionalComponents interact with one another within a design. 
+# Description: A description of how FunctionalComponents within a design interact/work together. Uses Participation objects as an intermediate template to describe the role of each input/output.
+# Usage: Given participant templates assign to the interaction properties of ModuleDefinition.
+# Parameters: argument-1 (types) Describes the behavior represented by the Interaction. 
+# Optional-Parameters: optional-n (participations): each of which identifies the roles that its referenced FunctionalComponent plays in the Interaction.
+# -- docs-family end --
+
+
+# -- docs-family Layer 2 start --
+# Name: interaction
+# Summary: How parts interact with one another within a design.
+# Description: a Description of how Instances of parts(ComponentDefinitions) interact with one another within a design.
+# Usage: Given instances Of (functionalComponent) ComponentDefinitions define the interaction inside a ModuleDefinition.
+# Parameters: argument-1 (InstanceOf): Instance of the ComponentDefinition that are part of the interactions, argument-2 (type): type of interaction.
+# -- docs-family end --
+
+
+# -- docs-family Layer All start --
+# Name: ComponentDefinition
+# Summary: The fundemental templates for creation of enitites in a biological design.
+# Description: These templates create a blueprint of a part, an instances of these are created using FunctionalComponents.  
+# Usage: Use to represent parts in a design such as DNA or a Protein.
+# Parameters: argument-1 (type): Category of the ComponentDefinition such as DNA or Protein.
+# Optional-Parameters: optional-1 (role): The function of the ComponentDefinition such as Promoter or CDS.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1 start --
+# Name: Model
+# Summary: A template to hold external (non sbol model).
+# Description: Provide additional meta-data to enable better reasoning about the contents of this model.  
+# Usage: Given a URI to a external model, definition of language and framework assign to the model property of the ModuleDefinition.
+# Parameters: argument-1 (source): URI of the external location of the model, argument-2 (language): URIthat specifies the language in which the model is implemented, argument-3 (framework): URI that specifies the framework in which the model6is implemented.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1,2 start --
+# Name: hasModel
+# Summary: A template to hold external (non sbol model).
+# Description: Provide additional meta-data to enable better reasoning about the contents of this model.  
+# Usage: Given a URI to a external model, definition of language and framework define the hasModel inside a ModuleDefinition.
+# Parameters: argument-1 (source): URI of the external location of the model, argument-2 (language): URIthat specifies the language in which the model is implemented, argument-3 (framework): URI that specifies the framework in which the model6is implemented.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1 start --
+# Name: Sequence
+# Summary: Structure in Sequence format of parts of a design.
+# Description: Represent the primary structure of a ComponentDefinition object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") create a instance of a Sequence and add to the sequence property of a ComponentDefinition.
+# Parameters: argument-1 (elements): Characters that represents the constituents of a biological or chemical molecule, argument-2 (encoding): URI to indicate how theelements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
+# -- docs-family Layer 2 start --
+# Name: hasSequence
+# Summary: Structure in Sequence format of parts of a design. 
+# Description: Represent the primary structure of a Physical Part. Represent the primary structure of a ComponentDefinition object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") define the hasSequence inside a ModuleDefinition.
+# Parameters: argument-1 (elements): Characters that represents the constituents of a biological or chemical molecule, argument-2 (encoding): URI to indicate how theelements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
+
+
+# -- docs-family Layer 1 start --
+# Name: SequenceAnnotation
+# Summary: Describes regions of interest on a Sequence.
+# Description: A SequenceAnnotation allows the binding of a location to a Component. Uses Location objects as an intermediate template to describe physcial location. This object essentially binds the Sequence to Components
+# Usage: Given a Location and optional Component create a SequenceAnnotation and add to a the sequenceAnnotation property of a ComponentDefinition..
+# Parameters: argument-1 (elements): Location object to indicate which elements of a Sequence are described by the SequenceAnnotation.
+# Optional-Parameters: optional-1 (component): Adds substructure to a ComponentDefinition.
+# -- docstring family end --
+
+
+# -- docs-family Layer 2 start --
+# Name: sequenceAnnotation
+# Summary: Describes regions of interest on a Sequence.
+# Description: This object essentially binds the Sequence to ComponentDefinition and is one of the methods to create sub-structures in ComponentDefinitions.
+# Usage: Given a ComponentDefinition and Location define the sequenceAnnotation inside a ComponentDefinition.
+# Parameters: argument-2 (componentDefinition): The substructure of the sequenceAnnotation in question, argument-2 (elements): Location object toindicate which elements of a Sequence are described by the SequenceAnnotation.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1 start --
+# Name: SequenceConstraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs ofComponent objects contained by the same parent ComponentDefinition.
+# Description: Uses Component objects as an intermediate object because constraints are on the specific instances of a part.
+# Usage: Given a two Component objects and restriction type, create a SequenceConstraint and add to a the sequenceConstraint property of a ComponentDefinition.
+# Parameters: argument-1 (component): Subject Component of constraint, argument-2 (component): Object Component of constraint, argument-3 (restriction): type of restriction places on the ComponentDefinition.
+# -- docstring family end --
+
+
+# -- docs-family Layer 2 start --
+# Name: sequenceConstraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs sub parts.
+# Usage: Given a two sub-parts and a restriction type, define the sequenceConstraint inside a ComponentDefinition.
+# Parameters: argument-1 (componentDefinition): Subject part of constraint, argument-2 (componentDefinition): Object part of constraint, argument-3 (restriction): type of restriction places on the ComponentDefinition.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1 start --
+# Name: FunctionalComponent
+# Summary: An instance of a ComponentDefinition being used as part of a ModuleDefinition.
+# Description: A FunctionalComponentis an instance of a ComponentDefinition being used as part of a ModuleDefinition. FunctionalComponents can also have directions such as input,output for connections.
+# Usage: Given a ComponentDefinition and a direction add this FunctionalComponent to the functionalcomponent property of a ModuleDefinition.
+# Parameters: argument-1 (ComponentDefinition): Blueprint ComponentDefinition, argument-2 (direction): Encode how a designer thinks about the “purpose” of a connection in a system.
+# -- docstring family end --
+
+# -- docs-family Layer 2 start --
+# Name: InstanceOf
+# Summary: An instance of a ComponentDefinition being used as part of a ModuleDefinition.
+# Description: A ComponentDefinition can be thought as a blueprint or a design of a part, this template creates the physical implementation of the ComponentDefinition in the 	design. InstanceOf only needs to be used when ModuleDefinitions are used.
+# Usage: Given a ComponentDefinition and a direction add this FunctionalComponent to the functionalcomponent property of a ModuleDefinition.
+# Parameters: argument-1 (ComponentDefinition): Blueprint ComponentDefinition, argument-2 (direction): Encode how a designer thinks about the “purpose” of a connection in a system.
+# -- docstring family end --
+
+# -- docs-family Layer 1 start --
+# Name: Participation
+# Summary: Participants to an Interaction.
+# Description: How a particular FunctionalComponent behaves in its parent Interaction.
+# Usage: Given a FunctionalComponent and a participant type add this to the participant property of a Interaction.
+# Parameters: argument-1 (FunctionalComponent): Participating FunctionalComponent, argument-2 (roles): Describes the behavior of the Participation.
+# -- docstring family end --
+
+
+# -- docs-family Layer All start --
+# Name: ModuleDefinition
+# Summary: Group together entities.
+# Description: The ModuleDefinition class represents a grouping of structural and functional entities in a biological design. The primary usage of this class is to assert the molecular interactions and abstract function of its child entities.
+# Usage: No parameters required, properties are optional and can add any structural or functional enitites.
+# -- docstring family end --
+
+
+
+# -- docs-family Layer All start --
+# Name: Module
+# Summary: Occurance of a ModuleDefinition.
+# Description: Represents the usage or occurrence of a ModuleDefinition within a larger design (that is, another ModuleDefinition).
+# Usage: Given a ModuleDefinition, create Module and add to module property of the higher level ModuleDefinition.
+# Parameters: argument-1 (ModuleDefinition): Blueprint ModuleDefinition.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1 start --
+# Name: MapsTo
+# Summary: Connects parts together that are the same but located in different ModuleDefinitions.
+# Description: When ComponentDefinition and ModuleDefinition objects are composed into structural and functional hierachies using ComponentInstance and Moduleobjects, it is of ten the case that some ComponentInstance objects are intended to represent the same entity in the overall design. The purpose of the MapsTo class is to make these identity relationships clear and explicit.
+# Usage: Given two Instances of ComponentDefinitions(FunctionalComponents) that are present in two different ModuleDefinitions and and a refinment, create MapsTo and add to property mapsTo in the Module.
+# Parameters: argument-1 (FunctionalComponent): Local FunctionalComponent, argument-2 (FunctionalComponent): Remote FunctionalComponent, argument-2 (refinment): Relationship between local and remote. 
+# -- docstring family end --
+
+# -- docs-family Layer 2 start --
+# Name: mapsTo
+# Summary: Connects parts together that are the same but located in different ModuleDefinitions.
+# Description: This template handles the case when there is crossover between ModuleDefinitions. Imagine if two Instances of a ComponentDefinition are present part of two different ModuleDefinitions but they are actually the same things then they should be mapped together. 
+# Usage: Given two Instances of ComponentDefinitions(FunctionalComponents) that are present in two different ModuleDefinitions and a refinment, define the mapsTo inside a Module.
+# Parameters: argument-1 (FunctionalComponent): Local FunctionalComponent, argument-2 (FunctionalComponent): Remote FunctionalComponent, argument-3 (refinment): Relationship between local and remote. 
+# -- docstring family end --
+
+
+# -- docs-family Layer All start --
+# Name: Range
+# Summary: Regions of a Sequence.
+# Description: Specifies a region via discrete, inclusive start and end positions that correspond to indices for characters in the elements of a Sequence.
+# Usage: Given a start and end value create Range and add to location property of a SequenceAnnotation.
+# Parameters: argument-1 (start): integer value stating start of Range on the sequence., argument-2 (end): integer value stating end of Range on the sequence.
+# -- docstring family end --
+
+# -- docs-family Layer All start --
+# Name: Cut
+# Summary: Regions of a Sequence.
+# Description: Specifies a region via discrete, inclusive start and end positions that correspond to indices for characters in the elements of a Sequence.
+# Usage: Given a start and end value create Range and add to location property of a SequenceAnnotation.
+# Parameters: argument-1 (start): integer value stating start of Range on the sequence., argument-2 (end): integer value stating end of Range on the sequence.
+# -- docstring family end --
+
+
+# -- docs-family Layer 1 start --
+# Name: Component
+# Summary: compose ComponentDefinition objects into a structural hierarchy.
+# Description: Example: The ComponentDefinition of a gene could contain four Component objects: a promoter, RBS, CDS, and terminator. In turn, the ComponentDefinition of the promoter Component could contain Component objects defined as various operator sites.
+# Usage: Given a ComponentDefinition create Component and add it to component property of ComponentDefinitions, Components or as an input to SequenceAnnotations or SequenceConstraints.
+# Parameters: argument-1 (componentDefinition): ComponentDefinition pertaining to sub part.
+# -- docstring family end --
+
+
+# -- docs-family Layer All start --
+# Name: subComponent
+# Summary: compose ComponentDefinition objects into a structural hierarchy.
+# Description: Note: This should only be used when you want to state a ComponentDefinition is a sub-component but it is not added to a sequenceConstraint or sequenceAnnotation.
+# Usage: Given a ComponentDefinition define the subCompponent inside a ComponentDefinition.
+# Parameters: argument-1 (componentDefinition): ComponentDefinition pertaining to sub part.
+# -- docstring family end --
+
+
+

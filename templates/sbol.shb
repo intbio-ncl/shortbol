@@ -23,8 +23,8 @@ description = dc.description
 wasDerivedFrom = prov.wasDerivedFrom
 
 use <sbol/identified>
-use <sbol/toplevel>
 use <sbol/identifiers>
+use <sbol/toplevel>
 use <sbol/componentdefinition>
 use <sbol/componentinstance>
 use <sbol/functionalcomponent>
