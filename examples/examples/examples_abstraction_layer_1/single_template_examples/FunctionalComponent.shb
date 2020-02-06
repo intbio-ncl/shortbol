@@ -1,0 +1,17 @@
+# FunctionalComponents can be though as 
+# Instances of ComponentDefinitions.
+# FunctionalComponents only need to be used 
+# with designs that has multiple seperate modules.
+# (Interaction, ModuleDefinition, Module, MapsTo)
+
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+TetR_fc is a InputComponent(TetR)
+LacI_fc is a FunctionalComponent(LacI,i_input)
+
+CRPb_characterization_Circuit is a ModuleDefinition()
+(
+    functionalComponent = TetR_fc
+    functionalComponent = LacI_fc
+)

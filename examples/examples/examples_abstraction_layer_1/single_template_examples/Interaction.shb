@@ -1,0 +1,23 @@
+# Interactions require Participants that
+# describe what role FunctionalComponents
+# play in the Interaction.
+
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+TetR_fc is a NoneComponent(TetR,none)
+LacI_fc is a NoneComponent(LacI,none)
+
+LacI_lacinv_part is a Inhibitor(LacI_fc)
+TetR_lacinv_part is a Inhibited(TetR_fc)
+LacITetR_int is a Inhibition()
+(
+	participation = TetR_lacinv_part
+	participation = LacI_lacinv_part	
+)
+
+LacI_inverter is a ModuleDefinition()
+(
+  functionalComponent = TetR_fc
+  functionalComponent = LacI_fc
+  interaction = LacITetR_int
+)

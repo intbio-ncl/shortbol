@@ -1,0 +1,20 @@
+# Sequences arent only DNA.
+# One template can be applied to
+# more than one ComponentDefinitions.
+
+pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+pTetR is a Promoter()
+(
+  sequence = pTetR_seq
+)
+
+lacI_RBS is a RBS()
+(
+  sequence = pTetR_seq
+)
+
+haemo_seq is a ProteinSequence("AUG")
+lacI_CDS is a CDS()
+(
+  sequence = haemo_seq
+)

@@ -1,0 +1,42 @@
+# MapsTo are used when Modules are defined by create 
+# Module Heirachies.
+# Maps to are used when a two FunctionalComponents are 
+# same entity in the overall design but are located in 
+# different ModuleDefinitions.
+
+cas9_generic is a Protein()
+gRNA_generic is a SGRNA()
+cas9_gRNA_complex is a Complex()
+target_gene is a Promoter()
+
+
+cas9_generic_fc is a InOutComponent(cas9_generic)
+gRNA_generic_fc is a InOutComponent(gRNA_generic)
+cas9m_BFP_fc is a InOutComponent(cas9_gRNA_complex)
+gRNA_b_fc is a InOutComponent(target_gene)
+
+ModuleDef_1 is a ModuleDefinition()
+(
+
+    functionalComponent = cas9_generic_fc
+    functionalComponent = gRNA_generic_fc
+)
+
+cas9m_BFP_map is a MapsUseLocal(cas9m_BFP_fc,cas9_generic_fc)
+gRNA_b_map is a MapsTo(gRNA_b_fc,gRNA_generic_fc,i_uselocal)
+
+Template_Module is a Module(ModuleDef_1)
+(
+    mapsTo = cas9m_BFP_map
+    mapsTo = gRNA_b_map
+)
+
+ModuleDef_2 is a ModuleDefinition()
+(
+    functionalComponent = cas9m_BFP_fc
+    functionalComponent = gRNA_b_fc
+
+    module = Template_Module
+)
+
+
