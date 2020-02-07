@@ -23,7 +23,7 @@ ModuleDef_1 is a ModuleDefinition()
 )
 
 cas9m_BFP_map is a MapsUseLocal(cas9m_BFP_fc,cas9_generic_fc)
-gRNA_b_map is a MapsTo(gRNA_b_fc,gRNA_generic_fc,i_uselocal)
+gRNA_b_map is a MapsTo(gRNA_b_fc,gRNA_generic_fc,i_useLocal)
 
 Template_Module is a Module(ModuleDef_1)
 (

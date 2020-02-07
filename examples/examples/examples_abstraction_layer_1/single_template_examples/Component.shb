@@ -2,7 +2,7 @@
 # Adds this to another ComponentDefinition as a sub component.
 pTetR is a Promoter()
 
-pTetR_c is a Component()
+pTetR_c is a Component(pTetR)
 
 tetRInverter is a DNAComponent()
 (

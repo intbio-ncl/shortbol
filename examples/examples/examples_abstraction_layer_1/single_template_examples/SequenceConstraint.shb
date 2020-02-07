@@ -3,7 +3,6 @@
 
 pTetR   	is a Promoter()
 lacI_RBS 	is a RBS()
-lacI_CDS is 
 
 pTetR_c is a Component(pTetR)
 lacI_RBS_c is a Component(lacI_RBS)

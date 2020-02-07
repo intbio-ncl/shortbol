@@ -1,10 +1,17 @@
 @prefix sbol
 
-# Participation Templates
-Participation(functionalcomponent, withrole)
+# -- docs-family Layer 1 start --
+# Name: Participation
+# Summary: Participants to an Interaction.
+# Description: How a particular FunctionalComponent behaves in its parent Interaction.
+# Usage: Given a FunctionalComponent and a participant type add this to the participant property of a Interaction.
+# Parameters: Template - functionalcomponent - Participating FunctionalComponent, Identifier - role - Describes the behavior of the Participation.
+# -- docstring family end --
+
+Participation(functionalcomponent, role)
 (
   Identified(Participation)
-  role = withrole
+  sbol.<role> = role
   participant = functionalcomponent
 )
 

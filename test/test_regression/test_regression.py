@@ -50,12 +50,14 @@ class TestRegression(unittest.TestCase):
             for exception in failure_exceptions:
                 for k,v in exception.items():
                     print("Failure by Exception on:" + k + ", Exception: " + str(v))
-            self.fail("A test script failed by exception.")
+            
 
         if len(sbol_validation_errors) > 0:
             for validation_error in sbol_validation_errors:
                 for k,v in validation_error.items():
                     print("Failure by SBOL Validation on: " + str(k) + "\nvalidation errors: " + str(v) + "\n\n\n")
-            self.fail("A test script failed by SBOL validation errors.")
+
+        if len(failure_exceptions) > 0 or len(sbol_validation_errors) > 0:
+            self.fail("Atleast One Test Failed")
         
         print("\n--------------------------------------------")

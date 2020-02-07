@@ -1,5 +1,14 @@
 @prefix sbol
 
+# -- docs-family Layer 1 start --
+# Name: Interaction
+# Summary: How FunctionalComponents interact with one another within a design. 
+# Description: A description of how FunctionalComponents within a design interact/work together. Uses Participation objects as an intermediate template to describe the role of each input/output.
+# Usage: Given participant templates assign to the interaction properties of ModuleDefinition.
+# Parameters: Identifier - type - Describes the behavior represented by the Interaction. 
+# Optional-Parameters: optional-n (participations): each of which identifies the roles that its referenced FunctionalComponent plays in the Interaction.
+# -- docs-family end --
+
 # Interaction Templates
 Interaction(type)
 (
@@ -41,6 +50,14 @@ Control()
 (
   Interaction(i_control)
 )
+
+# -- docs-family Layer 2 start --
+# Name: interaction
+# Summary: How parts interact with one another within a design.
+# Description: a Description of how Instances of parts(ComponentDefinitions) interact with one another within a design. It is espciaially advised to use Specialised Templates here if possible.
+# Usage: Given instances Of (functionalComponent) ComponentDefinitions define the interaction inside a ModuleDefinition.
+# Parameters: Template - functionalComponent - Instance of the ComponentDefinition that are part of the interactions, Identifier - type - type of interaction.
+# -- docs-family end --
 
 interaction_1(functionalComponent, part_type, type)
 (

@@ -1,0 +1,10 @@
+# Says that pTetR is contained as a subsection of
+# tetRInverter.
+# This does not need to be defined when sequenceAnnotations
+# or constraints are specified.
+pTetR is a Promoter()
+
+tetRInverter is a DNAComponent()
+(
+  subComponent(pTetR)
+)

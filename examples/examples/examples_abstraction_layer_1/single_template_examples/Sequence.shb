@@ -14,7 +14,7 @@ lacI_RBS is a RBS()
 )
 
 haemo_seq is a ProteinSequence("AUG")
-lacI_CDS is a CDS()
+protein is a Protein()
 (
   sequence = haemo_seq
 )

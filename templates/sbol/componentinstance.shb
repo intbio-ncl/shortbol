@@ -15,6 +15,14 @@ PrivateComponentInstance(type, definition)
   access = sbol.private
 )
 
+# -- docs-family Layer 1 start --
+# Name: Component
+# Summary: compose ComponentDefinition objects into a structural hierarchy.
+# Description: Example: The ComponentDefinition of a gene could contain four Component objects: a promoter, RBS, CDS, and terminator. In turn, the ComponentDefinition of the promoter Component could contain Component objects defined as various operator sites.
+# Usage: Given a ComponentDefinition create Component and add it to component property of ComponentDefinitions, Components or as an input to SequenceAnnotations or SequenceConstraints.
+# Parameters: Template - componentDefinition - ComponentDefinition pertaining to sub part.
+# -- docstring family end --
+
 Component(componentDefinition) 
 (
   ComponentInstance(Component, componentDefinition)
@@ -25,6 +33,14 @@ hasComponent(componentDefinition)
   component = componentDefinition._component
   componentDefinition._component is a Component(componentDefinition)
 )
+
+# -- docs-family Layer 2 start --
+# Name: subComponent
+# Summary: compose ComponentDefinition objects into a structural hierarchy.
+# Description: Note: This should only be used when you want to state a ComponentDefinition is a sub-component but it is not added to a sequenceConstraint or sequenceAnnotation.
+# Usage: Given a ComponentDefinition define the subCompponent inside a ComponentDefinition.
+# Parameters: Template - componentDefinition - ComponentDefinition pertaining to sub part.
+# -- docstring family end --
 
 subComponent(componentDefinition)
 (

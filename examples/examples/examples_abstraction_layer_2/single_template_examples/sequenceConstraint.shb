@@ -1,0 +1,11 @@
+# Says that the pTetR must be located 
+# before the lacI_RBS.
+# Unlike SeqAnna no exact location.
+
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+
+tetRInverter is a DNAComponent()
+(
+	precedes(pTetR,lacI_RBS)
+)

@@ -1,6 +1,5 @@
-# Identified SBOL2 objects with compliant URIs
-
 @prefix sbol
+# Identified SBOL2 objects with compliant URIs
 
 Identified(type)
 (

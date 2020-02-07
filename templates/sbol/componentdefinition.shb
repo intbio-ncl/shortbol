@@ -1,5 +1,14 @@
 @prefix sbol
 
+# -- docs-family Layer All start --
+# Name: ComponentDefinition
+# Summary: The fundemental templates for creation of enitites in a biological design.
+# Description: These templates create a blueprint of a part, an instances of these are created using FunctionalComponents.  
+# Usage: Use to represent parts in a design such as DNA or a Protein.
+# Parameters: Identifier - type - Category of the ComponentDefinition such as DNA or Protein.
+# Properties: Identifier - role - The function of the ComponentDefinition such as Promoter or CDS.
+# -- docstring family end --
+
 ComponentDefinition(type)
 (
     TopLevel(ComponentDefinition)
