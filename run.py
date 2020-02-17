@@ -336,14 +336,17 @@ def rdf_repl(serializer='nt',
 
     repl.start()
 
-def produce_tables(lib_paths):
+def produce_tables(lib_paths = None):
     '''
     Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
     process on the templates to produce the symbols and template tables.
     This process is just the parse_from file method and returns the tables.
     '''
-    optpaths = lib_paths
-    to_run_fn = os.path.join(lib_paths[0],"temp.shb")
+    if lib_paths is None:
+        optpaths = [os.path.join(os.getcwd(),"shortbol","templates")]
+    else:
+        optpaths = lib_paths
+    to_run_fn = os.path.join(optpaths[0],"temp.shb")
     f= open(to_run_fn,"a")
     f.write("use <sbol>")
     f.close()
