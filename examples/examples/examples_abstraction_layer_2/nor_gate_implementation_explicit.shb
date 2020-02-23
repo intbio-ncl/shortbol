@@ -1,4 +1,5 @@
 # This example has the full RBS,CDS and Terminator for each part.
+# Do we need proteins to activate promoters?
 
 t7 is a Promoter()
 (
@@ -10,10 +11,25 @@ pBAD is a Promoter()
   hasDNASequence("atgccatagcatttttatcc")
 )
 
-
-lacI is a DNA()
+lacI_rbs is a RBS()
 (
-  hasDNASequence("atgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcagtga")
+  hasDNASequence("")
+)
+
+lacI_cds is a CDS()
+(
+  hasDNASequence("")
+)
+
+lacI_term is a Terminator()
+(
+  hasDNASequence("")
+)
+
+lacI is a DNAComponent()
+(
+  precedes(lacI_rbs,lacI_cds)
+  precedes(lacI_cds,lacI_term)
 )
 
 OR_gate is a DNAComponent()
@@ -27,9 +43,26 @@ inverter_trc is a Promoter()
   hasDNASequence("ttgacaattaatcatccggctcgtataatg")
 )
 
-mCherry is a DNA()
+
+mCherry_rbs is a RBS()
 (
-  hasDNASequence("atggtgagcaagggcgaggaggataacatggccatcatcaaggagttcatgcgcttcaaggtgcacatggagggctccgtgaacggccacgagttcgagatcgagggcgagggcgagggccgcccctacgagggcacccagaccgccaagctgaaggtgaccaagggtggccccctgcccttcgcctgggacatcctgtcccctcagttcatgtacggctccaaggcctacgtgaagcaccccgccgacatccccgactacttgaagctgtccttccccgagggcttcaagtgggagcgcgtgatgaacttcgaggacggcggcgtggtgaccgtgacccaggactcctccctgcaggacggcgagttcatctacaaggtgaagctgcgcggcaccaacttcccctccgacggccccgtaatgcagaagaagaccatgggctgggaggcctcctccgagcggatgtaccccgaggacggcgccctgaagggcgagatcaagcagaggctgaagctgaaggacggcggccactacgacgctgaggtcaagaccacctacaaggccaagaagcccgtgcagctgcccggcgcctacaacgtcaacatcaagttggacatcacctcccacaacgaggactacaccatcgtggaacagtacgaacgcgccgagggccgccactccaccggcggcatggacgagctgtacaagtaa")
+  hasDNASequence("")
+)
+
+mCherry_cds is a CDS()
+(
+  hasDNASequence("")
+)
+
+mCherry_term is a Terminator()
+(
+  hasDNASequence("")
+)
+
+mCherry is a DNAComponent()
+(
+  precedes(mCherry_rbs,mCherry_cds)
+  precedes(mCherry_cds,mCherry_term)
 )
 
 or_gate_fc is a InstanceOf(OR_gate)
