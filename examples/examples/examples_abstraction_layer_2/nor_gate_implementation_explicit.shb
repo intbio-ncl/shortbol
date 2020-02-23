@@ -1,14 +1,15 @@
-# This example has the DNA sequences containing the full RBS,CDS and Terminator.
-# See NOR_gate_implementation_explicit for explicit definition.
-pTetR is a Promoter()
+# This example has the full RBS,CDS and Terminator for each part.
+
+t7 is a Promoter()
 (
-  hasDNASequence("atgtctagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtggg")
+  hasDNASequence("taatacgactcactatagg")
 )
 
 pBAD is a Promoter()
 (
-  hasDNASequence("aagaaaccaattgtccatattgcatcagacattgccgtcactgcgtcttttactggctcttctcgctaaccaaaccggtaaccccgcttattaaaagcattctgtaacaaagcgggaccaaagccatgacaaaaacgcgtaacaaaagtgtctataatcacggcagaaaagtccacattgattatttgcacggcgtcacactttgctatgccatagcatttttatccataagattagcggatcctacctgacgctttttatcgcaactctctactgtttctccat")
+  hasDNASequence("atgccatagcatttttatcc")
 )
+
 
 lacI is a DNA()
 (
