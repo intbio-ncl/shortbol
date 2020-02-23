@@ -345,8 +345,9 @@ def produce_tables(lib_paths = None):
     if lib_paths is None:
         optpaths = [os.path.join(os.getcwd(),"shortbol","templates")]
     else:
-        optpaths = lib_paths
+        optpaths = [lib_paths]
     to_run_fn = os.path.join(optpaths[0],"temp.shb")
+    print(to_run_fn)
     f= open(to_run_fn,"a")
     f.write("use <sbol>")
     f.close()
