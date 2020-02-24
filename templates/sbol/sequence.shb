@@ -71,10 +71,6 @@ hasRNASequence(elements)
   hasSequence(elements,i_iupacDNA)
 )
 
-hasRNASequence(elements)
-(
-  hasSequence(elements,i_iupacDNA)
-)
 
 hasProteinSequence(elements)   
 (
