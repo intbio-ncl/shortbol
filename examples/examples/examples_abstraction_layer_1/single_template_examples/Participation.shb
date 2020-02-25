@@ -21,3 +21,11 @@ cas9_gRNA_int is a Inhibition()
 	participation = gRNA_generic_part	
     participation = LacI_part
 )
+
+mod is a ModuleDefinition()
+(
+    functionalComponent = cas9_generic_fc
+    functionalComponent = gRNA_generic_fc
+    functionalComponent = LacI_fc
+    interaction = cas9_gRNA_int
+)

@@ -1,13 +1,13 @@
 # This example has the DNA sequences containing the full RBS,CDS and Terminator.
 # See NOR_gate_implementation_explicit for explicit definition.
-pTetR is a Promoter()
+t7 is a Promoter()
 (
-  hasDNASequence("atgtctagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtggg")
+  hasDNASequence("taatacgactcactatagg")
 )
 
 pBAD is a Promoter()
 (
-  hasDNASequence("aagaaaccaattgtccatattgcatcagacattgccgtcactgcgtcttttactggctcttctcgctaaccaaaccggtaaccccgcttattaaaagcattctgtaacaaagcgggaccaaagccatgacaaaaacgcgtaacaaaagtgtctataatcacggcagaaaagtccacattgattatttgcacggcgtcacactttgctatgccatagcatttttatccataagattagcggatcctacctgacgctttttatcgcaactctctactgtttctccat")
+  hasDNASequence("atgccatagcatttttatcc")
 )
 
 lacI is a DNA()
@@ -38,5 +38,5 @@ mCherry_fc is a InstanceOf(mCherry)
 NOR_gate is a ModuleDefinition()
 (
   inhibition(or_gate_fc,inverter_trc_fc)
-  stimulation(inverter_trc_fc,mCherry)
+  stimulation(inverter_trc_fc,mCherry_fc)
 )

@@ -34,8 +34,8 @@ lacI is a DNAComponent()
 
 OR_gate is a DNAComponent()
 (
-  precedes(pTetR,lacI)
-  precedes(PBAD,lacI)
+  precedes(pBAD,lacI)
+  precedes(t7,lacI)
 )
 
 inverter_trc is a Promoter()
@@ -72,5 +72,5 @@ mCherry_fc is a InstanceOf(mCherry)
 NOR_gate is a ModuleDefinition()
 (
   inhibition(or_gate_fc,inverter_trc_fc)
-  stimulation(inverter_trc_fc,mCherry)
+  stimulation(inverter_trc_fc,mCherry_fc)
 )

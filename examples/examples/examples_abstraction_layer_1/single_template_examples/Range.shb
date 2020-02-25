@@ -25,3 +25,11 @@ lacI_RBS_sa is a SequenceAnnotation(lacI_RBS_range)
 (
 	component = lacI_RBS_c
 )
+
+tetRInverter is a DNAComponent()
+(
+  component = pTetR_c
+  component = lacI_RBS_c
+  sequenceAnnotation = pTetR_sa
+  sequenceAnnotation = lacI_RBS_sa
+)
