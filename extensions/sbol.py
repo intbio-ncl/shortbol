@@ -131,7 +131,7 @@ def is_valid_parameters(identifiers, triplepack, subjects):
     return True
 
 def get_identifier_uris(paths):
-    name = "identifiers.shb"
+    name = "identifiers.rdfsh"
     identifier_path = None
     for path in paths:
         for root, dirs, files in os.walk(path):

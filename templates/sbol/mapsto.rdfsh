@@ -1,0 +1,31 @@
+@prefix sbol
+
+MapsTo(componentinstance_uri_local, componentinstance_uri_remote, ref)
+(
+  Identified(MapsTo)
+  sbol.<local> = componentinstance_uri_local
+  sbol.<remote> = componentinstance_uri_remote
+  refinement = ref
+)
+
+MapsUseRemote(componentinstance_uri_local, componentinstance_uri_remote) 
+(
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useRemote)
+)
+
+MapsUseLocal(componentinstance_uri_local, componentinstance_uri_remote)  
+(
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.useLocal)
+)
+
+MapsIdentical(componentinstance_uri_local, componentinstance_uri_remote) 
+(
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.verifyIdentical)
+)
+
+MapsMerge(componentinstance_uri_local, componentinstance_uri_remote)     
+(
+  MapsTo(componentinstance_uri_local, componentinstance_uri_remote, sbol.merge)
+)
+
+

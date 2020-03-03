@@ -9,7 +9,6 @@ tokens = (
      "DOUBLE",
      "URI",
      "SELF",
-     "PARENT",
      "ISA",
      "FROM",
      "PREFIX",
@@ -34,7 +33,6 @@ reserved_words = {
      'use'            : 'USE',
      '@extension'     : 'EXTENSION',
      'self'           : 'SELF',
-     'parent'         : 'PARENT',
      'from'           : 'FROM'
     }
 
