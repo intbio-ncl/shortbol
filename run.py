@@ -19,77 +19,49 @@ sbol_compliant_extension = "@extension SbolIdentity()"
 is_a_template = "is a"
 sbol_dot = "sbol."
 
-
-def get_name(line,line_no):
-    try:
-        name = line.split(is_a_template)[0]
-    except IndexError:
-        raise NameError(f"Error Template Declaration on line: {line_no - 2} is malformed.")
-    return name
-
-def get_template_type(line,line_no):
-    template_type = ""
-    try:
-        if is_a_template in line:
-            template_type = line.split(is_a_template)[-1].split("(")[0]
-        else:
-            template_type = line.split("(")[0]
-        
-    except IndexError:
-        raise NameError(f"Error Template Declaration on line: {line_no - 2} is malformed.")
-
-    return template_type
-    
-def get_parameters(line,line_no):
-    parameters = []
-    try:
-        parameters = line.split("(")[1]
-        parameters = parameters.replace("(","").replace(")","").replace(" ","").split(",")
-    except IndexError:
-        raise NameError(f"Error Parameters on line: {line_no - 2} is malformed.")
-    return parameters
-    
-
-def hacky_conversion_handle_type(template_type,shortbol_template_table,line_no):
-    parts = template_type.replace(" ", "")
+def hacky_conversion_handle_type(type,shortbol_template_table,line_no):
+    parts = type.replace(" ", "")
     parts = parts.split(".")
     # When sbol. is not present
+    print(type)
     if len(parts) == 1 :
         if parts[0] in shortbol_template_table:
             #SBOL. is not present and template is in libary
             return sbol_dot + parts[0]
         else:
             #SBOL. is not present but template NOT in libary
+            
             raise NameError(f'Template: {parts[0]}  on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
     elif len(parts) == 2:
         if parts[1] in shortbol_template_table:
             #SBOL. is  present and template is in libary
-            return template_type
+            return type
         else:
             #SBOL. is  present but template NOT in libary
             raise NameError(f'Template: {parts[0]} on line: {str(line_no - 1)} is not defined in the Shortbol Libaries.') 
     else:
-        raise ValueError(f"Error Template Malformed on line: {line_no - 1}")
+        exit(0)
 
 
 def hacky_conversion_handle_parameters(parameters,shortbol_identifier_table):
+    split_params = parameters.replace("(","").replace(")","").replace(" ","").split(",")
     param_string = ""
-    if len(parameters) == 0:
+    if len(split_params) == 0:
         return ""
-    elif len(parameters) == 1 :
-        if sbol_dot not in parameters[0] and parameters[0] in shortbol_identifier_table:
-            param_string = sbol_dot + parameters[0]
+    elif len(split_params) == 1 :
+        if sbol_dot not in split_params[0] and split_params[0] in shortbol_identifier_table:
+            param_string = sbol_dot + split_params[0]
         else:
-            param_string = parameters[0]
+            param_string = split_params[0]
     else:
-        for param_index, param in enumerate(parameters):
-            if sbol_dot not in parameters[param_index] and parameters[param_index] in shortbol_identifier_table:
-                param_string = param_string + sbol_dot + parameters[param_index]
-                if param_index != len(parameters) - 1 :
+        for param_index, param in enumerate(split_params):
+            if sbol_dot not in split_params[param_index] and split_params[param_index] in shortbol_identifier_table:
+                param_string = param_string + sbol_dot + split_params[param_index]
+                if param_index != len(split_params) - 1 :
                     param_string = param_string + ","
             else:
-                param_string = param_string + parameters[param_index]
-                if param_index != len(parameters) - 1 :
+                param_string = param_string + split_params[param_index]
+                if param_index != len(split_params) - 1 :
                     param_string = param_string + ","
 
     return f'({param_string})'
@@ -105,7 +77,7 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
         curr_line_num = curr_line_num + 2
         while split_text[curr_line_num] != ")":
             # A comment move on.
-            if split_text[curr_line_num] == "" or split_text[curr_line_num] == None :
+            if split_text[curr_line_num] == "" or split_text[curr_line_num] == None or split_text[curr_line_num].lstrip()[0] == "#":
                 curr_line_num = curr_line_num + 1
                 continue
             
@@ -143,13 +115,10 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
                 curr_line_num = new_curr_line
             # An implicit instance creation eg ( precedes(n,w) )
             elif any(template_name in split_text[curr_line_num] for template_name in shortbol_template_table):
-
-                template_type = get_template_type(split_text[curr_line_num],curr_line_num)
-                parameters = get_parameters(split_text[curr_line_num],curr_line_num)
-
+                template_type = split_text[curr_line_num].split("(")[0]
+                parameters = split_text[curr_line_num].split("(")[1]
                 template_type = hacky_conversion_handle_type(template_type,shortbol_template_table,curr_line_num)
                 parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
-
                 split_text[curr_line_num] = f'  {template_type}{parameters}'
                 curr_line_num = curr_line_num + 1
 
@@ -162,35 +131,24 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
 
 def hacky_conversion_handle_template_instance(split_text,index,shortbol_template_table,shortbol_identifier_table):
     line = split_text[index]
-    name = get_name(line,index)
-    parameters = get_parameters(line, index)
-    template_type = get_template_type(line,index)
+    name = line.split(is_a_template)[0]
+    try:
+        parameters = f'({line.split("(")[1]}'
+    except IndexError:
+        raise NameError(f'Template: {name} on line: {str(index - 1)} is missing brackets.') 
+    parts = line.split(is_a_template)[-1].split("(")[0]
+
     # Handle name and type (n is a ComponentDefinition)
-    template_str = name + is_a_template + " " + hacky_conversion_handle_type(template_type,shortbol_template_table,index)
+    template_type = name + is_a_template + " " + hacky_conversion_handle_type(parts,shortbol_template_table,index)
     # Handle parameter ((dNA,"atg") etc)
     parameters = hacky_conversion_handle_parameters(parameters,shortbol_identifier_table)
-    split_text[index] = f'{template_str}{parameters}'
+    split_text[index] = f'{template_type}{parameters}'
 
     # Handle expansion (if present) ((sequence = seq) etc)
     split_text, curr_line_num = hacky_conversion_handle_expansions(split_text,index,shortbol_template_table,shortbol_identifier_table)
 
     return split_text, curr_line_num + 1
 
-
-def pre_process(text):
-    text = text.lstrip()
-    text = text.replace("\t","")
-    text = text.split("\n")
-
-    for line_no,line in enumerate(text):
-        if line and line[0].lstrip() == "#" :
-            text[line_no] = ""
-        if "#" in line:
-            comment_index = line.find('#')
-            if "<" not in line[0:comment_index] or ">" not in line[comment_index:]:
-                text[line_no] = line[0:comment_index]
-
-    return text
 
 def hacky_conversion(filepath, temp_file, template_dir):
     '''
@@ -199,8 +157,8 @@ def hacky_conversion(filepath, temp_file, template_dir):
 
     
     with open(filepath, 'r') as original: data = original.read()
-    
-    split_text = pre_process(data)
+    split_text = data.split("\n")
+
     # Check if sbol namespace present. (use <sbol>)
     if not sbol_namespace in split_text:
         split_text.insert(0,sbol_namespace + "\n")
@@ -221,7 +179,7 @@ def hacky_conversion(filepath, temp_file, template_dir):
 
     sbol_dir = os.path.join(template_dir,"sbol")
     for filename in os.listdir(sbol_dir):
-        if os.path.isfile(os.path.join(sbol_dir,filename)): 
+        if filename.endswith(".rdfsh"): 
             template = open(os.path.join(sbol_dir, filename), "r")
             for line in template:
                 x = re.search(".+[(].*[)]", line)
@@ -233,9 +191,14 @@ def hacky_conversion(filepath, temp_file, template_dir):
                         shortbol_identifier_table.add(x.group(0).replace(" ","").split("=")[0])
             template.close()
 
+
+    #for index,line in enumerate(split_text):
     curr_line_num = 0
     while curr_line_num != len(split_text):
         line = split_text[curr_line_num]
+        if line and line[0].lstrip() == "#" :
+            curr_line_num = curr_line_num + 1
+            continue 
         if is_a_template in line :
             split_text,curr_line_num = hacky_conversion_handle_template_instance(split_text,curr_line_num,shortbol_template_table,shortbol_identifier_table)
         else:
@@ -253,7 +216,7 @@ def hacky_conversion(filepath, temp_file, template_dir):
     return temp_file
 
 def parse_from_file(filepath,
-                    serializer='sbolxml',
+                    serializer='nt',
                     optpaths=[],
                     out=None,
                     extensions=[],
@@ -266,7 +229,7 @@ def parse_from_file(filepath,
     template_dir = optpaths[0]
 
     if not no_hack:
-        temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.shb")
+        temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.rdfsh")
         if os.path.isfile(temp_file):
             os.remove(temp_file)
         to_run_fn = hacky_conversion(filepath,temp_file,template_dir)
@@ -288,7 +251,7 @@ def parse_from_file(filepath,
     sbol = '<?xml version="1.0" ?>\n' + str(env)
 
     ret_code = ""
-    if not no_validation and serializer == "sbolxml":
+    if not no_validation:
         errors = []
         response = validate_sbol(sbol)
         try:
@@ -306,14 +269,15 @@ def parse_from_file(filepath,
     else:
         ret_code = "No Validation."
         errors = ["No Validation."]
-    if out is None:
+
+    if not out:
         print(sbol)
     else:
         with open(out, 'w') as o:
             sbol = str(env)
             o.write(sbol)
     
-    if temp_file :
+    if os.path.isfile(temp_file):
         os.remove(temp_file)
     return {ret_code : errors}
 
@@ -336,18 +300,14 @@ def rdf_repl(serializer='nt',
 
     repl.start()
 
-def produce_tables(lib_paths = None):
+def produce_tables(lib_paths):
     '''
     Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
     process on the templates to produce the symbols and template tables.
     This process is just the parse_from file method and returns the tables.
     '''
-    if lib_paths is None:
-        optpaths = [os.path.join(os.getcwd(),"shortbol","templates")]
-    else:
-        optpaths = [lib_paths]
-    to_run_fn = os.path.join(optpaths[0],"temp.shb")
-    print(to_run_fn)
+    optpaths = lib_paths
+    to_run_fn = os.path.join(lib_paths[0],"temp.rdfsh")
     f= open(to_run_fn,"a")
     f.write("use <sbol>")
     f.close()
@@ -371,7 +331,7 @@ def rdfscript_args():
 
     parser = argparse.ArgumentParser(description="RDFScript interpreter and REPL.")
 
-    parser.add_argument('-s', '--serializer', default="sbolxml",
+    parser.add_argument('-s', '--serializer', default='nt',
                         choices=['rdfxml', 'n3', 'turtle', 'sbolxml', 'nt'],
                         help="The format into which the graph is serialised")
     parser.add_argument('-p', '--path',
@@ -381,10 +341,9 @@ def rdfscript_args():
     parser.add_argument('filename', default=None, nargs='?',
                         help="File to parse as RDFScript")
 
-    parser.add_argument('-o', '--output', help="The name of the output file", default="shortbol_output.rdf")
+    parser.add_argument('-o', '--output', help="The name of the output file", default=None)
     parser.add_argument('-nv', '--no_validation', help="Stops the output from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('-nh', '--no_hack', help="Stops the hack from modiying the file.", default=None, action='store_true')
-    parser.add_argument('-no', '--no_output', help="Stops writing output to file, instead prints to console.", default=None, action='store_true')
     parser.add_argument('--version', action='version', version='%(prog)s 0.0alpha')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
 
@@ -399,11 +358,11 @@ if __name__ == "__main__":
     logging.basicConfig(format='\n%(message)s\n', level=logging.DEBUG)
     args = rdfscript_args()
     extensions = [(ext[0], ext[1]) for ext in args.extensions]
-    out = None if args.no_output else args.output  
+
     if args.filename is not None:
         parse_from_file(args.filename,
                         serializer=args.serializer,
-                        out=out,
+                        out=args.output,
                         optpaths=args.path,
                         extensions=extensions,
                         debug_lvl=args.debug_lvl,

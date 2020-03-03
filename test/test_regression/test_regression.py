@@ -17,47 +17,29 @@ class TestRegression(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove(os.path.join(test_files,"temporary_runner.shb"))
+            os.remove(os.path.join(test_files,"temporary_runner.rdfsh"))
             os.remove(output_fn)
         except FileNotFoundError:
             None
 
     def test_regression_by_examples(self):
         failure_exceptions = []
-        sbol_validation_errors=[]
         for path, subdirs, files in os.walk(test_files):
             for name in files:
-                if name == "temporary_runner.shb":
+                if name == "temporary_runner.rdfsh":
                     continue
-                if name.endswith(".shb") or name.endswith(".txt"):
+                if name.endswith(".rdfsh") or name.endswith(".txt"):
                     file_to_run = os.path.join(path, name)
-                    short_fn = file_to_run.split("\\")
-                    short_fn = "/".join(short_fn[len(short_fn) - 2 : ])
-                    print("Running with file: " + str(short_fn))
+                    
+                    print("Running with file: " + str(file_to_run))
                     return_code = "Error Thrown."
                     try:
                         return_code = run.parse_from_file(file_to_run,"sbolxml",[templates],output_fn,[])
                     except Exception as e:
-                        failure_exceptions.append({short_fn : e})
-                    if return_code != {"SBOL validator success.":[]}:
-                        sbol_validation_errors.append({short_fn : return_code})
-        
-        print("--------------------Report--------------------\n")
-        print(f"Number of failures by exception: {str(len(failure_exceptions))}")
-        print(f"Number of failures by validation: {str(len(sbol_validation_errors))}")
-
+                        failure_exceptions.append({file_to_run:e})
+                        
+                    self.assertEqual(return_code,{"SBOL validator success.":[]},"When Testing with file: " + file_to_run)
+        for k,v in failure_exceptions:
+            print("Failure by Exception on:" + k + ", Exception: " + str(v))
         if len(failure_exceptions) > 0:
-            for exception in failure_exceptions:
-                for k,v in exception.items():
-                    print("Failure by Exception on:" + k + ", Exception: " + str(v))
-            
-
-        if len(sbol_validation_errors) > 0:
-            for validation_error in sbol_validation_errors:
-                for k,v in validation_error.items():
-                    print("Failure by SBOL Validation on: " + str(k) + "\nvalidation errors: " + str(v) + "\n\n\n")
-
-        if len(failure_exceptions) > 0 or len(sbol_validation_errors) > 0:
-            self.fail("Atleast One Test Failed")
-        
-        print("\n--------------------------------------------")
+            self.fail("A test script failed by exception.")
