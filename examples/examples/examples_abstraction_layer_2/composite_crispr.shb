@@ -14,7 +14,7 @@ cas9m_BFP_cds is a CDS()
 
 cas9m_BFP_gene is a Promoter()
 (
-    #precedes(pConst,cas9m_BFP_cds)
+    precedes(pConst,cas9m_BFP_cds)
 )
 
 cas9m_BFP is a Protein()

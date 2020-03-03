@@ -100,28 +100,6 @@ class Identifier(Node):
                 return Identifier(*new_parts, location=self.location)
 
         return uri
-    
-    def evaluate_raw(self, context):
-        if not isinstance(self.parts[0], (Uri, Parameter)):
-            self.prefixify(context)
-
-        uri = Uri('')
-
-        for i, part in enumerate(self.parts):
-            try:
-                uri = uri + part.evaluate(context)
-
-                binding = context.lookup(uri)
-                if binding is not None and i == len(self) - 1 :
-                    uri = binding
-                elif isinstance(binding, Uri):
-                    uri = binding
-                    
-            except TypeError:
-                new_parts = self.parts if uri == Uri('') else [uri, *self.parts[i:]]
-                return Identifier(*new_parts, location=self.location)
-
-        return uri
 
 
 class Name(Node):
@@ -175,19 +153,6 @@ class Parameter(Name):
 
 class Self(Parameter):
 
-    def __init__(self, location=None):
-        super().__init__('self', -1, location=location)
-
-    def __str__(self):
-        return "self"
-
-    def __repr__(self):
-        return format("[SELF]")
-
-    def evaluate(self, context):
-        return self
-
-class Parent(Parameter):
     def __init__(self, location=None):
         super().__init__('self', -1, location=location)
 

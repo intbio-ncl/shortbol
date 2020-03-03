@@ -1,4 +1,5 @@
-from rdfscript.core import Argument, Identifier, Name, Node, Self, Uri, Parameter
+
+from rdfscript.core import Argument, Node, Self, Parameter
 from rdfscript.pragma import ExtensionPragma
 from rdfscript.error import TemplateNotFound
 
@@ -18,7 +19,8 @@ class Expansion(Node):
             else:
                 self.args.append(Argument(arg, n, location))
 
-        self.args.append(Argument(self.identifier, -1))
+        #self.args.append(Argument(self.identifier, -1))
+        self.args.insert(0, Argument(self.identifier, -1))
 
         self.extensions = []
         self.body = []

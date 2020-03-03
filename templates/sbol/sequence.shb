@@ -162,17 +162,18 @@ DifferentFrom(component_subject, component_object)
 # Parameters: Template - componentDefinition - Subject part of constraint, Template - componentDefinition - Object part of constraint, Identifier - restriction - type of restriction places on the ComponentDefinition.
 # -- docstring family end --
 
+
 sequenceConstraint(componentDefinition_subject,componentDefinition_object,restriction)
 (
- componentDefinition_subject._component is a Component(componentDefinition_subject)
- componentDefinition_object._component is a Component(componentDefinition_object)
+  self._.componentDefinition_subject._c is a Component(componentDefinition_subject)
+  self._.componentDefinition_object._c is a Component(componentDefinition_object)
 
- component = componentDefinition_subject._component
- component = componentDefinition_object._component
-  
- componentDefinition_subject._component._.restriction._.componentDefinition_object._component is a SequenceConstraint(componentDefinition_subject._component, componentDefinition_object._component,restriction)
- sequenceConstraint = componentDefinition_subject._component._.restriction._.componentDefinition_object._component
+  component = self._.componentDefinition_subject._c
+  component = self._.componentDefinition_object._c
+  self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c  is a SequenceConstraint(self._.componentDefinition_subject._c, self._.componentDefinition_object._c , restriction)
+  sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c
 )
+
 
 precedes(componentDefinition_subject, componentDefinition_object)
 (
