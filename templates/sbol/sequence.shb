@@ -1,0 +1,200 @@
+@prefix sbol
+
+# Sequence Templates
+
+# -- docs-family Layer 1 start --
+# Name: Sequence
+# Summary: Structure in Sequence format of parts of a design.
+# Description: Represent the primary structure of a ComponentDefinition object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") create a instance of a Sequence and add to the sequence property of a ComponentDefinition.
+# Parameters: String - elements - Characters that represents the constituents of a biological or chemical molecule,  Identifier - encoding - URI to indicate how the elements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
+Sequence(elements, encoding)
+(
+  TopLevel(Sequence)
+  sbol.<elements> = elements
+  sbol.<encoding> = encoding
+)
+
+DNASequence(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+DNASeq(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+RNASequence(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+ProteinSequence(elements)   
+(
+    Sequence(elements, i_iupacProtein)
+)
+
+ChemicalStructure(elements) 
+(
+    Sequence(elements, i_opensmilesSMILES)
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasSequence
+# Summary: Structure in Sequence format of parts of a design. 
+# Description: Represent the primary structure of a Physical Part. Represent the primary structure of a ComponentDefinition object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") define the hasSequence inside a ModuleDefinition.
+# Parameters:  String - elements - Characters that represents the constituents of a biological or chemical molecule, Identifier - encoding - URI to indicate how theelements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
+hasSequence(elements, encoding)
+(
+    sequence = self._sequence
+    self._sequence is a Sequence(elements,encoding)
+)
+
+hasDNASequence(elements)
+(
+  hasSequence(elements,i_iupacDNA)
+)
+
+hasDNASeq(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+hasRNASequence(elements)
+(
+  hasSequence(elements,i_iupacDNA)
+)
+
+
+hasProteinSequence(elements)   
+(
+    hasSequence(elements,i_iupacProtein)
+)
+
+hasChemicalStructure(elements) 
+(
+    hasSequence(elements,i_opensmilesSMILES)
+)
+
+
+# -- docs-family Layer 1 start --
+# Name: SequenceAnnotation
+# Summary: Describes regions of interest on a Sequence.
+# Description: A SequenceAnnotation allows the binding of a location to a Component. Uses Location objects as an intermediate template to describe physcial location. This object essentially binds the Sequence to Components
+# Usage: Given a Location and optional Component create a SequenceAnnotation and add to a the sequenceAnnotation property of a ComponentDefinition..
+# Parameters: Template - location - Location object to indicate which elements of a Sequence are described by the SequenceAnnotation.
+# Optional-Parameters: optional-1 (component): Adds substructure to a ComponentDefinition.
+# -- docstring family end --
+
+SequenceAnnotation(range_cut_genericLocation)
+(
+    Identified(SequenceAnnotation)
+    location = range_cut_genericLocation
+)
+
+# -- docs-family Layer 2 start --
+# Name: sequenceAnnotation
+# Summary: Describes regions of interest on a Sequence.
+# Description: This object essentially binds the Sequence to ComponentDefinition and is one of the methods to create sub-structures in ComponentDefinitions.
+# Usage: Given a ComponentDefinition and Location define the sequenceAnnotation inside a ComponentDefinition.
+# Parameters: Template - componentDefinition - The substructure of the sequenceAnnotation in question,Template - location - Location object toindicate which elements of a Sequence are described by the SequenceAnnotation.
+# -- docstring family end --
+
+sequenceAnnotation(componentDefinition, range_cut_genericLocation)
+(
+    componentDefinition._component is a Component(componentDefinition)
+    component = componentDefinition._component
+
+    componentDefinition._.sequenceAnnotation is a SequenceAnnotation(range_cut_genericLocation)
+    (
+      sbol.<component> = componentDefinition._component
+    )
+
+    sequenceAnnotation = componentDefinition._.sequenceAnnotation
+)
+
+# -- docs-family Layer 1 start --
+# Name: SequenceConstraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs ofComponent objects contained by the same parent ComponentDefinition.
+# Description: Uses Component objects as an intermediate object because constraints are on the specific instances of a part.
+# Usage: Given a two Component objects and restriction type, create a SequenceConstraint and add to a the sequenceConstraint property of a ComponentDefinition.
+# Parameters: Template - component - Subject Component of constraint, Template - component - Object Component of constraint, Identifier - restriction - type of restriction places on the ComponentDefinition.
+# -- docstring family end --
+
+SequenceConstraint(component_subject, component_object, restriction)
+(
+  Identified(SequenceConstraint)
+  subject = component_subject
+  object = component_object
+  sbol.<restriction> = restriction
+)
+
+Precedes(component_subject, component_object)              
+(
+  SequenceConstraint(component_subject, component_object, i_precedes)
+)
+
+SameOrientationAs(component_subject, component_object)     
+(
+  SequenceConstraint(component_subject, component_object, i_sameOrientationAs)
+)
+
+OppositeOrientationAs(component_subject, component_object) 
+(
+  SequenceConstraint(component_subject, component_object, i_oppositeOrientationAs)
+)
+
+DifferentFrom(component_subject, component_object)         
+(
+  SequenceConstraint(component_subject, component_object, i_differentFrom)
+)
+
+# -- docs-family Layer 2 start --
+# Name: sequenceConstraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs sub parts.
+# Usage: Given a two sub-parts and a restriction type, define the sequenceConstraint inside a ComponentDefinition.
+# Parameters: Template - componentDefinition - Subject part of constraint, Template - componentDefinition - Object part of constraint, Identifier - restriction - type of restriction places on the ComponentDefinition.
+# -- docstring family end --
+
+sequenceConstraint(componentDefinition_subject,componentDefinition_object,restriction)
+(
+ componentDefinition_subject._component is a Component(componentDefinition_subject)
+ componentDefinition_object._component is a Component(componentDefinition_object)
+
+ component = componentDefinition_subject._component
+ component = componentDefinition_object._component
+  
+ componentDefinition_subject._component._.restriction._.componentDefinition_object._component is a SequenceConstraint(componentDefinition_subject._component, componentDefinition_object._component,restriction)
+ sequenceConstraint = componentDefinition_subject._component._.restriction._.componentDefinition_object._component
+)
+
+precedes(componentDefinition_subject, componentDefinition_object)
+(
+  sequenceConstraint(componentDefinition_subject,componentDefinition_object,i_precedes)
+)
+
+sameOrientationAs(componentDefinition_subject, componentDefinition_object)
+(
+  sequenceConstraint(componentDefinition_subject, componentDefinition_object,i_sameOrientationAs)
+)
+
+oppositeOrientationAs(componentDefinition_subject, componentDefinition_object)
+(
+  sequenceConstraint(componentDefinition_subject, componentDefinition_object,i_oppositeOrientationAs)
+)
+
+differentFrom(componentDefinition_subject, componentDefinition_object)
+(
+  sequenceConstraint(componentDefinition_subject, componentDefinition_object,i_differentFrom)
+)
+
+
+
+
+

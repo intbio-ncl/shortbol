@@ -193,14 +193,16 @@ def p_identifier(p):
 def p_dotted_list_1(p):
     '''dotted_list : name
                    | uri
-                   | self'''
+                   | self
+                   | parent'''
     p[0] = [p[1]]
 
 
 def p_dotted_list_n(p):
     '''dotted_list : name '.' dotted_list
                    | uri '.' dotted_list
-                   | self '.' dotted_list'''
+                   | self '.' dotted_list
+                   | parent '.' dotted_list'''
     p[0] = [p[1]] + p[3]
 
 
@@ -213,6 +215,10 @@ def p_self(p):
     '''self : SELF'''
     p[0] = Self(location(p))
 
+def p_parent(p):
+    '''parent : PARENT'''
+    print(p.lineno(0), p.lexpos(0), p.parser.filename)
+    p[0] = Self(location(p))
 
 def p_uri(p):
     '''uri : URI'''

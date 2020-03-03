@@ -1,0 +1,35 @@
+# Answer 4
+# sequenceAnnotation can be defined stated attaching a location to a componentDefinition.
+# The genetic parts of the TetR inverter
+pTetR is a Promoter()
+(
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+lacI_RBS is a RBS()
+(
+  hasDNASequence("aaggaggtg")
+)
+
+lacI_CDS is a CDS()
+(
+  hasDNASequence("gtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcag")
+)
+
+lacI_term is a Terminator()
+(
+  hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+)
+
+pTetR_loc is a InlineRange(1,55)
+lacI_RBS_loc is a InlineRange(56,68)
+lacI_CDS_loc is a InlineRange(169,1197)
+lacI_term_loc is a InlineRange(1197,1240)
+
+tetRInverter is a DNAComponent()
+(
+  sequenceAnnotation(pTetR,pTetR_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+  sequenceAnnotation(lacI_term, lacI_term_loc)
+)

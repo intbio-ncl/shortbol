@@ -13,7 +13,7 @@ class Importer:
 
     @property
     def extension(self):
-        return '.rdfsh'
+        return '.shb'
 
     def add_path(self, newpath):
         self._dirs.append(self.to_absolute(pathlib.Path(newpath)))
@@ -25,7 +25,7 @@ class Importer:
 
         for d in self._dirs:
             try:
-                path = (d / filepath).with_suffix('.rdfsh')
+                path = (d / filepath).with_suffix('.shb')
                 data = path.read_text()
                 self.add_path(path.parent)
                 return data

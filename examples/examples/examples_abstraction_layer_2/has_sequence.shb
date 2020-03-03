@@ -1,0 +1,9 @@
+# has Series of templates are available that create template instances behind the scenes.
+lacI_term is a Terminator()
+(
+  hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+)
+pTetR is a Promoter()
+(
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
