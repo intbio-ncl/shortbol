@@ -171,7 +171,7 @@ sequenceConstraint(componentDefinition_subject,componentDefinition_object,restri
   component = self._.componentDefinition_subject._c
   component = self._.componentDefinition_object._c
   self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c  is a SequenceConstraint(self._.componentDefinition_subject._c, self._.componentDefinition_object._c , restriction)
-  sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c
+  # sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c
 )
 
 
