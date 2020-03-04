@@ -1,6 +1,6 @@
 # Says that the pTetR must be located 
 # before the lacI_RBS.
-# Unlike SeqAnna no exact location.
+# Unlike SeqAnno no exact location.
 
 pTetR   	is a Promoter()
 lacI_RBS 	is a RBS()

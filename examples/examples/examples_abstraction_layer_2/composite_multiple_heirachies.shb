@@ -50,19 +50,21 @@ tetR_2 is a DNA()
 
 pTetR_loc is a InlineRange(1,55)
 placI_loc is a InlineRange(1,55)
-lacI_RBS_loc is a InlineRange(56,68)
-lacI_CDS_loc is a InlineRange(169,1197)
+lacI_RBS_loc_1 is a InlineRange(56,68)
+lacI_CDS_loc_1 is a InlineRange(169,1197)
+lacI_RBS_loc_2 is a InlineRange(56,68)
+lacI_CDS_loc_2 is a InlineRange(169,1197)
 
 tetRInverter_3 is a DNAComponent()
 (
   sequenceAnnotation(pTetR,pTetR_loc)
-  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
-  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc_1)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc_1)
 )
 
 tetR_3 is a DNAComponent()
 (
   sequenceAnnotation(placI,placI_loc)
-  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
-  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc_2)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc_2)
 )

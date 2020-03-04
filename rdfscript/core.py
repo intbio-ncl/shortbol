@@ -52,9 +52,6 @@ class Identifier(Node):
     def __len__(self):
         return len(self.parts)
 
-    def evaluate(self, env):
-        return self
-
     def prefixify(self, context):
         uri = context.uri
 
@@ -84,7 +81,6 @@ class Identifier(Node):
             self.prefixify(context)
 
         uri = Uri('')
-        ts = "".join([str(p) for p in self.parts])
         for i, part in enumerate(self.parts):
             try:
                 if isinstance(part,Uri) and i > 0:
