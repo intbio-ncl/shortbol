@@ -1,0 +1,68 @@
+# This example shows that it is possible to define heirachies 
+# on via sequenceConstraint, sequenceAnnotation and subComponents 
+# with sub-parts being part of multiple heirachies.
+# This is useful when there is a Sub-Part that is present in two constructs or parts.
+# Note it is not correct to specify a part as a subComponent if it is defined in a 
+# sequenceAnnotation or sequenceConstraint.
+# This is done implicity so is superflous.
+# The examples are the same but using different template 
+# methods to define different information.
+
+pTetR is a Promoter()
+placI is a Promoter()
+lacI_RBS is a RBS()
+lacI_CDS is a CDS()
+
+# subComponents
+# Heirachy is present but that is all.
+tetRInverter_1 is a DNA()
+(
+    subComponent(pTetR)
+    subComponent(lacI_RBS)
+    subComponent(lacI_CDS)
+)
+
+tetR_1 is a DNA()
+(
+    subComponent(placI)
+    subComponent(lacI_RBS)
+    subComponent(lacI_CDS)
+)
+
+
+# sequenceConstraints.
+# Heirachy with relative restriction but no specific positions.
+tetRInverter_2 is a DNA()
+(
+    precedes(pTetR,lacI_RBS)
+    precedes(lacI_RBS,lacI_CDS)
+)
+
+tetR_2 is a DNA()
+(
+    precedes(placI,lacI_RBS)
+    precedes(lacI_RBS,lacI_CDS)
+)
+
+
+# sequenceAnnotation
+# Heirachy with absolute positions in the form of numerical positions on the sequence.
+
+pTetR_loc is a InlineRange(1,55)
+placI_loc is a InlineRange(1,55)
+lacI_RBS_loc is a InlineRange(56,68)
+lacI_CDS_loc is a InlineRange(169,1197)
+
+tetRInverter_3 is a DNAComponent()
+(
+  sequenceAnnotation(pTetR,pTetR_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+)
+
+tetR_3 is a DNAComponent()
+(
+  sequenceAnnotation(placI,placI_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+)

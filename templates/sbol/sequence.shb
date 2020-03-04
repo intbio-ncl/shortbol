@@ -98,6 +98,15 @@ SequenceAnnotation(range_cut_genericLocation)
     location = range_cut_genericLocation
 )
 
+
+SA(na,cd,lo)
+(
+    na is a SequenceAnnotation(lo)
+    (
+      sbol.<component> = cd
+    )
+)
+
 # -- docs-family Layer 2 start --
 # Name: sequenceAnnotation
 # Summary: Describes regions of interest on a Sequence.
@@ -105,19 +114,19 @@ SequenceAnnotation(range_cut_genericLocation)
 # Usage: Given a ComponentDefinition and Location define the sequenceAnnotation inside a ComponentDefinition.
 # Parameters: Template - componentDefinition - The substructure of the sequenceAnnotation in question,Template - location - Location object toindicate which elements of a Sequence are described by the SequenceAnnotation.
 # -- docstring family end --
-
 sequenceAnnotation(componentDefinition, range_cut_genericLocation)
 (
-    componentDefinition._component is a Component(componentDefinition)
-    component = componentDefinition._component
+    self._.componentDefinition._c is a Component(componentDefinition)
+    component = self._.componentDefinition._c
 
-    componentDefinition._.sequenceAnnotation is a SequenceAnnotation(range_cut_genericLocation)
-    (
-      sbol.<component> = componentDefinition._component
-    )
 
-    sequenceAnnotation = componentDefinition._.sequenceAnnotation
+    SA(self._.componentDefinition._.sequenceAnnotation,self._.componentDefinition._c,range_cut_genericLocation)
+
+
+    sequenceAnnotation = self._.componentDefinition._.sequenceAnnotation
 )
+
+
 
 # -- docs-family Layer 1 start --
 # Name: SequenceConstraint
@@ -171,7 +180,7 @@ sequenceConstraint(componentDefinition_subject,componentDefinition_object,restri
   component = self._.componentDefinition_subject._c
   component = self._.componentDefinition_object._c
   self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c  is a SequenceConstraint(self._.componentDefinition_subject._c, self._.componentDefinition_object._c , restriction)
-  # sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c
+  sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c
 )
 
 

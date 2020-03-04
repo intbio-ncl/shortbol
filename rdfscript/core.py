@@ -84,11 +84,17 @@ class Identifier(Node):
             self.prefixify(context)
 
         uri = Uri('')
-
+        ts = "".join([str(p) for p in self.parts])
         for i, part in enumerate(self.parts):
             try:
+                if isinstance(part,Uri) and i > 0:
+                    try:
+                        if context.prefix_for_uri(part) in str(part):
+                            continue
+                    except PrefixError:
+                        pass
                 uri = uri + part.evaluate(context)
-
+                
                 binding = context.lookup(uri)
                 if binding is not None and i == len(self) - 1 :
                     uri = binding
@@ -208,7 +214,8 @@ class Uri(Node):
         self.uri = self.uri + delimiter + other.uri
 
     def split(self):
-        return re.split('#|/|:', self.uri)
+        splited = re.split('#|\/|:', self.uri)
+        return splited
 
     def evaluate(self, context):
         return self

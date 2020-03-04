@@ -30,8 +30,8 @@ Component(componentDefinition)
 
 hasComponent(componentDefinition)
 (
-  component = componentDefinition._component
-  componentDefinition._component is a Component(componentDefinition)
+  component = self._.componentDefinition._c
+  self._.componentDefinition._c is a Component(componentDefinition)
 )
 
 # -- docs-family Layer 2 start --
@@ -44,6 +44,6 @@ hasComponent(componentDefinition)
 
 subComponent(componentDefinition)
 (
-  component = componentDefinition._component
-  componentDefinition._component is a Component(componentDefinition)
+  component = self._.componentDefinition._c
+  self._.componentDefinition._c is a Component(componentDefinition)
 )
