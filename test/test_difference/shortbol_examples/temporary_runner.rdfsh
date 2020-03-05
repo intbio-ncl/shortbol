@@ -1,0 +1,21 @@
+use <sbol>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+
+# Declare a promoter named pTetR
+pTetR is a sbol.Promoter()
+(
+	# give pTetR a description
+    sbol.description =  "pTet promoter"
+)
+
+#Declare a lacI coding sequence
+lacI_CDS is a sbol.CDS()
+(
+	# Properties of lacI CDS
+    sbol.name =  "lacI"
+    sbol.description =  "LacI protein coding region"
+)
+
+@extension SbolIdentity()

@@ -14,6 +14,8 @@ def test1():
 
 
     results = doc.write("output_sbol.xml")
+    print("Henlo")
+    print(results)
     return results
 
 
