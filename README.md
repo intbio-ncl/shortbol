@@ -23,22 +23,13 @@ ShortBOL requires Python 3.x. and Python package dependencies are listed in `set
 
 ### Example usage
 
-1. `initial_example.shb` in the `/examples` folder is a design for a single promoter with its associated sequence
+1. `simple_example.rdfsh` in the `/examples` folder is a design for a single promoter with its associated sequence
 
-2. Compile the `initial_example.shb` file with:  `python run.py /examples/initial_example.shb` 
+2. Compile the `simple_example.rdfsh` file with:  `python run.py -s sbolxml /examples/simple_example.rdfsh -o <output-file>` 
 
-3.  A more extensive tutorial can be found in the `examples/tutorials/` directory.
-    3.1. With newer versions of ShortBOL new abstraction layers have been released.
-    3.2. It is advised that you work through the tutorials with higher abstraction numbers (currently abstraction_layer_2)
-    3.3. Unless you understand and are happy with longer ShortBOL script that follow the SBOL data model closely.
+3. `output-file` is the name of the desired SBOL XML-RDF file.
 
-4. Some behaviour of the tool can be changed by providing flags to the tool for example:
-    4.1. `python run.py /examples/initial_example.shb -p /path/to/templates` This tells the tool about some external templates that are not native to the tool.
-    4.2. `python run.py /examples/initial_example.shb -o output.xml` This overrides the output file name (The output filename will be naed "output.xml").
-    4.3. `python run.py /examples/initial_example.shb -no` This stops the output from being written to a file and just prints to console.  
-    4.4. `python run.py /examples/initial_example.shb -s rdfxml` This changes how the ShortBOL code is serialised options are (rdfxml,n3,turtle,sbolxml,nt)
-        4.4.1. It is advised you do not change this unless you understand the inner workings of the tool as you're no longer writing valid SBOL.
-        4.4.2 Furthermore the SBOL validator will not even run as it is impossible to be valid SBOL.  
+4.  A more extensive tutorial can be found in `tutorial.pdf` in the installation directory (currently under development)
 
 ### Extensions
 
