@@ -1,0 +1,76 @@
+# This example has the full RBS,CDS and Terminator for each part.
+# Do we need proteins to activate promoters?
+
+t7 is a Promoter()
+(
+  hasDNASequence("taatacgactcactatagg")
+)
+
+pBAD is a Promoter()
+(
+  hasDNASequence("atgccatagcatttttatcc")
+)
+
+lacI_rbs is a RBS()
+(
+  hasDNASequence("")
+)
+
+lacI_cds is a CDS()
+(
+  hasDNASequence("")
+)
+
+lacI_term is a Terminator()
+(
+  hasDNASequence("")
+)
+
+lacI is a DNAComponent()
+(
+  precedes(lacI_rbs,lacI_cds)
+  precedes(lacI_cds,lacI_term)
+)
+
+OR_gate is a DNAComponent()
+(
+  precedes(pBAD,lacI)
+  precedes(t7,lacI)
+)
+
+inverter_trc is a Promoter()
+(
+  hasDNASequence("ttgacaattaatcatccggctcgtataatg")
+)
+
+
+mCherry_rbs is a RBS()
+(
+  hasDNASequence("")
+)
+
+mCherry_cds is a CDS()
+(
+  hasDNASequence("")
+)
+
+mCherry_term is a Terminator()
+(
+  hasDNASequence("")
+)
+
+mCherry is a DNAComponent()
+(
+  precedes(mCherry_rbs,mCherry_cds)
+  precedes(mCherry_cds,mCherry_term)
+)
+
+or_gate_fc is a InstanceOf(OR_gate)
+inverter_trc_fc is a InstanceOf(inverter_trc)
+mCherry_fc is a InstanceOf(mCherry)
+
+NOR_gate is a ModuleDefinition()
+(
+  inhibition(or_gate_fc,inverter_trc_fc)
+  stimulation(inverter_trc_fc,mCherry_fc)
+)

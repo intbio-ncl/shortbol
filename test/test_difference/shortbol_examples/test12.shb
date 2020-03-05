@@ -1,0 +1,9 @@
+# This is a comment
+
+promSeq is a DnaSequence("ttgacaatgtgatcgtagctgactgtataat")
+
+prom is a Promoter()
+(
+  name = "Promoter 1"
+  description = "A consensus promoter"
+)

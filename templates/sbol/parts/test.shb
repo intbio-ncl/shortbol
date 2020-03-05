@@ -1,0 +1,21 @@
+use <parts>
+
+@prefix test = <http://github.com/lgrozinger/ShortBOL2/sbol/parts/test/>
+@prefix test
+
+BBa_R0040   is a BBa_R0040.Definition()
+
+BBa_R0010   is a BBa_R0010.Definition()
+
+BBa_RJ61120 is a BBa_RJ61120.Definition()
+
+BBa_C0040   is a BBa_C0040.Definition()
+
+ModuleDefinition is a sbol.ModuleDefinition()
+(
+  sbol.functionalComponent = promoter is a sbol.InputComponent(BBa_R0040)
+  sbol.functionalComponent = cds is a sbol.OutputComponent(BBa_C0040)
+)
+
+;; make it compliant
+@extension SbolIdentity()

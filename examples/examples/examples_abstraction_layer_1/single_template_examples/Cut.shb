@@ -1,0 +1,38 @@
+# Cut can be defined with a Component that has or 
+# does not have a Sequence Associated with it.
+# Cut can only ever be provided to a SequenceAnnotation.
+# The two cuts although written differently are functionally identicial.
+
+pTetR is a Promoter()
+
+lacI_RBS_seq is a DNASequence("aaggaggtg")
+lacI_RBS is a RBS()
+(
+  sequence = lacI_RBS_seq
+)
+
+
+pTetR_c is a Component(pTetR)
+lacI_RBS_c is a Component(lacI_RBS)
+
+pTetR_cut is a InlineCut(55)
+lacI_RBS_cut is a Cut(56,i_inline)
+
+pTetR_sa is a SequenceAnnotation(pTetR_cut)
+(
+	component = pTetR_c
+)
+
+lacI_RBS_sa is a SequenceAnnotation(lacI_RBS_cut)
+(
+	component = lacI_RBS_c
+)
+
+tetRInverter is a DNAComponent()
+(
+  component = pTetR_c
+  component = lacI_RBS_c
+  sequenceAnnotation = pTetR_sa
+  sequenceAnnotation = lacI_RBS_sa
+)
+

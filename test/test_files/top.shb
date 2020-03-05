@@ -1,0 +1,8 @@
+@prefix top = <http://top.org/>
+top.test = true
+
+@use <thislevel>
+thislevel.test = true
+
+@use <down/thislevel>
+downthislevel.test = true

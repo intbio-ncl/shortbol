@@ -1,0 +1,93 @@
+# -- Comments are processed in this file, add identifier in correct area or create a new area with comment (Part types) property type  --
+@prefix sbol
+
+# (ComponentDefinition) type
+i_DNA = <http://www.biopax.org/release/biopax-level3.owl#Dna>
+i_DNARegion = <http://www.biopax.org/release/biopax-level3.owl#DnaRegion>
+i_DNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
+i_DNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
+i_protein = <http://www.biopax.org/release/biopax-level3.owl#Protein>
+i_smallMolecule = <http://www.biopax.org/release/biopax-level3.owl#SmallMolecule>
+i_complex = <http://www.biopax.org/release/biopax-level3.owl#Complex>
+
+
+# (ComponentDefinition) role
+i_promoter       = <http://identifiers.org/so/SO:0000167>
+i_rbs            = <http://identifiers.org/so/SO:0000139>
+i_cds            = <http://identifiers.org/so/SO:0000316>
+i_terminator     = <http://identifiers.org/so/SO:0000141>
+i_gene           = <http://identifiers.org/so/SO:0000704>
+i_operator       = <http://identifiers.org/so/SO:0000057>
+i_engineeredGene = <http://identifiers.org/so/SO:0000280>
+i_mRNA           = <http://identifiers.org/so/SO:0000234>
+i_engineeredRegion = <http://identifiers.org/so/SO:0000804>
+i_nonCovBindingSite = <http://identifiers.org/so/SO:0001091>
+i_effector       = <http://identifiers.org/chebi/CHEBI:35224>
+i_startCodon     = <http://identifiers.org/so/SO:0000318>
+i_tag            = <http://identifiers.org/so/SO:0000324>
+i_engineeredTag  = <http://identifiers.org/so/SO:0000807>
+i_sgRNA          = <http://identifiers.org/so/SO:0001998>
+i_transcriptionFactor = <http://identifiers.org/go/GO:0003700> 
+
+# (Range,Cut,GenericLocation) orientation
+i_inline = <http://sbols.org/v2#inline>
+i_reverseComplement = <http://sbols.org/v2#reverseComplement>
+
+# (FunctionalComponent) direction
+i_in = <http://sbols.org/v2#in>
+i_out = <http://sbols.org/v2#out>
+i_inout = <http://sbols.org/v2#inout> 
+i_none = <http://sbols.org/v2#none>
+
+
+# (Participation) role
+i_inhibitor = <http://identifiers.org/biomodels.sbo/SBO:0000020>
+i_inhibited = <http://identifiers.org/biomodels.sbo/SBO:0000642>
+i_stimulator =  <http://identifiers.org/biomodels.sbo/SBO:0000459>
+i_stimulated = <http://identifiers.org/biomodels.sbo/SBO:0000643>
+i_modifier = <http://identifiers.org/biomodels.sbo/SBO:0000019>
+i_modified = <http://identifiers.org/biomodels.sbo/SBO:0000644>
+i_product = <http://identifiers.org/biomodels.sbo/SBO:0000011>
+i_reactant = <http://identifiers.org/biomodels.sbo/SBO:0000010>
+i_participation_promoter = <http://identifiers.org/biomodels.sbo/SBO:0000598> 
+i_template = <http://identifiers.org/biomodels.sbo/SBO:0000645>
+
+
+# (Interaction) type
+i_inhibition = <http://identifiers.org/biomodels.sbo/SBO:0000169>
+i_stimulation = <http://identifiers.org/biomodels.sbo/SBO:0000170>
+i_biochemical_reaction = <http://identifiers.org/biomodels.sbo/SBO:0000176>
+i_noncovalent_bonding = <http://identifiers.org/biomodels.sbo/SBO:0000177>
+i_degradation = <http://identifiers.org/biomodels.sbo/SBO:0000179>
+i_genetic_production = <http://identifiers.org/biomodels.sbo/SBO:0000589>
+i_control = <http://identifiers.org/biomodels.sbo/SBO:0000168>
+
+# (Sequence) encoding
+i_iupacDNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
+i_iupacRNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
+i_iupacProtein = <http://www.chem.qmul.ac.uk/iupac/AminoAcid/>
+i_opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
+
+
+# (SequenceConstraint) restriction
+i_precedes = <http://sbols.org/v2#precedes>
+i_sameOrientationAs = <http://sbols.org/v2#sameOrientationAs>
+i_oppositeOrientationAs = <http://sbols.org/v2#oppositeOrientationAs>
+i_differentFrom = <http://sbols.org/v2#differentFrom>
+
+
+# (Model) language
+i_SBML = <http://identifiers.org/edam/format_2585>
+i_CellML = <http://identifiers.org/edam/format_3240>
+i_BioPAX = <http://identifiers.org/edam/format_3156>
+
+# (Model) framework
+i_continuous =  <http://identifiers.org/biomodels.sbo/SBO:0000062>
+i_discrete = <http://identifiers.org/biomodels.sbo/SBO:0000063>
+
+
+#  (MapsTo) refinement
+i_useRemote = <http://sbols.org/v2#useRemote>
+i_useLocal = <http://sbols.org/v2#useLocal> 
+i_verifyIdentical  = <http://sbols.org/v2#verifyIdentical>
+i_merge = <http://sbols.org/v2#merge> 

@@ -1,0 +1,36 @@
+use <xsd>
+use <rdf>
+use <owl>
+use <dc>
+use <prov>
+use <chebi>
+use <so>
+use <biopax>
+use <edam>
+use <sbo>
+use <sbh>
+
+@prefix sbol = <http://sbols.org/v2#>
+@prefix sbol
+
+addProperty(property, value)
+(
+  property = value
+)
+
+name = dc.title
+description = dc.description
+wasDerivedFrom = prov.wasDerivedFrom
+
+use <sbol/identified>
+use <sbol/identifiers>
+use <sbol/toplevel>
+use <sbol/componentdefinition>
+use <sbol/componentinstance>
+use <sbol/functionalcomponent>
+use <sbol/location>
+use <sbol/mapsto>
+use <sbol/participation>
+use <sbol/sequence>
+use <sbol/interaction>
+use <sbol/moduledefinition>

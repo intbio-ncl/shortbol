@@ -1,0 +1,7 @@
+@prefix sbol
+# Identified SBOL2 objects with compliant URIs
+
+Identified(type)
+(
+   rdf.<type> = type
+)
