@@ -1,0 +1,20 @@
+# SequenceAnnotations require a location object
+# and componentDefinition defining what this actual location is.
+# This allows definition of indication of phyisical location.
+
+pTetR is a Promoter()
+(
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+lacI_RBS is a RBS()
+
+
+pTetR_loc is a InlineRange(1,55)
+lacI_RBS_loc is a InlineRange(56,68)
+
+
+tetRInverter is a DNAComponent()
+(
+  sequenceAnnotation(pTetR,pTetR_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+)

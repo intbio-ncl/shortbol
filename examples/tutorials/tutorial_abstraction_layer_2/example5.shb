@@ -1,0 +1,32 @@
+# Example 5
+# The TetR and LacI proteins
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+TetR_fc is a InstanceOf(TetR)
+LacI_fc is a InstanceOf(LacI)
+TetR_inv_fc is a InstanceOf(TetR)
+LacI_inv_fc is a InstanceOf(LacI)
+
+# The TetR inverter module
+TetR_inverter is a ModuleDefinition()
+(
+  description = "TetR inverter"
+  inhibition(TetR_fc,LacI_fc)
+)
+
+#The toggle switch module
+toggleSwitch is a Module(TetR_inverter)
+(
+  description = "toggle switch"
+  mapsUseLocal(TetR_inv_fc,TetR_fc)
+  mapsUseLocal(LacI_inv_fc,LacI_fc)
+)
+
+# The LacI inverter module
+LacI_inverter is a ModuleDefinition()
+(
+  description = "LacI inverter"
+  inhibition(LacI_inv_fc,TetR_inv_fc)
+  module = toggleSwitch
+)

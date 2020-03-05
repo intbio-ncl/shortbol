@@ -1,0 +1,76 @@
+@prefix sbol
+
+# -- docs-family Layer 1 start --
+# Name: MapsTo
+# Summary: Connects parts together that are the same but located in different ModuleDefinitions.
+# Description: When ComponentDefinition and ModuleDefinition objects are composed into structural and functional hierachies using ComponentInstance and Moduleobjects, it is of ten the case that some ComponentInstance objects are intended to represent the same entity in the overall design. The purpose of the MapsTo class is to make these identity relationships clear and explicit.
+# Usage: Given two Instances of ComponentDefinitions(FunctionalComponents) that are present in two different ModuleDefinitions and and a refinment, create MapsTo and add to property mapsTo in the Module.
+# Parameters: Template - local - Local FunctionalComponent, Template - remote - Remote FunctionalComponent, Identifier - refinement - Relationship between local and remote. 
+# -- docstring family end --
+
+MapsTo(component_functionalComponent_local, component_functionalComponent_remote, refinement)
+(
+  Identified(MapsTo)
+  local = component_functionalComponent_local
+  remote = component_functionalComponent_remote
+  sbol.<refinement> = refinement
+)
+
+MapsUseRemote(component_functionalComponent_local, component_functionalComponent_remote) 
+(
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_useRemote)
+)
+
+MapsUseLocal(component_functionalComponent_local, component_functionalComponent_remote)  
+(
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_useLocal)
+)
+
+MapsIdentical(component_functionalComponent_local, component_functionalComponent_remote) 
+(
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_verifyIdentical)
+)
+
+MapsMerge(component_functionalComponent_local, component_functionalComponent_remote)     
+(
+  MapsTo(component_functionalComponent_local, component_functionalComponent_remote, i_merge)
+)
+
+# -- docs-family Layer 2 start --
+# Name: mapsTo
+# Summary: Connects parts together that are the same but located in different ModuleDefinitions.
+# Description: This template handles the case when there is crossover between ModuleDefinitions. Imagine if two Instances of a ComponentDefinition are present part of two different ModuleDefinitions but they are actually the same things then they should be mapped together. 
+# Usage: Given two Instances of ComponentDefinitions(FunctionalComponents) that are present in two different ModuleDefinitions and a refinment, define the mapsTo inside a Module.
+# Parameters: Template - local - Local Instance of Compondent Definition, Template - remote - Remote Instance of Compondent Definition, Identifier - refinement - Relationship between local and remote. 
+# -- docstring family end --
+
+mapsTo(functionalComponent_local,functionalComponent_remote, refinment)
+(  
+ functionalComponent_local._mapsTo_.functionalComponent_remote is a MapsTo(functionalComponent_local, functionalComponent_remote, refinment)
+ mapsTo = functionalComponent_local._mapsTo_.functionalComponent_remote
+)
+
+
+mapsUseRemote(componentDefinition_local, componentDefinition_remote) 
+(
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_useRemote)
+)
+
+mapsUseLocal(componentDefinition_local, componentDefinition_remote)  
+(
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_useLocal)
+)
+
+mapsIdentical(componentDefinition_local, componentDefinition_remote) 
+(
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_verifyIdentical)
+)
+
+mapsMerge(componentDefinition_local, componentDefinition_remote)     
+(
+  mapsTo(componentDefinition_local, componentDefinition_remote, i_merge)
+)
+
+
+
+

@@ -1,0 +1,9 @@
+# has Series of templates attach a provided sequence to a compondentDefinition
+lacI_term is a Terminator()
+(
+  hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+)
+pTetR is a Promoter()
+(
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)

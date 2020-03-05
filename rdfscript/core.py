@@ -202,7 +202,7 @@ class Uri(Node):
 
     def __add__(self, other):
         if not isinstance(other, Uri):
-            raise TypeError(f"{other}")
+            raise TypeError(f"Parameter mismatch at {self.location} with parameter name: {other}")
 
         return Uri(self.uri + other.uri)
 

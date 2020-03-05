@@ -1,0 +1,16 @@
+# Defined inside valid templates.
+# Require Instances of ComponentDefinitions.
+# Two interactions are functionally identical.
+
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+TetR_fc is a InstanceOf(lacI)
+LacI_fc is a InstanceOf(lacI)
+
+# The TetR inverter
+TetR_inverter is a ModuleDefinition()
+(
+  interaction_2(TetR_fc, i_inhibitor, LacI_fc, i_inhibited, i_inhibition)
+  inhibition(TetR_fc, LacI_fc)
+)

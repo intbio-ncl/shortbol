@@ -1,0 +1,66 @@
+@prefix sbol
+
+# -- docs-family Layer 1 start --
+# Name: Participation
+# Summary: Participants to an Interaction.
+# Description: How a particular FunctionalComponent behaves in its parent Interaction.
+# Usage: Given a FunctionalComponent and a participant type add this to the participant property of a Interaction.
+# Parameters: Template - functionalcomponent - Participating FunctionalComponent, Identifier - role - Describes the behavior of the Participation.
+# -- docstring family end --
+
+Participation(functionalcomponent, role)
+(
+  Identified(Participation)
+  sbol.<role> = role
+  participant = functionalcomponent
+)
+
+Inhibitor(functionalcomponent)
+(
+  Participation(functionalcomponent,i_inhibitor)
+)
+
+Inhibited(functionalcomponent)
+(
+  Participation(functionalcomponent,i_inhibited)
+)
+
+Reactant(functionalcomponent)
+(
+  Participation(functionalcomponent,i_reactant)
+)
+
+Stimulator(functionalcomponent)
+(
+  Participation(functionalcomponent,i_stimulator)
+)
+
+Stimulated(functionalcomponent)
+(
+  Participation(functionalcomponent,i_stimulated)
+)
+
+Product(functionalcomponent)
+(
+  Participation(functionalcomponent,i_product)
+)
+
+ParticipationPromoter(functionalcomponent)
+(
+  Participation(functionalcomponent, i_promoter_t)
+)
+
+Modifier(functionalcomponent)
+(
+  Participation(functionalcomponent, i_modifier)
+)
+
+Modified(functionalcomponent)
+(
+  Participation(functionalcomponent,i_modified)
+)
+
+Template(functionalcomponent)
+(
+  Participation(functionalcomponent,i_template)
+)

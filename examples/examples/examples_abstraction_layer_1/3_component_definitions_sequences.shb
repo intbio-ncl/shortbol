@@ -1,0 +1,12 @@
+lacI_term_seq is a DNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+
+pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+
+lacI_term is a Terminator()
+(
+  sequence = lacI_term_seq
+)
+pTetR is a Promoter()
+(
+  sequence = pTetR_seq
+)

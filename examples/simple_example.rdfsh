@@ -1,9 +1,0 @@
-# This is a comment
-
-promSeq is a DNASequence("ttgacaatgtgatcgtagctgactgtataat")
-
-prom is a Promoter()
-(
-  name = "Promoter 1"
-  description = "A consensus promoter"
-)

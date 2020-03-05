@@ -54,7 +54,7 @@ class ImporterTest(unittest.TestCase):
 
         parser = RDFScriptParser()
 
-        with open("test/test_files/top.rdfsh", 'r') as f:
+        with open("test/test_files/top.shb", 'r') as f:
             script = f.read()
 
         try:
