@@ -576,6 +576,24 @@ class TemplateClassTest(unittest.TestCase):
 
         self.assertCountEqual(found, expect)
 
+    def test_scoping_of_self(self):
+        forms = self.parser.parse(('a(param)(p=param)'
+                                   'b()(d is a a(self.t1))'))
+        a = forms[0]
+        b = forms[1]
+        with self.assertRaises(KeyError):
+            self.env.lookup_template(b.identifier.evaluate(self.env))
+
+        a.evaluate(self.env)
+        b.evaluate(self.env)
+
+        found = self.env.lookup_template(b.identifier.evaluate(self.env))
+        expect = [(Identifier(Name('d')).evaluate(self.env),
+                   Identifier(Name('p')).evaluate(self.env),
+                   Identifier(Self(), Name('t1')))]
+
+        self.assertCountEqual(found, expect)
+
     def test_evaluate_to_template_name(self):
         forms = self.parser.parse('t()(x=1 y=2)')
         t = forms[0]

@@ -12,7 +12,7 @@ class TestParseExampleFiles(unittest.TestCase):
         None
 
     def test_names(self):
-        with open("examples/names.shb") as in_file:
+        with open("examples/names.rdfsh") as in_file:
             text = in_file.read()
 
         forms = self.parser.parse(text)
@@ -20,7 +20,7 @@ class TestParseExampleFiles(unittest.TestCase):
         self.assertEqual(len(forms), 11)
 
     def test_prefix(self):
-        with open("examples/prefix.shb") as in_file:
+        with open("examples/prefix.rdfsh") as in_file:
             text = in_file.read()
 
         forms = self.parser.parse(text)

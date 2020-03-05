@@ -1,0 +1,28 @@
+@prefix sbol
+
+
+# Abstract class
+ComponentInstance(type, def)
+(
+  Identified(type)
+  definition = def
+  access = sbol.public
+)
+
+PrivateComponentInstance(type, def)
+(
+  Identified(type)
+  definition = def
+  access = sbol.private
+)
+
+Component(componentdefinition_uri) 
+(
+  ComponentInstance(Component, componentdefinition_uri)
+)
+
+hasComponent(componentdefinition_uri)
+(
+  component = self._component
+  self._component is a Component(componentdefinition_uri)
+)

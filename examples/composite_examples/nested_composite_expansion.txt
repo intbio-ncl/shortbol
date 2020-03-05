@@ -1,0 +1,14 @@
+# Shortbol definitions can be nested and composite.
+# This means that an instance of a template is created implicity and nameless behind the scences.
+
+pTetR is a Promoter()
+(
+  hasSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+pTetR_loc is a InlineRange(1,55)
+
+tetRInverter is a DnaComponent()
+(
+  sequenceAnnotation(pTetR,pTetR_loc)
+)
