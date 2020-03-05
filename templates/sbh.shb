@@ -1,0 +1,17 @@
+@prefix sbh_igem = <https://synbiohub.org/public/igem/>
+@prefix sbh_user = <https://synbiohub.org/user/>
+@prefix sbh_wiki = <https://wiki.synbiohub.org/wiki/>
+@prefix sbh_wiki
+
+terms = </Terms/igem#>
+
+regulatory_role = terms.<partType/Regulatory>
+rbs_role = terms.<partType/RBS>
+coding_role = terms.<partType/Coding>
+binding_feature = terms.<feature/binding>
+cds_feature = terms.<feature/cds>
+biobrick_feature = terms.<feature/BioBrick>
+promoter_feature = terms.<feature/Promoter>
+start_feature = terms.<feature/start>
+tag_feature = terms.<feature/tag>
+barcode_feature = terms.<feature/barcode>

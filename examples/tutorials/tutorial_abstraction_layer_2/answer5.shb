@@ -1,0 +1,15 @@
+# Answer 5
+# Interactions can be invoked inside an instance of another Template.
+# This removes the need to create Components, Participants and many assignments.
+# The TetR and LacI proteins
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+# The TetR inverter
+TetR_fc is a InstanceOf(TetR)
+LacI_fc is a InstanceOf(TetR)
+LacI_inverter is a ModuleDefinition()
+(
+  description = "TetR inverter"
+  inhibition(LacI_fc,TetR_fc)
+)

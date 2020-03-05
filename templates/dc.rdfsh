@@ -1,4 +1,0 @@
-# Dublin Core
-
-@prefix dc = <http://purl.org/dc/terms/>
-@prefix dc

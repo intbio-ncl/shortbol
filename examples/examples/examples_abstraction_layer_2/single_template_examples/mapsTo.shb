@@ -1,0 +1,37 @@
+# MapsTo are used when Modules are defined by create 
+# Module Heirachies.
+# mapsTo can be thought as wiring between functionally
+# identical parts in different ModuleDefinitions.
+
+cas9_generic is a Protein()
+gRNA_generic is a SGRNA()
+cas9_gRNA_complex is a Complex()
+target_gene is a Promoter()
+
+
+cas9_generic_fc is a InstanceOf(cas9_generic)
+gRNA_generic_fc is a InstanceOf(gRNA_generic)
+cas9m_BFP_fc is a InstanceOf(cas9_gRNA_complex)
+gRNA_b_fc is a InstanceOf(target_gene)
+
+ModuleDef_1 is a ModuleDefinition()
+(
+    functionalComponent = cas9_generic_fc
+    functionalComponent = gRNA_generic_fc
+)
+
+Template_Module is a Module(ModuleDef_1)
+(
+    mapsUseLocal(cas9m_BFP_fc, cas9_generic_fc)
+    mapsUseLocal(gRNA_b_fc, gRNA_generic_fc)
+)
+
+ModuleDef_2 is a ModuleDefinition()
+(
+    functionalComponent = cas9m_BFP_fc
+    functionalComponent = gRNA_b_fc
+
+    module = Template_Module
+)
+
+

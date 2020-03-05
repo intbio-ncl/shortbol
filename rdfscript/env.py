@@ -134,18 +134,12 @@ class Env(object):
         result = None
         
         for form in forms:
-            try:
-                if isinstance(form, ExtensionPragma):
-                    form.evaluate(self)
-                    self.run_extension_on_graph(form)
-                    result = Value(True)
-                else:
-                    result = form.evaluate(self)
-            except RDFScriptError as e:
-                logging.error(str(e))
-            except ExtensionError as e:
-                logging.error(str(e))
-                
+            if isinstance(form, ExtensionPragma):
+                form.evaluate(self)
+                self.run_extension_on_graph(form)
+                result = Value(True)
+            else:
+                result = form.evaluate(self)
         return result
 
     def eval_import(self, uri):

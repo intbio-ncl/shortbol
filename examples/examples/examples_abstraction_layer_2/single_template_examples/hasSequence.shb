@@ -1,0 +1,13 @@
+# Sequences arent only DNA.
+
+pTetR is a Promoter()
+(
+   hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+lacI_RBS is a RBS()
+ 
+protein is a Protein()
+(
+  hasProteinSequence("AUG")
+)

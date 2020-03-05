@@ -1,0 +1,86 @@
+
+# --------------------------- tetRInverter sequence definition ----------------------------
+pTetR is a Promoter()
+(
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+# Declare a RBS named lacI_RBS
+lacI_RBS is a RBS()
+(
+	  name = "lacI_RBS"
+	  description = "RBS for the lacI CDS"
+      hasDNASequence("aa")
+)
+
+lacI_CDS is a CDS()
+(
+	  name = "lacI"
+	  description = "LacI protein coding region"
+      hasDNASequence("aaggaggtg")
+
+)
+
+# Declare a terminator named lacI_term
+lacI_term is a Terminator()
+(
+	  name = "lacI_term"
+	  description = "Terminator for the lacI CDS"
+      hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+pTetR_loc is a InlineRange(1,55,Inline)
+lacI_RBS_loc is a InlineRange(56,68,Inline)
+lacI_CDS_loc is a InlineRange(169,1197,Inline)
+lacI_term_loc is a InlineRange(1197,1240,Inline)
+
+
+tetRInverter is a DNAComponent()
+(
+  # relative positions of child components
+  precedes(pTetR, lacI_RBS)
+  precedes(lacI_RBS, lacI_CDS)
+  precedes(lacI_CDS, lacI_term)
+  sequenceAnnotation(pTetR,pTetR_loc)
+  sequenceAnnotation(lacI_RBS, lacI_RBS_loc)
+  sequenceAnnotation(lacI_CDS, lacI_CDS_loc)
+  sequenceAnnotation(lacI_term, lacI_term_loc)
+)
+
+
+# --------------------------- TetR and LacI definition ----------------------------
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+# --------------------------- TetR, LacI interaction ----------------------------
+
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+TetR_fc is a InstanceOf(TetR)
+LacI_fc is a InstanceOf(LacI)
+TetR_inv_fc is a InstanceOf(TetR)
+LacI_inv_fc is a InstanceOf(LacI)
+
+# The TetR inverter module
+TetR_inverter is a ModuleDefinition()
+(
+  description = "TetR inverter"
+  inhibition(TetR_fc,LacI_fc)
+)
+
+#The toggle switch module
+toggleSwitch is a Module(TetR_inverter)
+(
+  description = "toggle switch"
+  mapsUseLocal(TetR_inv_fc,TetR_fc)
+  mapsUseLocal(LacI_inv_fc,LacI_fc)
+)
+
+# The LacI inverter module
+LacI_inverter is a ModuleDefinition()
+(
+  description = "LacI inverter"
+  inhibition(LacI_inv_fc,TetR_inv_fc)
+  module = toggleSwitch
+)
