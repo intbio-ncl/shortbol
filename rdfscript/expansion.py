@@ -18,7 +18,7 @@ class Expansion(Node):
             else:
                 self.args.append(Argument(arg, n, location))
 
-        self.args.insert(0, Argument(self.identifier, -1))
+        self.args.append(Argument(self.identifier, -1))
 
         self.extensions = []
         self.body = []
