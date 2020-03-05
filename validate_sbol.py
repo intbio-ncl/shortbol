@@ -47,7 +47,7 @@ def validate_sbol(sbol, validator_url = 'https://validator.sbolstandard.org/vali
         print(f'HTTP error occurred: {http_err}')  # Python 3.6
     except Exception as err:
         print(f'Other error occurred: {err}')  # Python 3.6
-
+       
 if __name__ == '__main__':
     file = open(sys.argv[1], 'r')
     sbol = file.read()

@@ -1,0 +1,79 @@
+# Answer 4
+# The genetic parts of the TetR inverter
+
+pTetR is a Promoter()
+(
+  hasSequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+lacI_RBS is a RBS()
+(
+  hasSequence("aaggaggtg")
+)
+
+lacI_CDS is a CDS()
+(
+  hasSequence("gtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcag")
+)
+
+lacI_term is a Terminator()
+(
+  hasSequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+)
+
+lacI2_term is a Terminator()
+(
+  hasSequence("ccggcttatcggtcagtttcacctgatttacgtaaaaacccgcttcggcgggtttttgcttttggaggggcagaaagatgaatgactgtccacgacgctatacccaaaagaaa")
+)
+
+#Build components for each of the DNAComponents
+pTetR_c is a Component(pTetR)
+lacI_RBS_c is a Component(lacI_RBS)
+lacI_CDS_c is a Component(lacI_CDS)
+lacI_term_c is a Component(lacI_term)
+lacI2_term_c is a Component(lacI2_term)
+
+#Specify the range for each part
+pTetR_loc is a InlineRange(1,55)
+lacI_RBS_loc is a InlineRange(56,68)
+lacI_CDS_loc is a InlineRange(169,1197)
+lacI_term_loc is a InlineRange(1197,1240)
+lacI2_term_loc is a InlineRange(1241,1280)
+
+pTetR_sa is a SequenceAnnotation(pTetR_loc)
+(
+	component = pTetR_c
+)
+lacI_RBS_sa is a SequenceAnnotation(lacI_RBS_loc)
+(
+	component = lacI_RBS_c
+)
+lacI_CDS_sa is a SequenceAnnotation(lacI_CDS_loc)
+(
+	component = lacI_CDS_c
+)
+lacI_term_sa is a SequenceAnnotation(lacI_term_loc)
+(
+	component = lacI_term_c
+)
+lacI2_term_sa is a SequenceAnnotation(lacI2_term_loc)
+(
+	component = lacI2_term_c
+)
+
+tetRInverter is a DnaComponent()
+(
+  # include the child components
+  component = pTetR_c
+  component = lacI_RBS_c
+  component = lacI_CDS_c
+  component = lacI_term_c
+  component = lacI2_term_c
+
+  # absolute positions of child components
+  sequenceAnnotation = pTetR_sa
+  sequenceAnnotation = lacI_RBS_sa
+  sequenceAnnotation = lacI_CDS_sa
+  sequenceAnnotation = lacI_term_sa
+  sequenceAnnotation = lacI2_term_sa
+)
