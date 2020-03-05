@@ -30,20 +30,16 @@ class TestDifference(unittest.TestCase):
         failure_exceptions = []
         for path, subdirs, files in os.walk(shortbol_test_files):
             for name in files:
-                if name.endswith(".shb") or name.endswith(".txt"):
+                if name.endswith(".rdfsh") or name.endswith(".txt"):
                     shortbol_file_to_run = os.path.join(path, name)
                     sbol_file_to_run = os.path.join(sbol_test_files,name.split(".")[0]+".py")
                     if not os.path.isfile(sbol_file_to_run):
                         continue
-
-                    print(f' Comparing {shortbol_file_to_run} with {sbol_file_to_run}')
                     return_code = "Error Thrown."
-                    return_code_shortbol = run.parse_from_file(shortbol_file_to_run,"sbolxml",[templates],shortbol_output_fn,[])
-
-
-                    #print("Running: " + str(sbol_file_to_run))
+                    #return_code_shortbol = run.parse_from_file(shortbol_file_to_run,"sbolxml",[templates],shortbol_output_fn,[])
+                    print("Running: " + str(sbol_file_to_run))
+                    #return_code_sbol = exec("'"+ sbol_file_to_run +"'")
                     os.system("python " + sbol_file_to_run)
-
-                    exit(0)
+                    #print(return_code_sbol)
 
 

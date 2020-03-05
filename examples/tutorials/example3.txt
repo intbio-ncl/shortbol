@@ -34,7 +34,7 @@ lacI_term_sa is a SequenceAnnotation (lacI_term_loc)
 )
 
 
-tetRInverter is a DNA()
+tetRInverter is a DnaComponent()
 (
   # include the child components
   component = pTetR_c
