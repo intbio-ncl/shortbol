@@ -119,9 +119,7 @@ sequenceAnnotation(componentDefinition, range_cut_genericLocation)
     self._.componentDefinition._c is a Component(componentDefinition)
     component = self._.componentDefinition._c
 
-
     SA(self._.componentDefinition._.sequenceAnnotation,self._.componentDefinition._c,range_cut_genericLocation)
-
 
     sequenceAnnotation = self._.componentDefinition._.sequenceAnnotation
 )
@@ -179,8 +177,8 @@ sequenceConstraint(componentDefinition_subject,componentDefinition_object,restri
 
   component = self._.componentDefinition_subject._c
   component = self._.componentDefinition_object._c
-  self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c  is a SequenceConstraint(self._.componentDefinition_subject._c, self._.componentDefinition_object._c , restriction)
-  sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.self._.componentDefinition_object._c
+  self._.componentDefinition_subject._c._.restriction._.componentDefinition_object._c  is a SequenceConstraint(self._.componentDefinition_subject._c, self._.componentDefinition_object._c , restriction)
+  sequenceConstraint = self._.componentDefinition_subject._c._.restriction._.componentDefinition_object._c
 )
 
 
