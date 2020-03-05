@@ -1,0 +1,9 @@
+@prefix sbol
+
+Module(moduledefinition_uri)
+(
+  Identified(Module)
+  sbol.<definition> = moduledefinition_uri
+)
+
+ModuleDefinition() (TopLevel(ModuleDefinition))

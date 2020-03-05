@@ -1,0 +1,65 @@
+@prefix sbol
+
+FunctionalComponent(componentDefinition_uri, direction)
+(
+  ComponentInstance(FunctionalComponent, componentDefinition_uri)
+  sbol.<direction> = direction
+)
+
+PrivateFunctionalComponent(componentDefinition_uri, direction)
+(
+  PrivateComponentInstance(FunctionalComponent, componentDefinition_uri)
+  sbol.<direction> = direction
+)
+
+InputComponent(componentDefinition_uri)  
+(
+  FunctionalComponent(componentDefinition_uri, sbol.in)
+)
+
+OutputComponent(componentDefinition_uri) 
+(
+  FunctionalComponent(componentDefinition_uri, sbol.out)
+)
+
+InOutComponent(componentDefinition_uri)  
+(
+  FunctionalComponent(componentDefinition_uri, sbol.inout)
+)
+
+NoneComponent(componentDefinition_uri)   
+(
+  FunctionalComponent(componentDefinition_uri, sbol.none)
+)
+
+hasFunctionalComponent(cd,direction)
+(
+  functionalComponent = self._functionalComponent
+  self._functionalComponent is a FunctionalComponent(cd,direction)
+)
+
+hasPrivateFunctionalComponent(cd,direction)
+(
+  functionalComponent = self._functionalComponent
+  self._functionalComponent is a PrivateFunctionalComponent(cd,direction)
+)
+
+hasInputComponent(cd)
+(
+  hasFunctionalComponent(cd,in)
+)
+
+hasOutputComponent(cd)
+(
+  hasFunctionalComponent(cd,out)
+)
+
+hasInOutComponent(cd)
+(
+  hasFunctionalComponent(cd,inout)
+)
+
+hasNoneComponent(cd)
+(
+  hasFunctionalComponent(cd,none)
+)

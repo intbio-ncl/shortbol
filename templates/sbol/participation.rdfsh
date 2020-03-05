@@ -1,0 +1,115 @@
+@prefix sbol
+
+# Participation Templates
+Participation(functionalcomponent_uri, withrole)
+(
+  Identified(Participation)
+  role = withrole
+  participant = functionalcomponent_uri
+)
+
+Inhibitor(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.inhibitor)
+)
+
+Inhibited(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.inhibited)
+)
+
+Reactant(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.reactant)
+)
+
+Stimulator(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.stimulator)
+)
+
+Stimulated(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.stimulated)
+)
+
+Product(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.product)
+)
+
+ParticipationPromoter(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri, sbol.promoter_t)
+)
+
+Modifier(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.modifier)
+)
+
+Modified(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.modified)
+)
+
+Template(functionalcomponent_uri)
+(
+  Participation(functionalcomponent_uri,sbol.template)
+)
+
+hasParticipation(functionalcomponent_uri,role)
+(
+  participant = self._participant
+  self._participant is a Participation(functionalcomponent_uri, role)
+)
+
+hasInhibitor(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.inhibitor)
+)
+
+hasInhibited(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.inhibited)
+)
+
+hasReactant(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.reactant)
+)
+
+hasStimulator(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.stimulator)
+)
+
+hasStimulated(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.stimulated)
+)
+
+hasProduct(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.product)
+)
+
+hasParticipationPromoter(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri, sbol.promoter_t)
+)
+
+hasModifier(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.modifier)
+)
+
+hasModified(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.modified)
+)
+
+hasTemplate(functionalcomponent_uri)
+(
+  hasParticipation(functionalcomponent_uri,sbol.template)
+)
