@@ -1,6 +1,6 @@
 # This is a comment
 
-promSeq is a DnaSequence("ttgacaatgtgatcgtagctgactgtataat")
+promSeq is a DNASequence("ttgacaatgtgatcgtagctgactgtataat")
 
 prom is a Promoter()
 (

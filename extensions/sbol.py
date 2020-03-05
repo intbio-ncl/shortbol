@@ -91,9 +91,16 @@ class SBOLCompliant:
         if not is_valid_parameters(self.identifiers, triplepack,subjects):
             raise SBOLComplianceError(f"Invalid Parameter type for {subjects}")
 
+        parent = get_SBOL_parent(triplepack, self.subject)
         # Everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
-            new_displayId = self.subject.split()[-1]
+            if parent is not None:
+                p = parent.split()[-2]
+                new_displayId = self.subject.split()[-1].replace(p,"")
+            else:
+                new_displayId = self.subject.split()[-1]
+            
+
             triplepack.add((self.subject, displayId, Value(new_displayId)))
 
         # Everything has a Version
@@ -101,7 +108,7 @@ class SBOLCompliant:
             #Set default version of 1.
             triplepack.add((self.subject, version, Value("1")))
 
-        parent = get_SBOL_parent(triplepack, self.subject)
+
 
         if parent is not None:
             # its a child
