@@ -4,8 +4,8 @@
 # (ComponentDefinition) type
 i_DNA = <http://www.biopax.org/release/biopax-level3.owl#Dna>
 i_DNARegion = <http://www.biopax.org/release/biopax-level3.owl#DnaRegion>
-i_DNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
-i_DNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
+i_RNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
+i_RNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
 i_protein = <http://www.biopax.org/release/biopax-level3.owl#Protein>
 i_smallMolecule = <http://www.biopax.org/release/biopax-level3.owl#SmallMolecule>
 i_complex = <http://www.biopax.org/release/biopax-level3.owl#Complex>

@@ -104,6 +104,11 @@ def hacky_conversion_handle_expansions(split_text,curr_line_num,shortbol_templat
     if next_line == "(" :
         curr_line_num = curr_line_num + 2
         while split_text[curr_line_num] != ")":
+            if len(split_text[curr_line_num]) == 0:
+                curr_line_num = curr_line_num + 1
+                continue
+            if split_text[curr_line_num][0] == ")" and len(split_text[curr_line_num]) > 1:
+                raise SyntaxError("Syntax error on line: " + str(curr_line_num - 2))
             # A comment move on.
             if split_text[curr_line_num] == "" or split_text[curr_line_num] == None :
                 curr_line_num = curr_line_num + 1
