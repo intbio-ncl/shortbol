@@ -1,0 +1,29 @@
+@prefix sbol_3
+
+TopLevel(type)
+(
+  Identified(type)
+)
+
+Model(source, language, framework)
+(
+  TopLevel(Model)
+  sbol_3.<source> = source
+  sbol_3.<language> = language
+  sbol_3.<framework> = framework
+)
+
+SBMLModel(source, framework)
+(
+  Model(source,i_SBML,framework)
+)
+
+CellMLModel(source, framework)
+(
+  Model(source,i_CellML,framework)
+)
+
+BioPAXModel(source, framework)
+(
+  Model(source,i_BioPAX,framework)
+)

@@ -1,0 +1,14 @@
+use <sbol_2>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+
+
+
+
+pTetR is a sbol_2.Promoter()
+
+tetRInverter is a sbol_2.DNAComponent()
+(
+  sbol_2.subComponent(pTetR)
+)

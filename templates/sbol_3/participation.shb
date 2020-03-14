@@ -1,0 +1,58 @@
+@prefix sbol_3
+
+Participation(component, role)
+(
+  Identified(Participation)
+  sbol_3.<role> = role
+  participant = component
+)
+
+Inhibitor(component)
+(
+  Participation(component,i_inhibitor)
+)
+
+Inhibited(component)
+(
+  Participation(component,i_inhibited)
+)
+
+Reactant(component)
+(
+  Participation(component,i_reactant)
+)
+
+Stimulator(component)
+(
+  Participation(component,i_stimulator)
+)
+
+Stimulated(component)
+(
+  Participation(component,i_stimulated)
+)
+
+Product(component)
+(
+  Participation(component,i_product)
+)
+
+ParticipationPromoter(component)
+(
+  Participation(component, i_promoter_t)
+)
+
+Modifier(component)
+(
+  Participation(component, i_modifier)
+)
+
+Modified(component)
+(
+  Participation(component,i_modified)
+)
+
+Template(component)
+(
+  Participation(component,i_template)
+)

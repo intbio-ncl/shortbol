@@ -1,0 +1,36 @@
+@prefix sbol_3
+
+
+Constraint(componentInstance_subject, componentInstance_object, restriction)
+(
+  Identified(Constraint)
+  subject = componentInstance_subject
+  object = componentInstance_object
+  sbol_3.<restriction> = restriction
+)
+
+Precedes(componentInstance_subject, componentInstance_object)              
+(
+  Constraint(componentInstance_subject, componentInstance_object, i_precedes)
+)
+
+SameOrientationAs(componentInstance_subject, componentInstance_object)     
+(
+  Constraint(componentInstance_subject, componentInstance_object, i_sameOrientationAs)
+)
+
+OppositeOrientationAs(componentInstance_subject, componentInstance_object) 
+(
+  Constraint(componentInstance_subject, componentInstance_object, i_oppositeOrientationAs)
+)
+
+DifferentFrom(componentInstance_subject, componentInstance_object)         
+(
+  Constraint(componentInstance_subject, componentInstance_object, i_differentFrom)
+)
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+@prefix sbol_3
+
+Location(type, sequence, orientation) 
+(
+  Identified(type)
+  sbol_3.<sequence> = sequence
+  sbol_3.<orientation> = orientation
+)
+
+Range(sequence, start, end, orientation)
+(
+  Location(Range, sequence, orientation)
+  sbol_3.<start> = start
+  sbol_3.<end> = end
+)
+
+InlineRange(sequence, start, end)
+(
+  Range(sequence, start, end, i_inline)
+)
+
+ReverseComplementRange(sequence, start, end)
+(
+  Range(sequence, start, end, i_reverseComplement)
+)
+
+Cut(sequence, at, orientation)
+(
+  Location(Cut, sequence, orientation)
+  sbol.<at> = at
+)
+
+InlineCut(sequence, at)
+(
+  Cut(sequence, at, i_inline)
+)
+
+ReverseComplementCut(sequence, at)
+(
+  Cut(sequence, at, i_reverseComplement)
+)
+
+EntireSequence(sequence, orientation) 
+(
+  Location(EntireSequence, sequence, orientation)
+)
+
+InlineEntireSequence(sequence, orientation)
+(
+  EntireSequence(sequence, i_inline)
+)
+
+ReverseComplementEntireSequence(sequence, orientation)
+(
+  EntireSequence(sequence, i_reverseComplement)
+)
+

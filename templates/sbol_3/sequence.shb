@@ -1,0 +1,36 @@
+@prefix sbol_3
+
+Sequence(elements, encoding)
+(
+  TopLevel(Sequence)
+  sbol_3.<elements> = elements
+  sbol_3.<encoding> = encoding
+)
+
+DNASequence(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+DNASeq(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+RNASequence(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+ProteinSequence(elements)   
+(
+    Sequence(elements, i_iupacProtein)
+)
+
+ChemicalStructure(elements) 
+(
+    Sequence(elements, i_opensmilesSMILES)
+)
+
+
+

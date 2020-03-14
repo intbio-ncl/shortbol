@@ -1,0 +1,41 @@
+@prefix sbol_3
+
+Feature(type, definition)
+(
+  Identified(type)
+  sbol_3.<definition> = definition
+  access = sbol_3.public
+)
+
+
+SubComponent(component) 
+(
+  Feature(SubComponent)
+  instanceOf = component
+)
+
+SequenceFeature(range_cut_genericLocation)
+(
+  Feature(SequenceFeature)
+  location = range_cut_genericLocation
+)
+
+ExternallyDefined(type, definition)
+(
+  Feature(ExternallyDefined)
+  sbol_3.<type> = type
+  sbol_3.<definition> = definition
+
+)
+
+LocalSubComponent(type)
+(
+  Feature(LocalSubComponent)
+  sbol_3.<type> = type
+)
+
+# What is this????
+ComponentReference()
+(
+
+)

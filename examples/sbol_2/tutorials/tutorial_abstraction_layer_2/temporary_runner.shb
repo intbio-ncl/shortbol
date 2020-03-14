@@ -1,0 +1,90 @@
+use <sbol_2>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+
+pTetR is a sbol_2.Promoter()
+(
+  sbol_2.hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+
+lacI_RBS is a sbol_2.RBS()
+(
+    sbol_2.name =  "lacI_RBS"
+    sbol_2.description =  "RBS for the lacI CDS"
+  sbol_2.hasDNASequence("aa")
+)
+
+lacI_CDS is a sbol_2.CDS()
+(
+    sbol_2.name =  "lacI"
+    sbol_2.description =  "LacI protein coding region"
+  sbol_2.hasDNASequence("aaggaggtg")
+
+)
+
+
+lacI_term is a sbol_2.Terminator()
+(
+    sbol_2.name =  "lacI_term"
+    sbol_2.description =  "Terminator for the lacI CDS"
+  sbol_2.hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)
+
+pTetR_loc is a sbol_2.InlineRange(1,55,Inline)
+lacI_RBS_loc is a sbol_2.InlineRange(56,68,Inline)
+lacI_CDS_loc is a sbol_2.InlineRange(169,1197,Inline)
+lacI_term_loc is a sbol_2.InlineRange(1197,1240,Inline)
+
+
+tetRInverter is a sbol_2.DNAComponent()
+(
+  
+  sbol_2.precedes(pTetR,lacI_RBS)
+  sbol_2.precedes(lacI_RBS,lacI_CDS)
+  sbol_2.precedes(lacI_CDS,lacI_term)
+  sbol_2.sequenceAnnotation(pTetR,pTetR_loc)
+  sbol_2.sequenceAnnotation(lacI_RBS,lacI_RBS_loc)
+  sbol_2.sequenceAnnotation(lacI_CDS,lacI_CDS_loc)
+  sbol_2.sequenceAnnotation(lacI_term,lacI_term_loc)
+)
+
+
+
+TetR is a sbol_2.ProteinComponent()
+LacI is a sbol_2.ProteinComponent()
+
+
+
+TetR is a sbol_2.ProteinComponent()
+LacI is a sbol_2.ProteinComponent()
+
+TetR_fc is a sbol_2.InstanceOf(TetR)
+LacI_fc is a sbol_2.InstanceOf(LacI)
+TetR_inv_fc is a sbol_2.InstanceOf(TetR)
+LacI_inv_fc is a sbol_2.InstanceOf(LacI)
+
+
+TetR_inverter is a sbol_2.ModuleDefinition()
+(
+    sbol_2.description =  "TetR inverter"
+  sbol_2.inhibition(TetR_fc,LacI_fc)
+)
+
+
+toggleSwitch is a sbol_2.Module(TetR_inverter)
+(
+    sbol_2.description =  "toggle switch"
+  sbol_2.mapsUseLocal(TetR_inv_fc,TetR_fc)
+  sbol_2.mapsUseLocal(LacI_inv_fc,LacI_fc)
+)
+
+
+LacI_inverter is a sbol_2.ModuleDefinition()
+(
+    sbol_2.description =  "LacI inverter"
+  sbol_2.inhibition(LacI_inv_fc,TetR_inv_fc)
+    sbol_2.module = toggleSwitch
+)
+

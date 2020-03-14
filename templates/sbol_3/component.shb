@@ -1,0 +1,112 @@
+@prefix sbol_3
+
+# -- docs-family Layer All start --
+# Name: Component
+# Summary: The fundemental templates for creation of enitites in a biological design.
+# Description: These templates create a blueprint of a part, an instances of these are created using FunctionalComponents.  
+# Usage: Use to represent parts in a design such as DNA or a Protein.
+# Parameters: Identifier - type - Category of the Component such as DNA or Protein.
+# Properties: Identifier - role - The function of the Component such as Promoter or CDS.
+# -- docstring family end --
+
+Component(type)
+(
+    TopLevel(Component)
+    sbol_3.<type> = type
+)
+
+DNAComponent() 
+(
+    Component(i_DNA)
+)
+
+DNA()
+(
+  Component(i_DNA)
+)
+
+RNAComponent()
+(
+  Component(i_RNA)
+)
+
+RNA()
+(
+  Component(i_RNA)
+)
+
+ProteinComponent()
+(
+  Component(i_protein)
+)
+
+Protein()
+(
+  Component(i_protein)
+)
+
+SmallMoleculeComponent()
+(
+  Component(i_smallMolecule)
+)
+
+SmallMolecule()
+(
+  Component(i_smallMolecule)
+)
+
+ComplexComponent()
+(
+  Component(i_complex)
+)
+
+Complex()
+(
+  Component(i_complex)
+)
+
+# Common DNA components
+
+Promoter()
+(
+  DNAComponent()
+  sbol_3.role = i_promoter
+)
+
+RBS()
+(
+  DNAComponent()
+  sbol_3.role = i_rbs
+)
+
+CDS()
+(
+  DNAComponent()
+  sbol_3.role = i_cds
+)
+
+Terminator()
+(
+  DNAComponent()
+  sbol_3.role = i_terminator
+)
+
+Operator()
+(
+  DNAComponent()
+  sbol_3.role = i_operator
+)
+
+# Common RNA components
+
+CDS_RNA()
+(
+  RNAComponent()
+  sbol_3.role = i_cds
+)
+
+SGRNA()
+(
+  RNAComponent()
+  sbol_3.role = i_sgRNA
+)

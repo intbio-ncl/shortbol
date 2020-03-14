@@ -1,0 +1,92 @@
+@prefix sbol_2
+
+
+# -- docs-family Layer 1 start --
+# Name: FunctionalComponent
+# Summary: An instance of a ComponentDefinition being used as part of a ModuleDefinition.
+# Description: A FunctionalComponentis an instance of a ComponentDefinition being used as part of a ModuleDefinition. FunctionalComponents can also have directions such as input,output for connections.
+# Usage: Given a ComponentDefinition and a direction add this FunctionalComponent to the functionalcomponent property of a ModuleDefinition.
+# Parameters: Template - componentDefinition - Blueprint ComponentDefinition, Identifier - direction - Encode how a designer thinks about the "purpose" of a connection in a system.
+# -- docstring family end --
+
+FunctionalComponent(componentDefinition, direction)
+(
+  ComponentInstance(FunctionalComponent, componentDefinition)
+  sbol_2.<direction> = direction
+)
+
+PrivateFunctionalComponent(componentDefinition, direction)
+(
+  PrivateComponentInstance(FunctionalComponent, componentDefinition)
+  sbol_2.<direction> = direction
+)
+
+InputComponent(componentDefinition)  
+(
+  FunctionalComponent(componentDefinition, in)
+)
+
+OutputComponent(componentDefinition) 
+(
+  FunctionalComponent(componentDefinition, out)
+)
+
+InOutComponent(componentDefinition)  
+(
+  FunctionalComponent(componentDefinition, inout)
+)
+
+NoneComponent(componentDefinition)   
+(
+  FunctionalComponent(componentDefinition, none)
+)
+
+# -- docs-family Layer 2 start --
+# Name: InstanceOf
+# Summary: An instance of a ComponentDefinition being used as part of a ModuleDefinition.
+# Description: A ComponentDefinition can be thought as a blueprint or a design of a part, this template creates the physical implementation of the ComponentDefinition in the 	design. InstanceOf only needs to be used when ModuleDefinitions are used.
+# Usage: Given a ComponentDefinition and a direction add this FunctionalComponent to the functionalcomponent property of a ModuleDefinition.
+# Parameters: Template - componentDefinition - Blueprint ComponentDefinition, Identifier - direction - Encode how a designer thinks about the "purpose" of a connection in a system.
+# -- docstring family end --
+
+InstanceOf(componentDefinition)
+(
+    FunctionalComponent(componentDefinition,inout)
+)
+
+hasFunctionalComponent(componentDefinition,direction)
+(
+  functionalComponent = componentDefinition._fc
+  componentDefinition._fc is a FunctionalComponent(componentDefinition,direction)
+)
+
+hasPrivateFunctionalComponent(componentDefinition,direction)
+(
+  functionalComponent = componentDefinition._functionalComponent
+  componentDefinition._functionalComponent is a PrivateFunctionalComponent(componentDefinition,direction)
+)
+
+hasInputComponent(componentDefinition)
+(
+  hasFunctionalComponent(componentDefinition,in)
+)
+
+hasOutputComponent(componentDefinition)
+(
+  hasFunctionalComponent(componentDefinition,out)
+)
+
+hasInOutComponent(componentDefinition)
+(
+  hasFunctionalComponent(componentDefinition,inout)
+)
+
+hasNoneComponent(componentDefinition)
+(
+  hasFunctionalComponent(componentDefinition,none)
+)
+
+instanceOf(componentDefinition)
+(
+  hasInOutComponent(componentDefinition)
+)

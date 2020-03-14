@@ -1,0 +1,37 @@
+use <xsd>
+use <rdf>
+use <owl>
+use <dc>
+use <prov>
+use <chebi>
+use <so>
+use <biopax>
+use <edam>
+use <sbo>
+use <sbh>
+
+@prefix sbol_3 = <http://sbols.org/v3#>
+@prefix sbol_3
+
+addProperty(property, value)
+(
+  property = value
+)
+
+name = dc.title
+description = dc.description
+wasDerivedFrom = prov.wasDerivedFrom
+
+use <sbol_3/identified>
+use <sbol_3/identifiers>
+use <sbol_3/toplevel>
+use <sbol_3/component>
+use <sbol_3/constraint>
+use <sbol_3/feature>
+use <sbol_3/location>
+use <sbol_3/mapsto>
+use <sbol_3/participation>
+use <sbol_3/sequence>
+use <sbol_3/sequence_annotation>
+use <sbol_3/interaction>
+use <sbol_3/to_implement>

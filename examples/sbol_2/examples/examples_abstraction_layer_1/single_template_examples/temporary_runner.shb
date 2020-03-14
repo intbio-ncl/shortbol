@@ -1,0 +1,25 @@
+use <sbol_2>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+
+
+
+pTetR   is a sbol_2.Promoter()
+lacI_RBS is a sbol_2.RBS()
+
+pTetR_c is a sbol_2.Component(pTetR)
+lacI_RBS_c is a sbol_2.Component(lacI_RBS)
+
+pair1 is a sbol_2.Precedes(pTetR_c,lacI_RBS_c)
+pair2 is a sbol_2.SequenceConstraint(pTetR_c,lacI_RBS_c,sbol_2.i_precedes)
+
+
+tetRInverter is a sbol_2.DNAComponent()
+(
+    sbol_2.component = pTetR_c
+    sbol_2.component = lacI_RBS_c
+  
+    sbol_2.sequenceConstraint = pair1
+    sbol_2.sequenceConstraint = pair2
+)

@@ -1,0 +1,24 @@
+@prefix sbol_2
+
+# -- docs-family Layer All start --
+# Name: Module
+# Summary: Occurance of a ModuleDefinition.
+# Description: Represents the usage or occurrence of a ModuleDefinition within a larger design (that is, another ModuleDefinition).
+# Usage: Given a ModuleDefinition, create Module and add to module property of the higher level ModuleDefinition.
+# Parameters:  Template - moduleDefinition - Blueprint ModuleDefinition.
+# -- docstring family end --
+
+Module(moduleDefinition)
+(
+  Identified(Module)
+  definition = moduleDefinition
+)
+
+# -- docs-family Layer All start --
+# Name: ModuleDefinition
+# Summary: Group together entities.
+# Description: The ModuleDefinition class represents a grouping of structural and functional entities in a biological design. The primary usage of this class is to assert the molecular interactions and abstract function of its child entities.
+# Usage: No parameters required, properties are optional and can add any structural or functional enitites.
+# -- docstring family end --
+
+ModuleDefinition() (TopLevel(ModuleDefinition))

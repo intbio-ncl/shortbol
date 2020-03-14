@@ -1,0 +1,42 @@
+@prefix sbol_3
+
+Interaction(type)
+(
+  Identified(Interaction)
+  sbol_3.<type> = type
+)
+
+Inhibition()
+(
+  Interaction(i_inhibition)
+)
+
+Stimulation()
+(
+  Interaction(i_stimulation)
+)
+
+BiochemicalReaction()
+(
+  Interaction(i_biochemical_reaction)
+)
+
+NoncovalentBonding()
+(
+    Interaction(i_noncovalent_bonding)
+)
+
+Degradation()
+(
+  Interaction(i_degradation)
+)
+
+GeneticProduction()
+(
+  Interaction(i_genetic_production)
+)
+
+Control()
+(
+  Interaction(i_control)
+)

@@ -1,0 +1,72 @@
+@prefix sbol_2
+
+Location(type, orientation) 
+(
+  Identified(type)
+  sbol_2.<orientation> = orientation
+)
+
+# -- docs-family Layer All start --
+# Name: Range
+# Summary: Regions of a Sequence.
+# Description: Specifies a region via discrete, inclusive start and end positions that correspond to indices for characters in the elements of a Sequence.
+# Usage: Given a start and end value create Range and add to location property of a SequenceAnnotation.
+# Parameters:  Integer - start - integer value stating start of Range on the sequence., Integer - end - integer value stating end of Range on the sequence.
+# -- docstring family end --
+
+Range(start, end, orientation)
+(
+  Location(Range, orientation)
+  sbol_2.<start> = start
+  sbol_2.<end> = end
+)
+
+InlineRange(start, end)
+(
+  Range(start, end, i_inline)
+)
+
+ReverseComplementRange(start, end)
+(
+  Range(start, end, i_reverseComplement)
+)
+
+# -- docs-family Layer All start --
+# Name: Cut
+# Summary: Regions of a Sequence.
+# Description: Specifies a region via discrete, inclusive start and end positions that correspond to indices for characters in the elements of a Sequence.
+# Usage: Given a start and end value create Range and add to location property of a SequenceAnnotation.
+# Parameters:  Integer - at - integer value the location of cut on the sequence.
+# -- docstring family end --
+
+Cut(at, orientation)
+(
+  Location(Cut,orientation)
+  sbol_2.<at> = at
+)
+
+InlineCut(at)
+(
+  Cut(at,i_inline)
+)
+
+ReverseComplementCut(at)
+(
+  Cut(at,i_reverseComplement)
+)
+
+GenericLocation(orientation) 
+(
+  Location(GenericLocation, orientation)
+)
+
+InlineGenericLocation(orientation)
+(
+  GenericLocation(i_inline)
+)
+
+ReverseComplementGenericLocation(orientation)
+(
+  GenericLocation(i_reverseComplement)
+)
+

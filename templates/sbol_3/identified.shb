@@ -1,0 +1,6 @@
+@prefix sbol_3
+
+Identified(type)
+(
+   rdf.<type> = type
+)
