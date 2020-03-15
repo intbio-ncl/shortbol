@@ -14,8 +14,8 @@ lacI_RBS is a RBS()
 pTetR_c is a Component(pTetR)
 lacI_RBS_c is a Component(lacI_RBS)
 
-pTetR_range is a InlineCut(1)
-lacI_RBS_range is a Cut(56,i_inline)
+pTetR_range is a InlineRange(1,5)
+lacI_RBS_range is a Range(56,57,i_inline)
 
 pTetR_sa is a SequenceAnnotation(pTetR_range)
 (
