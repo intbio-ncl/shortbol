@@ -1,0 +1,30 @@
+# This example has the Initial design of a NOR gate.
+# The sequences nor specific parts are defined only the shape of the design.
+# See NOR_gate_implementation_implicit for more detailed design.
+
+p_in_1 is a Promoter()
+p_in_2 is a Promoter()
+
+repressor is a DNA()
+
+p_out is a Promoter()
+output is a DNA()
+
+p_in_1_fc is a InstanceOf(p_in_1)
+p_in_2_fc is a InstanceOf(p_in_2)
+repressor_fc is a InstanceOf(repressor)
+p_out_fc is a InstanceOf(p_out)
+output_fc is a InstanceOf(output)
+
+NOR_gate is a ModuleDefinition()
+(
+  # p1,p2 can stimulate the repressor
+  stimulation(p_in_1_fc,repressor_fc)
+  stimulation(p_in_2_fc,repressor_fc)
+
+  # The OR gate inhibits the p3_output promoter when active.
+  inhibition(repressor_fc,p_out_fc)
+
+  # The output promoter stimulates the output Gene when not inhibited.
+  stimulation(p_out_fc,output_fc)
+)

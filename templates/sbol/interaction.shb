@@ -80,11 +80,11 @@ interaction_2(functionalComponent_participant_1, part_1_type, functionalComponen
   
   functionalComponent_participant_1._.type._with_.functionalComponent_participant_2 is a Interaction(type)
   (
-    functionalComponent_participant_1._.part_1_type is a Participation(functionalComponent_participant_1, part_1_type)
-    functionalComponent_participant_2._.part_2_type is a Participation(functionalComponent_participant_2, part_2_type)
+    self._.part_1_type is a Participation(functionalComponent_participant_1, part_1_type)
+    self._.part_2_type is a Participation(functionalComponent_participant_2, part_2_type)
 
-    participation = functionalComponent_participant_1._.part_1_type
-    participation = functionalComponent_participant_2._.part_2_type
+    participation = self._.part_1_type 
+    participation = self._.part_2_type
   )
   interaction = functionalComponent_participant_1._.type._with_.functionalComponent_participant_2
 )
