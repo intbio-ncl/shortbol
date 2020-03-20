@@ -1,57 +1,62 @@
 @prefix sbol_3
 
-Location(type, sequence, orientation) 
+Location(type, sequence) 
 (
   Identified(type)
   sbol_3.<sequence> = sequence
-  sbol_3.<orientation> = orientation
 )
 
-Range(sequence, start, end, orientation)
+Range(sequence, start, end)
 (
-  Location(Range, sequence, orientation)
+  Location(Range, sequence)
   sbol_3.<start> = start
   sbol_3.<end> = end
 )
 
 InlineRange(sequence, start, end)
 (
-  Range(sequence, start, end, i_inline)
+  Range(sequence, start, end)
+  sbol_3.<orientation> = i_inline
 )
 
 ReverseComplementRange(sequence, start, end)
 (
-  Range(sequence, start, end, i_reverseComplement)
+  Range(sequence, start, end)
+  sbol_3.<orientation> = i_reverseComplement
 )
 
-Cut(sequence, at, orientation)
+Cut(sequence, at)
 (
-  Location(Cut, sequence, orientation)
+  Location(Cut, sequence)
   sbol.<at> = at
 )
 
 InlineCut(sequence, at)
 (
-  Cut(sequence, at, i_inline)
+  Cut(sequence, at)
+  sbol_3.<orientation> = i_inline
 )
 
 ReverseComplementCut(sequence, at)
 (
-  Cut(sequence, at, i_reverseComplement)
+  Cut(sequence, at)
+  sbol_3.<orientation> = i_reverseComplement
 )
 
-EntireSequence(sequence, orientation) 
+EntireSequence(sequence) 
 (
-  Location(EntireSequence, sequence, orientation)
+  Location(EntireSequence, sequence)
 )
 
-InlineEntireSequence(sequence, orientation)
+InlineEntireSequence(sequence)
 (
-  EntireSequence(sequence, i_inline)
+  EntireSequence(sequence)
+  sbol_3.<orientation> = i_inline
 )
 
 ReverseComplementEntireSequence(sequence, orientation)
 (
-  EntireSequence(sequence, i_reverseComplement)
+  EntireSequence(sequence)
+  sbol_3.<orientation> = i_reverseComplement
 )
 

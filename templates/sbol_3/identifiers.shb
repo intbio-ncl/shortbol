@@ -3,13 +3,13 @@
 
 
 # (ComponentDefinition) type
-i_DNA = <http://www.biopax.org/release/biopax-level3.owl#Dna>
-i_DNARegion = <http://www.biopax.org/release/biopax-level3.owl#DnaRegion>
-i_DNA = <http://www.biopax.org/release/biopax-level3.owl#Rna>
-i_DNARegion = <http://www.biopax.org/release/biopax-level3.owl#RnaRegion>
-i_protein = <http://www.biopax.org/release/biopax-level3.owl#Protein>
-i_smallMolecule = <http://www.biopax.org/release/biopax-level3.owl#SmallMolecule>
-i_complex = <http://www.biopax.org/release/biopax-level3.owl#Complex>
+i_DNA = <https://identifiers.org/SBO:0000251>
+i_RNA = <https://identifiers.org/SBO:SBO:0000250>
+i_protein = <https://identifiers.org/SBO:0000252>
+i_smallMolecule = <https://identifiers.org/SBO:0000247>
+i_complex = <https://identifiers.org/SBO:0000253>
+i_functionalEntity = <https://identifiers.org/SBO:0000241>
+
 
 
 # (ComponentDefinition) role
@@ -64,17 +64,29 @@ i_genetic_production = <http://identifiers.org/biomodels.sbo/SBO:0000589>
 i_control = <http://identifiers.org/biomodels.sbo/SBO:0000168>
 
 # (Sequence) encoding
-i_iupacDNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
-i_iupacRNA = <http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html>
-i_iupacProtein = <http://www.chem.qmul.ac.uk/iupac/AminoAcid/>
-i_opensmilesSMILES = <http://www.opensmiles.org/opensmiles.html>
+i_iupacDNA = <https://sbols.org/v3#iupacNucleicAcid>
+i_iupacRNA = <https://sbols.org/v3#iupacNucleicAcid>
+i_iupacProtein = <https://sbols.org/v3#iupacAminoAcid>
+i_opensmilesSMILES = <http://opensmiles.org/opensmiles.html>
 
 
-# (SequenceConstraint) restriction
+# (Constraint) restriction
 i_precedes = <http://sbols.org/v3#precedes>
+i_strictlyPrecedes = <http://sbols.org/v3#strictlyPrecedes>
+i_meets = <http://sbols.org/v3#meets>
+i_overlaps = <http://sbols.org/v3#overlaps>
+i_contains = <http://sbols.org/v3#contains>
+i_strictlyContains = <http://sbols.org/v3#strictlyContains>
+i_equals = <http://sbols.org/v3#equals>
+i_finishes = <http://sbols.org/v3#finishes>
+i_starts = <http://sbols.org/v3#starts>
+i_isDisjointFrom = <http://sbols.org/v3#isDisjointFrom>
+i_covers = <http://sbols.org/v3#covers>
+i_verifyIdentical  = <http://sbols.org/v3#verifyIdentical>
+i_differentFrom = <http://sbols.org/v3#differentFrom>
+i_replaces = <http://sbols.org/v3#replaces>
 i_sameOrientationAs = <http://sbols.org/v3#sameOrientationAs>
 i_oppositeOrientationAs = <http://sbols.org/v3#oppositeOrientationAs>
-i_differentFrom = <http://sbols.org/v3#differentFrom>
 
 
 # (Model) language

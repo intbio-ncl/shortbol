@@ -65,6 +65,11 @@ Complex()
   Component(i_complex)
 )
 
+FunctionalEntity()
+(
+  Component(i_functionalEntity)
+)
+
 # Common DNA components
 
 Promoter()
@@ -97,16 +102,45 @@ Operator()
   sbol_3.role = i_operator
 )
 
+EngineeredGene()
+(
+  DNAComponent()
+  sbol_3.role = i_engineeredRegion
+)
+
 # Common RNA components
+
+mRNA()
+(
+  RNAComponent()
+  sbol_3.role = i_mRNA
+)
 
 CDS_RNA()
 (
   RNAComponent()
   sbol_3.role = i_cds
 )
-
-SGRNA()
+ 
+sgRNA()
 (
   RNAComponent()
   sbol_3.role = i_sgRNA
 )
+
+# Common Small Molecule components
+
+Effector()
+(
+  SmallMolecule()
+  sbol_3.role = i_effector
+)
+
+# Common Protein components
+
+TranscriptionFactor()
+(
+  ProteinComponent()
+  sbol_3.role = i_transcriptionFactor
+)
+

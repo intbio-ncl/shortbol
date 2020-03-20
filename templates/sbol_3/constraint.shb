@@ -1,32 +1,92 @@
 @prefix sbol_3
 
 
-Constraint(componentInstance_subject, componentInstance_object, restriction)
+Constraint(feature_subject, feature_object, restriction)
 (
   Identified(Constraint)
-  subject = componentInstance_subject
-  object = componentInstance_object
+  subject = feature_subject
+  object = feature_object
   sbol_3.<restriction> = restriction
 )
 
-Precedes(componentInstance_subject, componentInstance_object)              
+Precedes(feature_subject, feature_object)              
 (
-  Constraint(componentInstance_subject, componentInstance_object, i_precedes)
+  Constraint(feature_subject, feature_object, i_precedes)
 )
 
-SameOrientationAs(componentInstance_subject, componentInstance_object)     
+StrictlyPrecedes(feature_subject, feature_object)              
 (
-  Constraint(componentInstance_subject, componentInstance_object, i_sameOrientationAs)
+  Constraint(feature_subject, feature_object, i_strictlyPrecedes)
 )
 
-OppositeOrientationAs(componentInstance_subject, componentInstance_object) 
+Meets(feature_subject, feature_object)              
 (
-  Constraint(componentInstance_subject, componentInstance_object, i_oppositeOrientationAs)
+  Constraint(feature_subject, feature_object, i_meets)
 )
 
-DifferentFrom(componentInstance_subject, componentInstance_object)         
+Overlaps(feature_subject, feature_object)              
 (
-  Constraint(componentInstance_subject, componentInstance_object, i_differentFrom)
+  Constraint(feature_subject, feature_object, i_overlaps)
+)
+
+Contains(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_contains)
+)
+
+StrictlyContains(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_strictlyContains)
+)
+
+Equals(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_equals)
+)
+
+Finishes(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_finishes)
+)
+
+Starts(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_starts)
+)
+
+IsDisjointFrom(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_isDisjointFrom)
+)
+
+Covers(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_covers)
+)
+
+VerifyIdentical(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_verifyIdentical)
+)
+
+Replaces(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_replaces)
+)
+
+SameOrientationAs(feature_subject, feature_object)     
+(
+  Constraint(feature_subject, feature_object, i_sameOrientationAs)
+)
+
+OppositeOrientationAs(feature_subject, feature_object) 
+(
+  Constraint(feature_subject, feature_object, i_oppositeOrientationAs)
+)
+
+DifferentFrom(feature_subject, feature_object)         
+(
+  Constraint(feature_subject, feature_object, i_differentFrom)
 )
 
 

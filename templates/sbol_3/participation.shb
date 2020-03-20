@@ -1,58 +1,58 @@
 @prefix sbol_3
 
-Participation(component, role)
+Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, role)
 (
   Identified(Participation)
   sbol_3.<role> = role
-  participant = component
+  participant = subComponent_localSubComponent_externallydefined_sequenceFeature
 )
 
-Inhibitor(component)
+Inhibitor(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_inhibitor)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_inhibitor)
 )
 
-Inhibited(component)
+Inhibited(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_inhibited)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_inhibited)
 )
 
-Reactant(component)
+Reactant(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_reactant)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_reactant)
 )
 
-Stimulator(component)
+Stimulator(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_stimulator)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_stimulator)
 )
 
-Stimulated(component)
+Stimulated(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_stimulated)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_stimulated)
 )
 
-Product(component)
+Product(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_product)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_product)
 )
 
-ParticipationPromoter(component)
+ParticipationPromoter(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component, i_promoter_t)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, i_promoter_t)
 )
 
-Modifier(component)
+Modifier(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component, i_modifier)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, i_modifier)
 )
 
-Modified(component)
+Modified(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_modified)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_modified)
 )
 
-Template(component)
+Template(subComponent_localSubComponent_externallydefined_sequenceFeature)
 (
-  Participation(component,i_template)
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_template)
 )

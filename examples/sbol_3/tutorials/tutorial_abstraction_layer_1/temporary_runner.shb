@@ -1,0 +1,67 @@
+use <sbol_3>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+
+
+TetR is a sbol_3.ProteinComponent()
+LacI is a sbol_3.ProteinComponent()
+
+TetR_sc is a sbol_3.SubComponent(TetR)
+LacI_sc is a sbol_3.SubComponent(LacI)
+
+
+TetR_part is a sbol_3.Inhibitor(TetR_sc)
+LacI_part is a sbol_3.Inhibited(LacI_sc)
+
+
+TetRLacI_int is a sbol_3.Inhibition()
+(
+    sbol_3.hasParticipation = TetR_part
+    sbol_3.hasParticipation = LacI_part
+)
+
+
+TetR_inverter is a sbol_3.FunctionalEntity()
+(
+    sbol_3.description =  "TetR inverter"
+    sbol_3.hasInteraction = TetRLacI_int
+)
+
+
+
+
+TetR_map is a sbol_3.ComponentReference(LacI_inverter,TetR_sc)
+(
+    sbol_3.hasFeature = TetR_lacinv_sc
+)
+
+LacI_map is a sbol_3.ComponentReference(LacI_inverter,LacI_sc)
+(
+    sbol_3.hasFeature = LacI_lacinv_sc
+)
+
+
+
+
+TetR_lacinv_sc is a sbol_3.SubComponent(TetR)
+LacI_lacinv_sc is a sbol_3.SubComponent(LacI)
+
+
+LacI_lacinv_part is a sbol_3.Inhibitor(TetR_lacinv_sc)
+TetR_lacinv_part is a sbol_3.Inhibitor(LacI_lacinv_sc)
+
+
+LacITetR_int is a sbol_3.Inhibition()
+(
+    sbol_3.participation = TetR_lacinv_part
+    sbol_3.participation = LacI_lacinv_part
+)
+
+
+LacI_inverter is a sbol_3.FunctionalEntity()
+(
+    sbol_3.description =  "LacI inverter"
+    sbol_3.hasInteraction = LacITetR_int
+)
+
