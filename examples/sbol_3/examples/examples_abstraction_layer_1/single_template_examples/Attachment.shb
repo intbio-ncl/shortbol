@@ -1,0 +1,11 @@
+# Attachments allow reference to non SBOL data.
+# Can be URI's to external or internal resources.
+
+external_attachment is a Attachment("https://www.ncbi.nlm.nih.gov/dbvar")
+internal_attachment is a Attachment("path/to/internal_data.db")
+
+TetR is a DNA()
+(
+  hasAttachment = external_attachment
+  hasAttachment = internal_attachment
+)

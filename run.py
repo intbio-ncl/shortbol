@@ -10,21 +10,20 @@ from validate_sbol import validate_sbol
 
 
 #SBOL Namespace
-sbol_namespace = "use <sbol>"
 f_prefix = "@prefix sbol_prefix"
 f_equals = " = "
 default_prefix = "<http://sbol_prefix.org/>"
 s_prefix = "@prefix "
 sbol_compliant_extension = "@extension SbolIdentity()"
 is_a_template = "is a"
-sbol_dot = "sbol."
+
 
 
 def get_name(line,line_no):
     try:
         name = line.split(is_a_template)[0]
     except IndexError:
-        raise NameError(f"Error Template Declaration on line: {line_no - 2} is malformed.")
+        raise NameError(f"Error Template Declaration on line: {line_no - 5} is malformed.")
     return name
 
 def get_template_type(line,line_no):
@@ -197,16 +196,18 @@ def pre_process(text):
 
     return text
 
-def hacky_conversion(filepath, temp_file, template_dir):
+def hacky_conversion(filepath, temp_file, template_dir,version):
     '''
     This is a hack method that modifies the input if it is not currrently shortbol namespace valid
     '''
-
+    # Check if sbol namespace present. (use <sbol>)
+    global sbol_dot, sbol_namespace
+    sbol_dot = version + "."
+    sbol_namespace = "use <" + version + ">"
     
     with open(filepath, 'r') as original: data = original.read()
     
     split_text = pre_process(data)
-    # Check if sbol namespace present. (use <sbol>)
     if not sbol_namespace in split_text:
         split_text.insert(0,sbol_namespace + "\n")
 
@@ -224,7 +225,7 @@ def hacky_conversion(filepath, temp_file, template_dir):
     shortbol_template_table = set()
     shortbol_identifier_table = set()
 
-    sbol_dir = os.path.join(template_dir,"sbol")
+    sbol_dir = template_dir
     for filename in os.listdir(sbol_dir):
         if os.path.isfile(os.path.join(sbol_dir,filename)): 
             template = open(os.path.join(sbol_dir, filename), "r")
@@ -246,8 +247,8 @@ def hacky_conversion(filepath, temp_file, template_dir):
         else:
             curr_line_num = curr_line_num + 1
            
-    # Check if sbol compliant extension is present @extension SbolIdentity()
-    if not sbol_compliant_extension in split_text:
+    # Check if sbol compliant extension is present @extension SbolIdentity() ~~Hack
+    if not sbol_compliant_extension in split_text and version == "sbol_2":
         split_text.append(sbol_compliant_extension)
         
     with open(temp_file, 'w') as modified:
@@ -262,19 +263,19 @@ def parse_from_file(filepath,
                     optpaths=[],
                     out=None,
                     extensions=[],
-                    debug_lvl=1,
+                    debug_lvl=1, 
+                    version=3,
                     no_validation = None,
                     no_hack = None):
     
     if len(optpaths) == 0:
         optpaths.append("templates")
-    template_dir = optpaths[0]
-
+    template_dir = os.path.join(optpaths[0], str(version))
     if not no_hack:
         temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.shb")
         if os.path.isfile(temp_file):
             os.remove(temp_file)
-        to_run_fn = hacky_conversion(filepath,temp_file,template_dir)
+        to_run_fn = hacky_conversion(filepath,temp_file,template_dir,str(version))
     else:
         to_run_fn = filepath
 
@@ -341,7 +342,7 @@ def rdf_repl(serializer='nt',
 
     repl.start()
 
-def produce_tables(lib_paths = None):
+def produce_tables(version = "3", lib_paths = None):
     '''
     Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
     process on the templates to produce the symbols and template tables.
@@ -352,9 +353,8 @@ def produce_tables(lib_paths = None):
     else:
         optpaths = [lib_paths]
     to_run_fn = os.path.join(optpaths[0],"temp.shb")
-    print(to_run_fn)
     f= open(to_run_fn,"a")
-    f.write("use <sbol>")
+    f.write("use <" + version + ">")
     f.close()
 
     parser = Parser(filename=to_run_fn, debug_lvl=1)
@@ -390,8 +390,8 @@ def rdfscript_args():
     parser.add_argument('-nv', '--no_validation', help="Stops the output from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('-nh', '--no_hack', help="Stops the hack from modiying the file.", default=None, action='store_true')
     parser.add_argument('-no', '--no_output', help="Stops writing output to file, instead prints to console.", default=None, action='store_true')
-    parser.add_argument('--version', action='version', version='%(prog)s 0.0alpha')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
+    parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["sbol_2","sbol_3"] , default="sbol_3")
 
     parser.add_argument('-d', '--debug-lvl', default=1,
                         choices=[0, 1, 2],
@@ -412,6 +412,7 @@ if __name__ == "__main__":
                         optpaths=args.path,
                         extensions=extensions,
                         debug_lvl=args.debug_lvl,
+                        version=args.version,
                         no_validation = args.no_validation,
                         no_hack = args.no_hack)
     else:

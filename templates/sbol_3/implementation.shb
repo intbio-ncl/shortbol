@@ -1,0 +1,12 @@
+# -- docs-family Layer All start --
+# Name: Implementation
+# Summary: Represents a realized instance of a Component.
+# Description: Implementation bridges the gap between the SBOL and the realised instance of a "thing". Some Examples: DNA resulting from fabricating a genetic design, associated with a laboratory sample that was already built, or that is planned to be built in the future, represent virtual and simulated instances.
+# Usage: Given zero or more Components reference them inside the Implementation.
+# Properties: Template - built - A Component that is intended to describe the actual physical structure and/or functional behavior of the Implementation.
+# -- docstring family end --
+
+Implementation()
+(
+  TopLevel(Implementation)
+)

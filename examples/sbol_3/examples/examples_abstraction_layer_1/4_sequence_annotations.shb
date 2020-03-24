@@ -1,0 +1,61 @@
+# Answer 4
+# The genetic parts of the TetR inverter
+pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+pTetR is a Promoter()
+(
+  sequence = pTetR_seq
+)
+
+lacI_RBS_seq is a DNASequence("aaggaggtg")
+lacI_RBS is a RBS()
+(
+  sequence = lacI_RBS_seq
+)
+
+lacI_CDS_seq is a DNASequence("gtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcag")
+lacI_CDS is a CDS()
+(
+  sequence = lacI_CDS_seq
+)
+
+lacI_term_seq is a DNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+lacI_term is a Terminator()
+(
+  sequence = lacI_term_seq
+)
+
+
+#Specify the range for each part
+pTetR_loc is a InlineRange(pTetR_seq, 1, 55)
+lacI_RBS_loc is a InlineRange(lacI_RBS_seq, 56, 68)
+lacI_CDS_loc is a InlineRange(lacI_CDS_seq, 169, 1197)
+lacI_term_loc is a InlineRange(lacI_term_seq, 1197,1240)
+
+#Build SubComponent for each of the DNAComponents
+pTetR_sc is a SubComponent(pTetR)
+(
+  hasLocation = pTetR_loc
+)
+
+lacI_RBS_sc is a SubComponent(lacI_RBS)
+(
+  hasLocation = lacI_RBS_loc
+)
+
+lacI_CDS_sc is a SubComponent(lacI_CDS)
+(
+  hasLocation = lacI_CDS_loc
+)
+
+lacI_term_sc is a SubComponent(lacI_term)
+(
+  hasLocation = lacI_term_loc
+)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = pTetR_sc
+  hasFeature = lacI_RBS_sc
+  hasFeature = lacI_CDS_sc
+  hasFeature = lacI_term_sc
+)

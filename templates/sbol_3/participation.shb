@@ -1,0 +1,66 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: Participation
+# Summary: Participants to an Interaction.
+# Description: How a particular Feature behaves in its parent Interaction.
+# Usage: Given a Feature and a participant type add this to the participant property of a Interaction.
+# Parameters: Template - Feature - Participating Feature, Identifier - role - Describes the behavior of the Participation.
+# -- docstring family end --
+
+Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, role)
+(
+  Identified(Participation)
+  sbol_3.<role> = role
+  participant = subComponent_localSubComponent_externallydefined_sequenceFeature
+)
+
+Inhibitor(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_inhibitor)
+)
+
+Inhibited(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_inhibited)
+)
+
+Reactant(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_reactant)
+)
+
+Stimulator(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_stimulator)
+)
+
+Stimulated(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_stimulated)
+)
+
+Product(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_product)
+)
+
+ParticipationPromoter(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, i_promoter_t)
+)
+
+Modifier(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, i_modifier)
+)
+
+Modified(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_modified)
+)
+
+Template(subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Participation(subComponent_localSubComponent_externallydefined_sequenceFeature,i_template)
+)

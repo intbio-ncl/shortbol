@@ -1,0 +1,51 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: Interaction
+# Summary: How Features interact with one another within a design. 
+# Description: A description of how Features within a design interact/work together. Uses Participation objects as an intermediate template to describe the role of each input/output.
+# Usage: Given participant templates assign to the interaction properties of ModuleDefinition.
+# Parameters: Identifier - type - Describes the behavior represented by the Interaction. 
+# Optional-Parameters: optional-n (participations): each of which identifies the roles that its referenced Feature plays in the Interaction.
+# -- docs-family end --
+
+Interaction(type)
+(
+  Identified(Interaction)
+  sbol_3.<type> = type
+)
+
+Inhibition()
+(
+  Interaction(i_inhibition)
+)
+
+Stimulation()
+(
+  Interaction(i_stimulation)
+)
+
+BiochemicalReaction()
+(
+  Interaction(i_biochemical_reaction)
+)
+
+NoncovalentBonding()
+(
+    Interaction(i_noncovalent_bonding)
+)
+
+Degradation()
+(
+  Interaction(i_degradation)
+)
+
+GeneticProduction()
+(
+  Interaction(i_genetic_production)
+)
+
+Control()
+(
+  Interaction(i_control)
+)

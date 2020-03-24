@@ -1,0 +1,11 @@
+# -- docs-family Layer All start --
+# Name: ExperimentalData
+# Summary: Aggregate links to experimental data files.
+# Description: An ExperimentalData is typically associated with a single sample, lab instrument, or experimental condition and can be used to describe the output of the test phase of a design-build-test-learn workflow.
+# Usage: Aggregates links to experimental data files using the hasAttachment property.
+# -- docstring family end --
+
+ExperimentalData()
+(
+  TopLevel(ExperimentalData)
+)

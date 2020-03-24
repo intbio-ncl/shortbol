@@ -1,0 +1,6 @@
+@prefix sbol_3
+
+TopLevel(type)
+(
+  Identified(type)
+)

@@ -1,0 +1,12 @@
+# Where ExperimentalData captures a specific "thing" of an Experiment,
+# The Experiment template collects there templates for a larger Experiment.
+# Currently it is required to input one ExperimentalData as a parameter and the rest as a 
+# Property this is due to language limiations (see https://github.com/intbio-ncl/shortbol/issues/6 )
+
+b_subtilis_pcr_input is a ExperimentalData()
+b_subtilis_pcr_output is a ExperimentalData()
+
+b_subtilis_pathway_optimisation_test is a Experiment(b_subtilis_pcr_input)
+(
+  member = b_subtilis_pcr_output
+)
