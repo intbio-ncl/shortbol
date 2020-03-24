@@ -31,9 +31,9 @@ class TestRegression(unittest.TestCase):
                     continue
                 if name.endswith(".shb") or name.endswith(".txt"):
                     if "sbol_3" in path:
-                        version = "3"
+                        version = "sbol_3"
                     else:
-                        version = "2"
+                        version = "sbol_2"
                     file_to_run = os.path.join(path, name)
                     short_fn = file_to_run.split("\\")
                     short_fn = "/".join(short_fn[len(short_fn) - 2 : ])
