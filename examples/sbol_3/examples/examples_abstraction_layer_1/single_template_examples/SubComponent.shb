@@ -1,0 +1,15 @@
+# Example Creates a SubComponent of a Component
+# Where a Component can be thought of as a blueprint
+# The SubComponent can be thought of as the implementation 
+# of said blueprint.
+# SubComponents are designed to be a physcial 
+# part of a larger blueprint (Component).
+
+pTetR is a Promoter()
+
+pTetR_c is a SubComponent(pTetR)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = pTetR_c
+)

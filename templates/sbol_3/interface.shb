@@ -1,0 +1,12 @@
+# -- docs-family Layer All start --
+# Name: Interface
+# Summary: Specifying the interface of a Component. 
+# Description: The Interface template allows direction to be added to a Component. Such as Inputs, Outputs or NoneDirectional.
+# Usage: Given zero or more Features set the directional properties and set as a reference from the Component.
+# Properties: Template - Input - Zero or more features denoting Inputs to the Component, Template - Output - Zero or more features denoting Outputs to the Component, Template - NoneDirectional - Zero or more features denoting no flow inside the Component
+# -- docstring family end --
+
+Interface()
+(
+  Identified(Interface)
+)

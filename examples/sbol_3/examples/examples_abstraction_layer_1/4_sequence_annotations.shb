@@ -1,6 +1,5 @@
 # Answer 4
 # The genetic parts of the TetR inverter
-
 pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
 pTetR is a Promoter()
 (
@@ -26,46 +25,37 @@ lacI_term is a Terminator()
 )
 
 
-#Build components for each of the DNAComponents
-pTetR_c is a Component(pTetR)
-lacI_RBS_c is a Component(lacI_RBS)
-lacI_CDS_c is a Component(lacI_CDS)
-lacI_term_c is a Component(lacI_term)
-
 #Specify the range for each part
-pTetR_loc is a InlineRange(1,55)
-lacI_RBS_loc is a InlineRange(56,68)
-lacI_CDS_loc is a InlineRange(169,1197)
-lacI_term_loc is a InlineRange(1197,1240)
+pTetR_loc is a InlineRange(pTetR_seq, 1, 55)
+lacI_RBS_loc is a InlineRange(lacI_RBS_seq, 56, 68)
+lacI_CDS_loc is a InlineRange(lacI_CDS_seq, 169, 1197)
+lacI_term_loc is a InlineRange(lacI_term_seq, 1197,1240)
 
-pTetR_sa is a SequenceAnnotation(pTetR_loc)
+#Build SubComponent for each of the DNAComponents
+pTetR_sc is a SubComponent(pTetR)
 (
-	component = pTetR_c
-)
-lacI_RBS_sa is a SequenceAnnotation(lacI_RBS_loc)
-(
-	component = lacI_RBS_c
-)
-lacI_CDS_sa is a SequenceAnnotation(lacI_CDS_loc)
-(
-	component = lacI_CDS_c
-)
-lacI_term_sa is a SequenceAnnotation(lacI_term_loc)
-(
-	component = lacI_term_c
+  hasLocation = pTetR_loc
 )
 
-tetRInverter is a DNAComponent()
+lacI_RBS_sc is a SubComponent(lacI_RBS)
 (
-  # include the child components
-  component = pTetR_c
-  component = lacI_RBS_c
-  component = lacI_CDS_c
-  component = lacI_term_c
+  hasLocation = lacI_RBS_loc
+)
 
-  # absolute positions of child components
-  sequenceAnnotation = pTetR_sa
-  sequenceAnnotation = lacI_RBS_sa
-  sequenceAnnotation = lacI_CDS_sa
-  sequenceAnnotation = lacI_term_sa
+lacI_CDS_sc is a SubComponent(lacI_CDS)
+(
+  hasLocation = lacI_CDS_loc
+)
+
+lacI_term_sc is a SubComponent(lacI_term)
+(
+  hasLocation = lacI_term_loc
+)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = pTetR_sc
+  hasFeature = lacI_RBS_sc
+  hasFeature = lacI_CDS_sc
+  hasFeature = lacI_term_sc
 )

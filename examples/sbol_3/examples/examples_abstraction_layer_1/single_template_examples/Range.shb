@@ -1,6 +1,5 @@
-# Range can be defined with a Component that has or 
-# does not have a Sequence Associated with it.
-# Range can only ever be provided to a SequenceAnnotation.
+# Range can be defined with a Feature that has a Sequence Associated with it.
+# Range must be defined only within a Feature.
 # The two ranges although written differently are functionally identicial.
 
 pTetR is a Promoter()
@@ -8,28 +7,19 @@ pTetR is a Promoter()
 lacI_RBS_seq is a DNASequence("aaggaggtg")
 lacI_RBS is a RBS()
 (
-  sequence = lacI_RBS_seq
+  hasSequence = lacI_RBS_seq
 )
 
-pTetR_c is a Component(pTetR)
-lacI_RBS_c is a Component(lacI_RBS)
+pTetR_range_1 is a InlineRange(lacI_RBS_seq, 1, 5)
+pTetR_range_2 is a Cut(lacI_RBS_seq, 56, i_inline)
 
-pTetR_range is a InlineCut(1)
-lacI_RBS_range is a Cut(56,i_inline)
-
-pTetR_sa is a SequenceAnnotation(pTetR_range)
+pTetR_sc is a SubComponent(pTetR)
 (
-	component = pTetR_c
-)
-lacI_RBS_sa is a SequenceAnnotation(lacI_RBS_range)
-(
-	component = lacI_RBS_c
+  hasLocation = pTetR_range_1
+  hasLocation = pTetR_range_2
 )
 
-tetRInverter is a DNAComponent()
+tetRInverter is a FunctionalEntity()
 (
-  component = pTetR_c
-  component = lacI_RBS_c
-  sequenceAnnotation = pTetR_sa
-  sequenceAnnotation = lacI_RBS_sa
+  hasFeature = pTetR_sc
 )

@@ -1,10 +1,18 @@
-# Example Creates a Component of a ComponentDefinition and
-# Adds this to another ComponentDefinition as a sub component.
+# Creates Four Components.
+# Components can be thought as blueprints.
+# It can be noted that the two RBS Components 
+# although written differently are functionally the identical.
 pTetR is a Promoter()
-
-pTetR_c is a Component(pTetR)
-
-tetRInverter is a DNAComponent()
 (
-  component = pTetR_c
+  	description = "pTet promoter"
 )
+
+lacI_CDS is a CDS()
+
+lacI_RBS is a RBS()
+lacI_RBS_2 is a Component(i_DNA)
+(
+    role = i_rbs
+)
+
+lacI_term is a Terminator()

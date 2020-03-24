@@ -1,5 +1,13 @@
 @prefix sbol_3
 
+# -- docs-family Layer 1 start --
+# Name: Sequence
+# Summary: Structure in Sequence format of parts of a design.
+# Description: Represent the primary structure of a Component object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") create a instance of a Sequence and add to the sequence property of a Component.
+# Parameters: String - elements - Characters that represents the constituents of a biological or chemical molecule,  Identifier - encoding - URI to indicate how the elements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
 Sequence(elements, encoding)
 (
   TopLevel(Sequence)

@@ -1,31 +1,27 @@
-# The role of FunctionalComponents in
-# interactions.
-# Any number of Participants can be added to an
-# Interaction.
+# The role of a Feature in interactions.
+# Any number of Participants can be added to an Interaction.
+
 
 cas9_generic is a Protein()
-gRNA_generic is a SGRNA()
+gRNA_generic is a sgRNA()
 LacI is a DNA()
 
-cas9_generic_fc is a InOutComponent(cas9_generic)
-gRNA_generic_fc is a InOutComponent(gRNA_generic)
-LacI_fc is a InOutComponent(LacI)
+cas9_generic_sc is a SubComponent(cas9_generic)
+gRNA_generic_sc is a SubComponent(gRNA_generic)
+LacI_sc is a SubComponent(LacI)
 
-cas9_generic_part is a Inhibitor(cas9_generic_fc)
-gRNA_generic_part is a Inhibited(gRNA_generic_fc)
-LacI_part is a Inhibited(LacI_fc)
+cas9_generic_part is a Inhibitor(cas9_generic_sc)
+gRNA_generic_part is a Inhibited(gRNA_generic_sc)
+LacI_part is a Inhibited(LacI_sc)
 
 cas9_gRNA_int is a Inhibition()
 (
-	participation = cas9_generic_part
-	participation = gRNA_generic_part	
-    participation = LacI_part
+	hasParticipation = cas9_generic_part
+	hasParticipation = gRNA_generic_part	
+    hasParticipation = LacI_part
 )
 
-mod is a ModuleDefinition()
+entity is a FunctionalEntity()
 (
-    functionalComponent = cas9_generic_fc
-    functionalComponent = gRNA_generic_fc
-    functionalComponent = LacI_fc
-    interaction = cas9_gRNA_int
+    hasInteraction = cas9_gRNA_int
 )

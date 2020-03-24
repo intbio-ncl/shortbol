@@ -2,7 +2,7 @@
 @prefix sbol_3
 
 
-# (ComponentDefinition) type
+# (Component) type
 i_DNA = <https://identifiers.org/SBO:0000251>
 i_RNA = <https://identifiers.org/SBO:SBO:0000250>
 i_protein = <https://identifiers.org/SBO:0000252>
@@ -12,7 +12,7 @@ i_functionalEntity = <https://identifiers.org/SBO:0000241>
 
 
 
-# (ComponentDefinition) role
+# (Component) role
 i_promoter       = <http://identifiers.org/so/SO:0000167>
 i_rbs            = <http://identifiers.org/so/SO:0000139>
 i_cds            = <http://identifiers.org/so/SO:0000316>
@@ -33,13 +33,6 @@ i_transcriptionFactor = <http://identifiers.org/go/GO:0003700>
 # (Range,Cut,GenericLocation) orientation
 i_inline = <http://sbols.org/v3#inline>
 i_reverseComplement = <http://sbols.org/v3#reverseComplement>
-
-# (FunctionalComponent) direction
-i_in = <http://sbols.org/v3#in>
-i_out = <http://sbols.org/v3#out>
-i_inout = <http://sbols.org/v3#inout> 
-i_none = <http://sbols.org/v3#none>
-
 
 # (Participation) role
 i_inhibitor = <http://identifiers.org/biomodels.sbo/SBO:0000020>
@@ -104,3 +97,10 @@ i_useRemote = <http://sbols.org/v3#useRemote>
 i_useLocal = <http://sbols.org/v3#useLocal> 
 i_verifyIdentical  = <http://sbols.org/v3#verifyIdentical>
 i_merge = <http://sbols.org/v3#merge> 
+
+
+# (VariableComponent) cardinality
+i_zeroOrOne = <http://sbols.org/v2#zeroOrOne> 
+i_one = <http://sbols.org/v2#one>
+i_zeroOrMore = <http://sbols.org/v2#zeroOrMore>
+i_oneOrMore = <http://sbols.org/v2#oneOrMore>

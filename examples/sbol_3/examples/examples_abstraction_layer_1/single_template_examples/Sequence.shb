@@ -1,20 +1,20 @@
 # Sequences arent only DNA.
-# One template can be applied to
-# more than one ComponentDefinitions.
+# One template can be applied to more than one Component.
+# When there is two distinct components with the same sequence.
 
 pTetR_seq is a DNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
 pTetR is a Promoter()
 (
-  sequence = pTetR_seq
+  hasSequence = pTetR_seq
 )
 
 lacI_RBS is a RBS()
 (
-  sequence = pTetR_seq
+  hasSequence = pTetR_seq
 )
 
 haemo_seq is a ProteinSequence("AUG")
 protein is a Protein()
 (
-  sequence = haemo_seq
+  hasSequence = haemo_seq
 )

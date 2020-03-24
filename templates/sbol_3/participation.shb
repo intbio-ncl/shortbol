@@ -1,5 +1,13 @@
 @prefix sbol_3
 
+# -- docs-family Layer 1 start --
+# Name: Participation
+# Summary: Participants to an Interaction.
+# Description: How a particular Feature behaves in its parent Interaction.
+# Usage: Given a Feature and a participant type add this to the participant property of a Interaction.
+# Parameters: Template - Feature - Participating Feature, Identifier - role - Describes the behavior of the Participation.
+# -- docstring family end --
+
 Participation(subComponent_localSubComponent_externallydefined_sequenceFeature, role)
 (
   Identified(Participation)

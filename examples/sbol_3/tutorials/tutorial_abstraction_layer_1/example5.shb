@@ -26,16 +26,8 @@ TetR_inverter is a FunctionalEntity()
 
 
 
-#The toggle switch module
-TetR_map is a ComponentReference(LacI_inverter,TetR_sc)
-(
-  hasFeature = TetR_lacinv_sc
-)
-
-LacI_map is a ComponentReference(LacI_inverter,LacI_sc)
-(
-  hasFeature = LacI_lacinv_sc
-)
+TetR_map is a ComponentReference(TetR_lacinv_sc,TetR_sc)
+LacI_map is a ComponentReference(LacI_lacinv_sc,LacI_sc)
 
 
 
@@ -59,4 +51,6 @@ LacI_inverter is a FunctionalEntity()
 (
   description = "LacI inverter"
   hasInteraction = LacITetR_int
+  hasFeature = TetR_map
+  hasFeature = LacI_map
 )

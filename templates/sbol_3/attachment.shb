@@ -1,0 +1,15 @@
+@prefix sbol_3
+
+# -- docs-family Layer All start --
+# Name: Attachment
+# Summary: A general container for Data.
+# Description: Serve as a general container for data files, especially experimental data files. It provides a means for linking files and metadata to SBOL designs.
+# Usage: Given a source file reference the Attachment in any TopLevel template.
+# Parameters: URI - source - a URI reference to the source file. 
+# -- docstring family end --
+
+Attachment(source)
+(
+  TopLevel(Attachment)
+  sbol_3.<source> = source
+)

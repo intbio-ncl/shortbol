@@ -14,7 +14,7 @@ f_prefix = "@prefix sbol_prefix"
 f_equals = " = "
 default_prefix = "<http://sbol_prefix.org/>"
 s_prefix = "@prefix "
-sbol_compliant_extension = "" #"@extension SbolIdentity()"
+sbol_compliant_extension = "@extension SbolIdentity()"
 is_a_template = "is a"
 
 
@@ -197,8 +197,8 @@ def hacky_conversion(filepath, temp_file, template_dir,version):
     '''
     # Check if sbol namespace present. (use <sbol>)
     global sbol_dot, sbol_namespace
-    sbol_dot = "sbol_" + version + "."
-    sbol_namespace = "use <sbol_" + version + ">"
+    sbol_dot = version + "."
+    sbol_namespace = "use <" + version + ">"
     
     with open(filepath, 'r') as original: data = original.read()
     
@@ -242,8 +242,8 @@ def hacky_conversion(filepath, temp_file, template_dir,version):
         else:
             curr_line_num = curr_line_num + 1
            
-    # Check if sbol compliant extension is present @extension SbolIdentity()
-    if not sbol_compliant_extension in split_text:
+    # Check if sbol compliant extension is present @extension SbolIdentity() ~~Hack
+    if not sbol_compliant_extension in split_text and version == "sbol_2":
         split_text.append(sbol_compliant_extension)
         
     with open(temp_file, 'w') as modified:
@@ -265,12 +265,12 @@ def parse_from_file(filepath,
     
     if len(optpaths) == 0:
         optpaths.append("templates")
-    template_dir = os.path.join(optpaths[0],"sbol_" + version)
+    template_dir = os.path.join(optpaths[0], str(version))
     if not no_hack:
         temp_file = os.path.join(os.path.dirname(filepath), "temporary_runner.shb")
         if os.path.isfile(temp_file):
             os.remove(temp_file)
-        to_run_fn = hacky_conversion(filepath,temp_file,template_dir,version)
+        to_run_fn = hacky_conversion(filepath,temp_file,template_dir,str(version))
     else:
         to_run_fn = filepath
 
@@ -315,7 +315,7 @@ def parse_from_file(filepath,
             o.write(sbol)
     
     if temp_file :
-        pass #os.remove(temp_file)
+        os.remove(temp_file)
     return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
@@ -348,9 +348,8 @@ def produce_tables(version = "3", lib_paths = None):
     else:
         optpaths = [lib_paths]
     to_run_fn = os.path.join(optpaths[0],"temp.shb")
-    print(to_run_fn)
     f= open(to_run_fn,"a")
-    f.write("use <sbol_" + version + ">")
+    f.write("use <" + version + ">")
     f.close()
 
     parser = Parser(filename=to_run_fn, debug_lvl=1)
@@ -387,7 +386,7 @@ def rdfscript_args():
     parser.add_argument('-nh', '--no_hack', help="Stops the hack from modiying the file.", default=None, action='store_true')
     parser.add_argument('-no', '--no_output', help="Stops writing output to file, instead prints to console.", default=None, action='store_true')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
-    parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["2","3"] , default="3")
+    parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["sbol_2","sbol_3"] , default="sbol_3")
 
     parser.add_argument('-d', '--debug-lvl', default=1,
                         choices=[0, 1, 2],

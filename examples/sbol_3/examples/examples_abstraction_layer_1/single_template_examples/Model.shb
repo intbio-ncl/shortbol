@@ -1,12 +1,12 @@
-# Two models are written differently but 
-# functionally identicial.
+# Two models are written differently but functionally identicial.
 
 my_sbml_model is a SBMLModel(https://sbml_model.com,i_continous)
 my_sbml_model_2 is a Model(https://sbml_model.com,i_sbml,i_continous)
-ModuleDef is a ModuleDefinition()
+
+entity is a FunctionalEntity()
 (
-    model = my_sbml_model
-    model = my_sbml_model_2
+    hasModel = my_sbml_model
+    hasModel = my_sbml_model_2
 )
 
 

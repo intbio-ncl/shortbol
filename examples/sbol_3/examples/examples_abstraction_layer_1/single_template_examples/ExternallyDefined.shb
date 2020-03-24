@@ -1,0 +1,14 @@
+# Externally defined is a Feature of a Component 
+# that has been defined externally.
+# This example has a Externally Defined 
+# feature that links to a uniprot record.
+# The two ExternallyDefined templates are functionally identical.
+
+pTetR_c_1 is a ExternallyDefined(i_protein,https://www.uniprot.org/uniprot/P69892)
+pTetR_c_2 is a ExternalProtein(https://www.uniprot.org/uniprot/P69892)
+
+tetRInverter is a DNAComponent()
+(
+  hasFeature = pTetR_c_1
+  hasFeature = pTetR_c_2
+)

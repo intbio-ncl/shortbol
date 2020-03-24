@@ -1,5 +1,12 @@
 @prefix sbol_3
 
+# -- docs-family Layer 1 start --
+# Name: Constraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs of Feature objects contained by the same parent Component.
+# Description: Uses Feature objects as an intermediate object because constraints are on the specific instances of a part.
+# Usage: Given a two Feature objects and restriction type, create a Constraint and add to a the hasConstraint property of a Component.
+# Parameters: Template - Feature - Subject Feature of constraint, Template - Feature - Object Feature of constraint, Identifier - restriction - type of restriction places on the Component.
+# -- docstring family end --
 
 Constraint(feature_subject, feature_object, restriction)
 (

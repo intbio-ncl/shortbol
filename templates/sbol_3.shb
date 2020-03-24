@@ -22,16 +22,22 @@ name = dc.title
 description = dc.description
 wasDerivedFrom = prov.wasDerivedFrom
 
-use <sbol_3/identified>
+use <sbol_3/identiified>
 use <sbol_3/identifiers>
 use <sbol_3/toplevel>
 use <sbol_3/component>
 use <sbol_3/constraint>
 use <sbol_3/feature>
 use <sbol_3/location>
-use <sbol_3/mapsto>
 use <sbol_3/participation>
 use <sbol_3/sequence>
-use <sbol_3/sequence_annotation>
 use <sbol_3/interaction>
-use <sbol_3/to_implement>
+use <sbol_3/attachment>
+use <sbol_3/collection>
+use <sbol_3/experimentalData>
+use <sbol_3/experiment>
+use <sbol_3/implementation>
+use <sbol_3/interface>
+use <sbol_3/variableComponent>
+use <sbol_3/combinatorialDerivation>
+use <sbol_3/model>

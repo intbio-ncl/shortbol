@@ -6,6 +6,14 @@ Location(type, sequence)
   sbol_3.<sequence> = sequence
 )
 
+# -- docs-family Layer All start --
+# Name: Range
+# Summary: Regions of a Sequence.
+# Description: Specifies a region via discrete, inclusive start and end positions that correspond to indices for characters in the elements of a Sequence.
+# Usage: Given a start and end value create Range and add to hasLocation property of a Feature.
+# Parameters:  Template - sequence - The Sequence Template pertaining to the Range, Integer - start - integer value stating start of Range on the sequence., Integer - end - integer value stating end of Range on the sequence.
+# -- docstring family end --
+
 Range(sequence, start, end)
 (
   Location(Range, sequence)
@@ -25,6 +33,14 @@ ReverseComplementRange(sequence, start, end)
   sbol_3.<orientation> = i_reverseComplement
 )
 
+# -- docs-family Layer All start --
+# Name: Cut
+# Summary: Cut a Sequence.
+# Description: Specifies a single point via discrete, integer value  indices for characters in the elements of a Sequence.
+# Usage: Given at value create Cut and add to hasLocation property of a Feature.
+# Parameters:  Template - sequence - The Sequence Template which the cut is on, Integer - at - integer value the location of cut on the sequence.
+# -- docstring family end --
+
 Cut(sequence, at)
 (
   Location(Cut, sequence)
@@ -42,6 +58,14 @@ ReverseComplementCut(sequence, at)
   Cut(sequence, at)
   sbol_3.<orientation> = i_reverseComplement
 )
+
+
+# -- docs-family Layer All start --
+# Name: EntireSequence
+# Summary: The full Sequence.
+# Description: Indicates that the linked Sequence describes the entirety of the Component or Feature parent of this Location object.
+# Usage: Given this template add to hasLocation property of a Feature.
+# -- docstring family end --
 
 EntireSequence(sequence) 
 (

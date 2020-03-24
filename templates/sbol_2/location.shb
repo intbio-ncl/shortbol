@@ -33,9 +33,9 @@ ReverseComplementRange(start, end)
 
 # -- docs-family Layer All start --
 # Name: Cut
-# Summary: Regions of a Sequence.
-# Description: Specifies a region via discrete, inclusive start and end positions that correspond to indices for characters in the elements of a Sequence.
-# Usage: Given a start and end value create Range and add to location property of a SequenceAnnotation.
+# Summary: Cut a Sequence.
+# Description: Specifies a single point via discrete, integer value  indices for characters in the elements of a Sequence.
+# Usage: Given at value create Cut and add to location property of a SequenceAnnotation.
 # Parameters:  Integer - at - integer value the location of cut on the sequence.
 # -- docstring family end --
 

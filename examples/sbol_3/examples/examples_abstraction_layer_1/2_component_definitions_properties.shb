@@ -12,12 +12,14 @@ lacI_CDS is a CDS()
 	name = "lacI"
 	description = "LacI protein coding region"
 )
+
 # Declare a RBS named lacI_RBS
 lacI_RBS is a RBS()
 (
 	name = "lacI_RBS"
 	description = "RBS for the lacI CDS"
 )
+
 # Declare a terminator named lacI_term
 lacI_term is a Terminator()
 (

@@ -66,6 +66,32 @@ ExternallyDefined(type, definition)
   sbol_3.<definition> = definition
 )
 
+ExternalDNA(definition)
+(
+  ExternallyDefined(i_DNA,definition)
+)
+
+ExternalRNA(definition)
+(
+  ExternallyDefined(i_RNA,definition)
+)
+
+ExternalProtein(definition)
+(
+  ExternallyDefined(i_protein,definition)
+)
+
+ExternalSmallMolecule(definition)
+(
+  ExternallyDefined(i_smallMolecule,definition)
+)
+
+ExternalComplex(definition)
+(
+  ExternallyDefined(i_complex,definition)
+)
+
+
 # -- docs-family Layer 1 start --
 # Name: SequenceFeature
 # Summary: Annotations for a Sequence.

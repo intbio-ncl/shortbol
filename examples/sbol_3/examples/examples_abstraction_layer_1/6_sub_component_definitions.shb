@@ -1,11 +1,11 @@
 # The genetic parts of the TetR inverter
 pTetR   	is a Promoter()
 
-pTetR_c is a Component(pTetR)
+pTetR_sc is a SubComponent(pTetR)
 
 # The composite device for the TetR inverter
 tetRInverter is a DNAComponent()
 (
   # include the child components
-  component = pTetR_c
+  hasFeature = pTetR_sc
 )
