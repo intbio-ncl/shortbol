@@ -41,4 +41,42 @@ ChemicalStructure(elements)
 )
 
 
+# -- docs-family Layer 2 start --
+# Name: hasSequence
+# Summary: Structure in Sequence format of parts of a design. 
+# Description: Represent the primary structure of a Physical Part. Represent the primary structure of Component object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") define the hasSequence inside a Component.
+# Parameters:  String - elements - Characters that represents the constituents of a biological or chemical molecule, Identifier - encoding - URI to indicate how theelements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
 
+hasSequence(elements, encoding)
+(
+    sequence = self._sequence
+    self._sequence is a Sequence(elements,encoding)
+)
+
+hasDNASequence(elements)
+(
+  hasSequence(elements,i_iupacDNA)
+)
+
+hasDNASeq(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+hasRNASequence(elements)
+(
+  hasSequence(elements,i_iupacDNA)
+)
+
+
+hasProteinSequence(elements)   
+(
+    hasSequence(elements,i_iupacProtein)
+)
+
+hasChemicalStructure(elements) 
+(
+    hasSequence(elements,i_opensmilesSMILES)
+)

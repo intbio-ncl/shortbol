@@ -1,0 +1,9 @@
+# Two seperate models.
+# SBML + CELLML model.
+entity is a FunctionalEntity()
+(
+  hasSBMLModel(https://sbml_model.com,i_continous)
+  hasCellMLModel(https://cell_ml_model.com,i_continous)
+)
+
+

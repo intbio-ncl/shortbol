@@ -34,3 +34,10 @@ use <sbol_2/participation>
 use <sbol_2/sequence>
 use <sbol_2/interaction>
 use <sbol_2/moduledefinition>
+use <sbol_2/variableComponent>
+use <sbol_2/combinatorialDerivation>
+use <sbol_2/experiment>
+use <sbol_2/experimentalData>
+use <sbol_2/attachment>
+use <sbol_2/collection>
+use <sbol_2/implementation>

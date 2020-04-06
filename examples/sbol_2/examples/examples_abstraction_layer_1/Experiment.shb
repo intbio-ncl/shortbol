@@ -1,0 +1,11 @@
+# Where ExperimentalData captures a specific "thing" of an Experiment,
+# The Experiment template collects there templates for a larger Experiment.
+
+b_subtilis_pcr_input is a ExperimentalData()
+b_subtilis_pcr_output is a ExperimentalData()
+
+b_subtilis_pathway_optimisation_test is a Experiment()
+(
+  experimentalData = b_subtilis_pcr_input
+  experimentalData = b_subtilis_pcr_output
+)

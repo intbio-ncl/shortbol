@@ -1,3 +1,5 @@
+@prefix sbol_2
+
 # -- docs-family Layer All start --
 # Name: Experiment
 # Summary: Aggregate ExperimentalData.
@@ -5,9 +7,7 @@
 # Usage: Given one or more ExperimentalData objects reference inside this object.
 # Parameters: Template - member - Reference to a ExperimentalData object.
 # -- docstring family end --
-
-Experiment(member)
+Experiment()
 (
   TopLevel(Experiment)
-  sbol_3.<member> = member
 )

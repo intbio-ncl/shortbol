@@ -1,0 +1,9 @@
+# hasSubComponent should only be used in cases like this 
+# where the subComponent is not re-used.
+
+pTetR is a Promoter()
+
+tetRInverter is a FunctionalEntity()
+(
+  hasSubComponent(pTetR)
+)

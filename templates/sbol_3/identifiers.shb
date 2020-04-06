@@ -10,8 +10,6 @@ i_smallMolecule = <https://identifiers.org/SBO:0000247>
 i_complex = <https://identifiers.org/SBO:0000253>
 i_functionalEntity = <https://identifiers.org/SBO:0000241>
 
-
-
 # (Component) role
 i_promoter       = <http://identifiers.org/so/SO:0000167>
 i_rbs            = <http://identifiers.org/so/SO:0000139>
@@ -47,7 +45,7 @@ i_participation_promoter = <http://identifiers.org/biomodels.sbo/SBO:0000598>
 i_template = <http://identifiers.org/biomodels.sbo/SBO:0000645>
 
 
-# (Interaction) type
+# (Interaction,hasInteraction,hasInteraction_1) type
 i_inhibition = <http://identifiers.org/biomodels.sbo/SBO:0000169>
 i_stimulation = <http://identifiers.org/biomodels.sbo/SBO:0000170>
 i_biochemical_reaction = <http://identifiers.org/biomodels.sbo/SBO:0000176>
@@ -56,14 +54,14 @@ i_degradation = <http://identifiers.org/biomodels.sbo/SBO:0000179>
 i_genetic_production = <http://identifiers.org/biomodels.sbo/SBO:0000589>
 i_control = <http://identifiers.org/biomodels.sbo/SBO:0000168>
 
-# (Sequence) encoding
+# (Sequence, hasSequence) encoding
 i_iupacDNA = <https://sbols.org/v3#iupacNucleicAcid>
 i_iupacRNA = <https://sbols.org/v3#iupacNucleicAcid>
 i_iupacProtein = <https://sbols.org/v3#iupacAminoAcid>
 i_opensmilesSMILES = <http://opensmiles.org/opensmiles.html>
 
 
-# (Constraint) restriction
+# (Constraint, hasConstraint) restriction
 i_precedes = <http://sbols.org/v3#precedes>
 i_strictlyPrecedes = <http://sbols.org/v3#strictlyPrecedes>
 i_meets = <http://sbols.org/v3#meets>
@@ -82,22 +80,14 @@ i_sameOrientationAs = <http://sbols.org/v3#sameOrientationAs>
 i_oppositeOrientationAs = <http://sbols.org/v3#oppositeOrientationAs>
 
 
-# (Model) language
+# (Model,hasModel) language
 i_SBML = <http://identifiers.org/edam/format_2585>
 i_CellML = <http://identifiers.org/edam/format_3240>
 i_BioPAX = <http://identifiers.org/edam/format_3156>
 
-# (Model) framework
+# (Model,hasModel) framework
 i_continuous =  <http://identifiers.org/biomodels.sbo/SBO:0000062>
 i_discrete = <http://identifiers.org/biomodels.sbo/SBO:0000063>
-
-
-#  (MapsTo) refinement
-i_useRemote = <http://sbols.org/v3#useRemote>
-i_useLocal = <http://sbols.org/v3#useLocal> 
-i_verifyIdentical  = <http://sbols.org/v3#verifyIdentical>
-i_merge = <http://sbols.org/v3#merge> 
-
 
 # (VariableComponent) cardinality
 i_zeroOrOne = <http://sbols.org/v2#zeroOrOne> 

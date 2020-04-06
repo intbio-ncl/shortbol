@@ -1,0 +1,13 @@
+# Experimental Data is essentially a collection of Attachments
+# That are part of a single "thing".
+# This examples "thing" is a lab instrument inputs (PCR machine) 
+# for a specific experiment using bacillus with an attached robot for automation.
+
+pcr_robot_commands is a Attachment(pcr_commands.csv)
+pcr_input is a Attachment(pcr_sample_input.csv)
+
+b_subtilis_pcr_input is a ExperimentalData()
+(
+  attachment = pcr_robot_commands
+  attachment = pcr_input
+)

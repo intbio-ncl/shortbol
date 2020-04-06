@@ -1,0 +1,12 @@
+# Implementation is to define that a ComponentDefinition has been implemented.
+# This example states that the laci is the physcial report of the laci dna.
+
+laci_synthesised_seq is a DNASequence("ACCCCTG")
+laci_synthesised is a DNA()
+
+laci_implementation is a Implementation()
+(
+  built = laci_synthesised
+)
+
+

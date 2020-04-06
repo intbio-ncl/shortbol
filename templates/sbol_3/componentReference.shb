@@ -1,0 +1,49 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: ComponentReference
+# Summary: Reference Features within SubComponents.
+# Description: When a Feature is part of a SubComponent rather than a Component then this template should be used. This essentially maps a SubComponent and a Feature.
+# Usage: Given a SubComponent and any sub-template of Feature.
+# Parameters: Template - subComponent - subComponent pertaining to sub part, Template - feature - feature of referenced part.
+# -- docstring family end --
+
+ComponentReference(subComponent,subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Feature(ComponentReference)
+  inChildOf = subComponent
+  hasFeature = subComponent_localSubComponent_externallydefined_sequenceFeature
+)
+
+
+# -- docs-family Layer 2 start --
+# Name: hasComponentReference
+# Summary: Reference Features within SubComponents.
+# Description: When a Feature is part of a SubComponent rather than a Component then this template should be used. This essentially maps a SubComponent and a Feature.
+# Usage: Given a SubComponent and any sub-template of Feature.
+# Parameters: Template - subComponent - subComponent pertaining to sub part, Template - feature - feature of referenced part.
+# -- docstring family end --
+hasComponentReference(subComponent,subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  self._.subComponent._references_.subComponent_localSubComponent_externallydefined_sequenceFeature is a ComponentReference(subComponent,subComponent_localSubComponent_externallydefined_sequenceFeature)
+  hasFeature = self._.subComponent._references_.subComponent_localSubComponent_externallydefined_sequenceFeature
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasComponentReference
+# Summary: References a Component within a Component
+# Description: Creates a heirachy is Components. This essentially maps two Components together. Use this when no subComponents are explicitly defined.
+# Usage: Given a two Compoonents define this template inside a Component
+# Parameters: Template - subComponent - subComponent pertaining to sub part, Template - feature - feature of referenced part.
+# -- docstring family end --
+references(referencing_component,referenced_component)
+(
+  referencing_component._sc is a SubComponent(referencing_component)
+  referenced_component._sc is a SubComponent(referenced_component)
+
+  hasFeature = referencing_component._sc
+  hasFeature = referenced_component._sc
+
+  self._.referencing_component._references_.referenced_component is a ComponentReference(referencing_component._sc,referenced_component._sc)
+  hasFeature = self._.referencing_component._references_.referenced_component
+)

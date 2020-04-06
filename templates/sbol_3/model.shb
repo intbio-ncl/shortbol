@@ -30,3 +30,32 @@ BioPAXModel(source, framework)
 (
   Model(source,i_BioPAX,framework)
 )
+
+# -- docs-family Layer 2 start --
+# Name: hasModel
+# Summary: A template to hold external models.
+# Description: Provide additional meta-data to enable better reasoning about the contents of this model.  
+# Usage: Given a URI to a external model, definition of language and framework create template inside a Component.
+# Parameters: URI - source - URI of the external location of the model, Identifier - language - URI that specifies the language in which the model is implemented,  Identifier - framework - URI that specifies the framework in which the modei is implemented.
+# -- docstring family end --
+
+hasModel(source, language, framework)
+(
+  self._.language._model is a Model(source, language, framework)
+  hasModel = self._.language._model
+)
+
+hasSBMLModel(source, framework)
+(
+  hasModel(source,i_SBML,framework)
+)
+
+hasCellMLModel(source, framework)
+(
+  hasModel(source,i_CellML,framework)
+)
+
+hasBioPAXModel(source, framework)
+(
+  hasModel(source,i_BioPAX,framework)
+)

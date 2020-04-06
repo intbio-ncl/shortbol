@@ -1,0 +1,22 @@
+# Interface is designed to add direction to a Component.
+# This example adds direction to laci specifiying that 
+# two features are inputs, one feature output and a one feature
+# that is directionaless.
+
+gene1 is a LocalSubComponent()
+gene2 is a LocalSubComponent()
+gene3 is a LocalSubComponent()
+gene4 is a LocalSubComponent()
+
+laci_interface is a Interface()
+(
+  input = gene1
+  input = gene2
+  output = gene3
+  nondirectional = gene4
+)
+
+laci is a FunctionalEntity()
+(
+  hasInterface = laci_interface
+)

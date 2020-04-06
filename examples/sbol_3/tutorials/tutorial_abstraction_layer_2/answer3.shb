@@ -1,0 +1,9 @@
+lacI_term is a Terminator()
+(
+  hasDNASequence("ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa")
+)
+
+pTetR is a Promoter()
+(
+  hasDNASequence("tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac")
+)

@@ -1,0 +1,86 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: ExternallyDefined
+# Summary: Reference External data.
+# Description: External definitions in databases like CHEBI or UniProt can be referenced. 
+# Usage: a type and a external URI, Create the template and reference within a Component.
+# Parameters: URI - type - Identical to its use in Component. , URI - definition - URI to external data.
+# -- docstring family end --
+
+ExternallyDefined(type, definition)
+(
+  Feature(ExternallyDefined)
+  sbol_3.<type> = type
+  sbol_3.<definition> = definition
+)
+
+ExternalDNA(definition)
+(
+  ExternallyDefined(i_DNA,definition)
+)
+
+ExternalRNA(definition)
+(
+  ExternallyDefined(i_RNA,definition)
+)
+
+ExternalProtein(definition)
+(
+  ExternallyDefined(i_protein,definition)
+)
+
+ExternalSmallMolecule(definition)
+(
+  ExternallyDefined(i_smallMolecule,definition)
+)
+
+ExternalComplex(definition)
+(
+  ExternallyDefined(i_complex,definition)
+)
+
+
+# -- docs-family Layer 2 start --
+# Name: hasExternallyDefined
+# Summary: Reference External data.
+# Description: External definitions in databases like CHEBI or UniProt can be referenced. 
+# Usage: a type and a external URI, Create the template within a Component.
+# Parameters: URI - type - Identical to its use in Component. , URI - definition - URI to external data.
+# -- docstring family end --
+
+hasExternallyDefined(type, definition)
+(
+  self._ed is a ExternallyDefined(type,definition)
+  hasFeature = self._ed
+)
+
+hasExternalDNA(definition)
+(
+  hasExternallyDefined(i_DNA,definition)
+)
+
+hasExternalRNA(definition)
+(
+  hasExternallyDefined(i_RNA,definition)
+)
+
+hasExternalProtein(definition)
+(
+  hasExternallyDefined(i_protein,definition)
+)
+
+hasExternalSmallMolecule(definition)
+(
+  hasExternallyDefined(i_smallMolecule,definition)
+)
+
+hasExternalComplex(definition)
+(
+  hasExternallyDefined(i_complex,definition)
+)
+
+
+
+
+

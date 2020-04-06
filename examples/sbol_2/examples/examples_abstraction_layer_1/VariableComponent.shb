@@ -1,0 +1,61 @@
+# VariableComponents are to be used exclusivley with CombinatorialDerivation.
+# This exampele has a single gene with parts and each part is given as a VariableComponents.
+# The variants are the alternative build parts in the CombinatorialDerivation.
+# These variants can instead be Provided as Collections or other CombinatorialDerivation objects.
+# See CombinatorialDerivation for the full example.
+
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  is a Terminator()
+
+pTetR_c is a Component(pTetR)
+lacI_RBS_c is a Component(lacI_RBS)
+lacI_CDS_c is a Component(lacI_CDS)
+lacI_term_c is a Component(lacI_term)
+
+
+promoter_variant_1 is a Promoter()
+promoter_variant_2 is a Promoter()
+rbs_variant_1 is a RBS()
+rbs_variant_2 is a RBS()
+cds_variant_1 is a CDS()
+cds_variant_2 is a CDS()
+
+tetRInverter is a DNA()
+(
+  component = pTetR_c
+  component = lacI_RBS_c
+  component = lacI_CDS_c
+  component = lacI_term_c
+)
+
+
+pTetR_variable is a ZeroOrOneVariableComponent(pTetR_c)
+(
+  variant = promoter_variant_1
+  variant = promoter_variant_2
+)
+
+lacI_RBS_variable is a OneVariableComponent(lacI_RBS_c)
+(
+  variant = rbs_variant_1
+  variant = rbs_variant_2
+)
+
+lacI_CDS_variable is a ZeroPlusVariableComponent(lacI_CDS_c)
+(
+  variant = cds_variant_1
+  variant = cds_variant_2
+)
+
+lacI_term_variable is a OnePlusVariableComponent(lacI_term_c)
+
+
+laci_combinatorial_derivation is a CombinatorialDerivation(tetRInverter)
+(
+  variableComponent = pTetR_variable
+  variableComponent = lacI_RBS_variable
+  variableComponent = lacI_CDS_variable
+  variableComponent = lacI_term_variable
+)

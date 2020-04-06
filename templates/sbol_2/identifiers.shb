@@ -91,3 +91,9 @@ i_useRemote = <http://sbols.org/v2#useRemote>
 i_useLocal = <http://sbols.org/v2#useLocal> 
 i_verifyIdentical  = <http://sbols.org/v2#verifyIdentical>
 i_merge = <http://sbols.org/v2#merge> 
+
+# (VariableComponent) cardinality
+i_zeroOrOne = <http://sbols.org/v2#zeroOrOne> 
+i_one = <http://sbols.org/v2#one>
+i_zeroOrMore = <http://sbols.org/v2#zeroOrMore>
+i_oneOrMore = <http://sbols.org/v2#oneOrMore>

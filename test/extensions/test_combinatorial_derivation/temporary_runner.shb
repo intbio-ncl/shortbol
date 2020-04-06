@@ -1,0 +1,23 @@
+use <sbol_2>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+p1 is a sbol_2.Promoter()
+variable_1 is a sbol_2.Component(p1)
+template_1 is a sbol_2.DNA()
+(
+    sbol_2.component = variable_1
+)
+
+promoter_variant_1 is a sbol_2.Promoter()
+
+promoter_variable_1 is a sbol_2.ZeroOrOneVariableComponent(variable_1)
+(
+    sbol_2.variant = promoter_variant_1
+)
+
+cd_1 is a sbol_2.CombinatorialDerivation(template_1)
+(
+    sbol_2.variableComponent = promoter_variable_1
+)
+@extension SbolIdentity()

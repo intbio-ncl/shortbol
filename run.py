@@ -264,7 +264,7 @@ def parse_from_file(filepath,
                     out=None,
                     extensions=[],
                     debug_lvl=1, 
-                    version=3,
+                    version="sbol_2",
                     no_validation = None,
                     no_hack = None):
     
@@ -316,7 +316,6 @@ def parse_from_file(filepath,
         print(sbol)
     else:
         with open(out, 'w') as o:
-            sbol = str(env)
             o.write(sbol)
     
     if temp_file :
@@ -342,7 +341,7 @@ def rdf_repl(serializer='nt',
 
     repl.start()
 
-def produce_tables(version = "3", lib_paths = None):
+def produce_tables(version = "sbol_2", lib_paths = None):
     '''
     Method that is independant from the rdf/xml production, simply runs the parsing and evaluation 
     process on the templates to produce the symbols and template tables.
@@ -391,7 +390,7 @@ def rdfscript_args():
     parser.add_argument('-nh', '--no_hack', help="Stops the hack from modiying the file.", default=None, action='store_true')
     parser.add_argument('-no', '--no_output', help="Stops writing output to file, instead prints to console.", default=None, action='store_true')
     parser.add_argument('-e', '--extensions', action='append', nargs=2, default=[])
-    parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["sbol_2","sbol_3"] , default="sbol_3")
+    parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["sbol_2","sbol_3"] , default="sbol_2")
 
     parser.add_argument('-d', '--debug-lvl', default=1,
                         choices=[0, 1, 2],

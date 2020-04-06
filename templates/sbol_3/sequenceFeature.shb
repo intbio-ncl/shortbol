@@ -1,0 +1,18 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: SequenceFeature
+# Summary: Annotations for a Sequence.
+# Description: Describes one or more regions of interest on the Sequence objects referred to by its parent Component.
+# Usage: Create the template and reference within a Component.
+# -- docstring family end --
+
+SequenceFeature()
+(
+  Feature(SequenceFeature)
+)
+
+
+
+
+

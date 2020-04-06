@@ -20,7 +20,9 @@ toplevels = {Uri(sbolns.uri + name) for name in
               'Agent',
               'Plan',
               'Implementation',
-              'CombinatorialDerivation']}
+              'CombinatorialDerivation',
+              'Experiment',
+              'ExperimentalData']}
 
 
 # the predicates that indicate that a subject is a parent of an object
@@ -34,7 +36,8 @@ ownership_predicates = {Uri(sbolns.uri + predicate) for predicate in
                          'functionalComponent',
                          'sequenceConstraint',
                          'location',
-                         'sequenceAnnotation']}
+                         'sequenceAnnotation',
+                         'variableComponent']}
 
 
 
@@ -96,8 +99,8 @@ class SBOLCompliant:
         if not triplepack.search((self.subject, displayId, None)):
             if parent is not None:
                 new_displayId = self.subject.split()[-1]
-                for part in parent.split():
-                    new_displayId = new_displayId.replace(part,"")
+                #for part in parent.split():
+                    #new_displayId = new_displayId.replace(part,"")
             else:
                 new_displayId = self.subject.split()[-1]
         

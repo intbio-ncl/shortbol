@@ -29,7 +29,7 @@ class TestRegression(unittest.TestCase):
             for name in files:
                 if name == "temporary_runner.shb":
                     continue
-                if name.endswith(".shb") or name.endswith(".txt"):
+                if name.endswith(".shb") or name.endswith(".rdfsh"):
                     if "sbol_3" in path:
                         version = "sbol_3"
                     else:

@@ -1,0 +1,96 @@
+p1 is a Promoter()
+(
+    hasDNASequence("A")
+)
+r1 is a RBS()
+(
+    hasDNASequence("T")
+)
+c1 is a CDS()
+(
+    hasDNASequence("C")
+)
+t1 is a Terminator()
+(
+    hasDNASequence("G")
+)
+
+
+variable_1 is a Component(p1)
+variable_2 is a Component(r1)
+variable_3 is a Component(c1)
+variable_4 is a Component(t1)
+
+pair1 is a Precedes(variable_1, variable_2)
+pair2 is a Precedes(variable_2, variable_3)
+pair3 is a Precedes(variable_3, variable_4)
+
+template_1 is a DNA()
+(
+  component = variable_1
+  component = variable_2
+  component = variable_3
+  component = variable_4
+
+  sequenceConstraint = pair1
+  sequenceConstraint = pair2
+  sequenceConstraint = pair3
+)
+
+
+promoter_variant_1 is a Promoter()
+(
+    hasDNASequence("AA")
+)
+promoter_variant_2 is a Promoter()
+(
+    hasDNASequence("AAA")
+)
+
+rbs_variant_1 is a RBS()
+(
+    hasDNASequence("CC")
+)
+
+rbs_variant_2 is a RBS()
+(
+    hasDNASequence("CC")
+)
+cds_variant_1 is a CDS()
+(
+    hasDNASequence("GG")
+)
+cds_variant_2 is a CDS()
+(
+    hasDNASequence("GGG")
+)
+
+
+promoter_variable_1 is a ZeroOrOneVariableComponent(variable_1)
+(
+  variant = promoter_variant_1
+  variant = promoter_variant_2
+)
+
+rbs_variable_1 is a OneVariableComponent(variable_2)
+(
+  variant = rbs_variant_1
+  variant = rbs_variant_2
+)
+
+cds_variable_1 is a ZeroPlusVariableComponent(variable_3)
+(
+  variant = cds_variant_1
+  variant = cds_variant_2
+)
+
+terminator_1 is a OnePlusVariableComponent(variable_4)
+
+
+combin_1 is a CombinatorialDerivation(template_1)
+(
+  variableComponent = promoter_variable_1
+  variableComponent = rbs_variable_1
+  variableComponent = cds_variable_1
+  variableComponent = terminator_1
+)

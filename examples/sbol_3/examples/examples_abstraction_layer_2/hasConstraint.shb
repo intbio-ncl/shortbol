@@ -1,0 +1,12 @@
+# Constraints are put on Features
+# that are part of the Larger Component.
+
+pTetR is a Promoter()
+lacI_CDS is a CDS()
+
+# The composite device for the TetR inverter
+tetRInverter is a FunctionalEntity()
+(
+  # Constraints
+  precedes(pTetR,lacI_CDS)
+)

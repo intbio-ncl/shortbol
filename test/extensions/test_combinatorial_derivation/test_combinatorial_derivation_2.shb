@@ -1,0 +1,22 @@
+# We have a gene (template_1) and we want to make two new variants by swapping out the promoters
+
+p1 is a Promoter()
+variable_1 is a Component(pTetR)
+template_1 is a DNA()
+(
+  component = variable_1
+)
+
+promoter_variant_1 is a Promoter()
+promoter_variant_2 is a Promoter()
+
+promoter_variable_1 is a ZeroOrOneVariableComponent(variable_1)
+(
+  variant = promoter_variant_1
+  variant = promoter_variant_2
+)
+
+cd_1 is a CombinatorialDerivation(template_1)
+(
+  variableComponent = promoter_variable_1
+)

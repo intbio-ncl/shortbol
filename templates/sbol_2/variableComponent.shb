@@ -1,0 +1,40 @@
+@prefix sbol_2
+
+# -- docs-family Layer All start --
+# Name: VariableComponent
+# Summary: A variable that changes during a CombinatorialDerivation.    
+# Description: Specifies a variable and set of values that will replace one of the Component objects in the template of a CombinatorialDerivation.
+# Usage: Given a Component of the ComponentDefinition that is referenced by the template property reference the VariableComponent by the hasVariableComponent of the Parent CombinatorialDerivation.
+# Parameters: Template - variable - A Component to serve as the template for the derivation of the new Component Object, URI - cardinality - Specifies how many Component objects SHOULD be derived fromthe template Component during the derivation of a new ComponentDefinition.
+# Properties: Template - variant -  A ComponentDefinition objects to serve as options when deriving a new Component for the variable Component from the template.
+# -- docstring family end --
+
+
+VariableComponent(variable,operator)
+(
+  Identified(VariableComponent)
+  sbol_2.<variable> = variable
+  sbol_2.<operator> = operator
+)
+ 
+ZeroOrOneVariableComponent(variable)
+(
+  VariableComponent(variable, i_zeroOrOne)
+)
+
+OneVariableComponent(variable)
+(
+  VariableComponent(variable, i_one)
+)
+
+ZeroPlusVariableComponent(variable)
+(
+  VariableComponent(variable, i_zeroOrMore)
+)
+
+OnePlusVariableComponent(variable)
+(
+  VariableComponent(variable,i_oneOrMore)
+)
+
+

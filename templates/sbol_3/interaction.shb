@@ -49,3 +49,81 @@ Control()
 (
   Interaction(i_control)
 )
+
+
+# -- docs-family Layer 2 start --
+# Name: hasInteraction
+# Summary: How parts interact with one another within a design.
+# Description: a Description of how Instances of parts (Components) interact with one another within a design. It is espciaially advised to use Specialised Templates here if possible.
+# Usage: Given instances Of (component) Components define the interaction inside a Component.
+# Parameters: Template - component - Components that are part of the interactions, Identifier - type - type of interaction.
+# -- docs-family end --
+
+hasInteraction_1(component, part_type, type)
+(
+  self.component._sc is a SubComponent(component)
+  hasFeature = self.component._sc 
+  
+  component._.type is a Interaction(type)
+  (
+    component._.part_type is a Participation(self.component._sc, part_type)
+    participation = component._.part_type 
+  )
+  interaction = component._.type
+)
+
+
+hasInteraction(component_participant_1, part_1_type, component_participant_2, part_2_type, type)
+(
+
+  self.component_participant_1._sc is a SubComponent(component)
+  self.component_participant_2._sc is a SubComponent(component)
+  hasFeature = self.component_participant_1._sc
+  hasFeature = self.component_participant_2._sc
+  
+  component_participant_1._.type._with_.component_participant_2 is a Interaction(type)
+  (
+    self._.component_participant_1._.part_1_type is a Participation(component_participant_1, part_1_type)
+    self._.component_participant_2._.part_2_type is a Participation(component_participant_2, part_2_type)
+
+    participation = self._.component_participant_1._.part_1_type
+    participation = self._.component_participant_2._.part_2_type
+  )
+  interaction = component_participant_1._.type._with_.component_participant_2
+)
+
+inhibition(component_inhibitor, component_inhibited)
+(
+  hasInteraction(component_inhibitor, i_inhibitor, component_inhibited, i_inhibited, i_inhibition)
+)
+
+
+stimulation(component_stimulator, component_stimulated)
+(
+  hasInteraction(component_stimulator, i_stimulator, component_stimulated, i_stimulated, i_stimulation)
+)
+
+nonCovalentBonding(component_reactant_1, component_reactant_2)
+(
+  hasInteraction(component_reactant_1, i_reactant, component_reactant_2, i_reactant, i_noncovalent_bonding)
+)
+
+bioChemicalReaction(component_reactant, component_product)
+(
+  hasInteraction(component_reactant, i_reactant, component_product, i_product, i_biochemical_reaction)
+)
+
+geneticProduction(component_promoter, component_product)
+(
+  hasInteraction(component_promoter, i_promoter, component_product, i_product, i_genetic_production)
+)
+
+degradation(component_reactant)
+(
+  hasInteraction_1(component_reactant, i_reactant, i_degradation)
+)
+
+control(component_modifier, component_modified)
+(
+  hasInteraction(component_modifier, i_template, component_modified, i_product, i_control)
+)

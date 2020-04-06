@@ -11,7 +11,10 @@ lacI_RBS is a RBS()
 )
 
 pTetR_range_1 is a InlineRange(lacI_RBS_seq, 1, 5)
-pTetR_range_2 is a Cut(lacI_RBS_seq, 56, i_inline)
+pTetR_range_2 is a Range(lacI_RBS_seq, 1, 5)
+(
+  orientation = i_inline
+)
 
 pTetR_sc is a SubComponent(pTetR)
 (

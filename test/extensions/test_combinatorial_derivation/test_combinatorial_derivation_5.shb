@@ -1,0 +1,55 @@
+p1  is a Promoter()
+r1 	is a RBS()
+c1	is a CDS()
+t1  is a Terminator()
+
+variable_1 is a Component(p1)
+variable_2 is a Component(r1)
+variable_3 is a Component(c1)
+variable_4 is a Component(t1)
+
+
+promoter_variant_1 is a Promoter()
+promoter_variant_2 is a Promoter()
+rbs_variant_1 is a RBS()
+rbs_variant_2 is a RBS()
+cds_variant_1 is a CDS()
+cds_variant_2 is a CDS()
+
+template_1 is a DNA()
+(
+  component = variable_1
+  component = variable_2
+  component = variable_3
+  component = variable_4
+)
+
+
+promoter_variable_1 is a ZeroOrOneVariableComponent(variable_1)
+(
+  variant = promoter_variant_1
+  variant = promoter_variant_2
+)
+
+rbs_variable_1 is a OneVariableComponent(variable_2)
+(
+  variant = rbs_variant_1
+  variant = rbs_variant_2
+)
+
+cds_variable_1 is a ZeroPlusVariableComponent(variable_3)
+(
+  variant = cds_variant_1
+  variant = cds_variant_2
+)
+
+terminator_1 is a OnePlusVariableComponent(variable_4)
+
+
+combin_1 is a CombinatorialDerivation(template_1)
+(
+  variableComponent = promoter_variable_1
+  variableComponent = rbs_variable_1
+  variableComponent = cds_variable_1
+  variableComponent = terminator_1
+)
