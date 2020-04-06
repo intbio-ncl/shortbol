@@ -29,16 +29,20 @@ class TestRegression(unittest.TestCase):
             for name in files:
                 if name == "temporary_runner.shb":
                     continue
-                if name.endswith(".shb") or name.endswith(".txt"):
+                if name.endswith(".shb") or name.endswith(".rdfsh"):
+                    if "sbol_3" in path:
+                        version = "sbol_3"
+                    else:
+                        version = "sbol_2"
                     file_to_run = os.path.join(path, name)
                     short_fn = file_to_run.split("\\")
                     short_fn = "/".join(short_fn[len(short_fn) - 2 : ])
                     print("Running with file: " + str(short_fn))
                     return_code = "Error Thrown."
                     try:
-                        return_code = run.parse_from_file(file_to_run,"sbolxml",[templates],output_fn,[])
+                        return_code = run.parse_from_file(file_to_run,"sbolxml",[templates],output_fn,[],version=version)
                     except Exception as e:
-                        failure_exceptions.append({short_fn : e})
+                        failure_exceptions.append({file_to_run : e})
                     if return_code != {"SBOL validator success.":[]}:
                         sbol_validation_errors.append({short_fn : return_code})
         
@@ -55,7 +59,7 @@ class TestRegression(unittest.TestCase):
         if len(sbol_validation_errors) > 0:
             for validation_error in sbol_validation_errors:
                 for k,v in validation_error.items():
-                    print("Failure by SBOL Validation on: " + str(k) + "\nvalidation errors: " + str(v) + "\n\n\n")
+                    print("Failure by SBOL Validation on: " + str(k) + "\nvalidation errors: " + str(v) + "\n")
 
         if len(failure_exceptions) > 0 or len(sbol_validation_errors) > 0:
             self.fail("Atleast One Test Failed")

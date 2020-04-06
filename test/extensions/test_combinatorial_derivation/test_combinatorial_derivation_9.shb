@@ -1,0 +1,30 @@
+p1 is a Promoter()
+variable_1 is a Component(p1)
+template_1 is a DNA()
+(
+  component = variable_1
+)
+
+promoter_variant_1 is a Promoter()
+promoter_variant_2 is a Promoter()
+promoter_variant_3 is a Promoter()
+promoter_variant_4 is a Promoter()
+
+protein_variant_collection is a Collection()
+(
+  member = promoter_variant_1
+  member = promoter_variant_2
+  member = promoter_variant_3
+  member = promoter_variant_4
+)
+
+promoter_variable_1 is a ZeroOrOneVariableComponent(variable_1)
+(
+  variantCollection = protein_variant_collection
+  variant = promoter_variant_4
+)
+
+combin_1 is a CombinatorialDerivation(template_1)
+(
+  variableComponent = promoter_variable_1
+)

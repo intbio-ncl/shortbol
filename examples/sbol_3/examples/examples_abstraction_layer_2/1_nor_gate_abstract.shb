@@ -1,0 +1,24 @@
+# This example has the Initial design of a NOR gate.
+# The sequences nor specific parts are defined only the shape of the design.
+# See NOR_gate_implementation_implicit for more detailed design.
+
+p_in_1 is a Promoter()
+p_in_2 is a Promoter()
+
+repressor is a DNA()
+
+p_out is a Promoter()
+output is a DNA()
+
+NOR_gate is a FunctionalEntity()
+(
+  # p1,p2 can stimulate the repressor
+  stimulation(p_in_1, repressor)
+  stimulation(p_in_2, repressor)
+
+  # The OR gate inhibits the p3_output promoter when active.
+  inhibition(repressor, p_out)
+
+  # The output promoter stimulates the output Gene when not inhibited.
+  stimulation(p_out, output)
+)

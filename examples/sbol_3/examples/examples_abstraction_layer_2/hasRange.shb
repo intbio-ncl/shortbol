@@ -1,0 +1,21 @@
+# Range can be defined with a Feature that has a Sequence Associated with it.
+# Range must be defined only within a Feature.
+
+pTetR is a Promoter()
+
+lacI_RBS_seq is a DNASequence("aaggaggtg")
+lacI_RBS is a RBS()
+(
+  hasSequence = lacI_RBS_seq
+)
+
+pTetR_sc is a SubComponent(pTetR)
+(
+  hasInlineRange(lacI_RBS_seq,1,5)
+  hasRange(lacI_RBS_seq,1,5)
+)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = pTetR_sc
+)

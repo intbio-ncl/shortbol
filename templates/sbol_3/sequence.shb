@@ -1,0 +1,82 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: Sequence
+# Summary: Structure in Sequence format of parts of a design.
+# Description: Represent the primary structure of a Component object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") create a instance of a Sequence and add to the sequence property of a Component.
+# Parameters: String - elements - Characters that represents the constituents of a biological or chemical molecule,  Identifier - encoding - URI to indicate how the elements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
+Sequence(elements, encoding)
+(
+  TopLevel(Sequence)
+  sbol_3.<elements> = elements
+  sbol_3.<encoding> = encoding
+)
+
+DNASequence(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+DNASeq(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+RNASequence(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+ProteinSequence(elements)   
+(
+    Sequence(elements, i_iupacProtein)
+)
+
+ChemicalStructure(elements) 
+(
+    Sequence(elements, i_opensmilesSMILES)
+)
+
+
+# -- docs-family Layer 2 start --
+# Name: hasSequence
+# Summary: Structure in Sequence format of parts of a design. 
+# Description: Represent the primary structure of a Physical Part. Represent the primary structure of Component object and the manner in which it is encoded.
+# Usage: Given a Sequence in the from of a string ("ATCG" for example") define the hasSequence inside a Component.
+# Parameters:  String - elements - Characters that represents the constituents of a biological or chemical molecule, Identifier - encoding - URI to indicate how theelements property of a Sequence MUST be formed and interpreted.
+# -- docstring family end --
+
+hasSequence(elements, encoding)
+(
+    sequence = self._sequence
+    self._sequence is a Sequence(elements,encoding)
+)
+
+hasDNASequence(elements)
+(
+  hasSequence(elements,i_iupacDNA)
+)
+
+hasDNASeq(elements)       
+(
+    Sequence(elements, i_iupacDNA)
+)
+
+hasRNASequence(elements)
+(
+  hasSequence(elements,i_iupacDNA)
+)
+
+
+hasProteinSequence(elements)   
+(
+    hasSequence(elements,i_iupacProtein)
+)
+
+hasChemicalStructure(elements) 
+(
+    hasSequence(elements,i_opensmilesSMILES)
+)

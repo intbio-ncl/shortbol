@@ -1,0 +1,53 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: Cut
+# Summary: Cut a Sequence.
+# Description: Specifies a single point via discrete, integer value  indices for characters in the elements of a Sequence.
+# Usage: Given at value create Cut and add to hasLocation property of a Feature.
+# Parameters:  Template - sequence - The Sequence Template which the cut is on, Integer - at - integer value the location of cut on the sequence.
+# -- docstring family end --
+
+Cut(sequence, at)
+(
+  Location(Cut, sequence)
+  sbol.<at> = at
+)
+
+InlineCut(sequence, at)
+(
+  Cut(sequence, at)
+  sbol_3.<orientation> = i_inline
+)
+
+ReverseComplementCut(sequence, at)
+(
+  Cut(sequence, at)
+  sbol_3.<orientation> = i_reverseComplement
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasCut
+# Summary: Cut a Sequence.
+# Description: Specifies a single point via discrete, integer value  indices for characters in the elements of a Sequence.
+# Usage: Given at value create Cut and define inside a Feature
+# Parameters:  Template - sequence - The Sequence Template which the cut is on, Integer - at - integer value the location of cut on the sequence.
+# -- docstring family end --
+
+hasCut(sequence,at)
+(
+  self._cut is a Cut(sequence,at)
+  hasLocation = self._cut
+)
+
+hasInlineCut(sequence, at)
+(
+  self._inlineCut is a InlineCut(sequence, at)
+  hasLocation = self._inlineCut
+)
+
+hasReverseComplementCut(sequence, at)
+(
+  self._reverseComplementCut is a ReverseComplementCut(sequence, at)
+  hasLocation = self._reverseComplementCut
+)

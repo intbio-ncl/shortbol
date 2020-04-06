@@ -1,0 +1,15 @@
+# LocalSubComponent is a placeholder when 
+# we don't know the specific part yet.
+# Doesn't REQUIRE any additional input.
+
+placeholder_component is a LocalSubComponent()
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = placeholder_component
+)
+
+tetR is a FunctionalEntity()
+(
+  hasFeature = placeholder_component
+)

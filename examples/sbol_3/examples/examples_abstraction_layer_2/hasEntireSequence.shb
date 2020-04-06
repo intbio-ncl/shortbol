@@ -1,0 +1,19 @@
+# Indicates that the linked Sequence describes the 
+# entirety of the Component or Feature parent of this Location object.
+# Locations require a Sequence.
+
+lacI_RBS is a RBS()
+(
+  hasDNASequence("aaggaggtg")
+)
+
+lacI_RBS_sc is a SubComponent(lacI_RBS)
+(
+  hasEntireSequence(lacI_RBS_seq)
+)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = lacI_RBS_sc
+)
+

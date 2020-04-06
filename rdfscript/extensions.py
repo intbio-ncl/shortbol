@@ -11,6 +11,8 @@ class ExtensionManager(object):
                                  base='rdfscript')
         self.add_extra_extension('extensions.sbol.SbolIdentity',
                                  shortname='SbolIdentity')
+        self.add_extra_extension('extensions.combinatorialDerivation.CombinatorialDerivation',
+                                  shortname="CombinatorialDerivation")
 
         for (name, shortname) in extras:
             self.add_extra_extension(name, shortname=shortname)

@@ -20,7 +20,9 @@ toplevels = {Uri(sbolns.uri + name) for name in
               'Agent',
               'Plan',
               'Implementation',
-              'CombinatorialDerivation']}
+              'CombinatorialDerivation',
+              'Experiment',
+              'ExperimentalData']}
 
 
 # the predicates that indicate that a subject is a parent of an object
@@ -34,7 +36,8 @@ ownership_predicates = {Uri(sbolns.uri + predicate) for predicate in
                          'functionalComponent',
                          'sequenceConstraint',
                          'location',
-                         'sequenceAnnotation']}
+                         'sequenceAnnotation',
+                         'variableComponent']}
 
 
 
@@ -96,14 +99,12 @@ class SBOLCompliant:
         if not triplepack.search((self.subject, displayId, None)):
             if parent is not None:
                 new_displayId = self.subject.split()[-1]
-                #p = parent.split()[-2]
-                #new_displayId = self.subject.split()[-1].replace(p,"")
+                #for part in parent.split():
+                    #new_displayId = new_displayId.replace(part,"")
             else:
                 new_displayId = self.subject.split()[-1]
-            
-
+        
             triplepack.add((self.subject, displayId, Value(new_displayId)))
-
         # Everything has a Version
         if get_SBOL_version(triplepack, self.subject) is None:
             #Set default version of 1.
@@ -204,7 +205,8 @@ def set_identity(triplepack, uri):
 def set_childs_persistentIdentity(triplepack, parent, child):
     parents_pId = get_SBOL_persistentIdentity(triplepack, parent)
     childs_dId = get_SBOL_displayId(triplepack, child)
-    childs_pId = Uri(parents_pId.uri + '/' + childs_dId.value)
+    p = parents_pId.split()[-1]
+    childs_pId = Uri(parents_pId.uri + '/' + childs_dId.value.replace(p,""))
     triplepack.set(child, persistentIdentity, childs_pId)
 
 

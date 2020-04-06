@@ -1,0 +1,176 @@
+@prefix sbol_3
+
+
+Feature(type)
+(
+  Identified(type)
+  sbol_3.<definition> = definition
+  access = sbol_3.public
+)
+
+# -- docs-family Layer 1,2 start --
+# Name: SubComponent
+# Summary: Compose Component objects into a structural hierarchy.
+# Description: Example: The Component of a gene could contain four Component objects: a promoter, RBS, CDS, and terminator. In turn, the Component of the promoter Component could contain Component objects defined as various operator sites.
+# Usage: Given a Component create SubComponent and add it to hasFeature property of Component.
+# Parameters: Template - component - Component pertaining to sub part.
+# -- docstring family end --
+
+SubComponent(component) 
+(
+  Feature(SubComponent)
+  instanceOf = component
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasSubComponent
+# Summary: Compose Component objects into a structural hierarchy. (ShortHand)
+# Description: A Shorthand for the SubComponent template, only use this when the SubComponent is referenced once. I.e when there is no optional properties or requirement to name.
+# Usage: Given a Component create hasSubComponent inside a Component
+# Parameters: Template - component - Component pertaining to sub part.
+# -- docstring family end --
+
+hasSubComponent(component) 
+(
+  component._sc is a SubComponent(component)
+  hasFeature = component._sc
+)
+
+
+# -- docs-family Layer 1 start --
+# Name: ComponentReference
+# Summary: Reference Features within SubComponents.
+# Description: When a Feature is part of a SubComponent rather than a Component then this template should be used. This essentially maps a SubComponent and a Feature.
+# Usage: Given a SubComponent and any sub-template of Feature.
+# Parameters: Template - subComponent - subComponent pertaining to sub part, Template - feature - feature of referenced part.
+# -- docstring family end --
+
+ComponentReference(subComponent,subComponent_localSubComponent_externallydefined_sequenceFeature)
+(
+  Feature(ComponentReference)
+  inChildOf = subComponent
+  hasFeature = subComponent_localSubComponent_externallydefined_sequenceFeature
+)
+
+# -- docs-family Layer 1,2 start --
+# Name: LocalSubComponent
+# Summary: Placeholder for Unknown Components.
+# Description: Serves as a way to create a placeholder in more complex Components, such as a variable to be filled in later or a composite that exists only within the context of the parent Component.
+# Usage: Create the template and reference within a Component.
+# -- docstring family end --
+
+LocalSubComponent()
+(
+  Feature(LocalSubComponent)
+  sbol_3.<type> = type
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasLocalSubComponent
+# Summary: Placeholder for Unknown Components. (ShortHand)
+# Description: Serves as a way to create a placeholder in more complex Components. Only use this when the LocalSubComponent is referenced once. I.e when there is no optional properties or requirement to name.
+# Usage: Create the template and reference within a Component.
+# -- docstring family end --
+
+hasLocalSubComponent()
+(
+  self._lsc is a LocalSubComponent()
+  hasFeature = self._lsc
+)
+
+# -- docs-family Layer 1 start --
+# Name: ExternallyDefined
+# Summary: Reference External data.
+# Description: External definitions in databases like CHEBI or UniProt can be referenced. 
+# Usage: a type and a external URI, Create the template and reference within a Component.
+# Parameters: URI - type - Identical to its use in Component. , URI - definition - URI to external data.
+# -- docstring family end --
+
+ExternallyDefined(type, definition)
+(
+  Feature(ExternallyDefined)
+  sbol_3.<type> = type
+  sbol_3.<definition> = definition
+)
+
+ExternalDNA(definition)
+(
+  ExternallyDefined(i_DNA,definition)
+)
+
+ExternalRNA(definition)
+(
+  ExternallyDefined(i_RNA,definition)
+)
+
+ExternalProtein(definition)
+(
+  ExternallyDefined(i_protein,definition)
+)
+
+ExternalSmallMolecule(definition)
+(
+  ExternallyDefined(i_smallMolecule,definition)
+)
+
+ExternalComplex(definition)
+(
+  ExternallyDefined(i_complex,definition)
+)
+
+
+# -- docs-family Layer 2 start --
+# Name: hasExternallyDefined
+# Summary: Reference External data.
+# Description: External definitions in databases like CHEBI or UniProt can be referenced. 
+# Usage: a type and a external URI, Create the template within a Component.
+# Parameters: URI - type - Identical to its use in Component. , URI - definition - URI to external data.
+# -- docstring family end --
+
+hasExternallyDefined(type, definition)
+(
+  self._ed is a ExternallyDefined(type,definition)
+  hasFeature = self._ed
+)
+
+hasExternalDNA(definition)
+(
+  hasExternallyDefined(i_DNA,definition)
+)
+
+hasExternalRNA(definition)
+(
+  hasExternallyDefined(i_RNA,definition)
+)
+
+hasExternalProtein(definition)
+(
+  hasExternallyDefined(i_protein,definition)
+)
+
+hasExternalSmallMolecule(definition)
+(
+  hasExternallyDefined(i_smallMolecule,definition)
+)
+
+hasExternalComplex(definition)
+(
+  hasExternallyDefined(i_complex,definition)
+)
+
+# -- docs-family Layer 1 start --
+# Name: SequenceFeature
+# Summary: Annotations for a Sequence.
+# Description: Describes one or more regions of interest on the Sequence objects referred to by its parent Component.
+# Usage: Create the template and reference within a Component.
+# -- docstring family end --
+
+SequenceFeature()
+(
+  Feature(SequenceFeature)
+)
+
+
+
+
+

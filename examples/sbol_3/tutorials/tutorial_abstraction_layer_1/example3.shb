@@ -1,0 +1,45 @@
+# Example 3
+# The genetic parts of the TetR inverter
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  is a Terminator()
+
+
+pTetR_loc is a EntireSequence()
+lacI_RBS_loc is a EntireSequence()
+lacI_CDS_loc is a EntireSequence()
+lacI_term_loc is a EntireSequence()
+
+
+pTetR_c is a SubComponent(pTetR)
+(
+  hasLocation = pTetR_loc
+)
+
+lacI_RBS_c is a SubComponent(lacI_RBS)
+(
+  hasLocation = lacI_RBS_loc
+)
+
+lacI_CDS_c is a SubComponent(lacI_CDS)
+(
+  hasLocation = lacI_CDS_loc
+)
+
+lacI_term_c is a SubComponent(lacI_term)
+(
+  hasLocation = lacI_term_loc
+)
+
+
+
+
+tetRInverter is a DNAComponent()
+(
+  # include the child components
+  hasFeature = pTetR_c
+  hasFeature = lacI_RBS_c
+  hasFeature = lacI_CDS_c
+  hasFeature = lacI_term_c
+)

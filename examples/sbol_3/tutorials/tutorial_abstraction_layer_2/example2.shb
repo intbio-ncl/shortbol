@@ -1,0 +1,15 @@
+# Example2
+# The genetic parts of the TetR inverter
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  is a Terminator()
+
+# The composite device for the TetR inverter
+tetRInverter is a FunctionalEntity()
+(
+   # relative positions of child components
+   precedes(pTetR, lacI_RBS)
+   precedes(lacI_RBS, lacI_CDS)
+   precedes(lacI_CDS, lacI_term)
+)

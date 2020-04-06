@@ -1,0 +1,11 @@
+# Externally defined is a Feature of a Component 
+# that has been defined externally.
+# This example has a Externally Defined 
+# feature that links to a uniprot record.
+# The two ExternallyDefined templates are functionally identical.
+
+prot is a FunctionalEntity()
+(
+  hasExternallyDefined(i_protein,https://www.uniprot.org/uniprot/P69892)
+  hasExternalProtein(https://www.uniprot.org/uniprot/P69892)
+)

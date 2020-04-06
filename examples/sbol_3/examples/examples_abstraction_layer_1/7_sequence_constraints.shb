@@ -1,0 +1,29 @@
+# Example2
+# The genetic parts of the TetR inverter
+pTetR   	is a Promoter()
+lacI_RBS 	is a RBS()
+lacI_CDS	is a CDS()
+lacI_term  is a Terminator()
+
+pTetR_sc is a SubComponent(pTetR)
+lacI_RBS_sc is a SubComponent(lacI_RBS)
+lacI_CDS_sc is a SubComponent(lacI_CDS)
+lacI_term_sc is a SubComponent(lacI_term)
+
+pair1 is a Precedes(pTetR_sc, lacI_RBS_sc)
+pair2 is a Precedes(lacI_RBS_sc, lacI_CDS_sc)
+pair3 is a Precedes(lacI_CDS_sc, lacI_term_sc)
+
+# The composite device for the TetR inverter
+tetRInverter is a DNAComponent()
+(
+  # include the sub components
+  hasFeature = pTetR_c
+  hasFeature = lacI_RBS_c
+  hasFeature = lacI_CDS_c
+  hasFeature = lacI_term_c
+  # relative positions of child components
+  hasConstraint = pair1
+  hasConstraint = pair2
+  hasConstraint = pair3
+)

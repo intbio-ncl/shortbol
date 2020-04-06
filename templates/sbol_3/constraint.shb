@@ -1,0 +1,199 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1 start --
+# Name: Constraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs of Feature objects contained by the same parent Component.
+# Description: Uses Feature objects as an intermediate object because constraints are on the specific instances of a part.
+# Usage: Given a two Feature objects and restriction type, create a Constraint and add to a the hasConstraint property of a Component.
+# Parameters: Template - Feature - Subject Feature of constraint, Template - Feature - Object Feature of constraint, Identifier - restriction - type of restriction places on the Component.
+# -- docstring family end --
+
+Constraint(feature_subject, feature_object, restriction)
+(
+  Identified(Constraint)
+  subject = feature_subject
+  object = feature_object
+  sbol_3.<restriction> = restriction
+)
+
+Precedes(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_precedes)
+)
+
+StrictlyPrecedes(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_strictlyPrecedes)
+)
+
+Meets(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_meets)
+)
+
+Overlaps(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_overlaps)
+)
+
+Contains(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_contains)
+)
+
+StrictlyContains(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_strictlyContains)
+)
+
+Equals(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_equals)
+)
+
+Finishes(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_finishes)
+)
+
+Starts(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_starts)
+)
+
+IsDisjointFrom(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_isDisjointFrom)
+)
+
+Covers(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_covers)
+)
+
+VerifyIdentical(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_verifyIdentical)
+)
+
+Replaces(feature_subject, feature_object)              
+(
+  Constraint(feature_subject, feature_object, i_replaces)
+)
+
+SameOrientationAs(feature_subject, feature_object)     
+(
+  Constraint(feature_subject, feature_object, i_sameOrientationAs)
+)
+
+OppositeOrientationAs(feature_subject, feature_object) 
+(
+  Constraint(feature_subject, feature_object, i_oppositeOrientationAs)
+)
+
+DifferentFrom(feature_subject, feature_object)         
+(
+  Constraint(feature_subject, feature_object, i_differentFrom)
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasConstraint
+# Summary: Assert restrictions on the relative, sequence-based positions of pairs sub parts.
+# Usage: Given a two sub-parts (Components) and a restriction type, define the template inside the larger Component.
+# Parameters: Template - component - Subject part of constraint, Template - component - Object part of constraint, Identifier - restriction - what the constraint actually is.
+# -- docstring family end --
+
+hasConstraint(component_subject,component_object,restriction)
+(
+  self._.component_subject._sc is a SubComponent(component_subject)
+  self._.component_object._sc is a SubComponent(component_object)
+
+  component = self._.component_subject._sc
+  component = self._.component_object._sc
+  self._.component_subject._sc._.restriction._.self._.component_object._sc  is a Constraint(self._.component_subject._sc, self._.component_object._sc , restriction)
+  hasConstraint = self._.component_subject._sc._.restriction._.self._.component_object._sc
+)
+
+precedes(component_subject, component_object)              
+(
+  hasConstraint(component_subject,component_object,i_precedes)
+)
+
+strictlyPrecedes(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_strictlyPrecedes)
+)
+
+meets(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_meets)
+)
+
+overlaps(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_overlaps)
+)
+
+contains(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_contains)
+)
+
+strictlyContains(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_strictlyContains)
+)
+
+equals(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_equals)
+)
+
+finishes(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_finishes)
+)
+
+starts(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_starts)
+)
+
+isDisjointFrom(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_isDisjointFrom)
+)
+
+covers(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_covers)
+)
+
+verifyIdentical(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_verifyIdentical)
+)
+
+replaces(component_subject, component_object)              
+(
+  hasConstraint(component_subject, component_object, i_replaces)
+)
+
+sameOrientationAs(component_subject, component_object)     
+(
+  hasConstraint(component_subject, component_object, i_sameOrientationAs)
+)
+
+oppositeOrientationAs(component_subject, component_object) 
+(
+  hasConstraint(component_subject, component_object, i_oppositeOrientationAs)
+)
+
+differentFrom(component_subject, component_object)         
+(
+  hasConstraint(component_subject, component_object, i_differentFrom)
+)
+
+
+
+

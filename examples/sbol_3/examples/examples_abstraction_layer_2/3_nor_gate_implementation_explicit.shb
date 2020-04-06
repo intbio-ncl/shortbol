@@ -1,0 +1,106 @@
+# This example is the most detailed version of the NOR gate example.
+# Each part of a Gene is explicitly defined.
+# The Input Factors are modelled.
+# The produced proteins interaction on the design are modelled.
+
+# Note: It can be seen in this example that the rbs and double terminator 
+# for lacI and RFP are identical so can be defined in both ComponentDefinition.
+
+# Generic Parts
+Elowitz_rbs is a RBS()
+(
+  hasDNASequence("aaagaggagaaa")
+  description = "I-GEM ID: BBa_B0034"
+)
+
+double_term is a Terminator()
+(
+  hasDNASequence("ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata")
+  description = "I-GEM ID: BBa_B0015"
+)
+
+# Inputs
+# pBAD promoter will activate with increasing levels of arabinose
+arabinose is a SmallMolecule()
+
+# pTeT is a constitutively ON and is repressed by TetR but TetR is repressed by tetracycline binding to it.
+ATC is a SmallMolecule()
+TetR is a Protein()
+
+
+# Input Promoters
+pTeT is a Promoter()
+(
+  hasDNASequence("ttgacagcttatcatcgataagctttaat")
+)
+
+pBAD is a Promoter()
+(
+  hasDNASequence("atgccatagcatttttatcc")
+)
+
+# Repressor
+lacI_repressor is a CDS()
+(
+  hasDNASequence("atggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcaggctgcaaacgacgaaaactacgctttagtagcttaataactctgatagtgctagtgtagatctc")
+)
+
+
+lacI_gene is a DNAComponent()
+(
+  precedes(Elowitz_rbs, lacI_repressor)
+  precedes(lacI_repressor, double_term)
+)
+
+
+# Output 
+pLlac is a Promoter()
+(
+  hasDNASequence("aattgtgagcggataacaattgacattgtgagcggataacaagatactgagcaca")
+)
+
+mCherry_cds is a CDS()
+(
+  hasDNASequence("atggcttcctccgaagacgttatcaaagagttcatgcgtttcaaagttcgtatggaaggttccgttaacggtcacgagttcgaaatcgaaggtgaaggtgaaggtcgtccgtacgaaggtacccagaccgctaaactgaaagttaccaaaggtggtccgctgccgttcgcttgggacatcctgtccccgcagttccagtacggttccaaagcttacgttaaacacccggctgacatcccggactacctgaaactgtccttcccggaaggtttcaaatgggaacgtgttatgaacttcgaagacggtggtgttgttaccgttacccaggactcctccctgcaagacggtgagttcatctacaaagttaaactgcgtggtaccaacttcccgtccgacggtccggttatgcagaaaaaaaccatgggttgggaagcttccaccgaacgtatgtacccggaagacggtgctctgaaaggtgaaatcaaaatgcgtctgaaactgaaagacggtggtcactacgacgctgaagttaaaaccacctacatggctaaaaaaccggttcagctgccgggtgcttacaaaaccgacatcaaactggacatcacctcccacaacgaagactacaccatcgttgaacagtacgaacgtgctgaaggtcgtcactccaccggtgcttaataacgctgatagtgctagtgtagatcgc")
+)
+
+mCherry is a DNAComponent()
+(
+  precedes(Elowitz_rbs, mCherry_cds)
+  precedes(mCherry_cds, double_term)
+)
+
+# Proteins
+mCherry_p is a Protein()
+lacI_p is a Protein()
+
+NOR_gate is a FunctionalEntity()
+(
+  # Stimulation of input proteins.
+  stimulation(arabinose,pBAD)
+  # Double inhibition stimulates.
+  inhibition(ATC,TetR)
+  inhibition(TetR,pTeT)
+  # pTeT and pBAD can stimulate the LacI
+  stimulation(pTeT,lacI)
+  stimulation(pBAD,lacI)
+
+  # The lacI produces the Laci proteins
+  geneticProduction(lacI,lacI_p)
+
+  # The LacI protein when active inhibits pLlac
+  inhibition(lacI_p,pLlac)
+
+  # The pLlac_fc stimulates mCherry when not inhibited.
+  stimulation(pLlac,mCherry)
+
+  # The mCherry produces the Laci proteins
+  geneticProduction(mCherry,mCherry_p)
+)
+
+
+
+
+
+
+

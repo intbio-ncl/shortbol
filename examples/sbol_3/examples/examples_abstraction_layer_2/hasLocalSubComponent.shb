@@ -1,0 +1,8 @@
+# hasLocalSubComponent should only be used in cases like this 
+# where the localComponent is not re-used.
+# Doesn't REQUIRE any additional input.
+
+tetRInverter is a FunctionalEntity()
+(
+  hasLocalSubComponent()
+)

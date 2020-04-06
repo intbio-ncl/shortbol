@@ -1,0 +1,25 @@
+@prefix sbol_3
+
+
+LocalSubComponent()
+(
+  Feature(LocalSubComponent)
+  sbol_3.<type> = type
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasLocalSubComponent
+# Summary: Placeholder for Unknown Components. (ShortHand)
+# Description: Serves as a way to create a placeholder in more complex Components. Only use this when the LocalSubComponent is referenced once. I.e when there is no optional properties or requirement to name.
+# Usage: Create the template and reference within a Component.
+# -- docstring family end --
+
+hasLocalSubComponent()
+(
+  self._lsc is a LocalSubComponent()
+  hasFeature = self._lsc
+)
+
+
+
+

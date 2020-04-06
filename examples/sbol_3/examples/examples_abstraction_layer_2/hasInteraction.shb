@@ -1,0 +1,11 @@
+# Interactions require Participants that
+# describe what role Features
+# play in the Interaction.
+
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+LacI_inverter is a FunctionalEntity()
+(
+  inhibition(TetR,LacI)
+)

@@ -1,0 +1,17 @@
+# A Collection is a grouping of TopLevel objects.
+# This example shows a collection of genetic logic gates.
+
+AND_gate is a FunctionalEntity()
+OR_gate is a FunctionalEntity()
+NAND_gate is a FunctionalEntity()
+NOR_gate is a FunctionalEntity()
+XOR_gate is a FunctionalEntity()
+
+genetic_logic_gates is a Collection()
+(
+  member = AND_gate
+  member = OR_gate
+  member = NAND_gate
+  member = NOR_gate
+  member = XOR_gate
+)

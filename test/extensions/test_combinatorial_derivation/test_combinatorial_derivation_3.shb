@@ -1,0 +1,33 @@
+# We have a gene (tetRInverter) and we want to make two new variants by swapping out the promoters
+
+p1   	is a Promoter()
+r1 	is a RBS()
+c1	is a CDS()
+t1  is a Terminator()
+
+variable_1 is a Component(p1)
+component_1 is a Component(r1)
+component_2 is a Component(c1)
+component_3 is a Component(t1)
+
+template_1 is a DNA()
+(
+  component = variable_1
+  component = component_1
+  component = component_2
+  component = component_3
+)
+
+promoter_variant_1 is a Promoter()
+promoter_variant_2 is a Promoter()
+
+promoter_variable_1 is a ZeroOrOneVariableComponent(variable_1)
+(
+  variant = promoter_variant_1
+  variant = promoter_variant_2
+)
+
+combin_1 is a CombinatorialDerivation(template_1)
+(
+  variableComponent = promoter_variable_1
+)

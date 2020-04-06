@@ -1,0 +1,32 @@
+@prefix sbol_3
+
+# -- docs-family Layer 1,2 start --
+# Name: SubComponent
+# Summary: Compose Component objects into a structural hierarchy.
+# Description: Example: The Component of a gene could contain four Component objects: a promoter, RBS, CDS, and terminator. In turn, the Component of the promoter Component could contain Component objects defined as various operator sites.
+# Usage: Given a Component create SubComponent and add it to hasFeature property of Component.
+# Parameters: Template - component - Component pertaining to sub part.
+# -- docstring family end --
+
+SubComponent(component) 
+(
+  Feature(SubComponent)
+  instanceOf = component
+)
+
+# -- docs-family Layer 2 start --
+# Name: hasSubComponent
+# Summary: Compose Component objects into a structural hierarchy. (ShortHand)
+# Description: A Shorthand for the SubComponent template, only use this when the SubComponent is referenced once. I.e when there is no optional properties or requirement to name.
+# Usage: Given a Component create hasSubComponent inside a Component
+# Parameters: Template - component - Component pertaining to sub part.
+# -- docstring family end --
+
+hasSubComponent(component) 
+(
+  component._sc is a SubComponent(component)
+  hasFeature = component._sc
+)
+
+
+

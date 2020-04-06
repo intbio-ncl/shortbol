@@ -1,0 +1,14 @@
+# ComponentReference allows a chaining of SubComponents to other features.
+# For example if you have a Construct (tetRInverter) with a part (pTetR_c)
+# with a ExternalReference to a genbank record.
+# There is no limit to the length of chain that could be described.
+
+pTetR is a Promoter()
+
+pTetR_external_ref is a ExternalDNA("https://www.ncbi.nlm.nih.gov/nuccore/X16529.1")
+pTetR_sc is a SubComponent(pTetR)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasComponentReference(pTetR_sc,pTetR_external_ref)
+)

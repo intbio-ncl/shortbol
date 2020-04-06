@@ -1,0 +1,22 @@
+# Cut can be defined with a Component that has a Sequence.
+# Cut can only ever be referenced by a Feature.
+# SBOL3 Requires a Sequence to define a location.
+
+pTetR is a Promoter()
+
+lacI_RBS is a RBS()
+(
+  hasDNASequence("aaggaggtg")
+)
+
+lacI_RBS_sc is a SubComponent(lacI_RBS)
+(
+  hasInlineCut(lacI_RBS_seq, 4)
+  hasCut(lacI_RBS_seq, 4)
+)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = lacI_RBS_sc
+)
+

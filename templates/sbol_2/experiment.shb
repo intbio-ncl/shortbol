@@ -1,0 +1,13 @@
+@prefix sbol_2
+
+# -- docs-family Layer All start --
+# Name: Experiment
+# Summary: Aggregate ExperimentalData.
+# Description: Aggregate ExperimentalData objects for subsequent analysis, usually in accordance with an experimental design.  
+# Usage: Given one or more ExperimentalData objects reference inside this object.
+# Parameters: Template - member - Reference to a ExperimentalData object.
+# -- docstring family end --
+Experiment()
+(
+  TopLevel(Experiment)
+)

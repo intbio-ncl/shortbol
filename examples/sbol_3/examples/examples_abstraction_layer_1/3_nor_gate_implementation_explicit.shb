@@ -1,0 +1,221 @@
+# This example is the most detailed version of the NOR gate example.
+# Each part of a Gene is explicitly defined.
+# The Input Factors are modelled.
+# The produced proteins interaction on the design are modelled.
+
+# Note: It can be seen in this example that the rbs and double terminator 
+# for lacI and RFP are identical so can be defined in both ComponentDefinition.
+
+# Generic Parts
+Elowitz_rbs_seq is a DNASequence("aaagaggagaaa")
+Elowitz_rbs is a RBS()
+(
+  hasSequence = Elowitz_rbs_seq
+  description = "I-GEM ID: BBa_B0034"
+)
+
+double_term_seq is a DNASequence("ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata")
+double_term is a Terminator()
+(
+  hasSequence = double_term_seq
+  description = "I-GEM ID: BBa_B0015"
+)
+
+
+# Inputs
+# pBAD promoter will activate with increasing levels of arabinose
+arabinose is a SmallMolecule()
+
+# pTeT is a constitutively ON and is repressed by TetR but TetR is repressed by tetracycline binding to it.
+ATC is a SmallMolecule()
+TetR is a Protein()
+
+
+# Input Promoters
+pTeT_seq is a DNASequence("ttgacagcttatcatcgataagctttaat")
+pTeT is a Promoter()
+(
+  hasSequence = pTeT_seq
+)
+
+pBAD_seq is a DNASequence("atgccatagcatttttatcc")
+pBAD is a Promoter()
+(
+  hasSequence = pBAD_seq
+)
+
+# Repressor
+lacI_repressor_seq is a DNASequence("atggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcaggctgcaaacgacgaaaactacgctttagtagcttaataactctgatagtgctagtgtagatctc")
+lacI_repressor is a CDS()
+(
+  hasSequence = lacI_repressor_seq
+)
+
+Elowitz_rbs_sc is a SubComponent(Elowitz_rbs)
+lacI_repressor_sc is a SubComponent(lacI_repressor)
+double_term_sc is a SubComponent(double_term)
+cons1 is a Precedes(Elowitz_rbs_sc, lacI_repressor_sc)
+cons2 is a Precedes(lacI_repressor_sc, double_term_sc)
+lacI_gene is a DNAComponent()
+(
+  hasFeature = Elowitz_rbs_sc
+  hasFeature = lacI_repressor_sc
+  hasFeature = double_term_sc
+  hasConstraint = cons1
+  hasConstraint = cons2
+)
+
+
+# Output 
+pLlac_seq is a DNASequence("aattgtgagcggataacaattgacattgtgagcggataacaagatactgagcaca")
+pLlac is a Promoter()
+(
+  hasSequence = pLlac_seq
+)
+
+mCherry_cds_seq is a DNASequence("atggcttcctccgaagacgttatcaaagagttcatgcgtttcaaagttcgtatggaaggttccgttaacggtcacgagttcgaaatcgaaggtgaaggtgaaggtcgtccgtacgaaggtacccagaccgctaaactgaaagttaccaaaggtggtccgctgccgttcgcttgggacatcctgtccccgcagttccagtacggttccaaagcttacgttaaacacccggctgacatcccggactacctgaaactgtccttcccggaaggtttcaaatgggaacgtgttatgaacttcgaagacggtggtgttgttaccgttacccaggactcctccctgcaagacggtgagttcatctacaaagttaaactgcgtggtaccaacttcccgtccgacggtccggttatgcagaaaaaaaccatgggttgggaagcttccaccgaacgtatgtacccggaagacggtgctctgaaaggtgaaatcaaaatgcgtctgaaactgaaagacggtggtcactacgacgctgaagttaaaaccacctacatggctaaaaaaccggttcagctgccgggtgcttacaaaaccgacatcaaactggacatcacctcccacaacgaagactacaccatcgttgaacagtacgaacgtgctgaaggtcgtcactccaccggtgcttaataacgctgatagtgctagtgtagatcgc")
+mCherry_cds is a CDS()
+(
+  hasSequence = mCherry_cds_seq
+)
+
+Elowitz_rbs_sc_2 is a SubComponent(Elowitz_rbs)
+mCherry_cds_sc is a SubComponent(mCherry_cds)
+double_term_sc is a SubComponent(double_term)
+cons3 is a Precedes(Elowitz_rbs_sc_2, mCherry_cds_sc)
+cons4 is a Precedes(mCherry_cds_sc, double_term_sc)
+mCherry is a DNAComponent()
+(
+  hasFeature = Elowitz_rbs_sc_2
+  hasFeature = mCherry_cds_sc
+  hasFeature = double_term_sc
+  hasConstraint = cons3
+  hasConstraint = cons4
+)
+
+# Proteins
+mCherry_p is a Protein()
+lacI_p is a Protein()
+
+ATC_sc is a SubComponent(ATC)
+TetR_sc is a SubComponent(TetR)
+arabinose_sc is a SubComponent(arabinose)
+
+pTeT_sc is a SubComponent(pTeT)
+pBAD_sc is a SubComponent(pBAD)
+lacI_sc is a SubComponent(lacI_gene)
+pLlac_sc is a SubComponent(pLlac)
+mCherry_sc is a SubComponent(mCherry)
+
+mCherry_p_sc is a SubComponent(mCherry_p)
+lacI_p_sc is a SubComponent(lacI_p)
+
+
+
+
+ATC_inhibitor is a Inhibitor(ATC_sc)
+TetR_inhibited is a Inhibited(TetR_sc)
+TetR_inhibition is a Inhibition()
+(
+	hasParticipation = ATC_inhibitor
+	hasParticipation = TetR_inhibited	
+)
+
+TetR_inhibitor is a Inhibitor(TetR_sc)
+pTeT_inhibited is a Inhibited(pTeT_sc)
+pTeT_inhibition is a Inhibition()
+(
+	hasParticipation = TetR_inhibitor
+	hasParticipation = pTeT_inhibited	
+)
+
+arabinose_stimulator is a Stimulator(arabinose_sc) 
+pBad_stimulated is a Stimulated(pBAD_sc)
+pBad_stimulation is a Stimulation()
+(
+	hasParticipation = arabinose_stimulator
+	hasParticipation = pBad_stimulated	
+)
+
+
+pTeT_stimulator is a Stimulator(pTeT_sc)
+pBAD_stimulator is a Stimulator(pBAD_sc)
+lacI_stimulated is a Stimulated(lacI_sc)
+lacI_stim is a Stimulation()
+(
+	hasParticipation = pTeT_1_stimulator
+	hasParticipation = pBAD_stimulator	
+    hasParticipation = lacI_stimulated
+)
+
+lacI_inhibitor is a Inhibitor(lacI_sc)
+pLlac_inhibited is a Inhibited(pLlac_sc)
+pLlac_inhibition is a Inhibition()
+(
+	hasParticipation = lacI_inhibitor
+	hasParticipation = pLlac_inhibited	
+)
+
+pLlac_stimulator is a Stimulator(p_out_sc)
+mCherry_stimulated is a Stimulated(output_sc)
+mCherry_stimulation is a Stimulation()
+(
+	hasParticipation = pLlac_stimulator
+	hasParticipation = mCherry_stimulated	
+)
+
+
+laci_promoter_part is a ParticipationPromoter(lacI_sc)
+laci_product is a Product(lacI_p_sc)
+laci_production is a GeneticProduction()
+(
+  hasParticipation = laci_promoter_part
+  hasParticipation = laci_product
+)
+
+mCherry_promoter_part is a ParticipationPromoter(mCherry_sc)
+mCherry_product is a Product(mCherry_p_sc)
+mCherry_production is a GeneticProduction()
+(
+  hasParticipation = mCherry_promoter_part
+  hasParticipation = mCherry_product
+)
+
+
+
+NOR_gate is a FunctionalEntity()
+(
+  hasFeature = pTeT_sc
+  hasFeature = pBAD_sc
+  hasFeature = lacI_sc
+  hasFeature = pLlac_sc
+  hasFeature = mCherry_sc
+
+
+  # Stimulation of input proteins.
+  hasInteraction = pBad_stimulation
+  # Double inhibition stimulates.
+  hasInteraction = TetR_inhibition
+  hasInteraction = pTeT_inhibition
+
+  # pTeT and pBAD can stimulate the LacI
+  hasInteraction = lacI_stim
+
+  # The LacI when active inhibits pLlac
+  hasInteraction = pLlac_inhibition
+
+  # The pLlac_sc stimulates mCherry when not inhibited.
+  hasInteraction = mCherry_stimulation
+
+  # The lacI produces the Laci proteins
+  hasInteraction = laci_production
+  # The mCherry produces the Laci proteins
+  hasInteraction = mCherry_production
+)
+
+
+
+
+
+
+

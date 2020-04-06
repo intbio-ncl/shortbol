@@ -1,0 +1,25 @@
+# Answer 5
+# The TetR and LacI proteins
+
+TetR is a Protein()
+LacI is a Protein()
+TetR_sc is a SubComponent(TetR)
+LacI_sc is a SubComponent(LacI)
+
+#Make a participation for the two proteins in the Lacinverter module
+LacI_lacinv_part is a Inhibitor(TetR_sc)
+TetR_lacinv_part is a Inhibited(LacI_sc)
+
+#Make an Interaction for the participants in the Lacinverter module
+LacITetR_int is a Inhibition()
+(
+	hasParticipation = TetR_lacinv_part
+	hasParticipation = LacI_lacinv_part	
+)
+
+# The LacI inverter module
+LacI_inverter is a FunctionalEntity()
+(
+  description = "LacI inverter"
+  hasInteraction = LacITetR_int
+)
