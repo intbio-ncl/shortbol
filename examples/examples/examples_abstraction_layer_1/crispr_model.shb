@@ -123,11 +123,6 @@ CRa_U6 is a Promoter()
     sequence = CRa_U6_seq
 )
 
-CRa_U6 is a CDS()
-(
-    sequence = gRNA_b_seq
-)
-
 gRNA_b_terminator is a Terminator()
 gRNA_b_gene is a Promoter()
 (

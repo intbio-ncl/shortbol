@@ -95,8 +95,9 @@ class SBOLCompliant:
         # Everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
             if parent is not None:
-                p = parent.split()[-2]
-                new_displayId = self.subject.split()[-1].replace(p,"")
+                new_displayId = self.subject.split()[-1]
+                #p = parent.split()[-2]
+                #new_displayId = self.subject.split()[-1].replace(p,"")
             else:
                 new_displayId = self.subject.split()[-1]
             
