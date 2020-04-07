@@ -47,7 +47,7 @@ Product(functionalcomponent)
 
 ParticipationPromoter(functionalcomponent)
 (
-  Participation(functionalcomponent, i_promoter_t)
+  Participation(functionalcomponent, i_participation_promoter)
 )
 
 Modifier(functionalcomponent)

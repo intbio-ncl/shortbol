@@ -1,0 +1,54 @@
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+TetR_fc is a InOutComponent(TetR)
+LacI_fc is a InOutComponent(LacI)
+
+TetR_part is a Inhibitor(TetR_fc)
+LacI_part is a Inhibited(LacI_fc)
+
+TetRLacI_int is a Inhibition()
+(
+	participation = TetR_part
+	participation = LacI_part	
+)
+
+TetR_inverter is a ModuleDefinition()
+(
+  description = "TetR inverter"
+  functionalComponent = TetR_fc
+  functionalComponent = LacI_fc
+  interaction = TetRLacI_int
+)
+
+
+TetR_map is a MapsUseLocal(TetR_lacinv_fc,TetR_fc)
+LacI_map is a MapsUseLocal(LacI_lacinv_fc,LacI_fc)
+toggleSwitch is a Module(TetR_inverter)
+(
+	description = "toggle switch"
+	mapsTo = TetR_map
+	mapsTo = LacI_map
+)
+
+TetR_lacinv_fc is a InOutComponent(TetR)
+LacI_lacinv_fc is a InOutComponent(LacI)
+
+
+LacI_lacinv_part is a Inhibitor(LacI_lacinv_fc)
+TetR_lacinv_part is a Inhibitor(TetR_lacinv_fc)
+
+LacITetR_int is a Inhibition()
+(
+	participation = TetR_lacinv_part
+	participation = LacI_lacinv_part	
+)
+
+LacI_inverter is a ModuleDefinition()
+(
+  description = "LacI inverter"
+  functionalComponent = TetR_lacinv_fc
+  functionalComponent = LacI_lacinv_fc
+  interaction = LacITetR_int
+  module = toggleSwitch
+)

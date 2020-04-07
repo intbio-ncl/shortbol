@@ -348,7 +348,7 @@ def produce_tables(version = "sbol_2", lib_paths = None):
     This process is just the parse_from file method and returns the tables.
     '''
     if lib_paths is None:
-        optpaths = [os.path.join(os.getcwd(),"shortbol","templates")]
+        optpaths = [os.path.join(os.getcwd(),"templates")]
     else:
         optpaths = [lib_paths]
     to_run_fn = os.path.join(optpaths[0],"temp.shb")

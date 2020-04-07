@@ -1,0 +1,23 @@
+http://sbol_prefix.org/seq_1/1: 
+{
+    http://sbol_prefix.org/seq_1/1, http://sbols.org/v2#encoding, http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html
+    http://sbol_prefix.org/seq_1/1, http://sbols.org/v2#version, 1
+    http://sbol_prefix.org/seq_1/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#Sequence
+    http://sbol_prefix.org/seq_1/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/seq_1
+    http://sbol_prefix.org/seq_1/1, http://sbols.org/v2#displayId, seq_1
+    http://sbol_prefix.org/seq_1/1, http://sbols.org/v2#elements, ACTG
+}
+http://sbol_prefix.org/pTetR/1: 
+{
+    http://sbol_prefix.org/pTetR/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#ComponentDefinition
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#role, http://identifiers.org/so/SO:0000167
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#type, http://www.biopax.org/release/biopax-level3.owl#Dna
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/pTetR
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#sequence, http://sbol_prefix.org/seq_1/1
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#displayId, pTetR
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#version, 1
+}
+
+
+
+{"http://sbol_prefix.org/seq_1/1": [["http://sbol_prefix.org/seq_1/1", "http://sbols.org/v2#encoding", "http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"], ["http://sbol_prefix.org/seq_1/1", "http://sbols.org/v2#version", "1"], ["http://sbol_prefix.org/seq_1/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#Sequence"], ["http://sbol_prefix.org/seq_1/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/seq_1"], ["http://sbol_prefix.org/seq_1/1", "http://sbols.org/v2#displayId", "seq_1"], ["http://sbol_prefix.org/seq_1/1", "http://sbols.org/v2#elements", "ACTG"]], "http://sbol_prefix.org/pTetR/1": [["http://sbol_prefix.org/pTetR/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#ComponentDefinition"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#role", "http://identifiers.org/so/SO:0000167"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#type", "http://www.biopax.org/release/biopax-level3.owl#Dna"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/pTetR"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#sequence", "http://sbol_prefix.org/seq_1/1"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#displayId", "pTetR"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#version", "1"]]}

@@ -3,8 +3,8 @@
 
 ModuleDef is a ModuleDefinition()
 (
-    hasSBMLModel(https://sbml_model.com,i_continuous)
-    hasModel(https://sbml_model.com,i_SBML,i_continuous)
+    hasSBMLModel(sbml_model,i_continuous)
+    hasModel(sbml_model,i_SBML,i_continuous)
 )
 
 

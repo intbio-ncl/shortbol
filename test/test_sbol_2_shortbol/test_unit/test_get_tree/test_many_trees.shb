@@ -1,0 +1,4 @@
+seq_1 is a DNASequence("ATCG")
+cd_1 is a Promoter()
+mod_def_1 is a ModuleDefinition()
+module_1 is a SBMLModel(poo.com, i_continuous)

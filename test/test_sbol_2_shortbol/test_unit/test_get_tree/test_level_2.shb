@@ -1,0 +1,14 @@
+pTetR is a Promoter()
+pTetR_c is a Component(pTetR)
+lacI_term_loc is a InlineRange(1,2)
+
+pTetR_sa is a SequenceAnnotation(lacI_term_loc)
+(
+	component = pTetR_c
+)
+
+tetRInverter is a DNAComponent()
+(
+  component = pTetR_c
+  sequenceAnnotation = pTetR_sa
+)

@@ -1,0 +1,7 @@
+a is a InlineRange(1,2)
+b is a InlineCut(1)
+
+c is a SequenceAnnotation(a)
+
+
+

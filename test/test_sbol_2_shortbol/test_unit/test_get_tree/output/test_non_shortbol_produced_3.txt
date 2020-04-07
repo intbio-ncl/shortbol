@@ -1,0 +1,13 @@
+http://partsregistry.org/seq/BBa_J23119: 
+{
+    http://partsregistry.org/seq/BBa_J23119, http://www.w3.org/ns/prov#wasDerivedFrom, http://parts.igem.org/Part:BBa_J23119:Design
+    http://partsregistry.org/seq/BBa_J23119, http://sbols.org/v2#displayId, BBa_J23119
+    http://partsregistry.org/seq/BBa_J23119, http://sbols.org/v2#encoding, http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html
+    http://partsregistry.org/seq/BBa_J23119, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#Sequence
+    http://partsregistry.org/seq/BBa_J23119, http://sbols.org/v2#persistentIdentity, http://partsregistry.org/seq/BBa_J23119
+    http://partsregistry.org/seq/BBa_J23119, http://sbols.org/v2#elements, ttgacagctagctcagtcctaggtataatgctagc
+}
+
+
+
+{"http://partsregistry.org/seq/BBa_J23119": [["http://partsregistry.org/seq/BBa_J23119", "http://www.w3.org/ns/prov#wasDerivedFrom", "http://parts.igem.org/Part:BBa_J23119:Design"], ["http://partsregistry.org/seq/BBa_J23119", "http://sbols.org/v2#displayId", "BBa_J23119"], ["http://partsregistry.org/seq/BBa_J23119", "http://sbols.org/v2#encoding", "http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"], ["http://partsregistry.org/seq/BBa_J23119", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#Sequence"], ["http://partsregistry.org/seq/BBa_J23119", "http://sbols.org/v2#persistentIdentity", "http://partsregistry.org/seq/BBa_J23119"], ["http://partsregistry.org/seq/BBa_J23119", "http://sbols.org/v2#elements", "ttgacagctagctcagtcctaggtataatgctagc"]]}

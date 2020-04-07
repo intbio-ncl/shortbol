@@ -1,0 +1,51 @@
+http://sbol_prefix.org/tetRInverter/1: 
+{
+    http://sbol_prefix.org/tetRInverter/pTetR_sa/1: 
+    {
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1: 
+        {
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://sbols.org/v2#orientation, http://sbols.org/v2#inline
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://sbols.org/v2#end, 2
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://sbols.org/v2#version, 1
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://sbols.org/v2#start, 1
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://sbols.org/v2#displayId, lacI_term_loc
+            http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#Range
+        }
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/1, http://sbols.org/v2#version, 1
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/1, http://sbols.org/v2#component, http://sbol_prefix.org/tetRInverter/pTetR_c/1
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/tetRInverter/pTetR_sa
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/1, http://sbols.org/v2#displayId, pTetR_sa
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#SequenceAnnotation
+        http://sbol_prefix.org/tetRInverter/pTetR_sa/1, http://sbols.org/v2#location, http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1
+    }
+    http://sbol_prefix.org/tetRInverter/pTetR_c/1: 
+    {
+        http://sbol_prefix.org/tetRInverter/pTetR_c/1, http://sbols.org/v2#version, 1
+        http://sbol_prefix.org/tetRInverter/pTetR_c/1, http://sbols.org/v2#definition, http://sbol_prefix.org/pTetR/1
+        http://sbol_prefix.org/tetRInverter/pTetR_c/1, http://sbols.org/v2#access, http://sbols.org/v2#public
+        http://sbol_prefix.org/tetRInverter/pTetR_c/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#Component
+        http://sbol_prefix.org/tetRInverter/pTetR_c/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/tetRInverter/pTetR_c
+        http://sbol_prefix.org/tetRInverter/pTetR_c/1, http://sbols.org/v2#displayId, pTetR_c
+    }
+    http://sbol_prefix.org/tetRInverter/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#ComponentDefinition
+    http://sbol_prefix.org/tetRInverter/1, http://sbols.org/v2#displayId, tetRInverter
+    http://sbol_prefix.org/tetRInverter/1, http://sbols.org/v2#type, http://www.biopax.org/release/biopax-level3.owl#Dna
+    http://sbol_prefix.org/tetRInverter/1, http://sbols.org/v2#sequenceAnnotation, http://sbol_prefix.org/tetRInverter/pTetR_sa/1
+    http://sbol_prefix.org/tetRInverter/1, http://sbols.org/v2#component, http://sbol_prefix.org/tetRInverter/pTetR_c/1
+    http://sbol_prefix.org/tetRInverter/1, http://sbols.org/v2#version, 1
+    http://sbol_prefix.org/tetRInverter/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/tetRInverter
+}
+http://sbol_prefix.org/pTetR/1: 
+{
+    http://sbol_prefix.org/pTetR/1, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#ComponentDefinition
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#role, http://identifiers.org/so/SO:0000167
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#type, http://www.biopax.org/release/biopax-level3.owl#Dna
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#persistentIdentity, http://sbol_prefix.org/pTetR
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#displayId, pTetR
+    http://sbol_prefix.org/pTetR/1, http://sbols.org/v2#version, 1
+}
+
+
+
+{"http://sbol_prefix.org/tetRInverter/1": [{"http://sbol_prefix.org/tetRInverter/pTetR_sa/1": [{"http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1": [["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://sbols.org/v2#orientation", "http://sbols.org/v2#inline"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://sbols.org/v2#end", "2"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://sbols.org/v2#version", "1"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://sbols.org/v2#start", "1"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://sbols.org/v2#displayId", "lacI_term_loc"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#Range"]]}, ["http://sbol_prefix.org/tetRInverter/pTetR_sa/1", "http://sbols.org/v2#version", "1"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/1", "http://sbols.org/v2#component", "http://sbol_prefix.org/tetRInverter/pTetR_c/1"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/tetRInverter/pTetR_sa"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/1", "http://sbols.org/v2#displayId", "pTetR_sa"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#SequenceAnnotation"], ["http://sbol_prefix.org/tetRInverter/pTetR_sa/1", "http://sbols.org/v2#location", "http://sbol_prefix.org/tetRInverter/pTetR_sa/lacI_term_loc/1"]]}, {"http://sbol_prefix.org/tetRInverter/pTetR_c/1": [["http://sbol_prefix.org/tetRInverter/pTetR_c/1", "http://sbols.org/v2#version", "1"], ["http://sbol_prefix.org/tetRInverter/pTetR_c/1", "http://sbols.org/v2#definition", "http://sbol_prefix.org/pTetR/1"], ["http://sbol_prefix.org/tetRInverter/pTetR_c/1", "http://sbols.org/v2#access", "http://sbols.org/v2#public"], ["http://sbol_prefix.org/tetRInverter/pTetR_c/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#Component"], ["http://sbol_prefix.org/tetRInverter/pTetR_c/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/tetRInverter/pTetR_c"], ["http://sbol_prefix.org/tetRInverter/pTetR_c/1", "http://sbols.org/v2#displayId", "pTetR_c"]]}, ["http://sbol_prefix.org/tetRInverter/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#ComponentDefinition"], ["http://sbol_prefix.org/tetRInverter/1", "http://sbols.org/v2#displayId", "tetRInverter"], ["http://sbol_prefix.org/tetRInverter/1", "http://sbols.org/v2#type", "http://www.biopax.org/release/biopax-level3.owl#Dna"], ["http://sbol_prefix.org/tetRInverter/1", "http://sbols.org/v2#sequenceAnnotation", "http://sbol_prefix.org/tetRInverter/pTetR_sa/1"], ["http://sbol_prefix.org/tetRInverter/1", "http://sbols.org/v2#component", "http://sbol_prefix.org/tetRInverter/pTetR_c/1"], ["http://sbol_prefix.org/tetRInverter/1", "http://sbols.org/v2#version", "1"], ["http://sbol_prefix.org/tetRInverter/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/tetRInverter"]], "http://sbol_prefix.org/pTetR/1": [["http://sbol_prefix.org/pTetR/1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#ComponentDefinition"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#role", "http://identifiers.org/so/SO:0000167"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#type", "http://www.biopax.org/release/biopax-level3.owl#Dna"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#persistentIdentity", "http://sbol_prefix.org/pTetR"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#displayId", "pTetR"], ["http://sbol_prefix.org/pTetR/1", "http://sbols.org/v2#version", "1"]]}

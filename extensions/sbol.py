@@ -97,12 +97,7 @@ class SBOLCompliant:
         parent = get_SBOL_parent(triplepack, self.subject)
         # Everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
-            if parent is not None:
-                new_displayId = self.subject.split()[-1]
-                #for part in parent.split():
-                    #new_displayId = new_displayId.replace(part,"")
-            else:
-                new_displayId = self.subject.split()[-1]
+            new_displayId = self.subject.split()[-1]
         
             triplepack.add((self.subject, displayId, Value(new_displayId)))
         # Everything has a Version
@@ -205,8 +200,7 @@ def set_identity(triplepack, uri):
 def set_childs_persistentIdentity(triplepack, parent, child):
     parents_pId = get_SBOL_persistentIdentity(triplepack, parent)
     childs_dId = get_SBOL_displayId(triplepack, child)
-    p = parents_pId.split()[-1]
-    childs_pId = Uri(parents_pId.uri + '/' + childs_dId.value.replace(p,""))
+    childs_pId = Uri(parents_pId.uri + '/' + childs_dId.value)
     triplepack.set(child, persistentIdentity, childs_pId)
 
 

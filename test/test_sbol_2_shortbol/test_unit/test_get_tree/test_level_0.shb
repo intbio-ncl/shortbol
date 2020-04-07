@@ -1,0 +1,8 @@
+n is a CDS()
+(
+    name = "LacI CDS"
+    description = "Coding Region for LacI protein"
+)
+
+
+

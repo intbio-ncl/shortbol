@@ -1,0 +1,16 @@
+http://www.partsregistry.org/cd/BBa_J23119: 
+{
+    http://www.partsregistry.org/cd/BBa_J23119, http://www.myapp.org/datasheet, http://www.partsregistry.org/gen/datasheet1
+    http://www.partsregistry.org/cd/BBa_J23119, http://www.w3.org/ns/prov#wasDerivedFrom, http://www.partsregistry.org/Part:BBa_J23119
+    http://www.partsregistry.org/cd/BBa_J23119, http://sbols.org/v2#displayId, BBa_J23119
+    http://www.partsregistry.org/cd/BBa_J23119, http://purl.org/dc/terms/title, J23119
+    http://www.partsregistry.org/cd/BBa_J23119, http://sbols.org/v2#persistentIdentity, http://www.partsregistry.org/cd/BBa_J23119
+    http://www.partsregistry.org/cd/BBa_J23119, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://sbols.org/v2#ComponentDefinition
+    http://www.partsregistry.org/cd/BBa_J23119, http://sbols.org/v2#type, http://www.biopax.org/release/biopax-level3.owl#DnaRegion
+    http://www.partsregistry.org/cd/BBa_J23119, http://purl.org/dc/terms/description, Constitutive promoter
+    http://www.partsregistry.org/cd/BBa_J23119, http://sbols.org/v2#role, http://identifiers.org/so/SO:0000167
+}
+
+
+
+{"http://www.partsregistry.org/cd/BBa_J23119": [["http://www.partsregistry.org/cd/BBa_J23119", "http://www.myapp.org/datasheet", "http://www.partsregistry.org/gen/datasheet1"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://www.w3.org/ns/prov#wasDerivedFrom", "http://www.partsregistry.org/Part:BBa_J23119"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://sbols.org/v2#displayId", "BBa_J23119"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://purl.org/dc/terms/title", "J23119"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://sbols.org/v2#persistentIdentity", "http://www.partsregistry.org/cd/BBa_J23119"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://sbols.org/v2#ComponentDefinition"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://sbols.org/v2#type", "http://www.biopax.org/release/biopax-level3.owl#DnaRegion"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://purl.org/dc/terms/description", "Constitutive promoter"], ["http://www.partsregistry.org/cd/BBa_J23119", "http://sbols.org/v2#role", "http://identifiers.org/so/SO:0000167"]]}

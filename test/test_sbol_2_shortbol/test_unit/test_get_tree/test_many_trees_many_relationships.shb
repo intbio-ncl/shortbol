@@ -1,0 +1,30 @@
+seq_1 is a DNASequence("ATCG")
+cd_1 is a Promoter()
+(
+    sequence = seq_1
+)
+
+cd_1_c_1 is a Component(cd_1)
+cd_1_c_2 is a Component(cd_1)
+cd_1_c_3 is a Component(cd_1)
+cd_1_c_4 is a Component(cd_1)
+
+cd_2 is a CDS()
+(
+    component = cd_1_c_1
+    component = cd_1_c_2
+    component = cd_1_c_3
+    component = cd_1_c_4
+)
+
+model_1 is a SBMLModel(poo.com, i_continuous)
+cd_1_fc is a InputComponent(cd_1)
+cd_2_fc is a InputComponent(cd_2)
+
+mod_def_1 is a ModuleDefinition()
+(
+    model = model_1
+    functionalComponent = cd_1_fc
+    functionalComponent = cd_2_fc
+)
+

@@ -1,0 +1,5 @@
+seq_1 is a DNASequence("ACTG")
+pTetR is a Promoter()
+(
+    sequence = seq_1
+)

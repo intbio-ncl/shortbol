@@ -1,0 +1,13 @@
+use <sbol_2>
+
+@prefix sbol_prefix = <http://sbol_prefix.org/>
+@prefix sbol_prefix
+a is a sbol_2.InlineRange(1,2)
+b is a sbol_2.InlineCut(1)
+
+c is a sbol_2.SequenceAnnotation(a)
+
+
+
+
+@extension SbolIdentity()

@@ -1,0 +1,22 @@
+cd1 is a ProteinComponent()
+cd2 is a ProteinComponent()
+
+cd1_fc is a NoneComponent(cd1)
+cd2_fc is a NoneComponent(cd2)
+
+part1 is a Inhibitor(cd1_fc)
+part2 is a Inhibited(cd2_fc)
+
+interaction_1 is a Interaction(inhibition)
+(
+	participation = part1
+	participation = part2	
+)
+
+# The LacI inverter module
+moduledef_1 is a ModuleDefinition()
+(
+  functionalComponent = cd1_fc
+  functionalComponent = cd2_fc
+  interaction = interaction_1
+)

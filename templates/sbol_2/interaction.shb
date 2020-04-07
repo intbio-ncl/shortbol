@@ -112,7 +112,7 @@ bioChemicalReaction(functionalComponent_reactant, functionalComponent_product)
 
 geneticProduction(functionalComponent_promoter, functionalComponent_product)
 (
-  interaction_2(functionalComponent_promoter, i_promoter, functionalComponent_product, i_product, i_genetic_production)
+  interaction_2(functionalComponent_promoter, i_participation_promoter, functionalComponent_product, i_product, i_genetic_production)
 )
 
 degradation(functionalComponent_reactant)
