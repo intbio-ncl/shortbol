@@ -314,3 +314,6 @@ class SBOLComplianceError(ExtensionError):
     def __str__(self):
         return ExtensionError.__str__(self) + format(" %s\n" % self._helpful_message)
 
+    def simplified_error_message(self):
+        return f'{self._helpful_message}'
+

@@ -42,6 +42,10 @@ required_properties = {rdflib.URIRef(sbolns + property) for property in
                         ['version',
                          'persistentIdentity',
                          'displayId']}
+sbh_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/synbiohub#")
+skip_properties = {rdflib.URIRef(sbh_namespace + skip_property) for skip_property in
+                        ['topLevel',
+                         'ownedBy']}
 
 rdf_type = rdflib.URIRef(rdflib.RDF.type)
 component = rdflib.URIRef(sbolns+ 'component')
@@ -117,7 +121,10 @@ def get_tree(graph,root,done = None):
         if t:
             ch = {str(child[2]) : t}
             tree.append(ch)
+
     for prop in properties:
+        if prop[1] in skip_properties:
+            continue
         tree.append((prop))
     return tree
 

@@ -17,7 +17,7 @@ ComponentDefinition(type)
 
 DNAComponent() 
 (
-    ComponentDefinition(i_DNA)
+    ComponentDefinition(i_DNARegion)
 )
 
 DNA()
@@ -27,7 +27,7 @@ DNA()
 
 RNAComponent()
 (
-  ComponentDefinition(i_RNA)
+  ComponentDefinition(i_RNARegion)
 )
 
 RNA()
