@@ -42,10 +42,12 @@ required_properties = {rdflib.URIRef(sbolns + property) for property in
                         ['version',
                          'persistentIdentity',
                          'displayId']}
+                         
 sbh_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/synbiohub#")
-skip_properties = {rdflib.URIRef(sbh_namespace + skip_property) for skip_property in
-                        ['topLevel',
-                         'ownedBy']}
+igem_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/igem#")
+dc_terms_namespace = rdflib.URIRef("http://purl.org/dc/terms/")
+provo_namespace = rdflib.URIRef("http://www.w3.org/ns/prov#")
+prune_namespaces = [sbh_namespace,igem_namespace]
 
 rdf_type = rdflib.URIRef(rdflib.RDF.type)
 component = rdflib.URIRef(sbolns+ 'component')
@@ -54,7 +56,7 @@ sa = rdflib.URIRef(sbolns + 'SequenceAnnotation')
 
 dc_title = rdflib.URIRef("http://purl.org/dc/terms/title")
 
-def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False):
+def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None):
     # Perform full file validation before producing ShortBOL.
     if not no_validation and not general_validation(sbol_xml_fn):
          print("Warn:: Can't validate input.")
@@ -70,7 +72,7 @@ def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validati
     # multiple roots which means multiple trees,
     # So the first level of the dict is multiple roots.
     for root in tree_roots:
-        heirachy_tree[str(root[0])] = get_tree(g,root[0])
+        heirachy_tree[str(root[0])] = get_tree(g,root[0],prune = prune,prune_list = prune_list)
 
     # Now have a structure that is easier to use.
     # Create the actual ShortBOL from this.
@@ -105,7 +107,7 @@ def find_graph_roots(graph):
     return roots
 
 # Problem the get children is always for the master parent.
-def get_tree(graph,root,done = None):
+def get_tree(graph,root,done = None, prune = False, prune_list = None):
     if done is None:
         done = set()
     if root in done:
@@ -117,13 +119,18 @@ def get_tree(graph,root,done = None):
     # Also Take a reference to child as property.
     properties = set([prop for prop in search((root,None,None),graph) ])
     for child in children:
-        t = get_tree(graph, child[2], done)
+        t = get_tree(graph, child[2], done, prune = prune, prune_list = prune_list)
         if t:
             ch = {str(child[2]) : t}
             tree.append(ch)
 
     for prop in properties:
-        if prop[1] in skip_properties:
+        # Flag that removes any triples that are in namespace list.
+        if "prov" in prop[1]:
+            print(prop[1])
+        if prune_list is not None and any(ns in prop[1] for ns in prune_list):
+            continue
+        if prune and any(ns in prop[1] for ns in prune_namespaces):
             continue
         tree.append((prop))
     return tree
@@ -524,9 +531,10 @@ def sbol_2_shortbol_args():
     parser.add_argument('-p ','--path', default=os.path.join("templates"), 
                         help="specify path to shortbol libary.")
     parser.add_argument('-nv', '--no_validation', help="Stops the Input from being sent via HTTP to online validator.", default=None, action='store_true')
+    parser.add_argument('-prune', '--prune', help=f"This flag will remove the properties from {str([str(namespace) for namespace in prune_namespaces])} Namespaces.", default=False, action='store_true')
     return  parser.parse_args()
 
 
 if __name__ == "__main__":
     args = sbol_2_shortbol_args()
-    produce_shortbol(args.filename, args.path, args.output, args.no_validation)
+    produce_shortbol(args.filename, args.path, args.output, args.no_validation, args.prune)

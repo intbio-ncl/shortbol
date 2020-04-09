@@ -97,6 +97,18 @@ Operator()
   sbol_2.role = i_operator
 )
 
+Gene()
+(
+  DNAComponent()
+  sbol_2.role = i_gene
+)
+
+EngineeredGene()
+(
+  DNAComponent()
+  sbol_2.role = i_engineeredGene
+)
+
 # Common RNA components
 
 CDS_RNA()
@@ -110,3 +122,16 @@ SGRNA()
   RNAComponent()
   sbol_2.role = i_sgRNA
 )
+
+TranscriptionFactor()
+(
+  ProteinComponent()
+  sbol_2.role = i_transcriptionFactor
+)
+
+Effector()
+(
+  SmallMoleculeComponent()
+  sbol_2.role = i_effector
+)
+

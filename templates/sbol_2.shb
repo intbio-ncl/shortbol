@@ -20,7 +20,12 @@ addProperty(property, value)
 
 name = dc.title
 description = dc.description
+created = dc.created
+creator = dc.creator
+modified = dc.modified
+
 wasDerivedFrom = prov.wasDerivedFrom
+wasGeneratedBy = prov.wasGeneratedBy
 
 use <sbol_2/identified>
 use <sbol_2/identifiers>
@@ -41,3 +46,36 @@ use <sbol_2/experimentalData>
 use <sbol_2/attachment>
 use <sbol_2/collection>
 use <sbol_2/implementation>
+
+
+bookmark = sbh_wiki.sbh_terms.bookmark
+mutableDescription = sbh_wiki.sbh_terms.mutableDescription
+mutableNotes = sbh_wiki.sbh_terms.mutableNotes
+mutableProvenance = sbh_wiki.sbh_terms.mutableProvenance
+ownedBy = sbh_wiki.sbh_terms.ownedBy
+star = sbh_wiki.sbh_terms.star
+topLevel = sbh_wiki.sbh_terms.topLevel
+
+
+discontinued = sbh_wiki.igem_terms.discontinued
+dominant = sbh_wiki.igem_terms.dominant
+experience = sbh_wiki.igem_terms.experience
+group_u_list = sbh_wiki.igem_terms.group_u_list
+m_user_id = sbh_wiki.igem_terms.m_user_id
+owner_id = sbh_wiki.igem_terms.owner_id
+owning_group_id = sbh_wiki.igem_terms.owning_group_id
+status = sbh_wiki.igem_terms.status
+sampleStatus = sbh_wiki.igem_terms.sampleStatus
+direction = sbh_wiki.igem_terms.direction
+
+Plasmid = sbh_wiki.igem_terms.<partType/Plasmid>
+regulatory_role = igem_terms.<partType/Regulatory>
+rbs_role = igem_terms.<partType/RBS>
+coding_role = igem_terms.<partType/Coding>
+binding_feature = igem_terms.<feature/binding>
+cds_feature = igem_terms.<feature/cds>
+BioBrick = igem_terms.<feature/BioBrick>
+promoter_feature = igem_terms.<feature/Promoter>
+start_feature = igem_terms.<feature/start>
+tag_feature = igem_terms.<feature/tag>
+barcode_feature = igem_terms.<feature/barcode>

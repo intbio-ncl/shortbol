@@ -318,8 +318,8 @@ def parse_from_file(filepath,
         with open(out, 'w') as o:
             o.write(sbol)
     
-    if temp_file :
-        os.remove(temp_file)
+    #if temp_file :
+       # pass#os.remove(temp_file)
     return {ret_code : errors}
 
 def rdf_repl(serializer='nt',
