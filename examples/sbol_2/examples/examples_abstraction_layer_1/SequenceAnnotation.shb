@@ -7,6 +7,7 @@ pTetR is a Promoter()
 (
   sequence = pTetR_seq
 )
+
 lacI_RBS is a RBS()
 
 pTetR_c is a Component(pTetR)

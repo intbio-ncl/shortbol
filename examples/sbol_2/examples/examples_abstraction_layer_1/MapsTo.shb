@@ -17,7 +17,6 @@ gRNA_b_fc is a InOutComponent(target_gene)
 
 ModuleDef_1 is a ModuleDefinition()
 (
-
     functionalComponent = cas9_generic_fc
     functionalComponent = gRNA_generic_fc
 )

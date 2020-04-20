@@ -1,8 +1,8 @@
 # These sequenceConstraints although written
 # differently are functionally identical
 
-pTetR   	is a Promoter()
-lacI_RBS 	is a RBS()
+pTetR is a Promoter()
+lacI_RBS is a RBS()
 
 pTetR_c is a Component(pTetR)
 lacI_RBS_c is a Component(lacI_RBS)

@@ -4,8 +4,8 @@
 
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
-TetR_fc is a NoneComponent(TetR,none)
-LacI_fc is a NoneComponent(LacI,none)
+TetR_fc is a NoneComponent(TetR)
+LacI_fc is a NoneComponent(LacI)
 
 LacI_lacinv_part is a Inhibitor(LacI_fc)
 TetR_lacinv_part is a Inhibited(TetR_fc)

@@ -2,8 +2,8 @@
 # before the lacI_RBS.
 # Unlike SeqAnno no exact location.
 
-pTetR   	is a Promoter()
-lacI_RBS 	is a RBS()
+pTetR is a Promoter()
+lacI_RBS is a RBS()
 
 tetRInverter is a DNAComponent()
 (

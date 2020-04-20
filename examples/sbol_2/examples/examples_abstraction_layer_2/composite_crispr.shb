@@ -98,7 +98,7 @@ gRNA_b_gene_fc is a InstanceOf(gRNA_b_gene)
 gRNA_b_fc is a InstanceOf(gRNA_b)
 EYFP_gene_fc is a InstanceOf(EYFP_gene)
 EYFP_fc is a InstanceOf(EYFP)
-cas9m_BFP_gRNA_b_fc is a InstanceOf(cas9m_BFP_gRNA_b_fc)
+cas9m_BFP_gRNA_b_fc is a InstanceOf(cas9m_BFP_gRNA_b)
 
 
 

@@ -1,24 +1,15 @@
 cas9_generic is a Protein()
-
 gRNA_generic is a SGRNA()
-
 cas9_gRNA_complex is a Complex()
-
 target_gene is a Promoter()
-
 target is a Protein()
-
+gRNA_b_nc is a DNA()
 
 cas9_generic_fc is a InOutComponent(cas9_generic)
-
 gRNA_generic_fc is a InOutComponent(gRNA_generic)
-
 cas9_gRNA_complex_fc is a InOutComponent(cas9_gRNA_complex)
-
 target_gene_fc is a InOutComponent(target_gene)
-
 target_fc is a InOutComponent(target)
-
 
 
 cas9_generic_participation is a Reactant(cas9_generic_fc)

@@ -1,7 +1,6 @@
 # ModuleDefinitions can hold many
 # templates as optional properties.
 
-
 cas9_generic is a Protein()
 gRNA_generic is a SGRNA()
 
@@ -18,7 +17,6 @@ cas9_gRNA_int is a Inhibition()
 
 ModuleDef_1 is a ModuleDefinition()
 (
-
     functionalComponent = cas9_generic_fc
     functionalComponent = gRNA_generic_fc
     interaction = cas9_gRNA_int
