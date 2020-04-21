@@ -2,8 +2,8 @@
 TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 
-TetR_fc is a InstanceOf(lacI)
-LacI_fc is a InstanceOf(lacI)
+TetR_fc is a InstanceOf(TetR)
+LacI_fc is a InstanceOf(LacI)
 
 # The TetR inverter
 TetR_inverter is a ModuleDefinition()

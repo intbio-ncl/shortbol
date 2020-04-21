@@ -8,7 +8,7 @@ TetR is a ProteinComponent()
 LacI is a ProteinComponent()
 
 TetR_fc is a InstanceOf(TetR)
-LacI_fc is a InstanceOf(LacI,i_input)
+LacI_fc is a InstanceOf(LacI)
 
 CRPb_characterization_Circuit is a ModuleDefinition()
 (
