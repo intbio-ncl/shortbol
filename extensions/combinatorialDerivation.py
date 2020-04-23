@@ -50,7 +50,7 @@ class CombinatorialDerivation:
                 raise ValueError(f'The variable object {variable[2]} is not a sub-component of the Template {template[0][0]}.')
             
             for variant in variants:
-                new_template_name = Uri(template[0][0].uri + "_" + variable_component_name[2].uri.split("/")[-1] + "_" + variant[2].uri.split("/")[-1])
+                new_template_name = Uri(template[0][0].uri + "_" + variable_component_name[2].split()[-1] + "_" + variant[2].split()[-1])
                 for s,p,o in template:
                     # When the triple pertains to the variable component.
                     if variable[2] == o:
@@ -144,7 +144,7 @@ def generate_name(variant,name):
     '''
     Essentially prefixes the oldname with the current variant name
     '''
-    return Uri(variant[2].uri  + "_" + name.uri.split("/")[-1])
+    return Uri(variant[2].uri  + "_" + name.split()[-1])
     
 def generate_component(parent,component_name):
     new_component = []

@@ -26,7 +26,7 @@ class RDFScriptSyntax(RDFScriptError):
     def __init__(self, token, location):
         self.token = token
         message = '\n'
-        message += f"Invalid syntax '{token}'"
+        message += f"Invalid syntax '{self.token.value}' on line {token.lineno}"
         super().__init__(location, message)
 
     def simplified_error_message(self):

@@ -7,7 +7,7 @@ import rdflib
 import rdflib.compare
 import argparse
 import validate_sbol
-from run import produce_tables, get_parameters
+from run import produce_tables
 
 sbolns = rdflib.URIRef('http://sbols.org/v2#')
 top_levels = {rdflib.URIRef(sbolns + name) for name in
@@ -56,13 +56,15 @@ sa = rdflib.URIRef(sbolns + 'SequenceAnnotation')
 
 dc_title = rdflib.URIRef("http://purl.org/dc/terms/title")
 
+
+
+
 def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None):
     # Perform full file validation before producing ShortBOL.
     if not no_validation and not general_validation(sbol_xml_fn):
          print("Warn:: Can't validate input.")
     g=rdflib.Graph()
     g.load(sbol_xml_fn)
-
 
     # Manipulate the triplepack to move from a graph structure to 
     # an easier to use tree form.
@@ -126,8 +128,6 @@ def get_tree(graph,root,done = None, prune = False, prune_list = None):
 
     for prop in properties:
         # Flag that removes any triples that are in namespace list.
-        if "prov" in prop[1]:
-            print(prop[1])
         if prune_list is not None and any(ns in prop[1] for ns in prune_list):
             continue
         if prune and any(ns in prop[1] for ns in prune_namespaces):
@@ -137,21 +137,25 @@ def get_tree(graph,root,done = None, prune = False, prune_list = None):
 
 
 def convert(heirachy_tree,shortbol_libary):
-    symbol_table,template_table = produce_tables(lib_paths = shortbol_libary)
+    symbol_table,template_table,prefixes = produce_tables(lib_paths = shortbol_libary)
     template_table = cast_to_rdflib(template_table)
     symbol_table = cast_to_rdflib(symbol_table)
+    prefixes = add_unknown_prefixes(heirachy_tree,prefixes,symbol_table)
     ordered_parameter_lists = get_parameter_lists(template_table,shortbol_libary)
 
     shortbol_code = ""
 
     for name,triples in heirachy_tree.items():
-        shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists)
-
+        shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes)
+    for unknown_prefix_name,unknown_prefix in prefixes["unknown_prefixes"]:
+        if unknown_prefix_name in shortbol_code:
+            shortbol_code = create_prefix_code(unknown_prefix_name,unknown_prefix) + shortbol_code
+             
 
     return shortbol_code
 
 
-def handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists):
+def handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes):
     shortbol_code = ""
     template_name = get_name(name)
     properties = [triple for triple in triples if isinstance(triple,tuple)]
@@ -206,6 +210,11 @@ def handle_template(name,triples,template_table,symbol_table,ordered_parameter_l
         else:
             # The property must be an expansion property
             obj = handle_object(o,symbol_table)
+            # Certain properties need there prefixes conserved
+            prefix = lookup_prefix_name(o,prefixes)
+            if prefix is not None:
+                obj = prefix + "." + obj
+
             # Another quirk of SBOL, one of the only cases when SBOL aliases, (sbol name == "dcterms title")
             if p == dc_title:
                 p = "name"
@@ -221,7 +230,7 @@ def handle_template(name,triples,template_table,symbol_table,ordered_parameter_l
     for child in children: 
         name = list(child.keys())[0]
         triples = [j for i in list(child.values()) for j in i]
-        shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists)
+        shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes)
 
     shortbol_code = shortbol_code + create_instance(template_name, template_type, ordered_parameters, expansion_properties)    
     return shortbol_code
@@ -249,35 +258,13 @@ def handle_object(o,symbol_table):
                     obj = k
                     break
         else:
+            # A reference to an external URI is different, we need to preserve the Prefix.
             obj = o
         obj = get_name(obj)
     else:
-        raise TypeError("What the hell is this?" + type(o)) 
+        raise TypeError(f'{o} is a type that ShortBOL does not support.') 
 
     return obj
-
-def create_instance(name, template_type, parameters = None, expansions = None):
-    '''
-    Creates the instance of a Shortbol object, ie actually creates the text.
-    '''
-    template = f'\n{name} is a {template_type}'
-    template = f'{template}('
-
-    if parameters is not None and len(parameters) > 0:
-        for index, parameter in enumerate(parameters):
-            if index + 1 != len(parameters):
-                template = template + str(parameter) + ", "
-            else:
-                template = template + str(parameter)
-    template = f'{template})'
-
-    if expansions is not None and len(expansions) != 0:
-        expansions = sorted(expansions, key=lambda tup: tup[0])
-        template = f'{template}\n(\n'
-        for expansion in expansions:
-            template = f'{template}     {expansion[0]} = {expansion[1]}\n'
-        template = f'{template})\n'
-    return template
 
 def get_specialised_templates(base_name,template_table,symbol_table):
     '''
@@ -319,6 +306,77 @@ def get_name(item):
 def split(uri):
     return re.split('#|\/|:', uri)
 
+def get_prefix(uri):
+    '''
+    Simply removes the last part of a URI and returns the Prefix
+    '''
+
+    if not isinstance(uri,rdflib.URIRef):
+        raise ValueError(f'{uri} is not a URI.')
+    split_item = split(uri)
+    if len(split_item) > 2 and len(split_item[-1]) == 1 and split_item[-1].isdigit()  :
+        name = split_item[-2] + "/" + split_item[-1]
+    else:
+        name = split_item[-1]
+
+    # Cant just remove the name string because the prefix MIGHT have the name in the prefix.
+    prefix = rdflib.URIRef(uri[0:len(uri) - len(name)])
+    return prefix
+
+
+def lookup_prefix_name(object,prefixes):
+    '''
+    Looks up the prefix in the prefixes struct to find the substitution name.
+    '''
+    if not isinstance(object,rdflib.URIRef):
+        return None
+    for prefix in prefixes["prefixes"]:
+        if get_prefix(object) == prefix[1]:
+            return prefix[0]
+    for prefix in prefixes["unknown_prefixes"]:
+        if get_prefix(object) == prefix[1]:
+            return prefix[0]
+            
+
+def add_unknown_prefixes(heirachy_tree,prefixes,symbol_table):
+    # For the case when a URI has a Prefix that isn't defined in the ShortBOL libaries
+    new_prefixes = []
+    symbol_uris = [v for k,v in symbol_table.items()]
+        
+    def inner_prefix(uri):
+        if isinstance(uri,rdflib.URIRef):
+            # If the URI isnt defined as a prefix but has a name in the symbols table don't need to add prefix for this.
+            if uri in symbol_uris:
+                return
+            prefix = get_prefix(uri)
+            if prefix in [prefix[1] for prefix in new_prefixes]:
+                return
+            if not prefix in [prefix[1] for prefix in prefixes]: 
+                # Generate a unique name for this prefix based on its uri.
+                parts = split(prefix)
+                name = parts[3].split(".")[0] + "_" + parts[-2]
+                new_prefixes.append((name,prefix))
+            
+    def add_unknown_prefixes_inner(item,f=None,indent=""):
+        for top_level,branches in item.items():
+            # Each key is a str
+            inner_prefix(top_level)
+            # Branches always come as a list
+            for branch in branches:
+            # A branch can be:
+                # A tuple - When its a property
+                if isinstance(branch,tuple):
+                    for uri in branch:
+                        inner_prefix(uri)
+                # A list - When its a child
+                elif isinstance(branch,dict):
+                    add_unknown_prefixes_inner(branch)
+                else:
+                    raise ValueError(f"The value is not a dict or tuple: {str(branch)}")
+    add_unknown_prefixes_inner(heirachy_tree)
+    
+    prefixes = {"prefixes":prefixes,"unknown_prefixes":new_prefixes}
+    return prefixes
 
 def cast_shortbol_uri(uri):
     '''
@@ -400,6 +458,32 @@ def general_validation(sbol_xml_fn):
             return False
 
 
+def create_instance(name, template_type, parameters = None, expansions = None):
+    '''
+    Creates the instance of a Shortbol object, ie actually creates the text.
+    '''
+    template = f'\n{name} is a {template_type}'
+    template = f'{template}('
+
+    if parameters is not None and len(parameters) > 0:
+        for index, parameter in enumerate(parameters):
+            if index + 1 != len(parameters):
+                template = template + str(parameter) + ", "
+            else:
+                template = template + str(parameter)
+    template = f'{template})'
+
+    if expansions is not None and len(expansions) != 0:
+        expansions = sorted(expansions, key=lambda tup: tup[0])
+        template = f'{template}\n(\n'
+        for expansion in expansions:
+            template = f'{template}     {expansion[0]} = {expansion[1]}\n'
+        template = f'{template})\n'
+    return template
+
+def create_prefix_code(name,prefix):
+    return f'\n@prefix {name} = <{prefix}>'
+
 def get_parameter_lists(template_table,shortbol_libary):
     '''
     This is a hack, because it is not possible to find the order of parameters from the template table
@@ -461,66 +545,15 @@ def get_parameter_lists(template_table,shortbol_libary):
                     parameter_list[template_type] = parameters
     return parameter_list
 
-def dump_template_table(template_table):
-    if os.path.isfile("template_table.txt"):
-        os.remove("template_table.txt")
-    f = open("template_table.txt","a")
-    for k,v in template_table.items():
-        f.write(f'{str(k)} \n')
-        for val in v:
-            f.write(f'  {str(val)}\n')
-        f.write("\n\n\n")
-    f.close()
+def get_parameters(line,line_no):
+    parameters = []
+    try:
+        parameters = line.split("(")[1]
+        parameters = parameters.replace("(","").replace(")","").replace(" ","").split(",")
+    except IndexError:
+        raise NameError(f"Error Parameters on line: {line_no - 2} is malformed.")
+    return parameters
 
-def dump_symbol_table(symbol_table):
-    if os.path.isfile("symbol_table.txt"):
-        os.remove("symbol_table.txt")
-    f = open("symbol_table.txt","a")
-    for k,v in symbol_table.items():
-        f.write(f'{str(k)} : {str(v)} \n')
-    f.close()
-
-def tree_dump(item,f=None,indent=""):
-    # This struct always starts of as a dict.
-    indent_size = "    "
-    if f is None:
-        output_fn = "logger.txt"
-    else:
-        output_fn = f
-    if not os.path.isdir(os.path.dirname(output_fn)):
-        try:
-            os.makedirs(os.path.dirname(output_fn))
-        except FileNotFoundError:
-            pass
-
-    if os.path.isfile(output_fn):
-        os.remove(output_fn)
-    f = open(output_fn,"a")
-
-
-    def tree_dump_inner(item,f=None,indent=""):
-        for top_level,branches in item.items():
-            # Each key is a str
-            f.write(f'{indent}{top_level}: \n')
-            f.write(indent + "{\n")
-            # Branches always come as a list
-            for branch in branches:
-            # A branch can be:
-                # A tuple - When its a property
-                if isinstance(branch,tuple):
-                    f.write(f'{indent + indent_size}{branch[0]}, {branch[1]}, {branch[2]}\n')
-                # A list - When its a child
-                elif isinstance(branch,dict):
-                    tree_dump_inner(branch,f,indent + indent_size)
-                else:
-                    raise ValueError(f"The print value is not a dict or tuple: {str(branch)}")
-            f.write(indent + "}\n")
-    tree_dump_inner(item,f)
-
-    import json
-    f.write("\n\n\n")
-    f.write(json.dumps(item))
-    f.close()
 
 def sbol_2_shortbol_args():
     parser = argparse.ArgumentParser(description="Tool to generate shortbol code from SBOL RDF/XML")
@@ -538,3 +571,10 @@ def sbol_2_shortbol_args():
 if __name__ == "__main__":
     args = sbol_2_shortbol_args()
     produce_shortbol(args.filename, args.path, args.output, args.no_validation, args.prune)
+
+
+
+
+
+
+

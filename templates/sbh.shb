@@ -3,6 +3,6 @@
 @prefix sbh_wiki = <https://wiki.synbiohub.org/wiki/>
 @prefix sbh_wiki
 
-sbh_terms = </Terms/synbiohub#>
-igem_terms = </Terms/igem#>
+@prefix sbh_terms = <http://wiki.synbiohub.org/wiki/Terms/synbiohub#>
+@prefix igem_terms = <http://wiki.synbiohub.org/wiki/Terms/igem#>
 

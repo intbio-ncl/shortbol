@@ -1,4 +1,5 @@
 # Dublin Core
 
+@prefix dc_elements = <http://purl.org/dc/elements/1.1/>
 @prefix dc = <http://purl.org/dc/terms/>
 @prefix dc

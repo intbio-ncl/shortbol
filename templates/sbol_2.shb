@@ -48,27 +48,27 @@ use <sbol_2/collection>
 use <sbol_2/implementation>
 
 
-bookmark = sbh_wiki.sbh_terms.bookmark
-mutableDescription = sbh_wiki.sbh_terms.mutableDescription
-mutableNotes = sbh_wiki.sbh_terms.mutableNotes
-mutableProvenance = sbh_wiki.sbh_terms.mutableProvenance
-ownedBy = sbh_wiki.sbh_terms.ownedBy
-star = sbh_wiki.sbh_terms.star
-topLevel = sbh_wiki.sbh_terms.topLevel
+bookmark = sbh_terms.bookmark
+mutableDescription = sbh_terms.mutableDescription
+mutableNotes = sbh_terms.mutableNotes
+mutableProvenance = sbh_terms.mutableProvenance
+ownedBy = sbh_terms.ownedBy
+star = sbh_terms.star
+topLevel = sbh_terms.topLevel
+partStatus = sbh_terms.partStatus
 
+discontinued = igem_terms.discontinued
+dominant = igem_terms.dominant
+experience = igem_terms.experience
+group_u_list = igem_terms.group_u_list
+m_user_id = igem_terms.m_user_id
+owner_id = igem_terms.owner_id
+owning_group_id = igem_terms.owning_group_id
+status = igem_terms.status
+sampleStatus = igem_terms.sampleStatus
+direction = igem_terms.direction
 
-discontinued = sbh_wiki.igem_terms.discontinued
-dominant = sbh_wiki.igem_terms.dominant
-experience = sbh_wiki.igem_terms.experience
-group_u_list = sbh_wiki.igem_terms.group_u_list
-m_user_id = sbh_wiki.igem_terms.m_user_id
-owner_id = sbh_wiki.igem_terms.owner_id
-owning_group_id = sbh_wiki.igem_terms.owning_group_id
-status = sbh_wiki.igem_terms.status
-sampleStatus = sbh_wiki.igem_terms.sampleStatus
-direction = sbh_wiki.igem_terms.direction
-
-Plasmid = sbh_wiki.igem_terms.<partType/Plasmid>
+Plasmid = igem_terms.<partType/Plasmid>
 regulatory_role = igem_terms.<partType/Regulatory>
 rbs_role = igem_terms.<partType/RBS>
 coding_role = igem_terms.<partType/Coding>

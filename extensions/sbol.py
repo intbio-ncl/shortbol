@@ -72,8 +72,12 @@ class SbolIdentity:
         subjects = list(triplepack.subjects)
         identifiers = get_identifier_uris(triplepack._paths)
 
+        invalid_subjects = get_invalid_parameters(identifiers,triplepack)
+        if len(invalid_subjects) > 0:
+            raise SBOLComplianceError(f"Invalid Parameter type for {invalid_subjects}")
+
         for i in range(len(subjects)):
-            SBOLCompliant(subjects[i], identifiers).run(triplepack, subjects)
+            SBOLCompliant(subjects[i]).run(triplepack, subjects)
 
         return triplepack
 
@@ -84,16 +88,10 @@ class SBOLCompliant:
     SBOL compliant URI, and if not, attempts to modify triplepack such
     that they are.
     '''
-    def __init__(self, for_subject, identifiers):
+    def __init__(self, for_subject):
         self.subject = for_subject
-        self.identifiers = identifiers
 
     def run(self, triplepack, subjects):
-        
-
-        if not is_valid_parameters(self.identifiers, triplepack,subjects):
-            raise SBOLComplianceError(f"Invalid Parameter type for {subjects}")
-
         parent = get_SBOL_parent(triplepack, self.subject)
         # Everything has a display id
         if not triplepack.search((self.subject, displayId, None)):
@@ -110,7 +108,7 @@ class SBOLCompliant:
         if parent is not None:
             # its a child
             if not triplepack.has(parent, persistentIdentity):
-                SBOLCompliant(parent,self.identifiers).run(triplepack, subjects)
+                SBOLCompliant(parent).run(triplepack, subjects)
 
             # parent uri might have changed!!!
             parent = get_SBOL_parent(triplepack, self.subject)
@@ -130,9 +128,11 @@ class SBOLCompliant:
 
         return triplepack
 
-def is_valid_parameters(identifiers, triplepack, subjects):
-    #print(triplepack)
-    return True
+def get_invalid_parameters(identifiers, triplepack):
+    invalid_parameters = [1]
+    for t in triplepack.triples:
+        print(t)
+    return invalid_parameters
 
 def get_identifier_uris(paths):
     name = "identifiers.shb"
