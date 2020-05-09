@@ -16,19 +16,19 @@ lacI_CDS_loc is a InlineRange(169,1197)
 lacI_term_loc is a InlineRange(1197,1240)
 
 
-pTetR_sa is a SequenceAnnotation (pTetR_loc)
+pTetR_sa is a SequenceAnnotation(pTetR_loc)
 (
 	component = pTetR_c
 )
-lacI_RBS_sa is a SequenceAnnotation (lacI_RBS_loc)
+lacI_RBS_sa is a SequenceAnnotation(lacI_RBS_loc)
 (
 	component = lacI_RBS_c
 )
-lacI_CDS_sa is a SequenceAnnotation (lacI_CDS_loc)
+lacI_CDS_sa is a SequenceAnnotation(lacI_CDS_loc)
 (
 	component = lacI_CDS_c
 )
-lacI_term_sa is a SequenceAnnotation (lacI_term_loc)
+lacI_term_sa is a SequenceAnnotation(lacI_term_loc)
 (
 	component = lacI_term_c
 )

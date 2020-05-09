@@ -72,12 +72,12 @@ class SbolIdentity:
         subjects = list(triplepack.subjects)
         identifiers = get_identifier_uris(triplepack._paths)
 
-        invalid_subjects = get_invalid_parameters(identifiers,triplepack)
-        if len(invalid_subjects) > 0:
-            raise SBOLComplianceError(f"Invalid Parameter type for {invalid_subjects}")
+        
 
         for i in range(len(subjects)):
             SBOLCompliant(subjects[i]).run(triplepack, subjects)
+
+        validate(subjects,identifiers,triplepack)
 
         return triplepack
 
@@ -128,11 +128,38 @@ class SBOLCompliant:
 
         return triplepack
 
-def get_invalid_parameters(identifiers, triplepack):
-    invalid_parameters = [1]
-    for t in triplepack.triples:
-        print(t)
-    return invalid_parameters
+
+def validate(subjects,identifiers, triplepack):
+    '''
+    Built-in validator to made checks on the graph to ensure Valid SBOL.
+    '''
+    template_predicates = {Uri(sbolns.uri + predicate) for predicate in
+                            ['definition',
+                            'component',
+                            'functionalComponent',
+                            'participation',
+                            'functionalComponent',
+                            'sequenceConstraint',
+                            'location',
+                            'sequenceAnnotation',
+                            'variableComponent',
+                            'participant',
+                            'interaction',
+                            'object',
+                            'subject',
+                            'cut',
+                            'sequence']}
+
+    symbols_table = triplepack.bindings
+
+    for subject in subjects:
+        triples = triplepack.search((subject,None,None))
+        for s,p,o in triples:
+            if p in template_predicates and o not in subjects:
+                raise SBOLComplianceError(f"Unknown Parameter for {s}")
+
+    return
+
 
 def get_identifier_uris(paths):
     name = "identifiers.shb"
@@ -255,6 +282,8 @@ def get_SBOL_parent(triplepack, child):
                          if cd in get_possible_SBOL_types(triplepack, s)
                          and sa not in get_possible_SBOL_types(triplepack, s)}
 
+    if child in possible_parents:
+        raise SBOLComplianceError(f'{child} is its own possible parent, likely due to being a property of itself')
     # at this point we should have the parent/s
     if len(possible_parents) > 1:
         raise SBOLComplianceError(f"{child} has multiple SBOL parents\n" +
