@@ -1,0 +1,73 @@
+
+@prefix wiki_feature = <http://wiki.synbiohub.org/wiki/Terms/igem#feature/>
+@prefix synbiohub_BBa_R0010 = <https://synbiohub.org/public/igem/BBa_R0010/>
+range1961225 is a InlineRange(161, 166)
+_10 is a SequenceAnnotation(range1961225)
+(
+     name = "-10"
+     role = i_promoter
+     role = wiki_feature.promoter
+)
+
+range1961221 is a InlineRange(1, 88)
+end_of_LacI_coding_region_inactive_ is a SequenceAnnotation(range1961221)
+(
+     name = "end of LacI coding region (inactive)"
+     role = i_cds
+     role = wiki_feature.cds_feature
+)
+
+range1961223 is a InlineRange(89, 126)
+CAP_binding_site is a SequenceAnnotation(range1961223)
+(
+     name = "CAP binding site"
+     role = i_nonCovBindingSite
+     role = wiki_feature.binding_feature
+)
+
+range1961224 is a InlineRange(137, 142)
+_35 is a SequenceAnnotation(range1961224)
+(
+     name = "-35"
+     role = wiki_feature.promoter
+     role = i_promoter
+)
+
+range1961222 is a InlineRange(1, 200)
+BBa_R0010 is a SequenceAnnotation(range1961222)
+(
+     name = "BBa_R0010"
+     role = i_engineeredRegion
+     role = wiki_feature.BioBrick
+)
+
+range1961227 is a InlineRange(173, 173)
+start is a SequenceAnnotation(range1961227)
+(
+     name = "start"
+     role = wiki_feature.start_feature
+     role = i_startCodon
+)
+
+range1961226 is a InlineRange(166, 200)
+LacI_binding_site is a SequenceAnnotation(range1961226)
+(
+     name = "LacI binding site"
+     role = wiki_feature.binding_feature
+     role = i_nonCovBindingSite
+)
+
+LacI is a Promoter()
+(
+     name = "LacI"
+     sequence = sbh_igem.BBa_R0010_sequence
+     sequenceAnnotation = synbiohub_BBa_R0010._10
+     sequenceAnnotation = synbiohub_BBa_R0010._35
+     sequenceAnnotation = synbiohub_BBa_R0010.BBa_R0010
+     sequenceAnnotation = synbiohub_BBa_R0010.CAP_binding_site
+     sequenceAnnotation = synbiohub_BBa_R0010.end_of_LacI_coding_region_inactive_
+     sequenceAnnotation = synbiohub_BBa_R0010.LacI_binding_site
+     sequenceAnnotation = synbiohub_BBa_R0010.start
+)
+
+BBa_R0010_sequence is a DNASequence("caatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcagtgagcgcaacgcaattaatgtgagttagctcactcattaggcaccccaggctttacactttatgcttccggctcgtatgttgtgtggaattgtgagcggataacaatttcacaca")

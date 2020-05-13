@@ -10,7 +10,7 @@ use <edam>
 use <sbo>
 use <sbh>
 
-@prefix sbol_3 = <http://sbols.org/v3#>
+@prefix sbol_3 = <http://shortbol.org/v3#>
 @prefix sbol_3
 
 addProperty(property, value)

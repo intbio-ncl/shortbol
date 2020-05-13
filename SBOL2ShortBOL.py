@@ -42,12 +42,13 @@ required_properties = {rdflib.URIRef(sbolns + property) for property in
                         ['version',
                          'persistentIdentity',
                          'displayId']}
-                         
+
+display_id = rdflib.URIRef(sbolns + "displayId")           
 sbh_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/synbiohub#")
 igem_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/igem#")
 dc_terms_namespace = rdflib.URIRef("http://purl.org/dc/terms/")
 provo_namespace = rdflib.URIRef("http://www.w3.org/ns/prov#")
-prune_namespaces = [sbh_namespace,igem_namespace]
+prune_namespaces = [sbh_namespace,igem_namespace,dc_terms_namespace,provo_namespace]
 
 rdf_type = rdflib.URIRef(rdflib.RDF.type)
 component = rdflib.URIRef(sbolns+ 'component')
@@ -55,7 +56,7 @@ cd = rdflib.URIRef(sbolns + 'ComponentDefinition')
 sa = rdflib.URIRef(sbolns + 'SequenceAnnotation')
 
 dc_title = rdflib.URIRef("http://purl.org/dc/terms/title")
-
+name_list = {}
 
 
 
@@ -128,24 +129,32 @@ def get_tree(graph,root,done = None, prune = False, prune_list = None):
 
     for prop in properties:
         # Flag that removes any triples that are in namespace list.
-        if prune_list is not None and any(ns in prop[1] for ns in prune_list):
+        if prune_list is not None and any(ns in prop[1] for ns in prune_list) and prop[1] != dc_title: 
             continue
-        if prune and any(ns in prop[1] for ns in prune_namespaces):
+        if prune and any(ns in prop[1] for ns in prune_namespaces) and prop[1] != dc_title :
             continue
         tree.append((prop))
     return tree
 
+def populate_name_list(heirachy_tree):
+    for name,triples in heirachy_tree.items():
+        properties = [triple for triple in triples if isinstance(triple,tuple)]
+        get_template_name(name,properties)
+        children = [triple for triple in triples if isinstance(triple,dict)]
+        for child in children:
+            populate_name_list(child)
 
 def convert(heirachy_tree,shortbol_libary):
     symbol_table,template_table,prefixes = produce_tables(lib_paths = shortbol_libary)
     template_table = cast_to_rdflib(template_table)
     symbol_table = cast_to_rdflib(symbol_table)
     prefixes = add_unknown_prefixes(heirachy_tree,prefixes,symbol_table)
-    #@@TMPREMOVAL@@
-    prefixes = {"prefixes":[],"unknown_prefixes":[]}
     ordered_parameter_lists = get_parameter_lists(template_table,shortbol_libary)
 
     shortbol_code = ""
+
+    populate_name_list(heirachy_tree)
+    raise NotImplementedError("Need to test for duplicates, but references to parent can be duplicate....")
 
     for name,triples in heirachy_tree.items():
         shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes)
@@ -156,12 +165,11 @@ def convert(heirachy_tree,shortbol_libary):
 
     return shortbol_code
 
-
 def handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes):
     shortbol_code = ""
-    template_name = get_name(name)
     properties = [triple for triple in triples if isinstance(triple,tuple)]
     children = [triple for triple in triples if isinstance(triple,dict)]
+    template_name = name_list[name]
     template_type = get_possible_SBOL_types(properties,name)
     
     if len(template_type) == 1:
@@ -258,11 +266,15 @@ def handle_object(o,symbol_table):
             for k,v in symbol_table.items():
                 if v == o:
                     obj = k
+                    obj = get_name(obj)
                     break
         else:
             # A reference to an external URI is different, we need to preserve the Prefix.
-            obj = o
-        obj = get_name(obj)
+            try:
+                obj = name_list[str(o)]
+            except KeyError:
+                obj = get_name(o)
+
     else:
         raise TypeError(f'{o} is a type that ShortBOL does not support.') 
 
@@ -304,6 +316,35 @@ def get_name(item):
         return split_item[-2]
     else:
         return split_item[-1]
+
+
+def get_template_name(name,properties,allow_in_name_list = False):
+    orig_name = rdflib.URIRef(name)
+
+    title = search((orig_name,dc_title,None),properties)
+    dID = search((orig_name,display_id,None),properties)
+    if title != []:
+        name = str(title[0][2])
+        name = re.sub(r"[^a-zA-Z0-9]+", ' ', name)
+        name = name.replace(" ","_")
+        if name.isdigit():
+            name = orig_name
+
+    if dID != [] and str(name) == str(orig_name):
+        name = get_name(str(dID[0][2]))
+        
+    if str(name) == str(orig_name):
+        name = get_name(name)
+
+    count = 1
+    if name in name_list and not allow_in_name_list:
+        orig_name = name
+        while name in name_list:
+            name = orig_name + "_" +str(count)
+            count = count + 1
+
+    name_list[str(orig_name)] = name
+    return name
 
 def split(uri):
     return re.split('#|\/|:', uri)
