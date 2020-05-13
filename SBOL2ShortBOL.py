@@ -141,6 +141,8 @@ def convert(heirachy_tree,shortbol_libary):
     template_table = cast_to_rdflib(template_table)
     symbol_table = cast_to_rdflib(symbol_table)
     prefixes = add_unknown_prefixes(heirachy_tree,prefixes,symbol_table)
+    #@@TMPREMOVAL@@
+    prefixes = {"prefixes":[],"unknown_prefixes":[]}
     ordered_parameter_lists = get_parameter_lists(template_table,shortbol_libary)
 
     shortbol_code = ""
