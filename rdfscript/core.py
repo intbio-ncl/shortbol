@@ -301,6 +301,7 @@ class Assignment(Node):
         return f"[ASSIGN: {self.name} = {self.value}]"
 
     def evaluate(self, context):
+        
         uri = self.name.evaluate(context)
         if not isinstance(uri, Uri):
             raise UnexpectedType(Uri, uri, self.location)

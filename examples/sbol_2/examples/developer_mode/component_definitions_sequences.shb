@@ -6,6 +6,7 @@ lacI_term is a Terminator()
 (
   sequence = lacI_term_seq
 )
+
 pTetR is a Promoter()
 (
   sequence = pTetR_seq

@@ -1,5 +1,6 @@
 @prefix sbol_2
 
+
 # Abstract class
 ComponentInstance(type, definition)
 (
