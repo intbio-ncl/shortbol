@@ -6,7 +6,7 @@ class And:
     def __init__(self, *sub_exts):
         self._sub_exts = sub_exts
 
-    def run(self, triplepack):
+    def run(self, triplepack,env):
         for ext in self._sub_exts:
             ext.run(triplepack)
 
@@ -18,7 +18,7 @@ class Or:
     def __init__(self, *sub_exts):
         self._sub_exts = sub_exts
 
-    def run(self, triplepack):
+    def run(self, triplepack,env):
         for ext in self._sub_exts[:-1]:
             try:
                 ext.run(triplepack)

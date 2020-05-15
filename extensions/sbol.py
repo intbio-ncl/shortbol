@@ -68,12 +68,9 @@ class SbolIdentity:
     def __init__(self):
         pass
 
-    def run(self, triplepack):
+    def run(self, triplepack,env):
         subjects = list(triplepack.subjects)
         identifiers = get_identifier_uris(triplepack._paths)
-
-        
-
         for i in range(len(subjects)):
             SBOLCompliant(subjects[i]).run(triplepack, subjects)
 

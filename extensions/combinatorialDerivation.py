@@ -31,7 +31,7 @@ class CombinatorialDerivation:
         self.cd_name = cd_name
         pass
 
-    def run(self, triplepack):
+    def run(self, triplepack,env):
         extension_param_type = list(get_possible_SBOL_types(triplepack,self.cd_name))
         if len(extension_param_type) == 0 or len(extension_param_type) > 1:
             raise ValueError("Template provided for Extension either does not exist or two templates of the same name are present.")

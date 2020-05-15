@@ -2,7 +2,7 @@
 # functionally identicial.
 
 my_sbml_model is a SBMLModel(sbml_model,i_continous)
-my_sbml_model_2 is a Model(sbml_model,i_sbml,i_continous)
+my_sbml_model_2 is a Model(sbml_model,i_SBML,i_continous)
 ModuleDef is a ModuleDefinition()
 (
     model = my_sbml_model

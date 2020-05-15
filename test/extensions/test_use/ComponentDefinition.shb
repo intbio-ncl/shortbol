@@ -1,0 +1,16 @@
+@prefix synbio = <http://synbiohub.org/v2#>
+@prefix synbio
+n = t
+
+@extension Use(sbol_2)
+
+pTetR is a ComponentDefinition(i_DNA)
+
+test_c is a Component(pTetR)
+lacI_RBS is a RBS()
+(
+    component = test_c
+)
+
+#laci_CDS is a CDS()
+#lacI_term is a Terminator()

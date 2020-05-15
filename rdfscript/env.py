@@ -117,7 +117,7 @@ class Env(object):
         extension_obj = extension_class(*extension.args)    
         #Creates instance of TriplePack which just holds the triples with extra utility.
         pack = TriplePack(triples, self._symbol_table, self._template_table, self._paths)
-        return extension_obj.run(pack).triples
+        return extension_obj.run(pack, self).triples
 
     def run_extension_on_graph(self, extension):
         graph_triples = self._rdf.triples

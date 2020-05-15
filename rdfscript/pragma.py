@@ -87,7 +87,7 @@ class ImportPragma(Node):
         return self._target
 
     def evaluate(self, context):
-
+        
         uri = self.target.evaluate(context)
         if not context.eval_import(uri):
             raise FailToImport(

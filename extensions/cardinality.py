@@ -6,7 +6,7 @@ class AtLeastOne:
     def __init__(self, property_uri):
         self._prop = property_uri
 
-    def run(self, triplepack):
+    def run(self, triplepack,env):
 
         subjects = triplepack.subjects
         if len(subjects) > 0:

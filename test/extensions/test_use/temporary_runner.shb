@@ -1,0 +1,29 @@
+use <sbol_2>
+
+@prefix sbol_2
+
+@prefix shb_ns = <http://shortbol.org/v2#>
+
+@prefix shb_ns
+
+
+
+n = t
+
+
+
+@extension Use(sbol_2)
+
+
+
+
+
+pTetR is a Promoter()
+
+#lacI_RBS is a RBS()
+
+#laci_CDS is a CDS()
+
+#lacI_term is a Terminator()
+
+@extension SbolIdentity()

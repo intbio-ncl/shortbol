@@ -11,7 +11,6 @@ use <sbo>
 use <sbh>
 
 @prefix sbol_2 = <http://sbols.org/v2#>
-@prefix sbol_2
 
 addProperty(property, value)
 (
@@ -40,12 +39,25 @@ use <sbol_2/sequence>
 use <sbol_2/interaction>
 use <sbol_2/moduledefinition>
 use <sbol_2/variableComponent>
-use <sbol_2/combinatorialDerivation>
+use <sbol_2/combinatorialDerivation> 
 use <sbol_2/experiment>
 use <sbol_2/experimentalData>
 use <sbol_2/attachment>
 use <sbol_2/collection>
 use <sbol_2/implementation>
+
+component = sbol_2.component
+module = sbol_2.module
+mapsTo = sbol_2.mapsTo
+interaction = sbol_2.interaction
+participation = sbol_2.participation
+functionalComponent = sbol_2.functionalComponent
+sequenceConstraint = sbol_2.sequenceConstraint
+location = sbol_2.location
+sequenceAnnotation = sbol_2.sequenceAnnotation
+variableComponent = sbol_2.variableComponent
+variant = sbol_2.variant
+
 
 
 bookmark = sbh_terms.bookmark
