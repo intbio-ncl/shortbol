@@ -151,6 +151,7 @@ def produce_tables(version = "sbol_2", lib_paths = None):
               paths=optpaths)
 
     forms = parser.parse(data)
+    forms = pre_process(forms,version)
     env.interpret(forms)
     prefixes = [prefix for prefix in env._rdf._g.namespaces()]
     os.remove(to_run_fn)
