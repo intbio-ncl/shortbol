@@ -98,7 +98,6 @@ def pre_process(forms,version):
 
     sbol_identity = ExtensionPragma("SbolIdentity",[])
     if use_ns not in extensions:
-        print(pos)
         forms.insert(pos + 1,use_ns)
     if version == "sbol_2":
         if sbol_identity not in extensions:
