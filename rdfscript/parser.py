@@ -65,6 +65,9 @@ def p_pragma_import(p):
     '''pragma : USE identifier'''
     p[0] = ImportPragma(p[2], location(p))
 
+def p_pragma_include(p):
+    '''pragma : INCLUDE identifier'''
+    p[0] = ExtensionPragma("Include",p[2],location(p))
 
 def p_extension_no_args(p):
     '''extension : EXTENSION SYMBOL'''

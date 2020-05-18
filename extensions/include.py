@@ -10,15 +10,13 @@ This Expansion for each template in the given namespace makes and assignment:
 user_namespace.template = input_namsespace.template
 This enables a user to reference said templates without having to prefix with said namespace.
 '''
-class Use:
+class Include:
     def __init__(self,namespace):
         self.namespace = namespace.split()[-1]
         self.import_pragma = ImportPragma(Identifier(Uri(self.namespace)))
 
 
     def run(self, triplepack, env):
-        # Should we make a copy of env and delete it?
-        # This way env.evalutate will be called twice (Not sure if its an issue but is not optimal.)
         self.import_pragma.evaluate(env)
         user_prefix = env.uri_for_prefix(env.prefix)
         
@@ -30,13 +28,12 @@ class Use:
         
         to_evaulate = []
         for k,v in env._symbol_table.items():
-            if env.uri_for_prefix(self.namespace).uri in v.uri:
-                name = Identifier(user_prefix,Uri(k.split()[-1]))
-                assignment = Assignment(name,v)
-                to_evaulate.append(assignment)
-        
-        for assingment in to_evaulate:
-            assingment.evaluate(env)
+            #if env.uri_for_prefix(self.namespace).uri in v.uri:
+            name = Identifier(user_prefix,Uri(k.split()[-1]))
+            assignment = Assignment(name,v)
+            to_evaulate.append(Assignment(name,v))
+        for assignment in to_evaulate:
+            assignment.evaluate(env)
 
         # Triplepack is unchanged but its needed for the late binding that occurs with extensions.
         return triplepack

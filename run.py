@@ -38,6 +38,7 @@ def parse_from_file(filepath,
 
     forms = parser.parse(data)
     forms = pre_process(forms,version)
+
     env.interpret(forms)
     sbol = '<?xml version="1.0" ?>\n' + str(env)
 
@@ -72,10 +73,9 @@ def parse_from_file(filepath,
 def pre_process(forms,version):
     '''
     We want to add a default prefix if one isnt present.
-    Also, add the new use extension if not present.
+    Also, add the new include extension if not present.
     Also, add the sbol_identity extension
     '''     
-
     if not any(isinstance(x, PrefixPragma) for x in forms):
         forms.insert(0,PrefixPragma(default_prefix_name,default_prefix))
     
@@ -93,12 +93,11 @@ def pre_process(forms,version):
                 pos = index + 1
 
     extensions = [x for x in forms if isinstance(x, ExtensionPragma)]
-    use_ns = ExtensionPragma("Use",[Identifier(Name(version))])
-
-
+    include_ns = ExtensionPragma("Include",Identifier(Uri(version)))
+ 
     sbol_identity = ExtensionPragma("SbolIdentity",[])
-    if use_ns not in extensions:
-        forms.insert(pos + 1,use_ns)
+    if include_ns not in extensions:
+        forms.insert(pos + 1,include_ns)
     if version == "sbol_2":
         if sbol_identity not in extensions:
             forms.append(sbol_identity)

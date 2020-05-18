@@ -13,7 +13,8 @@ tokens = (
      "FROM",
      "PREFIX",
      "EXTENSION",
-     "USE")
+     "USE",
+     "INCLUDE")
 
 t_ignore = '\t'
 literals = ['=',
@@ -31,6 +32,7 @@ reserved_words = {
      '@prefix'        : 'PREFIX',
      '@use'           : 'USE',
      'use'            : 'USE',
+     'include'        : 'INCLUDE',
      '@extension'     : 'EXTENSION',
      'self'           : 'SELF',
      'from'           : 'FROM'
