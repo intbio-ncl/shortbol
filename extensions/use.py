@@ -24,6 +24,7 @@ class Use:
         
         for k in env._template_table.keys():
             if env.uri_for_prefix(self.namespace).uri in k.uri:
+                print("Yu")
                 name = Identifier(user_prefix,Uri(k.split()[-1]))
                 assignment = Assignment(name,k)
                 assignment.evaluate(env)
@@ -31,6 +32,7 @@ class Use:
         to_evaulate = []
         for k,v in env._symbol_table.items():
             if env.uri_for_prefix(self.namespace).uri in v.uri:
+                print("Simp")
                 name = Identifier(user_prefix,Uri(k.split()[-1]))
                 assignment = Assignment(name,v)
                 to_evaulate.append(assignment)
