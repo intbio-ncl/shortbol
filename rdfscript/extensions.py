@@ -13,8 +13,8 @@ class ExtensionManager(object):
                                  shortname='SbolIdentity')
         self.add_extra_extension('extensions.combinatorialDerivation.CombinatorialDerivation',
                                   shortname="CombinatorialDerivation")
-        self.add_extra_extension('extensions.use.Use',
-                                  shortname="Use")
+        self.add_extra_extension('extensions.include.Include',
+                                  shortname="Include")
 
         for (name, shortname) in extras:
             self.add_extra_extension(name, shortname=shortname)
