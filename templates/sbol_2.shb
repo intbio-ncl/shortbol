@@ -9,6 +9,7 @@ use <biopax>
 use <edam>
 use <sbo>
 use <sbh>
+use <identifiers>
 
 @prefix sbol_2 = <http://sbols.org/v2#>
 
