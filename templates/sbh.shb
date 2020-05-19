@@ -2,7 +2,12 @@
 @prefix sbh_user = <https://synbiohub.org/user/>
 @prefix sbh_wiki = <https://wiki.synbiohub.org/wiki/>
 @prefix sbh_wiki
-
 @prefix sbh_terms = <http://wiki.synbiohub.org/wiki/Terms/synbiohub#>
 @prefix igem_terms = <http://wiki.synbiohub.org/wiki/Terms/igem#>
+@prefix igem_part = <http://parts.igem.org/Part:>
 
+@prefix wiki_status =     igem_terms.<status/>
+@prefix wiki_experience = igem_terms.<experience/>
+@prefix wiki_feature =    igem_terms.<feature/>
+@prefix wiki_direction =  igem_terms.<direction/>
+@prefix wiki_partType =   igem_terms.<partType/>

@@ -60,7 +60,7 @@ name_list = {}
 
 
 
-def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None):
+def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancment = True):
     # Perform full file validation before producing ShortBOL.
     if not no_validation and not general_validation(sbol_xml_fn):
          print("Warn:: Can't validate input.")
@@ -76,10 +76,12 @@ def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validati
     # So the first level of the dict is multiple roots.
     for root in tree_roots:
         heirachy_tree[str(root[0])] = get_tree(g,root[0],prune = prune,prune_list = prune_list)
-
+    
+    if len(heirachy_tree.keys()) == 0:
+        return output_fn
     # Now have a structure that is easier to use.
     # Create the actual ShortBOL from this.
-    shortbol_code = convert(heirachy_tree,shortbol_libary)
+    shortbol_code = convert(heirachy_tree,shortbol_libary,no_enhancment)
 
     if output_fn is None:
         print(shortbol_code)
@@ -140,24 +142,55 @@ def get_tree(graph,root,done = None, prune = False, prune_list = None):
     return tree
 
 
-def convert(heirachy_tree,shortbol_libary):
+def convert(heirachy_tree,shortbol_libary,no_enhancment):
     symbol_table,template_table,prefixes = produce_tables(lib_paths = shortbol_libary)
     template_table = cast_to_rdflib(template_table)
     symbol_table = cast_to_rdflib(symbol_table)
     ordered_parameter_lists = get_parameter_lists(template_table,shortbol_libary)
     namespaces = get_namespaces(heirachy_tree)
     default_namespace = max(namespaces.keys(), key=(lambda k: namespaces[k]))
+    del namespaces[default_namespace]
     default_namespace_name = "user_prefix"
-
     prefixes = {"default":default_namespace,
                 "prefixes" : prefixes, 
-                "unknown_prefixes":add_unknown_prefixes(heirachy_tree,prefixes,symbol_table)}
+                "unknown_prefixes":add_unknown_prefixes(heirachy_tree,prefixes,symbol_table,namespaces)}
 
     shortbol_code = ""
-    populate_name_list(heirachy_tree)
+    templates = {}
+    populate_name_list(heirachy_tree,no_enhancment)
+
 
     for name,triples in heirachy_tree.items():
-        shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes)
+        templates.update(handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes))
+
+    # Actually create the shortbol text from data.
+    sequence_code = ""
+    no_children_code = ""
+    normal_code = ""
+    has_sequences = False
+    has_parent_components = False
+    # A little hacky, but the aim is to try bring some structure to the file to make it easier to read
+    for k,v in templates.items():
+        if "Sequence" in v["type"]:
+            sequence_code = create_instance_stack(k,v) + sequence_code
+            has_sequences = True
+        elif len(v["children"]) == 0:
+            has_parent_components = True
+            no_children_code = no_children_code + create_instance_stack(k,v)
+        else:
+            normal_code = normal_code + create_instance_stack(k,v)
+
+
+
+    if has_sequences:
+        shortbol_code = "\n\n# Sequence Definitions" + shortbol_code 
+    shortbol_code = shortbol_code + sequence_code
+
+    if has_parent_components:
+        shortbol_code = shortbol_code + "\n\n# Component Definitions"
+    shortbol_code = shortbol_code + no_children_code 
+
+    shortbol_code = shortbol_code + "\n\n" +  normal_code
 
     for unknown_prefix_name,unknown_prefix in prefixes["unknown_prefixes"]:
         if unknown_prefix_name in shortbol_code:
@@ -167,8 +200,8 @@ def convert(heirachy_tree,shortbol_libary):
 
     return shortbol_code
 
+
 def handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes):
-    shortbol_code = ""
     properties = [triple for triple in triples if isinstance(triple,tuple)]
     children = [triple for triple in triples if isinstance(triple,dict)]
     template_name = name_list[str(name)]
@@ -217,15 +250,12 @@ def handle_template(name,triples,template_table,symbol_table,ordered_parameter_l
         if p in [p for (s,p,o) in template_table[sbolns + template_type]]:                
             # The property is a ShortBOL parameter
             # Note at this point the parameters are potentially in the incorrect order.
-            obj = handle_object(o,symbol_table)
+            obj = handle_object(o,symbol_table, prefixes)
             un_ordered_parameters.append((p,obj))
         else:
             # The property must be an expansion property
-            obj = handle_object(o,symbol_table)
-            # Certain properties need there prefixes conserved
-            prefix = lookup_prefix_name(o,prefixes)
-            if prefix is not None:
-                obj = prefix + "." + obj
+            obj = handle_object(o,symbol_table,prefixes)
+            
 
             # Another quirk of SBOL, one of the only cases when SBOL aliases, (sbol name == "dcterms title")
             if p == dc_title:
@@ -238,16 +268,22 @@ def handle_template(name,triples,template_table,symbol_table,ordered_parameter_l
             if ordered_p == p:
                 ordered_parameters.append(o)
                 
+    template = {}
+    children_templates = {}
     #Handle children and linkage.
     for child in children: 
         name = list(child.keys())[0]
         triples = [j for i in list(child.values()) for j in i]
-        shortbol_code = shortbol_code + handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes)
+        children_templates.update(handle_template(name,triples,template_table,symbol_table,ordered_parameter_lists,prefixes))
 
-    shortbol_code = shortbol_code + create_instance(template_name, template_type, ordered_parameters, expansion_properties)    
-    return shortbol_code
+    template = {template_name : {"type" : template_type,
+                                 "parameters" : ordered_parameters,
+                                 "properties" : expansion_properties,
+                                 "children": children_templates}}
+  
+    return template
 
-def handle_object(o,symbol_table):
+def handle_object(o, symbol_table, prefixes):
     '''
     The properties object can be multiple things:
     A literal:
@@ -276,6 +312,11 @@ def handle_object(o,symbol_table):
                 obj = name_list[str(o)]
             except KeyError:
                 obj = get_name(o)
+        
+        # Certain properties need there prefixes conserved
+            prefix = lookup_prefix_name(o,prefixes)
+            if prefix is not None:
+                obj = prefix + "." + obj
 
     else:
         raise TypeError(f'{o} is a type that ShortBOL does not support.') 
@@ -320,9 +361,19 @@ def get_name(item):
         return split_item[-1]
 
 
-def get_template_name(name,properties,allow_in_name_list = False):
-    orig_name = rdflib.URIRef(name)
+def populate_name_list(heirachy_tree,no_enhancment, parent=None):
+    for name,triples in heirachy_tree.items():
+        properties = [triple for triple in triples if isinstance(triple,tuple)]
+        name_list[str(name)] = str(get_template_name(name,properties,parent,no_enhancment)) 
+        children = [triple for triple in triples if isinstance(triple,dict)]
+        for child in children:
+            populate_name_list(child,no_enhancment,name_list[str(name)])
 
+def get_template_name(name,properties,parent, no_enhancment):
+    if no_enhancment:
+        return get_name(name) 
+
+    orig_name = rdflib.URIRef(name)
     title = search((orig_name,dc_title,None),properties)
     dID = search((orig_name,display_id,None),properties)
     if title != []:
@@ -331,6 +382,16 @@ def get_template_name(name,properties,allow_in_name_list = False):
         name = name.replace(" ","_")
         if name.isdigit():
             name = orig_name
+    
+    # If there isn't a title, we try make a name from the parents name and the type
+    if parent is not None and str(name) == str(orig_name):
+        # Get the type of the object
+        type = search((orig_name,rdf_type,None),properties)[0][2]
+        # Get all parts by uppercase split (SequenceAnnotation -> [Sequence,Annotation]) 
+        type = re.findall('[A-Z][^A-Z]*', type)
+        # Shorten the words ([Sequence,Annotation] -> SeqAnn or [Range] -> Range)
+        type = "".join([t[0:3] if len(t) > 5 else t for t in type]).lower()
+        name = get_name(parent) + "_" + type
 
     if dID != [] and str(name) == str(orig_name):
         name = get_name(str(dID[0][2]))
@@ -339,30 +400,21 @@ def get_template_name(name,properties,allow_in_name_list = False):
         name = get_name(name)
 
     count = 1
-    if name in list(name_list.values()) and not allow_in_name_list:
-        
+    if name in list(name_list.values()):
         tmp_name = name
-        while name in name_list:
-            name = tmp_name + "_" +str(count)
-            count = count + 1
-
-    name_list[str(orig_name)] = str(name)
+        while name in list(name_list.values()):
+            name = tmp_name + "_" + str(count)
+            count = count + 1    
     return name
 
-def populate_name_list(heirachy_tree):
-    for name,triples in heirachy_tree.items():
-        properties = [triple for triple in triples if isinstance(triple,tuple)]
-        get_template_name(name,properties)
-        children = [triple for triple in triples if isinstance(triple,dict)]
-        for child in children:
-            populate_name_list(child)
+
 
 
 def get_namespaces(heirachy_tree):
     # This struct always starts of as a dict.
     namespaces = {}
 
-    def tree_dump_inner(item,parent=None):
+    def get_namespace_inner(item,parent=None):
         for top_level,branches in item.items():
             namespace = get_prefix_n(top_level,parent)
             if namespace in list(namespaces.keys()):
@@ -377,7 +429,7 @@ def get_namespaces(heirachy_tree):
                     pass
                 # A list - When its a child
                 elif isinstance(branch,dict):
-                    tree_dump_inner(branch,parent)
+                    get_namespace_inner(branch,parent)
                 else:
                     raise ValueError(f"The print value is not a dict or tuple: {str(branch)}")
 
@@ -390,7 +442,7 @@ def get_namespaces(heirachy_tree):
 
         for branch in branches:
             if isinstance(branch,dict):
-                tree_dump_inner(branch,top_level)
+                get_namespace_inner(branch,top_level)
     return namespaces
 
 def get_prefix_n(uri,parent=None):
@@ -438,7 +490,7 @@ def lookup_prefix_name(object,prefixes):
             return prefix[0]
             
 
-def add_unknown_prefixes(heirachy_tree,prefixes,symbol_table):
+def add_unknown_prefixes(heirachy_tree,prefixes,symbol_table,namespaces):
     # For the case when a URI has a Prefix that isn't defined in the ShortBOL libaries
     new_prefixes = []
     symbol_uris = [v for k,v in symbol_table.items()]
@@ -557,6 +609,20 @@ def general_validation(sbol_xml_fn):
             return False
 
 
+
+def create_instance_stack(name,data):
+    shortbol_code = ""
+
+    def create_instance_stack_inner(name,data):
+        shortbol_code = ""
+        shortbol_code = shortbol_code + create_instance(name,data["type"],data["parameters"],data["properties"])
+        for child_name,child_data in data["children"].items():
+            shortbol_code = create_instance_stack_inner(child_name, child_data) + shortbol_code
+        return shortbol_code
+
+    shortbol_code = shortbol_code + create_instance_stack_inner(name,data)
+    return shortbol_code
+
 def create_instance(name, template_type, parameters = None, expansions = None):
     '''
     Creates the instance of a Shortbol object, ie actually creates the text.
@@ -667,12 +733,15 @@ def sbol_2_shortbol_args():
                         help="specify path to shortbol libary.")
     parser.add_argument('-nv', '--no_validation', help="Stops the Input from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('-prune', '--prune', help=f"This flag will remove the properties from {str([str(namespace) for namespace in prune_namespaces])} Namespaces.", default=False, action='store_true')
+    parser.add_argument('-ne', '--no_enhancment', help=f"This flag will stop any data enhancment of the design, such as producing better template names", default=False, action='store_true')
     return  parser.parse_args()
 
 
 if __name__ == "__main__":
     args = sbol_2_shortbol_args()
-    produce_shortbol(args.filename, args.path, args.output, args.no_validation, args.prune)
+    produce_shortbol(args.filename, args.path, output_fn = args.output, 
+                     no_validation = args.no_validation, prune = args.prune, 
+                     no_enhancment = args.no_enhancment)
 
 
 

@@ -38,7 +38,6 @@ def parse_from_file(filepath,
 
     forms = parser.parse(data)
     forms = pre_process(forms,version)
-
     env.interpret(forms)
     sbol = '<?xml version="1.0" ?>\n' + str(env)
 
@@ -90,7 +89,7 @@ def pre_process(forms,version):
     else:
         for index,form in enumerate(forms):
             if isinstance(form,DefaultPrefixPragma):
-                pos = index + 1
+                pos = pos + 1
 
     extensions = [x for x in forms if isinstance(x, ExtensionPragma)]
     include_ns = ExtensionPragma("Include",Identifier(Uri(version)))
