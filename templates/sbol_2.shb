@@ -58,6 +58,7 @@ location = sbol_2.location
 sequenceAnnotation = sbol_2.sequenceAnnotation
 variableComponent = sbol_2.variableComponent
 variant = sbol_2.variant
+sequence = sbol_2.sequence
 
 
 
