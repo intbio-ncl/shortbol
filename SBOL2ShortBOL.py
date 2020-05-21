@@ -60,7 +60,7 @@ name_list = {}
 
 
 
-def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancment = True):
+def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancment = False):
     # Perform full file validation before producing ShortBOL.
     if not no_validation and not general_validation(sbol_xml_fn):
          print("Warn:: Can't validate input.")

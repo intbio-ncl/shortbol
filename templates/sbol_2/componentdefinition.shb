@@ -109,6 +109,12 @@ EngineeredGene()
   sbol_2.role = i_engineeredGene
 )
 
+EngineeredRegion()
+(
+  DNAComponent()
+  sbol_2.role = i_engineeredRegion
+)
+
 # Common RNA components
 
 CDS_RNA()
