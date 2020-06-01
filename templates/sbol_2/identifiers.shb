@@ -40,6 +40,10 @@ i_inout = <http://sbols.org/v2#inout>
 i_none = <http://sbols.org/v2#none>
 
 
+# (FunctionalComponent,Component) access
+i_public = <http://sbols.org/v2#public>
+i_private = <http://sbols.org/v2#private>
+
 # (Participation) role
 i_inhibitor = <http://identifiers.org/biomodels.sbo/SBO:0000020>
 i_inhibited = <http://identifiers.org/biomodels.sbo/SBO:0000642>

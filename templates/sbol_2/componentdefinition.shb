@@ -129,6 +129,12 @@ SGRNA()
   sbol_2.role = i_sgRNA
 )
 
+mRNA()
+(
+  RNAComponent()
+  sbol_2.role = i_mRNA
+)
+
 TranscriptionFactor()
 (
   ProteinComponent()
