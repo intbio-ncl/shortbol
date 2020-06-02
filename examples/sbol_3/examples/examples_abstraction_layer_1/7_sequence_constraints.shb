@@ -18,10 +18,10 @@ pair3 is a Precedes(lacI_CDS_sc, lacI_term_sc)
 tetRInverter is a DNAComponent()
 (
   # include the sub components
-  hasFeature = pTetR_c
-  hasFeature = lacI_RBS_c
-  hasFeature = lacI_CDS_c
-  hasFeature = lacI_term_c
+  hasFeature = pTetR_sc
+  hasFeature = lacI_RBS_sc
+  hasFeature = lacI_CDS_sc
+  hasFeature = lacI_term_sc
   # relative positions of child components
   hasConstraint = pair1
   hasConstraint = pair2

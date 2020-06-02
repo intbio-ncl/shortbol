@@ -14,5 +14,6 @@ scar is a SequenceFeature()
 
 tetRInverter is a FunctionalEntity()
 (
-  component = pTetR_sf
+  hasSequence = ligate_scar_seq
+  hasFeature = scar
 )

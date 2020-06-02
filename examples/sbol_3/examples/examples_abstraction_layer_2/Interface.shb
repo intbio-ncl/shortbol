@@ -18,5 +18,9 @@ laci_interface is a Interface()
 
 laci is a FunctionalEntity()
 (
+  hasFeature = gene1
+  hasFeature = gene2
+  hasFeature = gene3
+  hasFeature = gene4
   hasInterface = laci_interface
 )

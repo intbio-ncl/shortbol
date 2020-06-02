@@ -9,21 +9,29 @@ target_gene is a Promoter()
 target is a Protein()
 
 
-cas9_generic_sc is a SubComponent(cas9_generic)
+cas9_generic_sc_1 is a SubComponent(cas9_generic)
 
-gRNA_generic_sc is a SubComponent(gRNA_generic)
+cas9_generic_sc_2 is a SubComponent(cas9_generic)
 
-cas9_gRNA_complex_sc is a SubComponent(cas9_gRNA_complex)
+gRNA_generic_sc_1 is a SubComponent(gRNA_generic)
 
-target_gene_sc is a SubComponent(target_gene)
+gRNA_generic_sc_2 is a SubComponent(gRNA_generic)
 
-target_sc is a SubComponent(target)
+cas9_gRNA_complex_sc_1 is a SubComponent(cas9_gRNA_complex)
 
+cas9_gRNA_complex_sc_2 is a SubComponent(cas9_gRNA_complex)
 
+target_gene_sc_1 is a SubComponent(target_gene)
 
-cas9_generic_participation is a Reactant(cas9_generic_sc)
-gRNA_generic_participation is a Reactant(gRNA_generic_sc)
-cas9_gRNA_complex_participation is a Product(cas9_gRNA_complex_sc, product)
+target_gene_sc_2 is a SubComponent(target_gene)
+
+target_sc_1 is a SubComponent(target)
+
+target_sc_2 is a SubComponent(target)
+
+cas9_generic_participation is a Reactant(cas9_generic_sc_1)
+gRNA_generic_participation is a Reactant(gRNA_generic_sc_1)
+cas9_gRNA_complex_participation is a Product(cas9_gRNA_complex_sc_1, product)
 cas9_complex_formation is a NoncovalentBonding()
 (
     hasParticipation = cas9_generic_participation
@@ -31,16 +39,16 @@ cas9_complex_formation is a NoncovalentBonding()
     hasParticipation = cas9_gRNA_complex_participation
 )
 
-target_gene_participation is a ParticipationPromoter(target_gene_sc)
-target_participation is a Product(target_sc)
+target_gene_participation is a ParticipationPromoter(target_gene_sc_1)
+target_participation is a Product(target_sc_1)
 target_production is a GeneticProduction()
 (
     hasParticipation = target_gene_participation
     hasParticipation = target_participation
 )
 
-cas9_gRNA_complex_reactant_participation is a Reactant(cas9_gRNA_complex_sc)
-target_gene_reactant_participation is a Reactant(target_sc)
+cas9_gRNA_complex_reactant_participation is a Reactant(cas9_gRNA_complex_sc_1)
+target_gene_reactant_participation is a Reactant(target_sc_1)
 target_gene_inhibition is a Inhibition()
 (
     hasParticipation = cas9_gRNA_complex_reactant_participation
@@ -51,11 +59,11 @@ target_gene_inhibition is a Inhibition()
 CRISPR_Template is a FunctionalEntity()
 (
 
-    hasFeature = cas9_generic_sc
-    hasFeature = gRNA_generic_sc
-    hasFeature = cas9_gRNA_complex_sc
-    hasFeature = target_gene_sc
-    hasFeature = target_sc
+    hasFeature = cas9_generic_sc_1
+    hasFeature = gRNA_generic_sc_1
+    hasFeature = cas9_gRNA_complex_sc_1
+    hasFeature = target_gene_sc_1
+    hasFeature = target_sc_1
 
     hasInteraction = cas9_complex_formation
     hasInteraction = target_production
@@ -316,15 +324,15 @@ CRPb_characterization_Circuit is a FunctionalEntity()
     hasFeature = gRNA_b_map
     hasFeature = cas9m_BFP_gRNA_map
     hasFeature = EYFP_map
-    hasFeature = EYFP_gene_maps
+    hasFeature = EYFP_gene_map
 )
 
-cas9m_BFP_map is a ComponentReference(cas9m_BFP_sc,cas9_generic_sc)
+cas9m_BFP_map is a ComponentReference(cas9m_BFP_sc,cas9_generic_sc_2)
 
-gRNA_b_map is a ComponentReference(gRNA_b_sc,gRNA_generic_sc)
+gRNA_b_map is a ComponentReference(gRNA_b_sc,gRNA_generic_sc_2)
 
-cas9m_BFP_gRNA_map is a ComponentReference(cas9m_BFP_gRNA_b_sc,cas9_gRNA_complex_sc)
+cas9m_BFP_gRNA_map is a ComponentReference(cas9m_BFP_gRNA_b_sc,cas9_gRNA_complex_sc_2)
 
-EYFP_map is a ComponentReference(EYFP_sc,target_sc)
+EYFP_map is a ComponentReference(EYFP_sc,target_sc_2)
 
-EYFP_gene_map is a ComponentReference(cas9m_BFP_sc,target_gene_sc)
+EYFP_gene_map is a ComponentReference(cas9m_BFP_sc,target_gene_sc_2)

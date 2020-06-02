@@ -53,14 +53,14 @@ lacI_repressor is a CDS()
 
 Elowitz_rbs_sc is a SubComponent(Elowitz_rbs)
 lacI_repressor_sc is a SubComponent(lacI_repressor)
-double_term_sc is a SubComponent(double_term)
+double_term_sc_1 is a SubComponent(double_term)
 cons1 is a Precedes(Elowitz_rbs_sc, lacI_repressor_sc)
-cons2 is a Precedes(lacI_repressor_sc, double_term_sc)
+cons2 is a Precedes(lacI_repressor_sc, double_term_sc_1)
 lacI_gene is a DNAComponent()
 (
   hasFeature = Elowitz_rbs_sc
   hasFeature = lacI_repressor_sc
-  hasFeature = double_term_sc
+  hasFeature = double_term_sc_1
   hasConstraint = cons1
   hasConstraint = cons2
 )
@@ -81,14 +81,14 @@ mCherry_cds is a CDS()
 
 Elowitz_rbs_sc_2 is a SubComponent(Elowitz_rbs)
 mCherry_cds_sc is a SubComponent(mCherry_cds)
-double_term_sc is a SubComponent(double_term)
+double_term_sc_2 is a SubComponent(double_term)
 cons3 is a Precedes(Elowitz_rbs_sc_2, mCherry_cds_sc)
-cons4 is a Precedes(mCherry_cds_sc, double_term_sc)
+cons4 is a Precedes(mCherry_cds_sc, double_term_sc_2)
 mCherry is a DNAComponent()
 (
   hasFeature = Elowitz_rbs_sc_2
   hasFeature = mCherry_cds_sc
-  hasFeature = double_term_sc
+  hasFeature = double_term_sc_2
   hasConstraint = cons3
   hasConstraint = cons4
 )
@@ -143,7 +143,7 @@ pBAD_stimulator is a Stimulator(pBAD_sc)
 lacI_stimulated is a Stimulated(lacI_sc)
 lacI_stim is a Stimulation()
 (
-	hasParticipation = pTeT_1_stimulator
+	hasParticipation = pTeT_stimulator
 	hasParticipation = pBAD_stimulator	
     hasParticipation = lacI_stimulated
 )
@@ -156,8 +156,8 @@ pLlac_inhibition is a Inhibition()
 	hasParticipation = pLlac_inhibited	
 )
 
-pLlac_stimulator is a Stimulator(p_out_sc)
-mCherry_stimulated is a Stimulated(output_sc)
+pLlac_stimulator is a Stimulator(lacI_sc)
+mCherry_stimulated is a Stimulated(mCherry_sc)
 mCherry_stimulation is a Stimulation()
 (
 	hasParticipation = pLlac_stimulator
@@ -185,12 +185,17 @@ mCherry_production is a GeneticProduction()
 
 NOR_gate is a FunctionalEntity()
 (
+  hasFeature = arabinose_sc
+  hasFeature = ATC_sc
+  hasFeature = TetR_sc
   hasFeature = pTeT_sc
   hasFeature = pBAD_sc
   hasFeature = lacI_sc
   hasFeature = pLlac_sc
   hasFeature = mCherry_sc
 
+  hasFeature = lacI_p_sc
+  hasFeature = mCherry_p_sc
 
   # Stimulation of input proteins.
   hasInteraction = pBad_stimulation

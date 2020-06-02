@@ -6,6 +6,6 @@ LacI is a Protein()
 
 tetRInverter is a FunctionalEntity()
 (
-  references(TetR,LacI)
-  references(tetRInverter,LacI)
+  references(TetR)
+  references(LacI)
 )

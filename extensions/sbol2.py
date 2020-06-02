@@ -49,7 +49,7 @@ version = Uri(sbolns.uri + 'version')
 rdf_type = Uri(rdflib.RDF.type)
 
 
-class SbolIdentity:
+class SBOL2:
     '''
     Extension which checks all SBOL objects contained in a triplepack
     have SBOL compliant URIs, and if not, attempts to modify the

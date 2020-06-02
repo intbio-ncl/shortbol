@@ -11,3 +11,8 @@ lacI_RBS_sc is a SubComponent(lacI_RBS)
 (
   hasCut(lacI_RBS_seq, 4)
 )
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = lacI_RBS_sc
+)

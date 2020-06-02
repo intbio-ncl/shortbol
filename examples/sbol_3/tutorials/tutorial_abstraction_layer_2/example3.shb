@@ -1,29 +1,50 @@
 # Example 3
 # The genetic parts of the TetR inverter
+
+pTetR_seq is a DNASequence("ATCG")
+lacI_RBS_seq is a DNASequence("ATCG")
+lacI_CDS_seq is a DNASequence("ATCG")
+lacI_term_seq is a DNASequence("ATCG")
+
 pTetR is a Promoter()
+(
+    hasSequence = pTetR_seq
+)
+
 lacI_RBS is a RBS()
+(
+    hasSequence = lacI_RBS_seq
+)
+
 lacI_CDS is a CDS()
+(
+    hasSequence = lacI_CDS_seq
+)
+
 lacI_term is a Terminator()
+(
+    hasSequence = lacI_term_seq
+)
 
 
 pTetR_c is a SubComponent(pTetR)
 (
-  hasEntireSequence()
+  hasEntireSequence(pTetR_seq)
 )
 
 lacI_RBS_c is a SubComponent(lacI_RBS)
 (
-  hasEntireSequence()
+  hasEntireSequence(lacI_RBS_seq)
 )
 
 lacI_CDS_c is a SubComponent(lacI_CDS)
 (
-  hasEntireSequence()
+  hasEntireSequence(lacI_CDS_seq)
 )
 
 lacI_term_c is a SubComponent(lacI_term)
 (
-  hasEntireSequence()
+  hasEntireSequence(lacI_term_seq)
 )
 
 tetRInverter is a DNAComponent()

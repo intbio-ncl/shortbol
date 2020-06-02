@@ -9,7 +9,6 @@ lacI_RBS is a RBS()
 )
 
 lacI_RBS_loc is a EntireSequence(lacI_RBS_seq)
-
 lacI_RBS_sc is a SubComponent(lacI_RBS)
 (
   hasLocation = lacI_RBS_loc

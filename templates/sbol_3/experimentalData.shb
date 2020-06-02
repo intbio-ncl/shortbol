@@ -1,3 +1,5 @@
+@prefix sbol_3
+
 # -- docs-family Layer All start --
 # Name: ExperimentalData
 # Summary: Aggregate links to experimental data files.

@@ -52,8 +52,9 @@ lacI_term_variable is a OnePlusVariableComponent(lacI_term_sc)
 
 
 # List language feature required for this.
-laci_combinatorial_derivation is a CombinatorialDerivation(tetRInverter,pTetR_variable)
+laci_combinatorial_derivation is a CombinatorialDerivation(tetRInverter)
 (
+  hasVariableComponent = pTetR_variable
   hasVariableComponent = lacI_RBS_variable
   hasVariableComponent = lacI_CDS_variable
   hasVariableComponent = lacI_term_variable

@@ -23,5 +23,8 @@ cas9_gRNA_int is a Inhibition()
 
 entity is a FunctionalEntity()
 (
+    hasFeature = cas9_generic_sc
+    hasFeature = gRNA_generic_sc
+    hasFeature = LacI_sc
     hasInteraction = cas9_gRNA_int
 )

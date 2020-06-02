@@ -15,7 +15,7 @@ LacI_inverter is a FunctionalEntity()
 (
   description = "LacI inverter"
   inhibition(TetR,LacI)
-  hasFeature = TetR_map
-  hasFeature = LacI_map
-  references(TetR,LacI)
+
+  references(LacI)
+  references(TetR)
 )

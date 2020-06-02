@@ -7,9 +7,10 @@ pTetR is a Promoter()
 
 pTetR_c is a SubComponent(pTetR)
 pTetR_record_link is a ComponentReference(pTetR_c,pTetR_record)
-pTetR_record is a ExternalDNA("https://www.ncbi.nlm.nih.gov/nuccore/X16529.1")
+pTetR_record is a ExternalDNA(https://sbml_model.com)
 
 tetRInverter is a FunctionalEntity()
 (
   hasFeature = pTetR_c
+  hasFeature = pTetR_record_link
 )

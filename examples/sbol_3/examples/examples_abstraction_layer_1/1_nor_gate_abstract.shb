@@ -45,6 +45,12 @@ output_stimulation is a Stimulation()
 
 NOR_gate is a FunctionalEntity()
 (
+  hasFeature = p_in_1_sc
+  hasFeature = p_in_2_sc
+  hasFeature = repressor_sc
+  hasFeature = p_out_sc
+  hasFeature = output_sc
+
   # p1,p2 can stimulate the repressor
   hasInteraction = repressor_stim
 

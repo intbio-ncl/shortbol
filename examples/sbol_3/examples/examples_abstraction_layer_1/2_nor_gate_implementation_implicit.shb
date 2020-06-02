@@ -44,7 +44,7 @@ pBAD_stimulator is a Stimulator(pBAD_sc)
 lacI_stimulated is a Stimulated(lacI_sc)
 lacI_stim is a Stimulation()
 (
-	hasParticipation = pTeT_1_stimulator
+	hasParticipation = pTeT_stimulator
 	hasParticipation = pBAD_stimulator	
     hasParticipation = lacI_stimulated
 )
@@ -57,8 +57,8 @@ pLlac_inhibition is a Inhibition()
 	hasParticipation = pLlac_inhibited	
 )
 
-pLlac_stimulator is a Stimulator(p_out_sc)
-mCherry_stimulated is a Stimulated(output_sc)
+pLlac_stimulator is a Stimulator(pLlac_sc)
+mCherry_stimulated is a Stimulated(mCherry_sc)
 mCherry_stimulation is a Stimulation()
 (
 	hasParticipation = pLlac_stimulator
@@ -73,6 +73,7 @@ NOR_gate is a FunctionalEntity()
   hasFeature = lacI_sc
   hasFeature = pLlac_sc
   hasFeature = mCherry_sc
+
   # pTeT and pBAD can stimulate the LacI
   hasInteraction = lacI_stim
 

@@ -17,5 +17,7 @@ LacITetR_int is a Inhibition()
 
 LacI_inverter is a FunctionalEntity()
 (
+  hasFeature = TetR_sc
+  hasFeature = LacI_sc
   hasInteraction = LacITetR_int
 )

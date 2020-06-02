@@ -10,5 +10,6 @@ pTetR_sc is a SubComponent(pTetR)
 
 tetRInverter is a FunctionalEntity()
 (
+  hasFeature = pTetR_sc
   hasComponentReference(pTetR_sc,pTetR_external_ref)
 )

@@ -93,12 +93,5 @@ CRPb_characterization_Circuit is a FunctionalEntity()
   degradation(gRNA_b)
   degradation(EYFP_sc)
   degradation(cas9m_BFP)
-
-
-  references(cas9m_BFP,cas9_generic)
-  references(gRNA_b,gRNA_generic)
-  references(cas9m_BFP,cas9_gRNA)
-  references(EYFP,target)
-  references(cas9m_BFP,target_gene)
 )
 

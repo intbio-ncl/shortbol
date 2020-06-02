@@ -9,8 +9,10 @@ class ExtensionManager(object):
         self.add_extra_extension('extensions.cardinality.AtLeastOne',
                                  shortname='AtLeastOne',
                                  base='rdfscript')
-        self.add_extra_extension('extensions.sbol.SbolIdentity',
-                                 shortname='SbolIdentity')
+        self.add_extra_extension('extensions.sbol2.SBOL2',
+                                 shortname='SBOL2')
+        self.add_extra_extension('extensions.sbol3.SBOL3',
+                                 shortname='SBOL3')
         self.add_extra_extension('extensions.combinatorialDerivation.CombinatorialDerivation',
                                   shortname="CombinatorialDerivation")
         self.add_extra_extension('extensions.include.Include',

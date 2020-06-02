@@ -21,5 +21,7 @@ TetRLacI_int is a Inhibition()
 TetR_inverter is a FunctionalEntity()
 (
   description = "TetR inverter"
+  hasFeature = TetR_sc
+  hasFeature = LacI_sc
   hasInteraction = TetRLacI_int
 )

@@ -4,8 +4,6 @@
 Feature(type)
 (
   Identified(type)
-  sbol_3.<definition> = definition
-  access = sbol_3.public
 )
 
 # -- docs-family Layer 1,2 start --

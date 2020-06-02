@@ -4,13 +4,12 @@
 # Name: CombinatorialDerivation
 # Summary: Specify combinatorial biological designs.    
 # Description: Specify combinatorial biological designs without having to specify every possible design variant. For example, a CombinatorialDerivation can be used to specify a library of reporter gene variants that include different promoters and RBSs without having to specify a Component for every possible combination of promoter, RBS, and CDS in the library.
-# Usage: Given an initial Component and one or more Variable components create the template.
+# Usage: Given an initial Component create the template.
 # Parameters: Template - component - A Component to serve as the template for the derivation of the new Component Object. This Component should has SubComponents that can be swapped., Template - hasVariableComponent - VariableComponent templates with the set of possible values for a SubComponent in the Component referenced by the component property.
 # -- docstring family end --
 
-CombinatorialDerivation(component,variableComponent)
+CombinatorialDerivation(component)
 (
   TopLevel(CombinatorialDerivation)
   template = component
-  hasVariableComponent = variableComponent
 )

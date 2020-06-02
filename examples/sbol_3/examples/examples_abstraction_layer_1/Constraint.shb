@@ -6,7 +6,7 @@ pTetR is a Promoter()
 pTetR_sc is a SubComponent(pTetR)
 lacI_CDS_sc is a LocalSubComponent()
 
-cons1 is a Precedes(pTetR_sc, lacI_RBS_sc)
+cons1 is a Precedes(pTetR_sc, lacI_CDS_sc)
 
 # The composite device for the TetR inverter
 tetRInverter is a FunctionalEntity()
