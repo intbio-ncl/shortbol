@@ -8,59 +8,20 @@ import rdflib.compare
 import argparse
 import validate_sbol
 from run import produce_tables
+from sbol_rdf_identifiers import identifiers
+       
+prune_namespaces = [identifiers.namespaces.sbh.to_rdflib(),
+                    identifiers.namespaces.igem.to_rdflib(),
+                    identifiers.namespaces.dc.to_rdflib(),
+                    identifiers.namespaces.prov.to_rdflib()]
 
-sbolns = rdflib.URIRef('http://sbols.org/v2#')
-top_levels = {rdflib.URIRef(sbolns + name) for name in
-             ['Sequence',
-              'ComponentDefinition',
-              'ModuleDefinition',
-              'Model',
-              'Collection',
-              'GenericTopLevel',
-              'Attachment',
-              'Activity',
-              'Agent',
-              'Plan',
-              'Implementation',
-              'CombinatorialDerivation',
-              'Experiment',
-              'ExperimentalData']}
-
-ownership_predicates = {rdflib.URIRef(sbolns + predicate) for predicate in
-                        ['module',
-                         'mapsTo',
-                         'interaction',
-                         'participation',
-                         'functionalComponent',
-                         'sequenceConstraint',
-                         'location',
-                         'sequenceAnnotation',
-                         'variableComponent']}                    
-
-
-required_properties = {rdflib.URIRef(sbolns + property) for property in
-                        ['version',
-                         'persistentIdentity',
-                         'displayId']}
-
-display_id = rdflib.URIRef(sbolns + "displayId")           
-sbh_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/synbiohub#")
-igem_namespace = rdflib.URIRef("http://wiki.synbiohub.org/wiki/Terms/igem#")
-dc_terms_namespace = rdflib.URIRef("http://purl.org/dc/terms/")
-provo_namespace = rdflib.URIRef("http://www.w3.org/ns/prov#")
-prune_namespaces = [sbh_namespace,igem_namespace,dc_terms_namespace,provo_namespace]
-
-rdf_type = rdflib.URIRef(rdflib.RDF.type)
-component = rdflib.URIRef(sbolns+ 'component')
-cd = rdflib.URIRef(sbolns + 'ComponentDefinition')
-sa = rdflib.URIRef(sbolns + 'SequenceAnnotation')
-
-dc_title = rdflib.URIRef("http://purl.org/dc/terms/title")
 name_list = {}
+ 
 
 
-
-def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancment = False):
+def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancment = False, version = "sbol_2"):
+    if version == "sbol_3":
+        identifiers.swap_version("sbol_3")
     # Perform full file validation before producing ShortBOL.
     if not no_validation and not general_validation(sbol_xml_fn):
          print("Warn:: Can't validate input.")
@@ -81,7 +42,7 @@ def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validati
         return output_fn
     # Now have a structure that is easier to use.
     # Create the actual ShortBOL from this.
-    shortbol_code = convert(heirachy_tree,shortbol_libary,no_enhancment)
+    shortbol_code = convert(heirachy_tree,shortbol_libary,no_enhancment,version)
 
     if output_fn is None:
         print(shortbol_code)
@@ -108,7 +69,7 @@ def find_graph_roots(graph):
     '''
     roots = set()
     for s,p,o in graph:
-        if o in top_levels:
+        if o in [k.to_rdflib() for k in identifiers.objects.top_levels]:
             if get_possible_parents(s,graph):
                 raise ValueError("TopLevel with parent.")
             roots.add((s,p,o))
@@ -134,19 +95,19 @@ def get_tree(graph,root,done = None, prune = False, prune_list = None):
 
     for prop in properties:
         # Flag that removes any triples that are in namespace list.
-        if prune_list is not None and any(ns in prop[1] for ns in prune_list) and prop[1] != dc_title: 
+        if prune_list is not None and any(ns in prop[1] for ns in prune_list) and prop[1] != identifiers.namespaces.dc.to_rdflib(): 
             continue
-        if prune and any(ns in prop[1] for ns in prune_namespaces) and prop[1] != dc_title :
+        if prune and any(ns in prop[1] for ns in prune_namespaces) and prop[1] != identifiers.namespaces.dc.to_rdflib() :
             continue
         tree.append((prop))
     return tree
 
 
-def convert(heirachy_tree,shortbol_libary,no_enhancment):
-    symbol_table,template_table,prefixes = produce_tables(lib_paths = shortbol_libary)
+def convert(heirachy_tree,shortbol_libary,no_enhancment,version):
+    symbol_table,template_table,prefixes = produce_tables(version = version, lib_paths = shortbol_libary)
     template_table = cast_to_rdflib(template_table)
     symbol_table = cast_to_rdflib(symbol_table)
-    ordered_parameter_lists = get_parameter_lists(template_table,shortbol_libary)
+    ordered_parameter_lists = get_parameter_lists(template_table,shortbol_libary,version)
     namespaces = get_namespaces(heirachy_tree)
     default_namespace = max(namespaces.keys(), key=(lambda k: namespaces[k]))
     del namespaces[default_namespace]
@@ -241,13 +202,13 @@ def handle_template(name,triples,template_table,symbol_table,ordered_parameter_l
     ordered_parameters = []
     expansion_properties = []
     for s,p,o in properties:
-        if p in required_properties:
+        if p in [i.to_rdflib() for i in identifiers.predicates.required_properties]:
             # Properties that we dont need to handle.
             continue
-        if p == rdf_type:
+        if p == identifiers.predicates.rdf_type.to_rdflib():
             # Handled this already
             continue
-        if p in [p for (s,p,o) in template_table[sbolns + template_type]]:                
+        if p in [p for (s,p,o) in template_table[identifiers.namespaces.sbol.to_rdflib() + template_type]]:        
             # The property is a ShortBOL parameter
             # Note at this point the parameters are potentially in the incorrect order.
             obj = handle_object(o,symbol_table, prefixes)
@@ -258,7 +219,7 @@ def handle_template(name,triples,template_table,symbol_table,ordered_parameter_l
             
 
             # Another quirk of SBOL, one of the only cases when SBOL aliases, (sbol name == "dcterms title")
-            if p == dc_title:
+            if p == identifiers.namespaces.dc.to_rdflib():
                 p = "name"
             expansion_properties.append((get_name(p),obj))
 
@@ -333,7 +294,7 @@ def get_specialised_templates(base_name,template_table,symbol_table):
     temp_table = []
     children = {}
     for template_name, triples in template_table.items():
-        template_type = [(s,p,o) for s,p,o in triples if p == rdf_type]
+        template_type = [(s,p,o) for s,p,o in triples if p == identifiers.predicates.rdf_type.to_rdflib()]
         # It is attempt to only take layer one templates, we are assuming either the template will reference more than one other template OR the self will have a longer name.
         if len(template_type) > 1 or len([(s,p,o) for s,p,o in template_type if s != rdflib.URIRef("self")]) > 0 :
             continue
@@ -369,13 +330,14 @@ def populate_name_list(heirachy_tree,no_enhancment, parent=None):
         for child in children:
             populate_name_list(child,no_enhancment,name_list[str(name)])
 
+
 def get_template_name(name,properties,parent, no_enhancment):
     if no_enhancment:
         return get_name(name) 
 
     orig_name = rdflib.URIRef(name)
-    title = search((orig_name,dc_title,None),properties)
-    dID = search((orig_name,display_id,None),properties)
+    title = search((orig_name,identifiers.namespaces.dc.to_rdflib(),None),properties)
+    dID = search((orig_name,identifiers.predicates.display_id.to_rdflib(),None),properties)
     if title != []:
         name = str(title[0][2])
         name = re.sub(r"[^a-zA-Z0-9]+", ' ', name)
@@ -386,7 +348,7 @@ def get_template_name(name,properties,parent, no_enhancment):
     # If there isn't a title, we try make a name from the parents name and the type
     if parent is not None and str(name) == str(orig_name):
         # Get the type of the object
-        type = search((orig_name,rdf_type,None),properties)[0][2]
+        type = search((orig_name,identifiers.predicates.rdf_type.to_rdflib(),None),properties)[0][2]
         # Get all parts by uppercase split (SequenceAnnotation -> [Sequence,Annotation]) 
         type = re.findall('[A-Z][^A-Z]*', type)
         # Shorten the words ([Sequence,Annotation] -> SeqAnn or [Range] -> Range)
@@ -554,14 +516,18 @@ def cast_to_rdflib(item):
 
 def get_possible_parents(child,triplepack):
     possible_parents = set()
-    for predicate in ownership_predicates:
+    for predicate in [i.to_rdflib() for i in identifiers.predicates.ownership_predicates]:
         possible_parents |= {s for (s, p, o) in search((None, predicate, child),triplepack)}
     return possible_parents
 
 
 def get_children(parent,triplepack):
+
+    component = rdflib.URIRef(identifiers.namespaces.sbol.to_rdflib() + 'component')
+    cd = rdflib.URIRef(identifiers.namespaces.sbol.to_rdflib()  + 'ComponentDefinition')
+    sa = rdflib.URIRef(identifiers.namespaces.sbol.to_rdflib()  + 'SequenceAnnotation')
     possible_parents = set()
-    for predicate in ownership_predicates:
+    for predicate in [i.to_rdflib() for i in identifiers.predicates.ownership_predicates]:
         possible_parents |= {(s,p,o) for (s, p, o) in search((parent, predicate, None),triplepack)}
     # now for the components
     possible_parents |= {(s,p,o) for (s, p, o)
@@ -580,7 +546,7 @@ def get_possible_SBOL_types(triplepack, uri):
     if not isinstance(uri,rdflib.URIRef):
         uri = rdflib.URIRef(uri)
 
-    return {o for (s, p, o) in search((uri, rdf_type, None),triplepack)}
+    return {o for (s, p, o) in search((uri, identifiers.predicates.rdf_type.to_rdflib(), None),triplepack)}
 
 def search(pattern,triples):
     (s, p, o) = pattern
@@ -652,7 +618,7 @@ def create_prefix_code(name,prefix,set_default = False):
         prefix = prefix + f'@prefix {name}\n'
     return prefix
 
-def get_parameter_lists(template_table,shortbol_libary):
+def get_parameter_lists(template_table,shortbol_libary,version):
     '''
     This is a hack, because it is not possible to find the order of parameters from the template table
     For example Range(start,end,direction)
@@ -670,7 +636,7 @@ def get_parameter_lists(template_table,shortbol_libary):
     hacky than this hack.
     This hack instead reads the libary and uses regex to make ordered lists corresponding to param list
     '''
-    sbol_sbh_lib = os.path.join(shortbol_libary,"sbol_2")
+    sbol_sbh_lib = os.path.join(shortbol_libary,version)
     parameter_list = {}
     template_re = re.compile(".+[(].*[)]")
     single_line_template_re = re.compile(".+[(].*[)][(].*[)]")
@@ -703,7 +669,7 @@ def get_parameter_lists(template_table,shortbol_libary):
                     parameters = get_parameters(curr_line,index)
                     # The parameters don't always link to the property names,
                     # Query the Template table and swap o for p (property is always the correct name) 
-                    for s,p,o in template_table[cast_shortbol_uri(sbolns + template_type)]:
+                    for s,p,o in template_table[cast_shortbol_uri(identifiers.namespaces.sbol.to_rdflib() + template_type)]:
                         for index,param in enumerate(parameters):
                             if cast_shortbol_uri(param) == o:
                                 parameters[index] = p
@@ -734,6 +700,7 @@ def sbol_2_shortbol_args():
     parser.add_argument('-nv', '--no_validation', help="Stops the Input from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('-prune', '--prune', help=f"This flag will remove the properties from {str([str(namespace) for namespace in prune_namespaces])} Namespaces.", default=False, action='store_true')
     parser.add_argument('-ne', '--no_enhancment', help=f"This flag will stop any data enhancment of the design, such as producing better template names", default=False, action='store_true')
+    parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["sbol_2","sbol_3"] , default="sbol_2")
     return  parser.parse_args()
 
 
@@ -741,7 +708,7 @@ if __name__ == "__main__":
     args = sbol_2_shortbol_args()
     produce_shortbol(args.filename, args.path, output_fn = args.output, 
                      no_validation = args.no_validation, prune = args.prune, 
-                     no_enhancment = args.no_enhancment)
+                     no_enhancment = args.no_enhancment, version = args.version)
 
 
 

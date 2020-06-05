@@ -90,7 +90,7 @@ i_continuous =  <http://identifiers.org/biomodels.sbo/SBO:0000062>
 i_discrete = <http://identifiers.org/biomodels.sbo/SBO:0000063>
 
 # (VariableComponent) cardinality
-i_zeroOrOne = <http://sbols.org/v2#zeroOrOne> 
-i_one = <http://sbols.org/v2#one>
-i_zeroOrMore = <http://sbols.org/v2#zeroOrMore>
-i_oneOrMore = <http://sbols.org/v2#oneOrMore>
+i_zeroOrOne = <http://sbols.org/v3#zeroOrOne> 
+i_one = <http://sbols.org/v3#one>
+i_zeroOrMore = <http://sbols.org/v3#zeroOrMore>
+i_oneOrMore = <http://sbols.org/v3#oneOrMore>

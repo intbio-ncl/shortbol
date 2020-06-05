@@ -8,5 +8,6 @@ LacI is a Protein()
 LacI_inverter is a FunctionalEntity()
 (
   description = "LacI inverter"
-  inhibition(TetR,LacI)
+  inhibition(TetR, LacI)
+  inhibition(LacI, TetR)
 )

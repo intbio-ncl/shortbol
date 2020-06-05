@@ -20,6 +20,8 @@ def parse_from_file(filepath,
                     version="sbol_2",
                     no_validation = None):
     
+    if version == "sbol_3" and serializer == "sbolxml":
+        pass#serializer = "rdfxml"
     if len(optpaths) == 0:
         optpaths.append("templates")
 
@@ -46,24 +48,25 @@ def parse_from_file(filepath,
             ret_code = "No Validation Currently for SBOL3"
             print(ret_code)
             errors = []
-            return {ret_code : errors}
-        errors = []
-        response = validate_sbol(sbol)
-        try:
-            if response['valid']:
-                print('SBOL validator success.')
-                ret_code = "SBOL validator success."
-            else:
-                print("SBOL validator failure.")
-                for e in response['errors']:
-                    print(e)
-                errors = response['errors']
-                ret_code =  "SBOL validator failure."
-        except TypeError:
-            errors = ["Unable to Validate output."]
+        else:
+            errors = []
+            response = validate_sbol(sbol)
+            try:
+                if response['valid']:
+                    print('SBOL validator success.')
+                    ret_code = "SBOL validator success."
+                else:
+                    print("SBOL validator failure.")
+                    for e in response['errors']:
+                        print(e)
+                    errors = response['errors']
+                    ret_code =  "SBOL validator failure."
+            except TypeError:
+                errors = ["Unable to Validate output."]
     else:
         ret_code = "No Validation."
         errors = ["No Validation."]
+
     if out is None:
         print(sbol)
     else:

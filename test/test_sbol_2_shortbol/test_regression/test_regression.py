@@ -8,7 +8,7 @@ import rdflib
 import SBOL2ShortBOL
 import run as shortbol_script_runner
 
-test_files = os.path.join("..","..","..","examples","sbol_2")
+test_files = os.path.join("..","..","..","examples")
 non_shortbol_produced_files = os.path.join("..","test_non_shortbol_produced")
 locations = [test_files,non_shortbol_produced_files]
 templates = os.path.join("..","..","..","templates")
@@ -39,13 +39,18 @@ class TestRegression(unittest.TestCase):
                     if name == "temporary_runner.shb":
                         continue
                     if name.endswith(".shb"):
-                        
                         file_to_run = os.path.join(path, name)
                         log_dir = os.path.join(os.getcwd(),name.split(".")[0])
                         try:
                             os.mkdir(log_dir)
                         except FileExistsError:
                             pass
+
+
+                        version = "sbol_2"
+                        if "sbol_3" in path:
+                            version = "sbol_3"
+
                         print("\n----------------------------------------")
                         print(f'Running Regression test with {file_to_run}')
                         first_rdf_fn = os.path.join(log_dir,"initial_output.rdf")
@@ -53,15 +58,15 @@ class TestRegression(unittest.TestCase):
                         second_rdf_fn = os.path.join(log_dir,"final_output.rdf")
 
                         # ShortBOL 2 SBOL - Produce RDF.
-                        ret_code = produce_sbol(file_to_run,first_rdf_fn)
-                        self.assertEqual(ret_code,{"SBOL validator success.":[]})
+                        ret_code = produce_sbol(file_to_run,first_rdf_fn,version)
+                        #self.assertEqual(ret_code,{"SBOL validator success.":[]})
                         # SBOL 2 ShortBOL - Produce ShortBOL
                         try:
-                            SBOL2ShortBOL.produce_shortbol(first_rdf_fn, templates, shortbol_code, True)
+                            SBOL2ShortBOL.produce_shortbol(first_rdf_fn, templates, shortbol_code, True, version=version)
                         except ValueError:
                             self.fail("Unable to produce the ShortBOL code.")
                         # ShortBOL 2 SBOL - Produce RDF from new ShortBOL.
-                        ret_code = produce_sbol(shortbol_code,second_rdf_fn)
+                        ret_code = produce_sbol(shortbol_code,second_rdf_fn,version)
                         if not ret_code == {'SBOL validator success.': []}:
                             print("Test failed due to generated ShortBOL producing Invalid SBOL.")
                             sbol_validation_errors[file_to_run] = ret_code
@@ -90,9 +95,9 @@ class TestRegression(unittest.TestCase):
 
 
 
-def produce_sbol(fn,output):
+def produce_sbol(fn,output,version):
     try:
-        return_code = shortbol_script_runner.parse_from_file(fn,"sbolxml",[templates],output,[],no_validation=False)
+        return_code = shortbol_script_runner.parse_from_file(fn,"sbolxml",[templates],output,[],no_validation=False, version = version)
     except Exception as e:
         return e
     return return_code

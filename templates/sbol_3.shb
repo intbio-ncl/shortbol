@@ -31,9 +31,9 @@ use <sbol_3/identifiers>
 use <sbol_3/toplevel>
 use <sbol_3/component>
 use <sbol_3/feature>
-use <sbol_3/componentReference>
 use <sbol_3/externallyDefined>
 use <sbol_3/subComponent>
+use <sbol_3/componentReference>
 use <sbol_3/localSubComponent>
 use <sbol_3/sequenceFeature>
 use <sbol_3/constraint>
@@ -61,7 +61,7 @@ hasInterface = sbol_3.hasInterface
 hasConstraint = sbol_3.hasConstraint
 hasLocation = sbol_3.hasLocation
 hasVariableComponent = sbol_3.hasVariableComponent
-hasVariant = sbol_3.hasVariant
+variant = sbol_3.variant
 hasSequence = sbol_3.hasSequence
 
 

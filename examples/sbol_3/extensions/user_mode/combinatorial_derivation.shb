@@ -148,11 +148,11 @@ output_variable_1 is a OneVariableComponent(mCherry_c)
 
 nor_gate_derivation is a CombinatorialDerivation(NOR_gate)
 (
-  variableComponent = promoter_variable_1
-  variableComponent = promoter_variable_2
-  variableComponent = repressor_variable_1
-  variableComponent = promoter_variable_3
-  variableComponent = output_variable_1
+  hasVariableComponent = promoter_variable_1
+  hasVariableComponent = promoter_variable_2
+  hasVariableComponent = repressor_variable_1
+  hasVariableComponent = promoter_variable_3
+  hasVariableComponent = output_variable_1
 )
 
 @extension CombinatorialDerivation(nor_gate_derivation)
