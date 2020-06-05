@@ -215,6 +215,9 @@ class Uri(Node):
 
     def evaluate(self, context):
         return self
+    
+    def to_rdflib(self):
+        return rdflib.URIRef(self.uri)
 
 
 class Value(Node):

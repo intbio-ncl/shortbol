@@ -67,9 +67,9 @@ hasInteraction_1(component, part_type, type)
   component._.type is a Interaction(type)
   (
     component._.part_type is a Participation(self.component._sc, part_type)
-    participation = component._.part_type 
+    hasParticipation = component._.part_type 
   )
-  interaction = component._.type
+  hasInteraction = component._.type
 )
 
 
@@ -81,15 +81,15 @@ hasInteraction(component_participant_1, part_1_type, component_participant_2, pa
   hasFeature = self.component_participant_1._sc
   hasFeature = self.component_participant_2._sc
   
-  component_participant_1._.type._with_.component_participant_2 is a Interaction(type)
+  self.component_participant_1._.type._with_.component_participant_2 is a Interaction(type)
   (
     self._.component_participant_1._.part_1_type is a Participation(component_participant_1, part_1_type)
     self._.component_participant_2._.part_2_type is a Participation(component_participant_2, part_2_type)
 
-    participation = self._.component_participant_1._.part_1_type
-    participation = self._.component_participant_2._.part_2_type
+    hasParticipation = self._.component_participant_1._.part_1_type
+    hasParticipation = self._.component_participant_2._.part_2_type
   )
-  interaction = component_participant_1._.type._with_.component_participant_2
+  hasInteraction = self.component_participant_1._.type._with_.component_participant_2
 )
 
 inhibition(component_inhibitor, component_inhibited)

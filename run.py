@@ -10,8 +10,6 @@ from rdfscript.core import Uri,Identifier,Name
 from repl import REPL
 from validate_sbol import validate_sbol
 
-default_prefix_name = "shb_ns"
-default_prefix = Identifier(Uri("http://shortbol.org/v2#"))
 
 def parse_from_file(filepath,
                     serializer='sbolxml',
@@ -22,6 +20,8 @@ def parse_from_file(filepath,
                     version="sbol_2",
                     no_validation = None):
     
+    if version == "sbol_3" and serializer == "sbolxml":
+        pass#serializer = "rdfxml"
     if len(optpaths) == 0:
         optpaths.append("templates")
 
@@ -34,7 +34,8 @@ def parse_from_file(filepath,
     env = Env(filename=filepath,
               serializer=serializer,
               paths=optpaths,
-              extensions=extensions)
+              extensions=extensions,
+              version = version)
 
     forms = parser.parse(data)
     forms = pre_process(forms,version)
@@ -42,24 +43,30 @@ def parse_from_file(filepath,
     sbol = '<?xml version="1.0" ?>\n' + str(env)
 
     ret_code = ""
-    if not no_validation and serializer == "sbolxml":
-        errors = []
-        response = validate_sbol(sbol)
-        try:
-            if response['valid']:
-                print('SBOL validator success.')
-                ret_code = "SBOL validator success."
-            else:
-                print("SBOL validator failure.")
-                for e in response['errors']:
-                    print(e)
-                errors = response['errors']
-                ret_code =  "SBOL validator failure."
-        except TypeError:
-            errors = ["Unable to Validate output."]
+    if not no_validation:
+        if version == "sbol_3":
+            ret_code = "No Validation Currently for SBOL3"
+            print(ret_code)
+            errors = []
+        else:
+            errors = []
+            response = validate_sbol(sbol)
+            try:
+                if response['valid']:
+                    print('SBOL validator success.')
+                    ret_code = "SBOL validator success."
+                else:
+                    print("SBOL validator failure.")
+                    for e in response['errors']:
+                        print(e)
+                    errors = response['errors']
+                    ret_code =  "SBOL validator failure."
+            except TypeError:
+                errors = ["Unable to Validate output."]
     else:
         ret_code = "No Validation."
         errors = ["No Validation."]
+
     if out is None:
         print(sbol)
     else:
@@ -74,7 +81,13 @@ def pre_process(forms,version):
     We want to add a default prefix if one isnt present.
     Also, add the new include extension if not present.
     Also, add the sbol_identity extension
-    '''     
+    '''   
+    
+    default_prefix_name = "shb_ns"
+    default_prefix = Identifier(Uri("http://shortbol.org/v2#"))
+    if version == "sbol_3":
+        default_prefix = Identifier(Uri("http://shortbol.org/v3#"))  
+
     if not any(isinstance(x, PrefixPragma) for x in forms):
         forms.insert(0,PrefixPragma(default_prefix_name,default_prefix))
     
@@ -94,10 +107,15 @@ def pre_process(forms,version):
     extensions = [x for x in forms if isinstance(x, ExtensionPragma)]
     include_ns = ExtensionPragma("Include",Identifier(Uri(version)))
  
-    sbol_identity = ExtensionPragma("SbolIdentity",[])
+    
     if include_ns not in extensions:
         forms.insert(pos + 1,include_ns)
     if version == "sbol_2":
+        sbol_identity = ExtensionPragma("SBOL2",[])
+        if sbol_identity not in extensions:
+            forms.append(sbol_identity)
+    elif version == "sbol_3":
+        sbol_identity = ExtensionPragma("SBOL3",[])
         if sbol_identity not in extensions:
             forms.append(sbol_identity)
 
@@ -145,7 +163,8 @@ def produce_tables(version = "sbol_2", lib_paths = None):
 
     env = Env(filename=to_run_fn,
               serializer="sbolxml",
-              paths=optpaths)
+              paths=optpaths,
+              version = version)
 
     forms = parser.parse(data)
     forms = pre_process(forms,version)

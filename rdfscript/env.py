@@ -24,7 +24,8 @@ class Env(object):
                  filename=None,
                  serializer=None,
                  paths=[],
-                 extensions=[]):
+                 extensions=[],
+                 version = None):
 
         self._symbol_table = {}
         self._template_table = {}
@@ -34,6 +35,7 @@ class Env(object):
         self._rdf = RDFData(serializer=serializer)
         self.uri = Uri(self._rdf._g.identifier.toPython())
         self.prefix = None
+        self.version = version
 
         self._paths = paths
         if filename:

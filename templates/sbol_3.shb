@@ -10,8 +10,7 @@ use <edam>
 use <sbo>
 use <sbh>
 
-@prefix sbol_3 = <http://shortbol.org/v3#>
-@prefix sbol_3
+@prefix sbol_3 = <http://sbols.org/v3#>
 
 addProperty(property, value)
 (
@@ -20,16 +19,21 @@ addProperty(property, value)
 
 name = dc.title
 description = dc.description
+created = dc.created
+creator = dc.creator
+modified = dc.modified
+
 wasDerivedFrom = prov.wasDerivedFrom
+wasGeneratedBy = prov.wasGeneratedBy
 
 use <sbol_3/identiified>
 use <sbol_3/identifiers>
 use <sbol_3/toplevel>
 use <sbol_3/component>
 use <sbol_3/feature>
-use <sbol_3/componentReference>
 use <sbol_3/externallyDefined>
 use <sbol_3/subComponent>
+use <sbol_3/componentReference>
 use <sbol_3/localSubComponent>
 use <sbol_3/sequenceFeature>
 use <sbol_3/constraint>
@@ -48,3 +52,48 @@ use <sbol_3/interface>
 use <sbol_3/variableComponent>
 use <sbol_3/combinatorialDerivation>
 use <sbol_3/model>
+
+
+hasFeature = sbol_3.hasFeature
+hasInteraction = sbol_3.hasInteraction
+hasParticipation = sbol_3.hasParticipation
+hasInterface = sbol_3.hasInterface
+hasConstraint = sbol_3.hasConstraint
+hasLocation = sbol_3.hasLocation
+hasVariableComponent = sbol_3.hasVariableComponent
+variant = sbol_3.variant
+hasSequence = sbol_3.hasSequence
+
+
+
+bookmark = sbh_terms.bookmark
+mutableDescription = sbh_terms.mutableDescription
+mutableNotes = sbh_terms.mutableNotes
+mutableProvenance = sbh_terms.mutableProvenance
+ownedBy = sbh_terms.ownedBy
+star = sbh_terms.star
+topLevel = sbh_terms.topLevel
+partStatus = sbh_terms.partStatus
+
+discontinued = igem_terms.discontinued
+dominant = igem_terms.dominant
+experience = igem_terms.experience
+group_u_list = igem_terms.group_u_list
+m_user_id = igem_terms.m_user_id
+owner_id = igem_terms.owner_id
+owning_group_id = igem_terms.owning_group_id
+status = igem_terms.status
+sampleStatus = igem_terms.sampleStatus
+direction = igem_terms.direction
+
+Plasmid = igem_terms.<partType/Plasmid>
+regulatory_role = igem_terms.<partType/Regulatory>
+rbs_role = igem_terms.<partType/RBS>
+coding_role = igem_terms.<partType/Coding>
+binding_feature = igem_terms.<feature/binding>
+cds_feature = igem_terms.<feature/cds>
+BioBrick = igem_terms.<feature/BioBrick>
+promoter_feature = igem_terms.<feature/Promoter>
+start_feature = igem_terms.<feature/start>
+tag_feature = igem_terms.<feature/tag>
+barcode_feature = igem_terms.<feature/barcode>

@@ -1,0 +1,18 @@
+# SequenceFeature is similar to a GenBank annotation.
+# It is essentially a template that can hold a 
+# location and free-text information.
+
+
+ligate_scar_seq is a DNASequence("ATC")
+ligate_scar_loc is a EntireSequence(ligate_scar_seq)
+scar is a SequenceFeature()
+(
+  name = "scar"
+  description = "3bp scar from Ligation assembly"
+  hasLocation = ligate_scar_loc
+)
+
+tetRInverter is a FunctionalEntity()
+(
+  hasFeature = scar
+)

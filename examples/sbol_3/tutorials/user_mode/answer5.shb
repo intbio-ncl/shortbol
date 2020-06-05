@@ -1,0 +1,13 @@
+# Answer 5
+# The TetR and LacI proteins
+
+TetR is a Protein()
+LacI is a Protein()
+
+# The LacI inverter module
+LacI_inverter is a FunctionalEntity()
+(
+  description = "LacI inverter"
+  inhibition(TetR, LacI)
+  inhibition(LacI, TetR)
+)

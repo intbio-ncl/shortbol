@@ -1,0 +1,21 @@
+# Example 5
+# The TetR and LacI proteins
+TetR is a ProteinComponent()
+LacI is a ProteinComponent()
+
+# The TetR inverter module
+TetR_inverter is a FunctionalEntity()
+(
+  description = "TetR inverter"
+  inhibition(TetR,LacI)
+)
+
+# The LacI inverter module
+LacI_inverter is a FunctionalEntity()
+(
+  description = "LacI inverter"
+  inhibition(TetR,LacI)
+
+  references(LacI)
+  references(TetR)
+)

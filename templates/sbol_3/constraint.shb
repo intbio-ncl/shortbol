@@ -108,8 +108,8 @@ hasConstraint(component_subject,component_object,restriction)
   self._.component_subject._sc is a SubComponent(component_subject)
   self._.component_object._sc is a SubComponent(component_object)
 
-  component = self._.component_subject._sc
-  component = self._.component_object._sc
+  hasFeature = self._.component_subject._sc
+  hasFeature = self._.component_object._sc
   self._.component_subject._sc._.restriction._.self._.component_object._sc  is a Constraint(self._.component_subject._sc, self._.component_object._sc , restriction)
   hasConstraint = self._.component_subject._sc._.restriction._.self._.component_object._sc
 )

@@ -1,0 +1,89 @@
+
+@prefix user_prefix = <http://shortbol.org/v3#>
+@prefix user_prefix
+
+
+# Sequence Definitions
+pBAD_sequence is a DNASequence("atgccatagcatttttatcc")
+lacI_sequence is a DNASequence("aaagaggagaaaatggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcaggctgcaaacgacgaaaactacgctttagtagcttaataactctgatagtgctagtgtagatctcccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata")
+pLlac_sequence is a DNASequence("aattgtgagcggataacaattgacattgtgagcggataacaagatactgagcaca")
+pTeT_sequence is a DNASequence("ttgacagcttatcatcgataagctttaat")
+mCherry_sequence is a DNASequence("atggtgagcaagggcgaggaggataacatggccatcatcaaggagttcatgcgcttcaaggtgcacatggagggctccgtgaacggccacgagttcgagatcgagggcgagggcgagggccgcccctacgagggcacccagaccgccaagctgaaggtgaccaagggtggccccctgcccttcgcctgggacatcctgtcccctcagttcatgtacggctccaaggcctacgtgaagcaccccgccgacatccccgactacttgaagctgtccttccccgagggcttcaagtgggagcgcgtgatgaacttcgaggacggcggcgtggtgaccgtgacccaggactcctccctgcaggacggcgagttcatctacaaggtgaagctgcgcggcaccaacttcccctccgacggccccgtaatgcagaagaagaccatgggctgggaggcctcctccgagcggatgtaccccgaggacggcgccctgaagggcgagatcaagcagaggctgaagctgaaggacggcggccactacgacgctgaggtcaagaccacctacaaggccaagaagcccgtgcagctgcccggcgcctacaacgtcaacatcaagttggacatcacctcccacaacgaggactacaccatcgtggaacagtacgaacgcgccgagggccgccactccaccggcggcatggacgagctgtacaag")
+
+# Component Definitions
+lacI is a DNAComponent()
+(
+     sequence = lacI_sequence
+)
+
+pBAD is a Promoter()
+(
+     sequence = pBAD_sequence
+)
+
+pTeT is a Promoter()
+(
+     sequence = pTeT_sequence
+)
+
+mCherry is a DNAComponent()
+(
+     sequence = mCherry_sequence
+)
+
+pLlac is a Promoter()
+(
+     sequence = pLlac_sequence
+)
+
+
+
+NOR_gate_int_3_par_1 is a Inhibitor(lacI)
+NOR_gate_int_3_par is a Inhibited(pLlac)
+NOR_gate_int_3 is a Inhibition()
+(
+     hasParticipation = NOR_gate_int_3_par
+     hasParticipation = NOR_gate_int_3_par_1
+)
+
+NOR_gate_int_2_par_1 is a Stimulator(pLlac)
+NOR_gate_int_2_par is a Stimulated(mCherry)
+NOR_gate_int_2 is a Stimulation()
+(
+     hasParticipation = NOR_gate_int_2_par
+     hasParticipation = NOR_gate_int_2_par_1
+)
+
+NOR_gate_int_1_par_1 is a Stimulator(pBAD)
+NOR_gate_int_1_par is a Stimulated(lacI)
+NOR_gate_int_1 is a Stimulation()
+(
+     hasParticipation = NOR_gate_int_1_par
+     hasParticipation = NOR_gate_int_1_par_1
+)
+
+NOR_gate_subcom_4 is a SubComponent(sbol_3.component)
+NOR_gate_subcom_3 is a SubComponent(sbol_3.component)
+NOR_gate_int_par_1 is a Stimulated(lacI)
+NOR_gate_int_par is a Stimulator(pTeT)
+NOR_gate_int is a Stimulation()
+(
+     hasParticipation = NOR_gate_int_par_1
+     hasParticipation = NOR_gate_int_par
+)
+
+NOR_gate_subcom_2 is a SubComponent(sbol_3.component)
+NOR_gate_subcom_1 is a SubComponent(sbol_3.component)
+NOR_gate_subcom is a SubComponent(sbol_3.component)
+NOR_gate is a FunctionalEntity()
+(
+     hasFeature = NOR_gate_subcom
+     hasFeature = NOR_gate_subcom_1
+     hasFeature = NOR_gate_subcom_2
+     hasFeature = NOR_gate_subcom_4
+     hasFeature = NOR_gate_subcom_3
+     hasInteraction = NOR_gate_int_2
+     hasInteraction = NOR_gate_int
+     hasInteraction = NOR_gate_int_1
+     hasInteraction = NOR_gate_int_3
+)
