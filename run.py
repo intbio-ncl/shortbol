@@ -21,7 +21,7 @@ def parse_from_file(filepath,
                     no_validation = None):
     
     if version == "sbol_3" and serializer == "sbolxml":
-        pass#serializer = "rdfxml"
+        serializer = "rdfxml"
     if len(optpaths) == 0:
         optpaths.append("templates")
 
@@ -40,7 +40,7 @@ def parse_from_file(filepath,
     forms = parser.parse(data)
     forms = pre_process(forms,version)
     env.interpret(forms)
-    sbol = '<?xml version="1.0" ?>\n' + str(env)
+    sbol = str(env)
 
     ret_code = ""
     if not no_validation:

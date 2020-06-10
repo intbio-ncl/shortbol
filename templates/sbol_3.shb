@@ -9,6 +9,7 @@ use <biopax>
 use <edam>
 use <sbo>
 use <sbh>
+use <identifiers>
 
 @prefix sbol_3 = <http://sbols.org/v3#>
 
@@ -22,6 +23,7 @@ description = dc.description
 created = dc.created
 creator = dc.creator
 modified = dc.modified
+role
 
 wasDerivedFrom = prov.wasDerivedFrom
 wasGeneratedBy = prov.wasGeneratedBy
@@ -54,6 +56,7 @@ use <sbol_3/combinatorialDerivation>
 use <sbol_3/model>
 
 
+role = sbol_3.role
 hasFeature = sbol_3.hasFeature
 hasInteraction = sbol_3.hasInteraction
 hasParticipation = sbol_3.hasParticipation

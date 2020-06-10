@@ -47,6 +47,7 @@ use <sbol_2/attachment>
 use <sbol_2/collection>
 use <sbol_2/implementation>
 
+role = sbol_2.role
 component = sbol_2.component
 module = sbol_2.module
 mapsTo = sbol_2.mapsTo
