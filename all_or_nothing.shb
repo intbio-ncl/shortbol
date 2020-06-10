@@ -1,0 +1,462 @@
+# All or nothing design adopted from: https://synbiohub.org/public/Digitalizer/all_or_nothing/1
+# Design described in https://www.embopress.org/doi/full/10.15252/msb.20188777
+# The double negative feedback generates the digitalisation of the target gene (dynamics in the paper). 
+# By digitalisation we mean that if the promoter is not induced, the leaky expression is zero, null, nothing. 
+# This is a very difficult thing to find in Nature, and the problem we aim at solving here: all promoters are leaky, this is, 
+# even if the promoter is not induced, there is some target proteins out there.
+
+@prefix user_prefix = <https://synbiohub.org/public/Digitalizer/>
+@prefix user_prefix
+
+
+# Sequence Definitions
+RBS_cassetteSequence is a DNASequence("cctaggagga")
+XylSPmSequence is a DNASequence("acgttcgtaatcaagccacttcctttttgcattgacgcagggtgtcggaaggcaactcgccgaacgcgctcctatagttttcagcgaagcgtcccaaatgtaagaagccgtagtctagggctatctcagttatactacgcacattggcactgggatcgttcaagcaggcgcggatgctttcgagcttgcggttgcggatgtagttcttcggcgtggtgccggcgtgcttctcgaacaaattgtagagcgagcgtggactcatcatcgccagctccgctaaccgctcaaggctgatattccgtttgagattctcctcaatgaattgaacgactcgctcgaaagacgggttacctttgctgaaaatttcacggctgacattgctgcccagcatttcgagcagcttggaagcgatgatccccgcatagtgctcttggacccgaggcatcgactttgtatgttccgcttcgtcacaaactaacccgagtagattgataaagccatcgagttgctggagattgtgtcgcgcggcgaaacggataccctccctcggcttgtgccaattgttgtcactgcacgcccgatcaaggaccactgagggcaatttaacgataaatttctcgcaatcttctgaataggtcaggtcggcttggtcatccggattgagcagcaatagttcgcccggcgcaaaatagtgctcctggccatggccacgccacaggcaatggcctttgagtattatttgcagatgataacaggtctctaatccaggcgagattaccctcacgctaccgccgtagctgattcgacacagatcgaggcatccgaagattctgtggtgcagcctgcctgccgggcgcccgcccttgggcaggcgaatagagtgcgtaccgacatactggttaacataatcggagactgcatagggctcggcgtggacgaagatctgacttttctcgttcaataagcaaaaatccatagttcacggttctcttattttaatgtgggctgcttggtgtgatgtagaaaggcgccaagtcgatgaaaatgcatctcgacgtgatgcgtatacgggttacccccattgccacgttgcgccatcctttttgcaatcagtgaccacttttccaagcaaaaataacgccaagcagaacgaagacgttctttttaagaagcgagaacaccagaagttcgtgctgtcggggcatggggcgacgaattggcggataaaggggatctgctggatattacggcctttttaaagaccgtaaagaaaaataagcacaagttttatccggcctttattcacattcttgcccgcctgatgaatgctcatccgtaattacgtatggcaatgaaagacggtgagctggtgatatgggatagtgttcacccttgttacaccgttttccatgagcaaactgaaacgttttcatcgctctggagtgaataccacgacgatttccggcagtttctacacatatattcgcaagatgtggcgtgttacggtgaaaacctggcctatttccctaaagggtttattgagaatatgtttttcgtctcagccaatccctgggtgagtttcaccagttttgatttaaacgtggccaatatggacaacttcttcgcccccgttttcaccatgcatgggaattagcttgatctgaccaacgaccggtagcggagctatccaacggcggtataccaggaaaacacacagcaggtacatcagaacagtaccatgactgaagaacaaatagttttttcctgatccataaagcagaacggcctgctccatgacaaatctggctccccaactaatgccccatgcagccagcataaccagcataaagtgcagtgtccggtttgatagggataagtccagccttgcaagaagcggatacaggagtgcaaaaaatggctatctctagtaaggcctaccccttaggctttatgcaacagaaacaataataatggagtcatgaccatg")
+CouplingSequence is a DNASequence("catcatcaccaccatcattaggatggtggtgatgata")
+ATGSequence is a DNASequence("atg")
+sRNA_cassetteSequence is a DNASequence("tataacgttactggtttcaccattttctgttgggccattgcattgccactgattttccaacatataaaaagacaagcccgaacagtcgtccgggctttttttctcgag")
+LacISequence is a DNASequence("gtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcag")
+SpeISequence is a DNASequence("actagt")
+EcoRISequence is a DNASequence("gaattc")
+Restriction_sitesSequence is a DNASequence("gagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttgcggccgc")
+PA1_04sSequence is a DNASequence("tttatcaaaaagagtgttgacttgtgagcgctcacattgatacttagattcag")
+MCSSequence is a DNASequence("gagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttgcggccgcgtcgtgactgggaaaaccctggcg")
+MICc_scaffoldSequence is a DNASequence("tttctgttgggccattgcattgccactgattttccaacatataaaaagacaagcccgaacagtcgtccgggctttttttctcgag")
+LacI_cassetteSequence is a DNASequence("aaaaacatatggtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcagcatcatcaccaccatcattaggatggtggtgatgata")
+gfp_cassetteSequence is a DNASequence("atggctagccgtaaaggtgaagaactgttcaccggtgttgttccgatcctggttgaactggatggtgatgttaacggccacaaattctctgttcgtggtgaaggtgaaggtgatgcaaccaacggtaaactgaccctgaaattcatctgcactaccggtaaactgccggttccatggccgactctggtgactaccctgacctatggtgttcagtgtttttctcgttacccggatcacatgaagcagcatgatttcttcaaatctgcaatgccggaaggttatgtacaggagcgcaccatttctttcaaagacgatggcacctacaaaacccgtgcagaggttaaatttgaaggtgatactctggtgaaccgtattgaactgaaaggcattgatttcaaagaggacggcaacatcctgggccacaaactggaatataacttcaactcccataacgtttacatcaccgcagacaaacagaagaacggtatcaaagctaacttcaaaattcgccataacgttgaagacggtagcgtacagctggcggaccactaccagcagaacactccgatcggtgatggtccggttctgctgccggataaccactacctgtccacccagtctaaactgtccaaagacccgaacgaaaagcgcgaccacatggtgctgctggagttcgttactgccgcaggtatcacgcacggcatggatgaactctacaaataagaattc")
+NheISequence is a DNASequence("gctagc")
+PBS_F24Sequence is a DNASequence("gtcgtgactgggaaaaccctggcg")
+all_or_nothing_PmSequence is a DNASequence("acgttcgtaatcaagccacttcctttttgcattgacgcagggtgtcggaaggcaactcgccgaacgcgctcctatagttttcagcgaagcgtcccaaatgtaagaagccgtagtctagggctatctcagttatactacgcacattggcactgggatcgttcaagcaggcgcggatgctttcgagcttgcggttgcggatgtagttcttcggcgtggtgccggcgtgcttctcgaacaaattgtagagcgagcgtggactcatcatcgccagctccgctaaccgctcaaggctgatattccgtttgagattctcctcaatgaattgaacgactcgctcgaaagacgggttacctttgctgaaaatttcacggctgacattgctgcccagcatttcgagcagcttggaagcgatgatccccgcatagtgctcttggacccgaggcatcgactttgtatgttccgcttcgtcacaaactaacccgagtagattgataaagccatcgagttgctggagattgtgtcgcgcggcgaaacggataccctccctcggcttgtgccaattgttgtcactgcacgcccgatcaaggaccactgagggcaatttaacgataaatttctcgcaatcttctgaataggtcaggtcggcttggtcatccggattgagcagcaatagttcgcccggcgcaaaatagtgctcctggccatggccacgccacaggcaatggcctttgagtattatttgcagatgataacaggtctctaatccaggcgagattaccctcacgctaccgccgtagctgattcgacacagatcgaggcatccgaagattctgtggtgcagcctgcctgccgggcgcccgcccttgggcaggcgaatagagtgcgtaccgacatactggttaacataatcggagactgcatagggctcggcgtggacgaagatctgacttttctcgttcaataagcaaaaatccatagttcacggttctcttattttaatgtgggctgcttggtgtgatgtagaaaggcgccaagtcgatgaaaatgcatctcgacgtgatgcgtatacgggttacccccattgccacgttgcgccatcctttttgcaatcagtgaccacttttccaagcaaaaataacgccaagcagaacgaagacgttctttttaagaagcgagaacaccagaagttcgtgctgtcggggcatggggcgacgaattggcggataaaggggatctgctggatattacggcctttttaaagaccgtaaagaaaaataagcacaagttttatccggcctttattcacattcttgcccgcctgatgaatgctcatccgtaattacgtatggcaatgaaagacggtgagctggtgatatgggatagtgttcacccttgttacaccgttttccatgagcaaactgaaacgttttcatcgctctggagtgaataccacgacgatttccggcagtttctacacatatattcgcaagatgtggcgtgttacggtgaaaacctggcctatttccctaaagggtttattgagaatatgtttttcgtctcagccaatccctgggtgagtttcaccagttttgatttaaacgtggccaatatggacaacttcttcgcccccgttttcaccatgcatgggaattagcttgatctgaccaacgaccggtagcggagctatccaacggcggtataccaggaaaacacacagcaggtacatcagaacagtaccatgactgaagaacaaatagttttttcctgatccataaagcagaacggcctgctccatgacaaatctggctccccaactaatgccccatgcagccagcataaccagcataaagtgcagtgtccggtttgatagggataagtccagccttgcaagaagcggatacaggagtgcaaaaaatggctatctctagtaaggcctaccccttaggctttatgcaacagaaacaataataatggagtcatgaccatgcctaggaggaaaaaacatatggtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcagcatcatcaccaccatcattaggatggtggtgatgataatggctagccgtaaaggtgaagaactgttcaccggtgttgttccgatcctggttgaactggatggtgatgttaacggccacaaattctctgttcgtggtgaaggtgaaggtgatgcaaccaacggtaaactgaccctgaaattcatctgcactaccggtaaactgccggttccatggccgactctggtgactaccctgacctatggtgttcagtgtttttctcgttacccggatcacatgaagcagcatgatttcttcaaatctgcaatgccggaaggttatgtacaggagcgcaccatttctttcaaagacgatggcacctacaaaacccgtgcagaggttaaatttgaaggtgatactctggtgaaccgtattgaactgaaaggcattgatttcaaagaggacggcaacatcctgggccacaaactggaatataacttcaactcccataacgtttacatcaccgcagacaaacagaagaacggtatcaaagctaacttcaaaattcgccataacgttgaagacggtagcgtacagctggcggaccactaccagcagaacactccgatcggtgatggtccggttctgctgccggataaccactacctgtccacccagtctaaactgtccaaagacccgaacgaaaagcgcgaccacatggtgctgctggagttcgttactgccgcaggtatcacgcacggcatggatgaactctacaaataagaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttgcggccgcgtcgtgactgggaaaaccctggcgcaaagcccgccgaaaggcgggcttttctgt")
+sRNA_targetSequence is a DNASequence("tataacgttactggtttcaccat")
+msfGFPSequence is a DNASequence("cgtaaaggtgaagaactgttcaccggtgttgttccgatcctggttgaactggatggtgatgttaacggccacaaattctctgttcgtggtgaaggtgaaggtgatgcaaccaacggtaaactgaccctgaaattcatctgcactaccggtaaactgccggttccatggccgactctggtgactaccctgacctatggtgttcagtgtttttctcgttacccggatcacatgaagcagcatgatttcttcaaatctgcaatgccggaaggttatgtacaggagcgcaccatttctttcaaagacgatggcacctacaaaacccgtgcagaggttaaatttgaaggtgatactctggtgaaccgtattgaactgaaaggcattgatttcaaagaggacggcaacatcctgggccacaaactggaatataacttcaactcccataacgtttacatcaccgcagacaaacagaagaacggtatcaaagctaacttcaaaattcgccataacgttgaagacggtagcgtacagctggcggaccactaccagcagaacactccgatcggtgatggtccggttctgctgccggataaccactacctgtccacccagtctaaactgtccaaagacccgaacgaaaagcgcgaccacatggtgctgctggagttcgttactgccgcaggtatcacgcacggcatggatgaactctacaaataa")
+T500Sequence is a DNASequence("caaagcccgccgaaaggcgggcttttctgt")
+T1_TESequence is a DNASequence("ctcgagccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgtttttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata")
+SpacerSequence is a DNASequence("aaaaacatatg")
+all_or_nothing_PA1_04sSequence is a DNASequence("tttatcaaaaagagtgttgacttgtgagcgctcacattgatacttagattcagtataacgttactggtttcaccattttctgttgggccattgcattgccactgattttccaacatataaaaagacaagcccgaacagtcgtccgggctttttttctcgagctcgagccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgtttttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata")
+all_or_nothingSequence is a DNASequence("ttaattaaacgttcgtaatcaagccacttcctttttgcattgacgcagggtgtcggaaggcaactcgccgaacgcgctcctatagttttcagcgaagcgtcccaaatgtaagaagccgtagtctagggctatctcagttatactacgcacattggcactgggatcgttcaagcaggcgcggatgctttcgagcttgcggttgcggatgtagttcttcggcgtggtgccggcgtgcttctcgaacaaattgtagagcgagcgtggactcatcatcgccagctccgctaaccgctcaaggctgatattccgtttgagattctcctcaatgaattgaacgactcgctcgaaagacgggttacctttgctgaaaatttcacggctgacattgctgcccagcatttcgagcagcttggaagcgatgatccccgcatagtgctcttggacccgaggcatcgactttgtatgttccgcttcgtcacaaactaacccgagtagattgataaagccatcgagttgctggagattgtgtcgcgcggcgaaacggataccctccctcggcttgtgccaattgttgtcactgcacgcccgatcaaggaccactgagggcaatttaacgataaatttctcgcaatcttctgaataggtcaggtcggcttggtcatccggattgagcagcaatagttcgcccggcgcaaaatagtgctcctggccatggccacgccacaggcaatggcctttgagtattatttgcagatgataacaggtctctaatccaggcgagattaccctcacgctaccgccgtagctgattcgacacagatcgaggcatccgaagattctgtggtgcagcctgcctgccgggcgcccgcccttgggcaggcgaatagagtgcgtaccgacatactggttaacataatcggagactgcatagggctcggcgtggacgaagatctgacttttctcgttcaataagcaaaaatccatagttcacggttctcttattttaatgtgggctgcttggtgtgatgtagaaaggcgccaagtcgatgaaaatgcatctcgacgtgatgcgtatacgggttacccccattgccacgttgcgccatcctttttgcaatcagtgaccacttttccaagcaaaaataacgccaagcagaacgaagacgttctttttaagaagcgagaacaccagaagttcgtgctgtcggggcatggggcgacgaattggcggataaaggggatctgctggatattacggcctttttaaagaccgtaaagaaaaataagcacaagttttatccggcctttattcacattcttgcccgcctgatgaatgctcatccgtaattacgtatggcaatgaaagacggtgagctggtgatatgggatagtgttcacccttgttacaccgttttccatgagcaaactgaaacgttttcatcgctctggagtgaataccacgacgatttccggcagtttctacacatatattcgcaagatgtggcgtgttacggtgaaaacctggcctatttccctaaagggtttattgagaatatgtttttcgtctcagccaatccctgggtgagtttcaccagttttgatttaaacgtggccaatatggacaacttcttcgcccccgttttcaccatgcatgggaattagcttgatctgaccaacgaccggtagcggagctatccaacggcggtataccaggaaaacacacagcaggtacatcagaacagtaccatgactgaagaacaaatagttttttcctgatccataaagcagaacggcctgctccatgacaaatctggctccccaactaatgccccatgcagccagcataaccagcataaagtgcagtgtccggtttgatagggataagtccagccttgcaagaagcggatacaggagtgcaaaaaatggctatctctagtaaggcctaccccttaggctttatgcaacagaaacaataataatggagtcatgaccatgcctaggaggaaaaaacatatggtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcagcatcatcaccaccatcattaggatggtggtgatgataatggctagccgtaaaggtgaagaactgttcaccggtgttgttccgatcctggttgaactggatggtgatgttaacggccacaaattctctgttcgtggtgaaggtgaaggtgatgcaaccaacggtaaactgaccctgaaattcatctgcactaccggtaaactgccggttccatggccgactctggtgactaccctgacctatggtgttcagtgtttttctcgttacccggatcacatgaagcagcatgatttcttcaaatctgcaatgccggaaggttatgtacaggagcgcaccatttctttcaaagacgatggcacctacaaaacccgtgcagaggttaaatttgaaggtgatactctggtgaaccgtattgaactgaaaggcattgatttcaaagaggacggcaacatcctgggccacaaactggaatataacttcaactcccataacgtttacatcaccgcagacaaacagaagaacggtatcaaagctaacttcaaaattcgccataacgttgaagacggtagcgtacagctggcggaccactaccagcagaacactccgatcggtgatggtccggttctgctgccggataaccactacctgtccacccagtctaaactgtccaaagacccgaacgaaaagcgcgaccacatggtgctgctggagttcgttactgccgcaggtatcacgcacggcatggatgaactctacaaataagaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttgcggccgcgtcgtgactgggaaaaccctggcgcaaagcccgccgaaaggcgggcttttctgttataaacgcagaaaggcccacccgaaggtgagccagtgtgactctagtagagagcgttcaccgacaaaaacagataaaacgaaaggcccagtctttcgactgagcctttcgttttatttgatgcctggctcgagctcgagaaaaaaagcccggacgactgttcgggcttgtctttttatatgttggaaaatcagtggcaatgcaatggcccaacagaaaatggtgaaaccagtaacgttatactgaatctaagtatcaatgtgagcgctcacaagtcaacactctttttgataaaactagt")
+PacISequence1 is a DNASequence("ttaattaa")
+
+# Component Definitions
+PA1_04s is a Promoter()
+(
+     sequence = PA1_04sSequence
+)
+
+PBS_F24 is a DNAComponent()
+(
+     
+     sequence = PBS_F24Sequence
+)
+
+RBS_cassette is a DNAComponent()
+(
+     
+     sequence = RBS_cassetteSequence
+)
+
+MICc_scaffold is a EngineeredRegion()
+(
+     sequence = MICc_scaffoldSequence
+)
+
+T500 is a Terminator()
+(
+     sequence = T500Sequence
+)
+
+EcoRI is a DNAComponent()
+(
+     
+     sequence = EcoRISequence
+)
+
+ATG is a EngineeredRegion()
+(
+     sequence = ATGSequence
+)
+
+NheI is a DNAComponent()
+(
+     
+     sequence = NheISequence
+)
+
+T1_TE is a Terminator()
+(
+     sequence = T1_TESequence
+)
+
+Coupling is a EngineeredRegion()
+(
+     sequence = CouplingSequence
+)
+
+PacI is a DNAComponent()
+(
+     
+     sequence = PacISequence1
+)
+
+msfGFP is a CDS()
+(
+     sequence = msfGFPSequence
+)
+
+LacI is a CDS()
+(
+     sequence = LacISequence
+)
+
+Restriction_sites is a EngineeredRegion()
+(
+     sequence = Restriction_sitesSequence
+)
+
+SpeI is a DNAComponent()
+(
+     
+     sequence = SpeISequence
+)
+
+sRNA_target is a EngineeredRegion()
+(
+     sequence = sRNA_targetSequence
+)
+
+XylSPm is a Promoter()
+(
+     sequence = XylSPmSequence
+)
+
+Spacer is a EngineeredRegion()
+(
+     sequence = SpacerSequence
+)
+
+
+# ----------------- sRNA -----------------------------
+sRNA_precedes_MICc is a Precedes(sRNA_targetComponent, MICc_scaffoldComponent)
+
+sRNA_cassetteSequenceAnnotation1Range is a InlineRange(24, 108)
+sRNA_cassetteSequenceAnnotation1 is a SequenceAnnotation(sRNA_cassetteSequenceAnnotation1Range)
+(
+     component = MICc_scaffoldComponent
+)
+
+
+sRNA_cassetteSequenceAnnotationRange is a InlineRange(1, 23)
+sRNA_cassetteSequenceAnnotation is a SequenceAnnotation(sRNA_cassetteSequenceAnnotationRange)
+(
+     component = sRNA_targetComponent
+)
+
+sRNA_targetComponent is a Component(sRNA_target)
+MICc_scaffoldComponent is a Component(MICc_scaffold)
+sRNA_cassette is a CDS()
+(
+     component = sRNA_targetComponent
+     component = MICc_scaffoldComponent
+     sequence = sRNA_cassetteSequence
+     sequenceAnnotation = sRNA_cassetteSequenceAnnotation1
+     sequenceAnnotation = sRNA_cassetteSequenceAnnotation
+     sequenceConstraint = sRNA_precedes_MICc
+)
+
+
+# ----------------- MCS -----------------------------
+
+restriction_site_precedes_PBS is a Precedes(Restriction_sitesComponent, PBSComponent)
+
+MCSSequenceAnnotationRange is a InlineRange(1, 59)
+MCSSequenceAnnotation is a SequenceAnnotation(MCSSequenceAnnotationRange)
+(
+     component = Restriction_sitesComponent
+)
+
+
+MCSSequenceAnnotation1Range is a InlineRange(60, 83)
+MCSSequenceAnnotation1 is a SequenceAnnotation(MCSSequenceAnnotation1Range)
+(
+     component = PBSComponent
+)
+
+Restriction_sitesComponent is a Component(Restriction_sites)
+PBSComponent is a Component(PBS_F24)
+MCS is a EngineeredRegion()
+(
+     component = Restriction_sitesComponent
+     component = PBSComponent
+     sequence = MCSSequence
+     sequenceAnnotation = MCSSequenceAnnotation
+     sequenceAnnotation = MCSSequenceAnnotation1
+     sequenceConstraint = restriction_site_precedes_PBS
+)
+
+# ----------------- GFP -----------------------------
+
+ATG_precedes_CUT is a Precedes(ATGComponent, CUT2Component)
+CUT_precedes_CDS is a Precedes(CUT2Component, CDS3Component)
+CDS3_precedes_CUT3 is a Precedes(CDS3Component, CUT3Component)
+
+
+gfp_cassetteSequenceAnnotation3Range is a InlineRange(724, 729)
+gfp_cassetteSequenceAnnotation3 is a SequenceAnnotation(gfp_cassetteSequenceAnnotation3Range)
+(
+     component = CUT3Component
+)
+
+
+gfp_cassetteSequenceAnnotation2Range is a InlineRange(10, 723)
+gfp_cassetteSequenceAnnotation2 is a SequenceAnnotation(gfp_cassetteSequenceAnnotation2Range)
+(
+     component = CDS3Component
+)
+
+gfp_cassetteSequenceAnnotationRange is a InlineRange(1, 3)
+gfp_cassetteSequenceAnnotation is a SequenceAnnotation(gfp_cassetteSequenceAnnotationRange)
+(
+     component = ATGComponent
+)
+
+
+gfp_cassetteSequenceAnnotation1Range is a InlineRange(4, 9)
+gfp_cassetteSequenceAnnotation1 is a SequenceAnnotation(gfp_cassetteSequenceAnnotation1Range)
+(
+     component = CUT2Component
+)
+
+ATGComponent is a Component(ATG)
+CDS3Component is a Component(msfGFP)
+CUT2Component is a Component(NheI)
+CUT3Component is a Component(EcoRI)
+gfp_cassette is a CDS()
+(
+     component = ATGComponent
+     component = CUT2Component
+     component = CDS3Component
+     component = CUT3Component
+     sequence = gfp_cassetteSequence
+     sequenceAnnotation = gfp_cassetteSequenceAnnotation2
+     sequenceAnnotation = gfp_cassetteSequenceAnnotation
+     sequenceAnnotation = gfp_cassetteSequenceAnnotation3
+     sequenceAnnotation = gfp_cassetteSequenceAnnotation1
+     sequenceConstraint = ATG_precedes_CUT
+     sequenceConstraint = CUT_precedes_CDS
+     sequenceConstraint = CDS3_precedes_CUT3
+)
+
+
+
+# ----------------- LacI -----------------------------
+
+Spacer_precedes_CDS1 is a Precedes(SpacerComponent, CDS1Component)
+CDS1_precedes_Coupling is a Precedes(CDS1Component, CouplingComponent)
+
+LacI_cassetteSequenceAnnotation1Range is a InlineRange(12, 1091)
+LacI_cassetteSequenceAnnotation1 is a SequenceAnnotation(LacI_cassetteSequenceAnnotation1Range)
+(
+     component = CDS1Component
+)
+
+
+LacI_cassetteSequenceAnnotation2Range is a InlineRange(1092, 1128)
+LacI_cassetteSequenceAnnotation2 is a SequenceAnnotation(LacI_cassetteSequenceAnnotation2Range)
+(
+     component = CouplingComponent
+)
+
+
+LacI_cassetteSequenceAnnotationRange is a InlineRange(1, 11)
+LacI_cassetteSequenceAnnotation is a SequenceAnnotation(LacI_cassetteSequenceAnnotationRange)
+(
+     component = SpacerComponent
+)
+
+SpacerComponent is a Component(Spacer)
+CouplingComponent is a Component(Coupling)
+CDS1Component is a Component(LacI)
+
+LacI_cassette is a CDS()
+(
+     component = SpacerComponent
+     component = CouplingComponent
+     component = CDS1Component
+     sequence = LacI_cassetteSequence
+     sequenceAnnotation = LacI_cassetteSequenceAnnotation
+     sequenceAnnotation = LacI_cassetteSequenceAnnotation2
+     sequenceAnnotation = LacI_cassetteSequenceAnnotation1
+     sequenceConstraint = Spacer_precedes_CDS1
+     sequenceConstraint = CDS1_precedes_Coupling
+)
+
+
+# ----------------- PA1/04s -----------------------------
+
+Pro_precedes_CDS is a Precedes(ProComponent, CDSComponent1)
+CDS_precedes_Ter is a Precedes(CDSComponent1, TerComponent)
+
+all_or_nothing_PA1_04sSequenceAnnotation1Range is a InlineRange(54, 161)
+all_or_nothing_PA1_04sSequenceAnnotation1 is a SequenceAnnotation(all_or_nothing_PA1_04sSequenceAnnotation1Range)
+(
+     component = CDSComponent1
+)
+
+all_or_nothing_PA1_04sSequenceAnnotationRange is a InlineRange(1, 53)
+all_or_nothing_PA1_04sSequenceAnnotation is a SequenceAnnotation(all_or_nothing_PA1_04sSequenceAnnotationRange)
+(
+     component = ProComponent
+)
+
+all_or_nothing_PA1_04sSequenceAnnotation2Range is a InlineRange(162, 295)
+all_or_nothing_PA1_04sSequenceAnnotation2 is a SequenceAnnotation(all_or_nothing_PA1_04sSequenceAnnotation2Range)
+(
+     component = TerComponent
+)
+
+ProComponent is a Component(PA1_04s)
+CDSComponent1 is a Component(sRNA_cassette)
+TerComponent is a Component(T1_TE)
+
+all_or_nothing_PA1_04s is a EngineeredRegion()
+(
+     component = ProComponent
+     component = CDSComponent1
+     component = TerComponent
+     sequence = all_or_nothing_PA1_04sSequence
+     sequenceAnnotation = all_or_nothing_PA1_04sSequenceAnnotation1
+     sequenceAnnotation = all_or_nothing_PA1_04sSequenceAnnotation
+     sequenceAnnotation = all_or_nothing_PA1_04sSequenceAnnotation2
+
+     sequenceConstraint = Pro_precedes_CDS
+     sequenceConstraint = CDS_precedes_Ter
+
+)
+
+
+# ----------------- PM -----------------------------
+Pro2_precedes_RBS is a Precedes(Pro2Component, RBSComponent)
+RBS_precedes_CDS is a Precedes(RBSComponent, CDSComponent)
+CDS_precedes_CDS2 is a Precedes(CDSComponent, CDS2Component)
+CDS2_precedes_MCS is a Precedes(CDS2Component, MCSComponent)
+MCS_precedes_Ter is a Precedes(MCSComponent, T500Component)
+
+
+all_or_nothing_PmSequenceAnnotation3Range is a InlineRange(3126, 3854)
+all_or_nothing_PmSequenceAnnotation3 is a SequenceAnnotation(all_or_nothing_PmSequenceAnnotation3Range)
+(
+     component = CDS2Component
+)
+
+all_or_nothing_PmSequenceAnnotationRange is a InlineRange(1, 1987)
+all_or_nothing_PmSequenceAnnotation is a SequenceAnnotation(all_or_nothing_PmSequenceAnnotationRange)
+(
+     component = Pro2Component
+)
+
+all_or_nothing_PmSequenceAnnotation1Range is a InlineRange(1988, 1997)
+all_or_nothing_PmSequenceAnnotation1 is a SequenceAnnotation(all_or_nothing_PmSequenceAnnotation1Range)
+(
+     component = RBSComponent
+)
+
+all_or_nothing_PmSequenceAnnotation5Range is a InlineRange(3938, 3967)
+all_or_nothing_PmSequenceAnnotation5 is a SequenceAnnotation(all_or_nothing_PmSequenceAnnotation5Range)
+(
+     component = T500Component
+)
+
+all_or_nothing_PmSequenceAnnotation4Range is a InlineRange(3855, 3937)
+all_or_nothing_PmSequenceAnnotation4 is a SequenceAnnotation(all_or_nothing_PmSequenceAnnotation4Range)
+(
+     component = MCSComponent
+)
+
+all_or_nothing_PmSequenceAnnotation2Range is a InlineRange(1998, 3125)
+all_or_nothing_PmSequenceAnnotation2 is a SequenceAnnotation(all_or_nothing_PmSequenceAnnotation2Range)
+(
+     component = CDSComponent
+)
+
+Pro2Component is a Component(XylSPm)
+CDSComponent is a Component(LacI_cassette)
+RBSComponent is a Component(RBS_cassette)
+T500Component is a Component(T500)
+CDS2Component is a Component(gfp_cassette)
+MCSComponent is a Component(MCS)
+
+all_or_nothing_Pm is a EngineeredRegion()
+(
+     component = Pro2Component
+     component = CDSComponent
+     component = RBSComponent
+     component = T500Component
+     component = CDS2Component
+     component = MCSComponent
+     sequence = all_or_nothing_PmSequence
+     sequenceAnnotation = all_or_nothing_PmSequenceAnnotation4
+     sequenceAnnotation = all_or_nothing_PmSequenceAnnotation2
+     sequenceAnnotation = all_or_nothing_PmSequenceAnnotation3
+     sequenceAnnotation = all_or_nothing_PmSequenceAnnotation
+     sequenceAnnotation = all_or_nothing_PmSequenceAnnotation5
+     sequenceAnnotation = all_or_nothing_PmSequenceAnnotation1
+     sequenceConstraint = Pro2_precedes_RBS
+     sequenceConstraint = RBS_precedes_CDS
+     sequenceConstraint = CDS_precedes_CDS2
+     sequenceConstraint = CDS2_precedes_MCS
+     sequenceConstraint = MCS_precedes_Ter
+)
+
+
+
+
+
+
+# ----------------- FINAL COMPONENT -----------------------------
+CUT1_precedes_Pm_cassette is a Precedes(CUT1Component, Pm_cassetteComponent)
+Pm_cassette_precedes_PA1_04s_cassette is a Precedes(Pm_cassetteComponent, PA1_04s_cassetteComponent)
+PA1_04s_cassette_precedes_CUT is a Precedes(PA1_04s_cassetteComponent, CUTComponent)
+
+all_or_nothingSequenceAnnotation3Range is a InlineRange(1, 8)
+all_or_nothingSequenceAnnotation3 is a SequenceAnnotation(all_or_nothingSequenceAnnotation3Range)
+(
+     component = CUT1Component
+)
+
+all_or_nothingSequenceAnnotationRange is a InlineRange(9, 3975)
+all_or_nothingSequenceAnnotation is a SequenceAnnotation(all_or_nothingSequenceAnnotationRange)
+(
+     component = Pm_cassetteComponent
+)
+
+all_or_nothingSequenceAnnotation1Range is a ReverseComplementRange(3976, 4270)
+all_or_nothingSequenceAnnotation1 is a SequenceAnnotation(all_or_nothingSequenceAnnotation1Range)
+(
+     component = PA1_04s_cassetteComponent
+)
+
+all_or_nothingSequenceAnnotation2Range is a InlineRange(4271, 4276)
+all_or_nothingSequenceAnnotation2 is a SequenceAnnotation(all_or_nothingSequenceAnnotation2Range)
+(
+     component = CUTComponent
+)
+
+CUT1Component is a Component(PacI)
+CUTComponent is a Component(SpeI)
+Pm_cassetteComponent is a Component(all_or_nothing_Pm)
+PA1_04s_cassetteComponent is a Component(all_or_nothing_PA1_04s)
+
+all_or_nothing is a EngineeredRegion()
+(
+     component = CUT1Component
+     component = CUTComponent
+     component = Pm_cassetteComponent
+     component = PA1_04s_cassetteComponent
+     sequence = all_or_nothingSequence
+     sequenceAnnotation = all_or_nothingSequenceAnnotation1
+     sequenceAnnotation = all_or_nothingSequenceAnnotation
+     sequenceAnnotation = all_or_nothingSequenceAnnotation3
+     sequenceAnnotation = all_or_nothingSequenceAnnotation2
+     sequenceConstraint = CUT1_precedes_Pm_cassette
+     sequenceConstraint = Pm_cassette_precedes_PA1_04s_cassette
+     sequenceConstraint = PA1_04s_cassette_precedes_CUT
+)
