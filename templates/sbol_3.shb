@@ -66,7 +66,10 @@ hasLocation = sbol_3.hasLocation
 hasVariableComponent = sbol_3.hasVariableComponent
 variant = sbol_3.variant
 hasSequence = sbol_3.hasSequence
-
+built = sbol_3.built
+input = sbol_3.input
+output = sbol_3.output
+nondirectional = sbol_3.nondirectional
 
 
 bookmark = sbh_terms.bookmark

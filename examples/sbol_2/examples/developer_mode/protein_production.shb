@@ -1,0 +1,22 @@
+# Example showing how to describe GFP protein production.
+
+GFP is a DNA()
+pGFP is a Protein()
+
+GFP_i is a InstanceOf(GFP)
+pGFP_i is a NoneComponent(pGFP)
+
+GFP_part is a ParticipationPromoter(GFP_i)
+pGFP_part is a Product(pGFP_i)
+GFP_production is a GeneticProduction()
+(
+	participation = GFP_part
+	participation = pGFP_part	
+)
+
+gfp_mod is a ModuleDefinition()
+(
+  functionalComponent = GFP_i
+  functionalComponent = pGFP_i
+  interaction = GFP_production
+)

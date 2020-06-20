@@ -9,7 +9,7 @@ pTetR is a Promoter()
 lacI_CDS is a CDS()
 lacI_CDS_2 is a ComponentDefinition(i_DNA)
 (
-    role = i_rbs
+    role = i_cds
 )
 
 lacI_RBS is a RBS()
