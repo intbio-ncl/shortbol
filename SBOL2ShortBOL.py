@@ -19,7 +19,7 @@ name_list = {}
  
 
 
-def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancment = False, version = "sbol_2"):
+def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validation = False, prune = False, prune_list = None, no_enhancement = False, version = "sbol_2"):
     if version == "sbol_3":
         identifiers.swap_version("sbol_3")
         no_validation = True
@@ -44,7 +44,7 @@ def produce_shortbol(sbol_xml_fn, shortbol_libary, output_fn = None, no_validati
         return output_fn
     # Now have a structure that is easier to use.
     # Create the actual ShortBOL from this.
-    shortbol_code = convert(heirachy_tree,shortbol_libary,no_enhancment,version)
+    shortbol_code = convert(heirachy_tree,shortbol_libary,no_enhancement,version)
 
     if output_fn is None:
         print(shortbol_code)
@@ -105,7 +105,7 @@ def get_tree(graph,root,done = None, prune = False, prune_list = None):
     return tree
 
 
-def convert(heirachy_tree,shortbol_libary,no_enhancment,version):
+def convert(heirachy_tree,shortbol_libary,no_enhancement,version):
     symbol_table,template_table,prefixes = produce_tables(version = version, lib_paths = shortbol_libary)
     template_table = cast_to_rdflib(template_table)
     symbol_table = cast_to_rdflib(symbol_table)
@@ -120,7 +120,7 @@ def convert(heirachy_tree,shortbol_libary,no_enhancment,version):
 
     shortbol_code = ""
     templates = {}
-    populate_name_list(heirachy_tree,no_enhancment)
+    populate_name_list(heirachy_tree,no_enhancement)
 
 
     for name,triples in heirachy_tree.items():
@@ -324,17 +324,17 @@ def get_name(item):
         return split_item[-1]
 
 
-def populate_name_list(heirachy_tree,no_enhancment, parent=None):
+def populate_name_list(heirachy_tree,no_enhancement, parent=None):
     for name,triples in heirachy_tree.items():
         properties = [triple for triple in triples if isinstance(triple,tuple)]
-        name_list[str(name)] = str(get_template_name(name,properties,parent,no_enhancment)) 
+        name_list[str(name)] = str(get_template_name(name,properties,parent,no_enhancement)) 
         children = [triple for triple in triples if isinstance(triple,dict)]
         for child in children:
-            populate_name_list(child,no_enhancment,name_list[str(name)])
+            populate_name_list(child,no_enhancement,name_list[str(name)])
 
 
-def get_template_name(name,properties,parent, no_enhancment):
-    if no_enhancment:
+def get_template_name(name,properties,parent, no_enhancement):
+    if no_enhancement:
         return get_name(name) 
 
     orig_name = rdflib.URIRef(name)
@@ -701,7 +701,7 @@ def sbol_2_shortbol_args():
                         help="specify path to shortbol libary.")
     parser.add_argument('-nv', '--no_validation', help="Stops the Input from being sent via HTTP to online validator.", default=None, action='store_true')
     parser.add_argument('-prune', '--prune', help=f"This flag will remove the properties from {str([str(namespace) for namespace in prune_namespaces])} Namespaces.", default=False, action='store_true')
-    parser.add_argument('-ne', '--no_enhancment', help=f"This flag will stop any data enhancment of the design, such as producing better template names", default=False, action='store_true')
+    parser.add_argument('-ne', '--no_enhancement', help=f"This flag will stop any data enhancment of the design, such as producing better template names", default=False, action='store_true')
     parser.add_argument('-v', '--version', help="Define which SBOL version to run (3 by default)", choices=["sbol_2","sbol_3"] , default="sbol_2")
     return  parser.parse_args()
 
@@ -710,7 +710,7 @@ if __name__ == "__main__":
     args = sbol_2_shortbol_args()
     produce_shortbol(args.filename, args.path, output_fn = args.output, 
                      no_validation = args.no_validation, prune = args.prune, 
-                     no_enhancment = args.no_enhancment, version = args.version)
+                     no_enhancement = args.no_enhancement, version = args.version)
 
 
 
