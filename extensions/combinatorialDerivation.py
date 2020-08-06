@@ -10,11 +10,11 @@ class CombinatorialDerivation:
         self.cd_name = cd_name
 
     def run(self, triplepack, env):
+        identifiers.swap_version(env.version)
         if env.version == "sbol_2":
             return self.run_sbol_2(triplepack,env)
 
         if env.version == "sbol_3":
-            print("Running dis...")
             return self.run_sbol_3(triplepack,env)
             
 

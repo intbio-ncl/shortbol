@@ -26,11 +26,11 @@ class SBOL2:
 
     def run(self, triplepack,env):
         subjects = list(triplepack.subjects)
-        identifiers = get_identifier_uris(triplepack._paths)
+        identifiers.swap_version("sbol_2")
         for i in range(len(subjects)):
             SBOLCompliant(subjects[i]).run(triplepack, subjects)
 
-        validate(subjects,identifiers,triplepack)
+        validate(subjects,triplepack)
 
         return triplepack
 
@@ -82,13 +82,13 @@ class SBOLCompliant:
         return triplepack
 
 
-def validate(subjects,id, triplepack):
+def validate(subjects, triplepack):
     '''
     Built-in validator to made checks on the graph to ensure Valid SBOL.
     '''
 
     symbols_table = triplepack.bindings
-
+    ids = get_identifier_uris(triplepack._paths)
     for subject in subjects:
         triples = triplepack.search((subject,None,None))
         for s,p,o in triples:

@@ -9,6 +9,11 @@ class SBOLIdentifiers:
         self.external = SBOL2ExternalIdentifiers(self.namespaces)
     
     def swap_version(self, version):
+        if version == "sbol_2":
+            self.namespaces = SBOL2Namespace()
+            self.objects = SBOL2Objects(self.namespaces)
+            self.predicates = SBOL2Predicates(self.namespaces)
+            self.external = SBOL2ExternalIdentifiers(self.namespaces)
         if version == "sbol_3":
             self.namespaces = SBOL3Namespace()
             self.objects = SBOL3Objects(self.namespaces)
